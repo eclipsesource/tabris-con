@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-versionCode="1" id="com.eclipsesource.tabris.con" version="0.0.1" xmlns="http://www.w3.org/ns/widgets">
+    <name>TabrisCon</name>
+    <description>
+        An exemplary Tabris.js conference app.
+    </description>
+    <author email="tabris@eclipsesource.com" href="https://tabrisjs.com">
+        EclipseSource
+    </author>
+</widget>
