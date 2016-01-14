@@ -1,7 +1,7 @@
 {
   "title": "Tabris Con",
   "description": "An exemplary Tabris.js conference app.",
-  "main": "app.js",
+  "main": "src/app.js",
   "dependencies": {
     "tabris": "^1.5.x",
     "underscore": "^1.8.3"

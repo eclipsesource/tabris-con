@@ -1,4 +1,4 @@
-var colors = require("../resources/colors.json");
+var colors = require("../../resources/colors.json");
 var DrawerUserArea = require("./DrawerUserArea");
 
 exports.create = function() {

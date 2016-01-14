@@ -1,4 +1,4 @@
-var colors = require("../resources/colors.json");
+var colors = require("../../resources/colors.json");
 
 exports.create = function() {
   var userArea = tabris.create("Composite", {
