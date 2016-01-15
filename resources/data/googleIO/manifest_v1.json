@@ -1,0 +1,8 @@
+{
+  "format": "iosched-json-v1",
+  "data_files": [
+    "blocks_v4.json",
+    "keynote_v2.json",
+    "session_data_v1.70.json"
+  ]
+}

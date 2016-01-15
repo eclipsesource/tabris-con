@@ -4,6 +4,7 @@
   "main": "src/app.js",
   "dependencies": {
     "tabris": "^1.5.x",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.2.2"
   }
 }
