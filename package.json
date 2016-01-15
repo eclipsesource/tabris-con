@@ -3,6 +3,7 @@
   "description": "An exemplary Tabris.js conference app.",
   "main": "src/app.js",
   "dependencies": {
+    "moment": "^2.11.1",
     "tabris": "^1.5.x",
     "underscore": "^1.8.3",
     "underscore.string": "^3.2.2"

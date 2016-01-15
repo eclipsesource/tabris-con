@@ -9,6 +9,11 @@ exports.getPreviewCategories = function() {
   return collectionViewDataAdapter.adaptPreviewCategories(previewCategories);
 };
 
+exports.getCategory = function(categoryId) {
+  var category = googleIODataExtractor.extractCategory(getConferenceData(), categoryId);
+  return collectionViewDataAdapter.adaptCategory(category);
+};
+
 function getConferenceData() {
   conferenceData = conferenceData || googleIODataLoader.load();
   return conferenceData;
