@@ -5,6 +5,7 @@ exports.extractPreviewCategories = function(conferenceData) {
   var tagNameMap = createTagNameMap(conferenceData);
   getPreviewCategoryTags(conferenceData).forEach(function(tagToPreview) {
     previewCategories.push({
+      id: tagToPreview,
       title: tagNameMap[tagToPreview],
       sessions: getPreviewSessions(tagToPreview)
     });
@@ -12,11 +13,12 @@ exports.extractPreviewCategories = function(conferenceData) {
   return previewCategories;
 
   function getPreviewSessions(tagToPreview) {
-    // TODO: sort to date
+    // TODO: sort by date
     var previewSessions = [];
     var sessions = findSessionsWithTag(conferenceData, tagToPreview).slice(0, 2);
     sessions.forEach(function(session) {
       previewSessions.push({
+        id: session.id,
         title: session.title,
         image: session.photoUrl,
         text: session.description

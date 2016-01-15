@@ -1,14 +1,17 @@
 [{
   "type": "separator"
 }, {
+  "id": "TOPIC_PLAY",
   "type": "title",
   "title": "Play"
 }, {
+  "id": "4d63c164-cbf8-e411-b87f-00155d5066d7",
   "title": "Office Hours with the Play team",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/4d63c164-cbf8-e411-b87f-00155d5066d7.jpg",
   "text": "Visit our Google Play office hours space to learn more about all the different ways you can grow your business with Google Play.",
   "type": "session"
 }, {
+  "id": "f7ad2c3d-08ea-e411-b87f-00155d5066d7",
   "title": "Office Hours with the Google Play services engineering team",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/f7ad2c3d-08ea-e411-b87f-00155d5066d7.jpg",
   "text": "Google Play services 7.5 was just released with lots of new features. Come and meet the engineering team for a chat and an opportunity to ask technical questions.",
@@ -16,9 +19,11 @@
 }, {
   "type": "separator"
 }, {
+  "id": "TOPIC_DESIGN",
   "type": "title",
   "title": "Design"
 }, {
+  "id": "ee58a197-b6d4-e411-b87f-00155d5066d7",
   "title": "Material design icons made easy",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/ee58a197-b6d4-e411-b87f-00155d5066d7.jpg",
   "text": "Simple and clear iconography is vital to well designed and usable user interfaces. Google is making available an icon set based on material design principles that you can use in your web, Android and iOS apps. Learn about the design of the icons, how to use them in your apps, and best practices for vector assets, icon fonts, and animated icons. (Note: This Sandbox talk will be offered twice throughout the event. Check the schedule to confirm timings.)",

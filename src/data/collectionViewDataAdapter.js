@@ -4,7 +4,7 @@ exports.adaptPreviewCategories = function(previewCategories) {
   var result = [];
   result.push({type: "separator"});
   previewCategories.forEach(function(categoryPreview) {
-    result.push({type: "title", title: categoryPreview.title});
+    result.push({type: "title", id: categoryPreview.id, title: categoryPreview.title});
     result = _.union(result, getCategoryPreviewSessions(categoryPreview));
     result.push({type: "separator"});
   });
