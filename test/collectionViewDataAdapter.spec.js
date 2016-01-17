@@ -1,3 +1,4 @@
+var expect = require("chai").expect;
 var collectionViewDataAdapter = require("../src/data/collectionViewDataAdapter");
 var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
 var ADAPTED_PREVIEW_CATEGORIES = require("./data/adaptedPreviewCategories.json");
@@ -12,7 +13,7 @@ describe("collectionViewDataAdapter", function() {
       var adaptedPreviewCategories = collectionViewDataAdapter
         .adaptPreviewCategories(PREVIEW_CATEGORIES);
 
-      expect(adaptedPreviewCategories).toEqual(ADAPTED_PREVIEW_CATEGORIES);
+      expect(adaptedPreviewCategories).to.deep.equal(ADAPTED_PREVIEW_CATEGORIES);
     });
 
   });
@@ -22,7 +23,7 @@ describe("collectionViewDataAdapter", function() {
     it("adapts category", function() {
       var adaptedPreviewCategories = collectionViewDataAdapter.adaptCategory(PLAY_CATEGORY);
 
-      expect(adaptedPreviewCategories).toEqual(ADAPTED_PLAY_CATEGORY);
+      expect(adaptedPreviewCategories).to.deep.equal(ADAPTED_PLAY_CATEGORY);
     });
 
   });

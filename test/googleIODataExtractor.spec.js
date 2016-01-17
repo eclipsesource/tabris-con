@@ -1,3 +1,4 @@
+var expect = require("chai").expect;
 var googleIODataExtractor = require("../src/data/googleIODataExtractor");
 var IO_CONFERENCE_DATA = require("./data/ioConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
@@ -9,7 +10,7 @@ describe("googleIODataExtractor", function() {
     it("extracts categories preview list from conference data", function() {
       var previewCategories = googleIODataExtractor.extractPreviewCategories(IO_CONFERENCE_DATA);
 
-      expect(previewCategories).toEqual(PREVIEW_CATEGORIES);
+      expect(previewCategories).to.deep.equal(PREVIEW_CATEGORIES);
     });
   });
 
@@ -17,7 +18,7 @@ describe("googleIODataExtractor", function() {
     it("extracts category for a given tag", function() {
       var playCategory = googleIODataExtractor.extractCategory(IO_CONFERENCE_DATA, "TOPIC_PLAY");
 
-      expect(playCategory).toEqual(PLAY_CATEGORY);
+      expect(playCategory).to.deep.equal(PLAY_CATEGORY);
     });
   });
 
