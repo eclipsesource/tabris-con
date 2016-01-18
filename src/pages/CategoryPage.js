@@ -8,8 +8,8 @@ exports.create = function() {
   });
   var collectionView = tabris.create("CollectionView", {
     left: 0, top: 0, right: 0, bottom: 0,
-    itemHeight: collectionViewItem.detailedSession.itemHeight,
-    initializeCell: collectionViewItem.detailedSession.initializeCell
-  }).appendTo(page);
+    itemHeight: collectionViewItem.categorySession.itemHeight,
+    initializeCell: collectionViewItem.categorySession.initializeCell
+  }).on("select", collectionViewItem.categorySession.select).appendTo(page);
   return page;
 };

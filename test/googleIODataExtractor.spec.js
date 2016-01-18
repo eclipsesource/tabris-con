@@ -3,6 +3,7 @@ var googleIODataExtractor = require("../src/data/googleIODataExtractor");
 var IO_CONFERENCE_DATA = require("./data/ioConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
 var PLAY_CATEGORY = require("./data/playCategory.json");
+var SESSION = require("./data/session.json");
 
 describe("googleIODataExtractor", function() {
 
@@ -19,6 +20,14 @@ describe("googleIODataExtractor", function() {
       var playCategory = googleIODataExtractor.extractCategory(IO_CONFERENCE_DATA, "TOPIC_PLAY");
 
       expect(playCategory).to.deep.equal(PLAY_CATEGORY);
+    });
+  });
+
+  describe("extractSession", function() {
+    it("extracts a session for a given ID", function() {
+      var session = googleIODataExtractor.extractSession(IO_CONFERENCE_DATA, "ee58a197-b6d4-e411-b87f-00155d5066d7");
+
+      expect(session).to.deep.equal(SESSION);
     });
   });
 

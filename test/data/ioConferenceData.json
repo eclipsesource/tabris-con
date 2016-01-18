@@ -21,7 +21,7 @@
         "hashtag": "design",
         "speakers": [
           "5837632e-d1d4-e411-b87f-00155d5066d7",
-          "ad970564-45dd-e411-b87f-00155d5066d7"
+          "92cc0d3c-0ee9-e411-b87f-00155d5066d7"
         ],
         "room": "f0ab1f84-c8e3-e411-b87f-00155d5066d7"
       }, {
@@ -86,6 +86,32 @@
       "original_id": "85ad57c6-88e4-e411-b87f-00155d5066d7",
       "abstract": "",
       "order_in_category": 5
-    }]
+    }],
+    "rooms": [
+      {
+        "id": "f0ab1f84-c8e3-e411-b87f-00155d5066d7",
+        "original_id": "f0ab1f84-c8e3-e411-b87f-00155d5066d7",
+        "name": "Alcove 1 (L2)"
+      }
+    ],
+    "speakers": [
+      {
+        "id": "5837632e-d1d4-e411-b87f-00155d5066d7",
+        "name": "Josh Estelle",
+        "bio": "",
+        "company": "Google",
+        "plusoneUrl": "https://plus.google.com/+JoshEstelle",
+        "twitterUrl": "https://twitter.com/jestelle"
+      },
+      {
+        "id": "92cc0d3c-0ee9-e411-b87f-00155d5066d7",
+        "name": "Peter Norvig",
+        "bio": "Peter Norvig is a Director of Research at Google; previously he directed Google's core search algorithms group. He is co-author of Artificial Intelligence: A Modern Approach, the leading textbook in the field, and co-teacher of an Artificial Intelligence class that signed up 160,000 students, helping to kick off the current round of massive open online classes. He is a Fellow of AAAI, ACM, the California Academy of Science and the American Academy of Arts & Sciences.",
+        "company": "Google",
+        "thumbnailUrl": "https://storage.googleapis.com/io2015-data.appspot.com/images/speakers/__w-200-400-600-800-1000__/92cc0d3c-0ee9-e411-b87f-00155d5066d7.jpg",
+        "plusoneUrl": "",
+        "twitterUrl": ""
+      }
+    ]
   }
 }

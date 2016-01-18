@@ -1,4 +1,4 @@
-var collectionViewDataAdapter = require("../data/collectionViewDataAdapter");
+var viewDataAdapter = require("../data/viewDataAdapter");
 var googleIODataExtractor = require("../data/googleIODataExtractor");
 var googleIODataLoader = require("../data/googleIODataLoader");
 
@@ -6,12 +6,17 @@ var conferenceData;
 
 exports.getPreviewCategories = function() {
   var previewCategories = googleIODataExtractor.extractPreviewCategories(getConferenceData());
-  return collectionViewDataAdapter.adaptPreviewCategories(previewCategories);
+  return viewDataAdapter.adaptPreviewCategories(previewCategories);
 };
 
 exports.getCategory = function(categoryId) {
   var category = googleIODataExtractor.extractCategory(getConferenceData(), categoryId);
-  return collectionViewDataAdapter.adaptCategory(category);
+  return viewDataAdapter.adaptCategory(category);
+};
+
+exports.getSession = function(sessionId) {
+  var session = googleIODataExtractor.extractSession(getConferenceData(), sessionId);
+  return viewDataAdapter.adaptSession(session);
 };
 
 function getConferenceData() {

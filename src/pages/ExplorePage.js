@@ -1,4 +1,4 @@
-var collectionViewDataProvider = require("../data/collectionViewDataProvider");
+var viewDataProvider = require("../data/viewDataProvider");
 var collectionViewItem = require("../ui/collectionViewItem");
 
 exports.create = function() {
@@ -11,7 +11,7 @@ exports.create = function() {
 
   tabris.create("CollectionView", {
     left: 0, top: 0, right: 0, bottom: 0,
-    items: collectionViewDataProvider.getPreviewCategories(),
+    items: viewDataProvider.getPreviewCategories(),
     cellType: function(item) {
       return item.type;
     },

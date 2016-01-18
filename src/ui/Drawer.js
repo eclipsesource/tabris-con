@@ -94,7 +94,7 @@ exports.create = function() {
       text: text,
       left: 72, centerY: 0,
       font: device.platform === "iOS" ? "bold 17px .HelveticaNeueInterface-Bold" : "bold 14px",
-      textColor: colors.DARK_TEXT_COLOR
+      textColor: colors.DRAWER_TEXT_COLOR
     }).appendTo(container);
     return container;
   }

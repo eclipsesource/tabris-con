@@ -6,7 +6,7 @@ var Drawer = require("./ui/Drawer");
 var colors = require("../resources/colors.json");
 
 tabris.ui.set("background", colors.BACKGROUND_COLOR);
-tabris.ui.set("textColor", colors.LIGHT_TEXT_COLOR);
+tabris.ui.set("textColor", colors.LIGHT_PRIMARY_TEXT_COLOR);
 
 SchedulePage.create();
 ExplorePage.create().open();

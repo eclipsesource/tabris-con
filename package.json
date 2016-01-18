@@ -6,7 +6,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "moment": "^2.11.1",
+    "moment-timezone": "^0.5.0",
     "tabris": "^1.5.x",
     "underscore": "^1.8.3",
     "underscore.string": "^3.2.2"
