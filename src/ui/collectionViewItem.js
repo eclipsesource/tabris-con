@@ -66,7 +66,7 @@ module.exports = {
 function createCategorySession() {
   var categorySession = createSessionContainer()
     .on("change:data", function(widget, data) {
-      imageView.set("image", {src: data.image});
+      imageView.set("image", data.image);
       titleTextView.set("text", data.title);
       timeframeTextView.set("text", data.timeframe);
     });
@@ -90,7 +90,7 @@ function sessionSelectCallback(widget, item) {
 function createSession() {
   var sessionContainer = createSessionContainer()
     .on("change:data", function(widget, data) {
-      imageView.set("image", {src: data.image});
+      imageView.set("image", data.image);
       titleTextView.set("text", data.title, 50);
       descriptionTextView.set("text", data.text);
     });

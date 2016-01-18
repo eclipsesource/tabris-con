@@ -128,7 +128,7 @@ exports.create = function() {
   }
 
   scrollView.on("resize", function(widget, bounds) {
-    var imageHeight = bounds.height / 3;
+    var imageHeight = imageView.get("image") ? bounds.height / 3 : 0;
     imageView.set("height", imageHeight);
     titleCompY = Math.min(imageHeight, bounds.height / 3) - 1; // -1 to make up for rounding errors
     titleComposite.set("top", titleCompY);
