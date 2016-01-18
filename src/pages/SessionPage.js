@@ -3,6 +3,7 @@ var colors = require("../../resources/colors.json");
 var SMALL_MARGIN = 4;
 var BIG_MARGIN = 16;
 var IMAGE_SIZE = 38;
+var ICON_VIEW_SIZE = 24 + BIG_MARGIN * 2;
 var LEFT_CONTENT_MARGIN = BIG_MARGIN * 2 + IMAGE_SIZE;
 
 var titleCompY = 0;
@@ -48,7 +49,7 @@ exports.create = function() {
   }).appendTo(scrollView);
 
   var backButton = tabris.create("ImageView", {
-    left: BIG_MARGIN, top: BIG_MARGIN,
+    left: 0, top: 0, width: ICON_VIEW_SIZE, height: ICON_VIEW_SIZE,
     image: {src: "resources/images/back_arrow.png", scale: 2},
     highlightOnTouch: true
   }).on("tap", function() {
@@ -56,7 +57,7 @@ exports.create = function() {
   }).appendTo(titleComposite);
 
   tabris.create("ImageView", { // TODO: implement share
-    right: BIG_MARGIN, top: BIG_MARGIN,
+    right: 0, top: 0, width: ICON_VIEW_SIZE, height: ICON_VIEW_SIZE,
     image: {src: "resources/images/share.png", scale: 2},
     highlightOnTouch: true
   }).appendTo(titleComposite);
