@@ -1,141 +1,28 @@
 {
-  "blocks": [{
-    "title": "Badge Pick-Up",
-    "subtitle": "Registration Desk",
-    "type": "break",
-    "start": "2016-05-28T14:00:00.000Z",
-    "end": "2016-05-29T00:00:00.000Z"
-  }, {
-    "title": "Breakfast",
-    "subtitle": "Cafe, Level 1",
-    "type": "break",
-    "start": "2016-05-28T14:00:00.000Z",
-    "end": "2016-05-28T16:00:00.000Z"
-  }, {
-    "title": "Pre-Keynote Show",
-    "subtitle": "Keynote Room",
-    "type": "break",
-    "start": "2016-05-28T16:00:00.000Z",
-    "end": "2016-05-28T16:30:00.000Z"
-  }, {
-    "title": "Lunch",
-    "subtitle": "Cafe, Level 1",
-    "type": "break",
-    "start": "2016-05-28T19:00:00.000Z",
-    "end": "2016-05-28T21:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T17:30:00.000Z",
-    "end": "2016-05-28T18:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T18:00:00.000Z",
-    "end": "2016-05-28T19:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T19:00:00.000Z",
-    "end": "2016-05-28T20:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T20:00:00.000Z",
-    "end": "2016-05-28T21:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T21:00:00.000Z",
-    "end": "2016-05-28T22:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T22:00:00.000Z",
-    "end": "2016-05-28T23:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-28T23:00:00.000Z",
-    "end": "2016-05-29T00:00:00.000Z"
-  }, {
-    "title": "After Hours",
-    "subtitle": "After spending the day surrounded by technology, take a chance to unplug and enjoy After Hours at Yerba Buena Gardens (main entrance on Howard & 3rd Streets). Get a taste of what some of the Bay Area’s best restaurants have to offer and discover some new local beer or wine. Enjoy an evening of music, featuring a great lineup of local bands and get ready for plenty of surprises that you won’t want to miss. Conference credentials (badge and wristband) required to enter.",
-    "type": "break",
-    "start": "2016-05-29T01:30:00.000Z",
-    "end": "2016-05-29T05:00:00.000Z"
-  }, {
-    "title": "Badge Pick-Up",
-    "subtitle": "Registration Desk",
-    "type": "break",
-    "start": "2016-05-29T15:00:00.000Z",
-    "end": "2016-05-29T22:00:00.000Z"
-  }, {
-    "title": "Breakfast",
-    "subtitle": "Cafe, Level 1",
-    "type": "break",
-    "start": "2016-05-29T14:00:00.000Z",
-    "end": "2016-05-29T16:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T16:00:00.000Z",
-    "end": "2016-05-29T17:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T17:00:00.000Z",
-    "end": "2016-05-29T18:00:00.000Z"
-  }, {
-    "title": "Lunch",
-    "subtitle": "Cafe, Level 1",
-    "type": "break",
-    "start": "2016-05-29T19:00:00.000Z",
-    "end": "2016-05-29T21:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T18:00:00.000Z",
-    "end": "2016-05-29T19:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T19:00:00.000Z",
-    "end": "2016-05-29T20:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T20:00:00.000Z",
-    "end": "2016-05-29T21:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T21:00:00.000Z",
-    "end": "2016-05-29T22:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T22:00:00.000Z",
-    "end": "2016-05-29T23:00:00.000Z"
-  }, {
-    "title": "",
-    "type": "free",
-    "subtitle": "",
-    "start": "2016-05-29T23:00:00.000Z",
-    "end": "2016-05-30T00:00:00.000Z"
-  }]
+  "blocks": [
+	{"title":"Badge Pick-Up", "subtitle": "Registration Desk", "type": "break", "start": "2015-05-28T14:00:00.000Z", "end": "2015-05-29T00:00:00.000Z" },
+    {"title":"Breakfast", "subtitle": "Cafe, Level 1", "type": "break", "start": "2015-05-28T14:00:00.000Z", "end": "2015-05-28T16:00:00.000Z" },
+    {"title":"Pre-Keynote Show", "subtitle": "Keynote Room", "type": "break", "start": "2015-05-28T16:00:00.000Z", "end": "2015-05-28T16:30:00.000Z" },
+    {"title":"Lunch", "subtitle": "Cafe, Level 1", "type": "break", "start": "2015-05-28T19:00:00.000Z", "end": "2015-05-28T21:00:00.000Z" },
+	{"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T17:30:00.000Z", "end": "2015-05-28T18:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T18:00:00.000Z", "end": "2015-05-28T19:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T19:00:00.000Z", "end": "2015-05-28T20:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T20:00:00.000Z", "end": "2015-05-28T21:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T21:00:00.000Z", "end": "2015-05-28T22:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T22:00:00.000Z", "end": "2015-05-28T23:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-28T23:00:00.000Z", "end": "2015-05-29T00:00:00.000Z" },
+    {"title":"After Hours", "subtitle": "After spending the day surrounded by technology, take a chance to unplug and enjoy After Hours at Yerba Buena Gardens (main entrance on Howard & 3rd Streets). Get a taste of what some of the Bay Area\u2019s best restaurants have to offer and discover some new local beer or wine. Enjoy an evening of music, featuring a great lineup of local bands and get ready for plenty of surprises that you won\u2019t want to miss. Conference credentials (badge and wristband) required to enter.", "type": "break", "start": "2015-05-29T01:30:00.000Z", "end": "2015-05-29T05:00:00.000Z" },
+
+	{"title":"Badge Pick-Up", "subtitle": "Registration Desk", "type": "break", "start": "2015-05-29T15:00:00.000Z", "end": "2015-05-29T22:00:00.000Z" },
+    {"title":"Breakfast", "subtitle": "Cafe, Level 1", "type": "break", "start": "2015-05-29T14:00:00.000Z", "end": "2015-05-29T16:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T16:00:00.000Z", "end": "2015-05-29T17:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T17:00:00.000Z", "end": "2015-05-29T18:00:00.000Z" },
+    {"title":"Lunch", "subtitle": "Cafe, Level 1", "type": "break", "start": "2015-05-29T19:00:00.000Z", "end": "2015-05-29T21:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T18:00:00.000Z", "end": "2015-05-29T19:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T19:00:00.000Z", "end": "2015-05-29T20:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T20:00:00.000Z", "end": "2015-05-29T21:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T21:00:00.000Z", "end": "2015-05-29T22:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T22:00:00.000Z", "end": "2015-05-29T23:00:00.000Z" },
+    {"title":"", "type": "free", "subtitle": "", "start": "2015-05-29T23:00:00.000Z", "end": "2015-05-30T00:00:00.000Z" }
+  ]
 }
