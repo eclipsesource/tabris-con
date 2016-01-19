@@ -1,4 +1,5 @@
 var colors = require("../../resources/colors.json");
+var LoadingIndicator = require("../ui/LoadingIndicator");
 
 var SMALL_MARGIN = 4;
 var BIG_MARGIN = 16;
@@ -11,8 +12,7 @@ var titleCompY = 0;
 exports.create = function() {
   var page = tabris.create("Page", {
     topLevel: true,
-    id: "sessionPage",
-    title: "Aud'cuisine"
+    id: "sessionPage"
   }).once("resize", function() {
     tabris.ui.set("toolbarVisible", false);
   }).on("appear", function() {
@@ -21,11 +21,10 @@ exports.create = function() {
     tabris.ui.set("toolbarVisible", true);
     tabris.app.off("backnavigation", backnavigationHandler);
   }).on("change:data", function(widget, data) {
-    titleTextView.set("text", data.title);
-    summaryTextView.set("text", data.summary);
-    descriptionTextView.set("text", data.description);
-    imageView.set("image", data.image);
-    createSpeakers(data.speakers);
+    setWidgetData(data);
+    scrollView.on("resize", layoutParallax);
+    layoutParallax();
+    loadingIndicator.set("visible", false);
   });
 
   var scrollView = tabris.create("ScrollView", {
@@ -34,6 +33,7 @@ exports.create = function() {
 
   var imageView = tabris.create("ImageView", {
     left: 0, top: 0, right: 0,
+    background: colors.BACKGROUND_COLOR,
     scaleMode: "fill"
   }).appendTo(scrollView);
 
@@ -87,6 +87,8 @@ exports.create = function() {
 
   tabris.create("Composite", {left: 0, top: ["prev()", BIG_MARGIN], right: 0}).appendTo(contentComposite);
 
+  var loadingIndicator = LoadingIndicator.create({shade: true}).appendTo(page);
+
   function createSpeakers(speakers) {
     speakersComposite.children().dispose();
     if(speakers.length < 1) {
@@ -127,16 +129,29 @@ exports.create = function() {
     return speakerContainer;
   }
 
-  scrollView.on("resize", function(widget, bounds) {
-    var imageHeight = imageView.get("image") ? bounds.height / 3 : 0;
+  function setWidgetData(data) {
+    titleTextView.set("text", data.title);
+    summaryTextView.set("text", data.summary);
+    descriptionTextView.set("text", data.description);
+    imageView.set("image", data.image);
+    createSpeakers(data.speakers);
+  }
+
+  function layoutParallax(options) {
+    var showImageView = imageView.get("image") || options && options.initialLayout;
+    var imageHeight = showImageView ? scrollView.get("bounds").height / 3 : 0;
     imageView.set("height", imageHeight);
-    titleCompY = Math.min(imageHeight, bounds.height / 3) - 1; // -1 to make up for rounding errors
+    titleCompY = Math.min(imageHeight, imageHeight) - 1; // -1 to make up for rounding errors
     titleComposite.set("top", titleCompY);
-  });
+  }
 
   scrollView.on("scroll", function(widget, offset) {
     imageView.set("transform", {translationY: Math.max(0, offset.y * 0.4)});
     titleComposite.set("transform", {translationY: Math.max(0, offset.y - titleCompY)});
+  });
+
+  scrollView.once("resize", function() {
+    layoutParallax({initialLayout: true});
   });
 
   return page;

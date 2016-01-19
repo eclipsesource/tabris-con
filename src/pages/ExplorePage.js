@@ -1,5 +1,5 @@
-var viewDataProvider = require("../data/viewDataProvider");
 var collectionViewItem = require("../ui/collectionViewItem");
+var LoadingIndicator = require("../ui/LoadingIndicator");
 
 exports.create = function() {
   var page = tabris.create("Page", {
@@ -7,11 +7,16 @@ exports.create = function() {
     topLevel: true,
     title: "Explore",
     image: {src: "resources/images/explore.png", scale: 2}
+  }).on("change:data", function(widget, data) {
+    collectionView.set("items", data);
+    collectionView.animate({opacity: 1}, {duration: 250});
+    loadingIndicator.set("visible", false);
   });
 
-  tabris.create("CollectionView", {
-    left: 0, top: 0, right: 0, bottom: 0,
-    items: viewDataProvider.getPreviewCategories(),
+  var loadingIndicator = LoadingIndicator.create().appendTo(page);
+
+  var collectionView = tabris.create("CollectionView", {
+    left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
     cellType: function(item) {
       return item.type;
     },
@@ -24,6 +29,7 @@ exports.create = function() {
   }).on("select", function(widget, item) {
     collectionViewItem[item.type].select(widget, item);
   }).appendTo(page);
+
 
   return page;
 };

@@ -25,12 +25,14 @@ module.exports = {
       });
     },
     select: function(widget, item) {
-      CategoryPage
-        .create()
-        .open()
-        .set("data", {
-          title: item.title,
-          items: viewDataProvider.getCategory(item.id)
+      var page = CategoryPage.create().open();
+
+      viewDataProvider.asyncGetCategory(item.id)
+        .then(function(category) {
+          page.set("data", {
+            title: item.title,
+            items: category
+          });
         });
     }
   },
@@ -75,16 +77,17 @@ function createCategorySession() {
   var timeframeTextView = tabris.create("TextView", {
     layoutData: {left: [imageView, 16], top: [titleTextView, 2]},
     font: "14px",
-    textColor: colors.DRAWER_TEXT_COLOR
+    textColor: colors.DARK_SECONDARY_TEXT_COLOR
   }).appendTo(categorySession);
   return categorySession;
 }
 
 function sessionSelectCallback(widget, item) {
-  SessionPage
-    .create()
-    .open()
-    .set("data", viewDataProvider.getSession(item.id));
+  var sessionPage = SessionPage.create().open();
+  viewDataProvider.asyncGetSession(item.id)
+    .then(function(session) {
+      sessionPage.set("data", session);
+    });
 }
 
 function createSession() {
@@ -100,7 +103,7 @@ function createSession() {
     layoutData: {left: [imageView, 16], top: [titleTextView, 2], right: 8},
     font: "12px",
     maxLines: 2,
-    textColor: colors.DRAWER_TEXT_COLOR
+    textColor: colors.DARK_SECONDARY_TEXT_COLOR
   }).appendTo(sessionContainer);
   return sessionContainer;
 }
