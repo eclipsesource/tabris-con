@@ -1,25 +1,18 @@
 var colors = require("../../resources/colors.json");
 var LoadingIndicator = require("../ui/LoadingIndicator");
-
-var SMALL_MARGIN = 4;
-var BIG_MARGIN = 16;
-var IMAGE_SIZE = 38;
-var ICON_VIEW_SIZE = 24 + BIG_MARGIN * 2;
-var LEFT_CONTENT_MARGIN = BIG_MARGIN * 2 + IMAGE_SIZE;
+var sizes = require("../../resources/sizes.json");
+var fontToString = require("../fontToString");
 
 var titleCompY = 0;
 
 exports.create = function() {
   var page = tabris.create("Page", {
-    topLevel: true,
+    topLevel: false,
     id: "sessionPage"
-  }).once("resize", function() {
-    tabris.ui.set("toolbarVisible", false);
   }).on("appear", function() {
-    tabris.app.on("backnavigation", backnavigationHandler);
+    tabris.ui.set("toolbarVisible", false);
   }).on("disappear", function() {
     tabris.ui.set("toolbarVisible", true);
-    tabris.app.off("backnavigation", backnavigationHandler);
   }).on("change:data", function(widget, data) {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
@@ -49,35 +42,34 @@ exports.create = function() {
   }).appendTo(scrollView);
 
   var backButton = tabris.create("ImageView", {
-    left: 0, top: 0, width: ICON_VIEW_SIZE, height: ICON_VIEW_SIZE,
-    image: {src: "resources/images/back_arrow.png", scale: 2},
+    left: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
+    image: {src: "resources/images/back_arrow.png", scale: sizes.ICON_SCALE},
     highlightOnTouch: true
   }).on("tap", function() {
     page.close();
   }).appendTo(titleComposite);
 
   tabris.create("ImageView", { // TODO: implement share
-    right: 0, top: 0, width: ICON_VIEW_SIZE, height: ICON_VIEW_SIZE,
-    image: {src: "resources/images/share.png", scale: 2},
+    right: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
+    image: {src: "resources/images/share.png", scale: sizes.ICON_SCALE},
     highlightOnTouch: true
   }).appendTo(titleComposite);
 
   var titleTextView = tabris.create("TextView", {
-    left: LEFT_CONTENT_MARGIN, top: [backButton, BIG_MARGIN], right: BIG_MARGIN,
-    font: "bold 18px",
+    left: sizes.LEFT_CONTENT_MARGIN, top: [backButton, sizes.MARGIN], right: sizes.MARGIN_BIG,
+    font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
     textColor: "white"
   }).appendTo(titleComposite);
 
   var summaryTextView = tabris.create("TextView", {
-    left: LEFT_CONTENT_MARGIN, bottom: BIG_MARGIN, right: BIG_MARGIN, top: "prev()",
-    text: "28 May 2015, 13:30 - 14:00 in Room 2",
-    font: "16px",
+    left: sizes.LEFT_CONTENT_MARGIN, bottom: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG, top: "prev()",
+    font: fontToString({size: sizes.FONT_LARGE}),
     textColor: "white"
   }).appendTo(titleComposite);
 
   var descriptionTextView = tabris.create("TextView", {
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-    left: LEFT_CONTENT_MARGIN, right: BIG_MARGIN, top: BIG_MARGIN
+    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG, top: sizes.MARGIN_BIG
   }).appendTo(contentComposite);
 
 
@@ -85,7 +77,7 @@ exports.create = function() {
     left: 0, top: "prev()", right: 0
   }).appendTo(contentComposite);
 
-  tabris.create("Composite", {left: 0, top: ["prev()", BIG_MARGIN], right: 0}).appendTo(contentComposite);
+  tabris.create("Composite", {left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0}).appendTo(contentComposite);
 
   var loadingIndicator = LoadingIndicator.create({shade: true}).appendTo(page);
 
@@ -95,9 +87,9 @@ exports.create = function() {
       return;
     }
     tabris.create("TextView", {
-      left: LEFT_CONTENT_MARGIN, right: BIG_MARGIN, top: ["prev()", BIG_MARGIN * 2],
+      left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG, top: ["prev()", sizes.MARGIN_BIG * 2],
       text: "Speakers",
-      font: "bold 14px",
+      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.ACCENTED_TEXT_COLOR
     }).appendTo(speakersComposite);
     speakers.forEach(function(speaker) {
@@ -107,23 +99,28 @@ exports.create = function() {
 
   function createSpeaker(speaker) {
     var speakerContainer = tabris.create("Composite", {
-      left: 0, top: ["prev()", BIG_MARGIN], right: 0
+      left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0
     });
     tabris.create("ImageView", {
-      left: BIG_MARGIN, top: SMALL_MARGIN, width: IMAGE_SIZE, height: IMAGE_SIZE,
+      layoutData: {
+        left: sizes.MARGIN_BIG,
+        top: sizes.MARGIN_SMALL,
+        width: sizes.SESSION_SPEAKER_IMAGE,
+        height: sizes.SESSION_SPEAKER_IMAGE
+      },
       scaleMode: "fit",
       image: {src: speaker.image}
     }).appendTo(speakerContainer);
     tabris.create("TextView", {
-      left: LEFT_CONTENT_MARGIN, top: 0, right: BIG_MARGIN,
+      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG,
       text: speaker.summary,
-      font: "bold 14px",
+      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     }).appendTo(speakerContainer);
     tabris.create("TextView", {
-      left: LEFT_CONTENT_MARGIN, top: ["prev()", 0], right: BIG_MARGIN,
+      left: sizes.LEFT_CONTENT_MARGIN, top: ["prev()", 0], right: sizes.MARGIN_BIG,
       text: speaker.bio,
-      font: "14px",
+      font: fontToString({size: sizes.FONT_MEDIUM}),
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     }).appendTo(speakerContainer);
     return speakerContainer;
@@ -156,8 +153,3 @@ exports.create = function() {
 
   return page;
 };
-
-function backnavigationHandler(app, options) {
-  options.preventDefault = true;
-  tabris.ui.find("#sessionPage").first().close();
-}

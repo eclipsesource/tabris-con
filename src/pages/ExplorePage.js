@@ -1,4 +1,5 @@
 var collectionViewItem = require("../ui/collectionViewItem");
+var sizes = require("../../resources/sizes.json");
 var LoadingIndicator = require("../ui/LoadingIndicator");
 
 exports.create = function() {
@@ -6,7 +7,7 @@ exports.create = function() {
     id: "explorePage",
     topLevel: true,
     title: "Explore",
-    image: {src: "resources/images/explore.png", scale: 2}
+    image: {src: "resources/images/explore.png", scale: sizes.ICON_SCALE}
   }).on("change:data", function(widget, data) {
     collectionView.set("items", data);
     collectionView.animate({opacity: 1}, {duration: 250});

@@ -1,5 +1,7 @@
 var colors = require("../../resources/colors.json");
+var sizes = require("../../resources/sizes.json");
 var DrawerUserArea = require("./DrawerUserArea");
+var fontToString = require("../fontToString");
 
 exports.create = function() {
   var accountModeEnabled = false;
@@ -32,7 +34,7 @@ exports.create = function() {
 
   function createDrawerList() {
     var drawerList = tabris.create("Composite", {
-      left: 0, top: "#userArea 8", right: 0
+      left: 0, top: ["#userArea", sizes.MARGIN], right: 0
     }).appendTo(scrollView);
     createPageListItem("My Schedule", "schedulePage").appendTo(drawerList);
     createPageListItem("Explore", "explorePage").appendTo(drawerList);
@@ -62,15 +64,20 @@ exports.create = function() {
 
   function createAccountList() {
     var accountList = tabris.create("Composite", {
-      left: 0, top: "#userArea 8", right: 0,
+      left: 0, top: ["#userArea", 8], right: 0,
       visible: false
     }).appendTo(scrollView);
-    createListItem("Logout", {src: "resources/images/logout.png", scale: 2}).appendTo(accountList);
+    createListItem("Logout", {src: "resources/images/logout.png", scale: sizes.ICON_SCALE}).appendTo(accountList);
     return accountList;
   }
 
   function createSeparator() {
-    var container = tabris.create("Composite", {left: 0, top: "prev()", right: 0, height: 17});
+    var container = tabris.create("Composite", {
+      left: 0,
+      top: "prev()",
+      right: 0,
+      height: sizes.DRAWER_SEPARATOR_HEIGHT
+    });
     tabris.create("Composite", {
       left: 0, right: 0, centerY: 0, height: 1,
       id: "separator",
@@ -81,19 +88,23 @@ exports.create = function() {
 
   function createListItem(text, image) {
     var container = tabris.create("Composite", {
-      left: 0, top: "prev()", right: 0, height: 48,
+      left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
       highlightOnTouch: true
     });
     tabris.create("ImageView", {
       id: "iconImageView",
       image: image,
-      left: 16, centerY: 0
+      left: sizes.MARGIN_BIG, centerY: 0
     }).appendTo(container);
     tabris.create("TextView", {
       id: "titleTextView",
       text: text,
-      left: 72, centerY: 0,
-      font: device.platform === "iOS" ? "bold 17px .HelveticaNeueInterface-Bold" : "bold 14px",
+      left: sizes.LEFT_CONTENT_MARGIN, centerY: 0,
+      font: fontToString({
+        weight: "bold",
+        size: sizes.FONT_MEDIUM,
+        family: device.platform === "iOS" ? ".HelveticaNeueInterface-Bold" : null
+      }),
       textColor: colors.DRAWER_TEXT_COLOR
     }).appendTo(container);
     return container;

@@ -10,6 +10,7 @@ exports.adaptPreviewCategories = function(previewCategories) {
   previewCategories.forEach(function(categoryPreview) {
     result.push({type: "title", id: categoryPreview.id, title: categoryPreview.title});
     result = _.union(result, getCategoryPreviewSessions(categoryPreview));
+    result.push({type: "spacer"});
     result.push({type: "separator"});
   });
   return result;
@@ -18,7 +19,7 @@ exports.adaptPreviewCategories = function(previewCategories) {
 function getCategoryPreviewSessions(categoryPreview) {
   var sessions = [];
   categoryPreview.sessions.forEach(function(session) {
-    sessions.push(adaptCategorySession(session));
+    sessions.push(adaptSessionListItem(session, {type: "session"}));
   });
   return sessions;
 }
@@ -26,10 +27,12 @@ function getCategoryPreviewSessions(categoryPreview) {
 exports.adaptCategory = function(category) {
   var category = JSON.parse(JSON.stringify(category));
   var result = [];
+  result.push({type: "spacer"});
   category.sessions.forEach(function(session) {
-    var adaptedSession = adaptCategorySession(session);
-    result.push(adaptedSession);
+    var sessionListItem = adaptSessionListItem(session, {type: "categorySession"});
+    result.push(sessionListItem);
   });
+  result.push({type: "spacer"});
   return result;
 };
 
@@ -58,11 +61,11 @@ function createSpeakerSummary(speaker) {
   return speaker.name + (speaker.company ? companyPart : "");
 }
 
-function adaptCategorySession(session) {
+function adaptSessionListItem(session, options) {
   session.timeframe = moment(session.startTimestamp).tz(TIMEZONE).format("D MMM - HH:MM") +
       " / " +
     moment(session.endTimestamp).tz(TIMEZONE).format("HH:MM");
   delete session.startTimestamp;
   delete session.endTimestamp;
-  return _.extend({}, session, {type: "session"});
+  return _.extend({}, session, {type: options.type});
 }

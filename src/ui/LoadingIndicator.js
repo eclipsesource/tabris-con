@@ -1,4 +1,5 @@
 var colors = require("../../resources/colors.json");
+var sizes = require("../../resources/sizes.json");
 
 var create = {
   Android: function() {
@@ -17,14 +18,23 @@ var create = {
     });
 
     var canvas = tabris.create("Canvas", {
-      centerX: 0, centerY: 0, width: 48, height: 48
+      centerX: 0,
+      centerY: 0,
+      width: sizes.LOADING_INDICATOR,
+      height: sizes.LOADING_INDICATOR
     }).on("resize", function(widget, bounds) {
       var ctx = canvas.getContext("2d", bounds.width, bounds.height);
       ctx.moveTo(0, 0);
       ctx.beginPath();
-      ctx.lineWidth = 3.5;
+      ctx.lineWidth = sizes.LOADING_INDICATOR_LINE_WIDTH;
       ctx.strokeStyle = colors.BACKGROUND_COLOR;
-      ctx.arc(24, 24, 22, 0, Math.PI);
+      ctx.arc(
+        sizes.LOADING_INDICATOR / 2,
+        sizes.LOADING_INDICATOR / 2,
+        sizes.LOADING_INDICATOR / 2 - sizes.LOADING_INDICATOR_LINE_WIDTH * 2,
+        0,
+        Math.PI
+      );
       ctx.stroke();
     }).appendTo(loadingIndicator);
 

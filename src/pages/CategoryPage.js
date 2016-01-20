@@ -16,8 +16,17 @@ exports.create = function() {
 
   var collectionView = tabris.create("CollectionView", {
     left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
-    itemHeight: collectionViewItem.categorySession.itemHeight,
-    initializeCell: collectionViewItem.categorySession.initializeCell
-  }).on("select", collectionViewItem.categorySession.select).appendTo(page);
+    cellType: function(item) {
+      return item.type;
+    },
+    itemHeight: function(item, type) {
+      return collectionViewItem[type].itemHeight;
+    },
+    initializeCell: function(cell, type) {
+      collectionViewItem[type].initializeCell(cell);
+    }
+  }).on("select", function(widget, item) {
+    collectionViewItem[item.type].select(widget, item);
+  }).appendTo(page);
   return page;
 };

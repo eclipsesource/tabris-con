@@ -19,6 +19,8 @@
   "timeframe": "29 May - 16:05 / 17:05",
   "type": "session"
 }, {
+  "type": "spacer"
+}, {
   "type": "separator"
 }, {
   "type": "title",
@@ -31,6 +33,8 @@
   "text": "Simple and clear iconography is vital to well designed and usable user interfaces. Google is making available an icon set based on material design principles that you can use in your web, Android and iOS apps. Learn about the design of the icons, how to use them in your apps, and best practices for vector assets, icon fonts, and animated icons. (Note: This Sandbox talk will be offered twice throughout the event. Check the schedule to confirm timings.)",
   "timeframe": "28 May - 15:05 / 16:05",
   "type": "session"
+}, {
+  "type": "spacer"
 }, {
   "type": "separator"
 }]
