@@ -12,7 +12,7 @@ module.exports = {
       }).appendTo(cell);
       var titleTextView = tabris.create("TextView", {
         left: 16, centerY: 0,
-        font: "bold 16px"
+        font: "bold 18px"
       }).appendTo(header);
       tabris.create("TextView", {
         right: 16, centerY: 0,
