@@ -4,7 +4,7 @@ var SchedulePage = require("./pages/SchedulePage");
 var MapPage = require("./pages/MapPage");
 var SettingsPage = require("./pages/SettingsPage");
 var Drawer = require("./ui/Drawer");
-var colors = require("../resources/colors.json");
+var colors = require("../resources/colors");
 var viewDataProvider = require("./data/viewDataProvider");
 
 tabris.ui.set("background", colors.BACKGROUND_COLOR);

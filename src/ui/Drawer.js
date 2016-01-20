@@ -1,5 +1,5 @@
-var colors = require("../../resources/colors.json");
-var sizes = require("../../resources/sizes.json");
+var colors = require("../../resources/colors");
+var sizes = require("../../resources/sizes");
 var DrawerUserArea = require("./DrawerUserArea");
 var fontToString = require("../fontToString");
 

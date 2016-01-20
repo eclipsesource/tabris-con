@@ -1,4 +1,4 @@
-var sizes = require("../../resources/sizes.json");
+var sizes = require("../../resources/sizes");
 
 exports.create = function() {
   return tabris.create("Page", {

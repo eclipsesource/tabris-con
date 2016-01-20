@@ -1,5 +1,5 @@
 var collectionViewItem = require("../ui/collectionViewItem");
-var sizes = require("../../resources/sizes.json");
+var sizes = require("../../resources/sizes");
 var LoadingIndicator = require("../ui/LoadingIndicator");
 
 exports.create = function() {
