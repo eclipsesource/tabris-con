@@ -27,6 +27,23 @@ exports.extractSession = function(conferenceData, id) {
   };
 };
 
+exports.extractBlocks = function(conferenceData) {
+  var blocks = [];
+  conferenceData.blocks.blocks
+    .filter(function(googleIOBlock) {
+      return googleIOBlock.type !== "free";
+    })
+    .forEach(function(googleIOBlock) {
+      blocks.push({
+        title: googleIOBlock.title,
+        room: googleIOBlock.subtitle,
+        startTimestamp: googleIOBlock.start,
+        endTimestamp: googleIOBlock.end
+      });
+    });
+  return blocks;
+};
+
 function findRoom(conferenceData, roomId) {
   var googleIORoom = conferenceData.sessionData.rooms.filter(function(room) {
     return room.id === roomId;

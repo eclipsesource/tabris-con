@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Badge Pick-Up",
+    "room": "Registration Desk",
+    "startTimestamp": "2015-05-28T14:00:00.000Z",
+    "endTimestamp": "2015-05-29T00:00:00.000Z"
+  }, {
+    "title": "Breakfast",
+    "room": "Cafe, Level 1",
+    "startTimestamp": "2015-05-28T14:00:00.000Z",
+    "endTimestamp": "2015-05-28T16:00:00.000Z"
+  }
+]

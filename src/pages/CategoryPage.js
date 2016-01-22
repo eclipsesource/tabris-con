@@ -1,7 +1,7 @@
 var LoadingIndicator = require("../ui/LoadingIndicator");
+var CollectionView = require("../ui/CollectionView");
 
 exports.create = function() {
-  var collectionViewItem = require("../ui/collectionViewItem");
   var page = tabris.create("Page", {
     id: "categoryPage",
     title: "Loading..."
@@ -14,19 +14,8 @@ exports.create = function() {
 
   var loadingIndicator = LoadingIndicator.create().appendTo(page);
 
-  var collectionView = tabris.create("CollectionView", {
-    left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
-    cellType: function(item) {
-      return item.type;
-    },
-    itemHeight: function(item, type) {
-      return collectionViewItem[type].itemHeight;
-    },
-    initializeCell: function(cell, type) {
-      collectionViewItem[type].initializeCell(cell);
-    }
-  }).on("select", function(widget, item) {
-    collectionViewItem[item.type].select(widget, item);
+  var collectionView = CollectionView.create({
+    left: 0, top: 0, right: 0, bottom: 0, opacity: 0
   }).appendTo(page);
   return page;
 };

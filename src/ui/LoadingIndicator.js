@@ -5,7 +5,7 @@ var create = {
   Android: function() {
     return tabris.create("Composite"); // stub
   },
-  iOS:function(options) {
+  iOS: function(options) {
     var animating = true;
     var loadingIndicator = tabris.create("Composite", {
       left: 0, top: 0, right: 0, bottom: 0,

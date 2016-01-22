@@ -10,14 +10,23 @@ var viewDataProvider = require("./data/viewDataProvider");
 tabris.ui.set("background", colors.BACKGROUND_COLOR);
 tabris.ui.set("textColor", colors.LIGHT_PRIMARY_TEXT_COLOR);
 
-SchedulePage.create();
-var explorePage = ExplorePage.create().open();
+SchedulePage.create().on("appear", populateBlocks);
+ExplorePage.create().on("appear", populatePreviewCategories).open();
 MapPage.create();
 SettingsPage.create();
 
 Drawer.create();
 
-viewDataProvider.asyncGetPreviewCategories()
-  .then(function(previewCategories) {
-    explorePage.set("data", previewCategories);
-  });
+function populatePreviewCategories(page) {
+  viewDataProvider.asyncGetPreviewCategories()
+    .then(function(previewCategories) {
+      page.set("data", previewCategories);
+    });
+}
+
+function populateBlocks(page) {
+  viewDataProvider.asyncGetBlocks()
+    .then(function(blocks) {
+      page.set("data", blocks);
+   });
+}

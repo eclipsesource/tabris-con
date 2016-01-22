@@ -1,0 +1,22 @@
+[
+  {
+    "day": "28 May",
+    "blocks": [
+      {
+        "image": "resources/images/schedule_icon_badge.png",
+        "type": "scheduleItem",
+        "title": "Badge Pick-Up",
+        "startTime": "07:00",
+        "summary": "07:00 - 17:00 / Registration Desk"
+      }, {
+        "type": "smallSeparator"
+      }, {
+        "image": "resources/images/schedule_icon_food.png",
+        "type": "scheduleItem",
+        "title": "Breakfast",
+        "startTime": "07:00",
+        "summary": "07:00 - 09:00 / Cafe, Level 1"
+      }
+    ]
+  }
+]

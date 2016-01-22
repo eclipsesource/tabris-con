@@ -4,6 +4,7 @@ var IO_CONFERENCE_DATA = require("./data/ioConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
 var PLAY_CATEGORY = require("./data/playCategory.json");
 var SESSION = require("./data/session.json");
+var BLOCKS = require("./data/blocks.json");
 
 describe("googleIODataExtractor", function() {
 
@@ -28,6 +29,14 @@ describe("googleIODataExtractor", function() {
       var session = googleIODataExtractor.extractSession(IO_CONFERENCE_DATA, "ee58a197-b6d4-e411-b87f-00155d5066d7");
 
       expect(session).to.deep.equal(SESSION);
+    });
+  });
+
+  describe("extractBlocks", function() {
+    it("extracts conference blocks", function() {
+      var blocks = googleIODataExtractor.extractBlocks(IO_CONFERENCE_DATA);
+
+      expect(blocks).to.deep.equal(BLOCKS);
     });
   });
 

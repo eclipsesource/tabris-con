@@ -20,6 +20,11 @@ exports.getSession = function(sessionId) {
   return viewDataAdapter.adaptSession(session);
 };
 
+exports.getBlocks = function() {
+  var blocks = googleIODataExtractor.extractBlocks(getConferenceData());
+  return viewDataAdapter.adaptBlocks(blocks);
+};
+
 exports.asyncGetPreviewCategories = function() {
   return new Promise(function(resolve) {
     setTimeout(function() {
@@ -40,6 +45,14 @@ exports.asyncGetSession = function(categoryId) {
   return new Promise(function(resolve) {
     setTimeout(function() {
       resolve(exports.getSession(categoryId));
+    });
+  });
+};
+
+exports.asyncGetBlocks = function() {
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve(exports.getBlocks());
     });
   });
 };

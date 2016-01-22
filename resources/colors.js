@@ -8,4 +8,4 @@ module.exports = {
   LIGHT_TEXT_COLOR: "#ffffff",
   ACCENTED_TEXT_COLOR: "#443684",
   LIGHT_BACKGROUND_COLOR: "#efefef"
-}
+};

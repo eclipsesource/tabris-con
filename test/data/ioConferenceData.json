@@ -113,5 +113,28 @@
         "twitterUrl": ""
       }
     ]
+  },
+  "blocks": {
+    "blocks": [
+      {
+        "title": "Badge Pick-Up",
+        "subtitle": "Registration Desk",
+        "type": "break",
+        "start": "2015-05-28T14:00:00.000Z",
+        "end": "2015-05-29T00:00:00.000Z"
+      }, {
+        "title": "Breakfast",
+        "subtitle": "Cafe, Level 1",
+        "type": "break",
+        "start": "2015-05-28T14:00:00.000Z",
+        "end": "2015-05-28T16:00:00.000Z"
+      }, {
+        "title": "",
+        "type": "free",
+        "subtitle": "",
+        "start": "2015-05-28T20:00:00.000Z",
+        "end": "2015-05-28T21:00:00.000Z"
+      }
+    ]
   }
 }
