@@ -1,6 +1,7 @@
 var _ = require("underscore");
 var moment = require("moment-timezone");
 var config = require("../../config");
+var getImage = require("../getImage");
 
 var TIMEZONE = "America/Los_Angeles"; // TODO: retrieve timezone from device, see tabris-js#726
 
@@ -124,7 +125,7 @@ function filterBlocks(blocks, date) {
 
 function adaptSpeaker(speaker) {
   speaker.summary = createSpeakerSummary(speaker);
-  speaker.image = speaker.image || "resources/images/speaker_avatar.png";
+  speaker.image = speaker.image || getImage("speaker_avatar");
   speaker.bio = speaker.bio || "";
   delete speaker.name;
   delete speaker.company;

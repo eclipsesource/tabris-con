@@ -1,13 +1,13 @@
 var CollectionView = require("../ui/CollectionView");
-var sizes = require("../../resources/sizes");
 var LoadingIndicator = require("../ui/LoadingIndicator");
+var getImage = require("../getImage");
 
 exports.create = function() {
   var page = tabris.create("Page", {
     id: "explorePage",
     topLevel: true,
     title: "Explore",
-    image: {src: "resources/images/explore.png", scale: sizes.ICON_SCALE}
+    image: getImage("explore")
   }).on("change:data", function(widget, data) {
     if(collectionView.get("items").length > 0) {
       return;

@@ -1,6 +1,7 @@
 var colors = require("../../resources/colors");
 var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
+var getImage = require("../getImage");
 
 exports.create = function() {
   var userArea = tabris.create("Composite", {
@@ -28,7 +29,7 @@ exports.create = function() {
   }).appendTo(userTextContainer);
   tabris.create("ImageView", {
     id: "menuArrowImageView",
-    image: {src: "resources/images/menu_down.png", scale: sizes.ICON_SCALE},
+    image: getImage("menu_down"),
     layoutData: {centerY: 0, right: 0}
   }).appendTo(userTextContainer);
   return userArea;

@@ -1,6 +1,7 @@
 var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
+var getImage = require("../../getImage");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
@@ -36,7 +37,7 @@ module.exports = {
       startTimeTextView.set("text", item.startTime);
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.summary);
-      imageView.set("image", {src: item.image, scale: sizes.ICON_SCALE});
+      imageView.set("image", getImage(item.image));
     });
   },
   select: function() {}

@@ -38,7 +38,6 @@ describe("viewDataAdapter", function() {
       var adaptedSession = viewDataAdapter.adaptSession(SESSION);
 
       expect(adaptedSession).to.deep.equal(ADAPTED_SESSION);
-
     });
 
   });
@@ -49,7 +48,6 @@ describe("viewDataAdapter", function() {
       var adaptedBlocks = viewDataAdapter.adaptBlocks(BLOCKS);
 
       expect(adaptedBlocks).to.deep.equal(ADAPTED_BLOCKS);
-
     });
 
   });

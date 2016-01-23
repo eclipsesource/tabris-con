@@ -1,14 +1,14 @@
 var colors = require("../../resources/colors");
-var sizes = require("../../resources/sizes");
 var CollectionView = require("../ui/CollectionView");
 var LoadingIndicator = require("../ui/LoadingIndicator");
+var getImage = require("../getImage");
 
 exports.create = function() {
   var page = tabris.create("Page", {
     id: "schedulePage",
     topLevel: true,
     title: "My Schedule",
-    image: {src: "resources/images/schedule.png", scale: sizes.ICON_SCALE}
+    image: getImage("schedule")
   }).on("change:data", function(widget, adaptedBlocks) {
     if(page.children("TabFolder").length > 0) {
       return;

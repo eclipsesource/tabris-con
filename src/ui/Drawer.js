@@ -2,6 +2,7 @@ var colors = require("../../resources/colors");
 var sizes = require("../../resources/sizes");
 var DrawerUserArea = require("./DrawerUserArea");
 var fontToString = require("../fontToString");
+var getImage = require("../getImage");
 
 exports.create = function() {
   var accountModeEnabled = false;
@@ -67,7 +68,7 @@ exports.create = function() {
       left: 0, top: ["#userArea", 8], right: 0,
       visible: false
     }).appendTo(scrollView);
-    createListItem("Logout", {src: "resources/images/logout.png", scale: sizes.ICON_SCALE}).appendTo(accountList);
+    createListItem("Logout", getImage("logout")).appendTo(accountList);
     return accountList;
   }
 
@@ -113,7 +114,9 @@ exports.create = function() {
   function getPageImageVariant(page) {
     var pageImage = page.get("image");
     if(pageIsActive(page)) {
-      var imageSource = pageImage.src.replace(/.png$/, "_dark.png");
+      var imageSource = pageImage.src.replace(/(@.*\.png)$/, function(captured) {
+        return "_selected" + captured;
+      });
       pageImage.src = imageSource;
     }
     return pageImage;

@@ -2,6 +2,7 @@ var colors = require("../../resources/colors");
 var LoadingIndicator = require("../ui/LoadingIndicator");
 var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
+var getImage = require("../getImage");
 
 var titleCompY = 0;
 
@@ -43,7 +44,7 @@ exports.create = function() {
 
   var backButton = tabris.create("ImageView", {
     left: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
-    image: {src: "resources/images/back_arrow.png", scale: sizes.ICON_SCALE},
+    image: getImage("back_arrow"),
     highlightOnTouch: true
   }).on("tap", function() {
     page.close();
@@ -51,7 +52,7 @@ exports.create = function() {
 
   tabris.create("ImageView", { // TODO: implement share
     right: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
-    image: {src: "resources/images/share.png", scale: sizes.ICON_SCALE},
+    image: getImage("share"),
     highlightOnTouch: true
   }).appendTo(titleComposite);
 
@@ -109,7 +110,7 @@ exports.create = function() {
         height: sizes.SESSION_SPEAKER_IMAGE
       },
       scaleMode: "fit",
-      image: {src: speaker.image}
+      image: speaker.image
     }).appendTo(speakerContainer);
     tabris.create("TextView", {
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG,

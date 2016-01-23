@@ -3,7 +3,7 @@
     "day": "28 May",
     "blocks": [
       {
-        "image": "resources/images/schedule_icon_badge.png",
+        "image": "schedule_icon_badge",
         "type": "scheduleItem",
         "title": "Badge Pick-Up",
         "startTime": "07:00",
@@ -11,7 +11,7 @@
       }, {
         "type": "smallSeparator"
       }, {
-        "image": "resources/images/schedule_icon_food.png",
+        "image": "schedule_icon_food",
         "type": "scheduleItem",
         "title": "Breakfast",
         "startTime": "07:00",
