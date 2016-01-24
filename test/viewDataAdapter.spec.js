@@ -1,5 +1,6 @@
 var expect = require("chai").expect;
 var viewDataAdapter = require("../src/data/viewDataAdapter");
+var fakeGlobalForSuite = require("./fakeGlobalForSuite");
 var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
 var ADAPTED_PREVIEW_CATEGORIES = require("./data/adaptedPreviewCategories.json");
 var PLAY_CATEGORY = require("./data/playCategory.json");
@@ -10,6 +11,8 @@ var BLOCKS = require("./data/blocks.json");
 var ADAPTED_BLOCKS = require("./data/adaptedBlocks.json");
 
 describe("viewDataAdapter", function() {
+
+  fakeGlobalForSuite("window");
 
   describe("adaptPreviewCategories", function() {
 
@@ -33,8 +36,12 @@ describe("viewDataAdapter", function() {
   });
 
   describe("adaptSession", function() {
+    fakeGlobalForSuite("screen");
 
     it("adapts session for session page views", function() {
+      screen.width = 360;
+      screen.height = 642;
+
       var adaptedSession = viewDataAdapter.adaptSession(SESSION);
 
       expect(adaptedSession).to.deep.equal(ADAPTED_SESSION);

@@ -110,7 +110,7 @@ exports.create = function() {
         height: sizes.SESSION_SPEAKER_IMAGE
       },
       scaleMode: "fit",
-      image: speaker.image
+      image: getImage(speaker.image, sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
     tabris.create("TextView", {
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG,
@@ -128,10 +128,11 @@ exports.create = function() {
   }
 
   function setWidgetData(data) {
+    var scrollViewBounds = scrollView.get("bounds");
     titleTextView.set("text", data.title);
     summaryTextView.set("text", data.summary);
     descriptionTextView.set("text", data.description);
-    imageView.set("image", data.image);
+    imageView.set("image", getImage(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
     createSpeakers(data.speakers);
   }
 

@@ -3,6 +3,7 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
 var viewDataProvider = require("../../data/viewDataProvider");
+var getImage = require("../../getImage");
 
 module.exports = {
   itemHeight: sizes.SESSION_CELL_HEIGHT,
@@ -19,7 +20,8 @@ function createSession() {
   var categorySession = tabris.create("Composite", {
     left: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG, top: 0, height: sizes.SESSION_CELL_HEIGHT
   }).on("change:data", function(widget, data) {
-    imageView.set("image", {src: data.image});
+    var image = getImage(data.image, sizes.SESSION_CELL_IMAGE_WIDTH, sizes.SESSION_CELL_IMAGE_HEIGHT);
+    imageView.set("image", image);
     titleTextView.set("text", data.title);
     summaryTextView.set("text", data.summary);
   });

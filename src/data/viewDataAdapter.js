@@ -125,7 +125,7 @@ function filterBlocks(blocks, date) {
 
 function adaptSpeaker(speaker) {
   speaker.summary = createSpeakerSummary(speaker);
-  speaker.image = speaker.image || getImage("speaker_avatar");
+  speaker.image = speaker.image || "speaker_avatar";
   speaker.bio = speaker.bio || "";
   delete speaker.name;
   delete speaker.company;

@@ -7,7 +7,7 @@
     {
       "summary": "Josh Estelle, Google",
       "bio": "",
-      "image": {"src": "resources/images/speaker_avatar@1x.png", "scale": 1}
+      "image": "speaker_avatar"
     },
     {
       "summary": "Peter Norvig, Google",
