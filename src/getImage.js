@@ -1,14 +1,14 @@
 var sizes = require("../resources/sizes");
 
-module.exports = function(image, densityIndependentWidth, densityIndependentHeight) {
+module.exports = function(image, width, height) {
   if(!image) {
     return "";
   }
   var closestSupportedRatio = closest(sizes.SUPPORTED_DEVICE_PIXEL_RATIOS, window.devicePixelRatio);
   var imageObject = {src: getImageSource(image, closestSupportedRatio)};
-  if(densityIndependentWidth && densityIndependentHeight) {
-    imageObject.width = closestSupportedRatio * densityIndependentWidth;
-    imageObject.height = closestSupportedRatio * densityIndependentHeight;
+  if(width && height) {
+    imageObject.width = width;
+    imageObject.height = height;
   } else {
     imageObject.scale = closestSupportedRatio;
   }
