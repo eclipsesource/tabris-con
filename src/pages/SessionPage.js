@@ -18,7 +18,7 @@ exports.create = function() {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
     layoutParallax();
-    loadingIndicator.set("visible", false);
+    loadingIndicator.dispose();
   });
 
   var scrollView = tabris.create("ScrollView", {

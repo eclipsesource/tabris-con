@@ -14,7 +14,7 @@ exports.create = function() {
     }
     collectionView.set("items", data);
     collectionView.animate({opacity: 1}, {duration: 250});
-    loadingIndicator.set("visible", false);
+    loadingIndicator.dispose();
   });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(page);

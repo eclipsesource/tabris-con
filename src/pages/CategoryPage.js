@@ -9,7 +9,7 @@ exports.create = function() {
     page.set("title", data.title);
     collectionView.set("items", data.items);
     collectionView.animate({opacity: 1}, {duration: 250});
-    loadingIndicator.set("visible", false);
+    loadingIndicator.dispose();
   });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(page);
