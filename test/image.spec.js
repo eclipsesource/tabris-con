@@ -74,12 +74,12 @@ describe("image", function() {
         expect(image).to.deep.equal({src: "resources/images/foobar@2x.png", scale: 2});
       });
 
-      it("returns absolutely sized remote image for density independent image size", function() {
+      it("returns image with explicit image size", function() {
         window.devicePixelRatio = 3;
 
         var remoteImage = getImage("http://location", 200, 300);
 
-        expect(remoteImage).to.deep.equal({src: "http://location", width: 600, height: 900});
+        expect(remoteImage).to.deep.equal({src: "http://location", width: 200, height: 300});
       });
 
     });
