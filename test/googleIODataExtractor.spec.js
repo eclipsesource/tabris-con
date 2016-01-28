@@ -1,10 +1,10 @@
 var expect = require("chai").expect;
 var googleIODataExtractor = require("../src/data/googleIODataExtractor");
-var IO_CONFERENCE_DATA = require("./data/ioConferenceData.json");
-var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
-var PLAY_CATEGORY = require("./data/playCategory.json");
-var SESSION = require("./data/session.json");
-var BLOCKS = require("./data/blocks.json");
+var IO_CONFERENCE_DATA = require("./data/googleIO/ioConferenceData.json");
+var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
+var PLAY_CATEGORY = require("./data/googleIO/playCategory.json");
+var SESSION = require("./data/googleIO/session.json");
+var BLOCKS = require("./data/googleIO/blocks.json");
 
 describe("googleIODataExtractor", function() {
 

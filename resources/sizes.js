@@ -1,3 +1,5 @@
+var config = require("../config");
+
 module.exports = {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],
 
@@ -15,7 +17,7 @@ module.exports = {
   SESSION_SPEAKER_IMAGE: 38,
 
   SESSION_CATEGORY_TITLE_CELL_HEIGHT: 48,
-  SESSION_CELL_HEIGHT: 98,
+  SESSION_CELL_HEIGHT: config.DATA_FORMAT === "cod" ? 72 : 98,
   SESSION_CELL_IMAGE_HEIGHT: 84,
   SESSION_CELL_IMAGE_WIDTH: 112,
 

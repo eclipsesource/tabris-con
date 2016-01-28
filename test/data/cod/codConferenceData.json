@@ -1,0 +1,104 @@
+{
+  "scheduledSessions": [{
+    "id": "20301046",
+    "nid": "2030",
+    "title": "10 Java Idioms Stomped with Xtend",
+    "abstract": "<p>Eclipse Xtend is an emerging, object oriented language on the JVM that encourages functional programming and comes with state of the art IDE support for Eclipse and IntelliJ IDEA. This session is going to show how Xtend is applied in 10 practical use cases. We will focus on common Java idioms and the integration with popular Java APIs like Android, JavaFX and more.</p>\n<p>You will see how literally any given Java library is even easier to be used and consumed from Xtend than from Java itself. That\u2019s what we call Java-Interop! Xtend code is more concise and readable due to greatly improved signal to noise ratio. Even the simplest tasks become a breeze and powerful language features like the superior annotation processing infrastructure help to automate repetitive coding styles. At the same time all language features are carefully designed to leverage known Java concepts. Java developers get productive in a couple of hours. Xtend will not force you into an entirely new ecosystem but complements Java and allows to stick to all your beloved libraries and tools.</p>\n<p>Join this session and learn how to write cleaner code against any Java APIs and how to solve day-to-day challenges in much better ways.</p>",
+    "type": "session",
+    "presenter": [{
+      "id": "2492",
+      "fullname": "Stefan Oehme",
+      "twitter": "",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-2492-1413353091.jpg?itok=oFY0rM_a",
+      "bio": "<p>Stefan works at the itemis R&amp;D labs in Kiel. He is a comitter on the Eclipse Xtext &amp; Xtend projects. Being a minimalist, he spends his time enjoying the simple things like running, good food and beautiful code.</p>",
+      "jobtitle": "Consultant",
+      "organization": "itemis",
+      "interests": ""
+    }, {
+      "id": "116",
+      "fullname": "Jan Koehnlein",
+      "twitter": "",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-116_1.jpg?itok=rVu2l0Q6",
+      "bio": "<p>Dr. Jan Koehnlein is working as software architect and consultant for itemis AG in Kiel (Germany). He has earned several years of experience in developing tools for model-driven software development. He is a core committer of Xtext and other Eclipse Modeling Projects.</p>\n",
+      "jobtitle": "Senior Software Architect",
+      "organization": "itemis",
+      "interests": "DSL, Modeling, Graphics, UX, Eclipse, Xtext, Xtend"
+    }],
+    "category": "Other Cool Stuff",
+    "session_type": "Standard [35 minutes]",
+    "experience_level": "beginner",
+    "room": "Theater Stage",
+    "date": "2015-11-05",
+    "start": "2015-11-05 10:30",
+    "end": "2015-11-05 11:05"
+  }, {
+    "id": "2005796",
+    "nid": "2005",
+    "title": "30 minutes to fix bugs and to show you that you can do it!",
+    "abstract": "<p>Eclipse is an open source project which reflects the work of its community. At their respective level, anyone can contribute without necessarily having to be an advanced developer.</p>\n<p>Following an introduction of the different types of contributions and the role that anyone can have, this talk will then focus more specifically on the code contribution.</p>\n<p>We will explain the standard use cases and then we will show you how to fix some bugs in live and how to use git and gerrit in this purpose.</p>\n<p>For this talk we will focus on some E4 tools or platform-ui bugs that could be easily fixed.</p>\n<p>If you also plan to attend the hackathon session, and if you have no idea on how to fix bugs, this talk will be a very good introduction to learn the basics. </p>",
+    "type": "session",
+    "presenter": [{
+      "id": "590",
+      "fullname": "Olivier Prouvost",
+      "twitter": "OPCoach_Eclipse",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-590_1.jpg?itok=uscIqdMU",
+      "bio": "<p>I have been working with Eclipse since 2005 and I created my own company in 2009.  I provide Eclipse training and consulting in France and all over Europe, in french, english and spanish. I am also committer on the E4 tools and platform.ui project<br />\nOn my web site you can get all information about these activities (<a href=\"http://www.opcoach.com\">http://www.opcoach.com</a>)</p>\n",
+      "jobtitle": "Eclipse expert, trainer and committer",
+      "organization": "OPCoach",
+      "interests": "Eclipse RCP, Eclipse 4, Eclipse Modeling"
+    }, {
+      "id": "235",
+      "fullname": "Wayne Beaton",
+      "twitter": "waynebeaton",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-235_1.jpg?itok=zxr43V9u",
+      "bio": "",
+      "jobtitle": "Director of Open Source Projects",
+      "organization": "The Eclipse Foundation",
+      "interests": ""
+    }],
+    "category": "Introduction to the Eclipse Ecosystem",
+    "session_type": "Standard [35 minutes]",
+    "experience_level": "intermediate",
+    "room": "Theater",
+    "date": "2015-11-03",
+    "start": "2015-11-03 16:45",
+    "end": "2015-11-03 17:20"
+  }, {
+    "id": "22811042",
+    "nid": "2281",
+    "title": "Closing Session",
+    "abstract": "Join us for the conference wrap-up, prize awards, and news about what's next for the community.",
+    "type": "session",
+    "presenter": [{
+      "id": "583",
+      "fullname": "Mike Milinkovich",
+      "twitter": "",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-583_1.jpg?itok=M3C8BZhn",
+      "bio": "",
+      "jobtitle": "Executive Director",
+      "organization": "Eclipse Foundation",
+      "interests": ""
+    }],
+    "category": "Other Cool Stuff",
+    "session_type": "Standard [35 minutes]",
+    "experience_level": "beginner",
+    "room": "Theater",
+    "date": "2015-11-05",
+    "start": "2015-11-05 15:00",
+    "end": "2015-11-05 15:45"
+  }, {
+    "id": "2272874",
+    "nid": "2272",
+    "title": "Afternoon Break",
+    "abstract": "Afternoon break",
+    "type": "schedule_item",
+    "presenter": [],
+    "category": "schedule_item",
+    "session_type": "",
+    "experience_level": "",
+    "room": "FMZ Pr\u00e4sentationsraum",
+    "date": "2015-11-03",
+    "start": "2015-11-03 16:20",
+    "end": "2015-11-03 16:45"
+  }]
+}

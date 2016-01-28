@@ -1,7 +1,5 @@
 var _ = require("underscore");
 var moment = require("moment-timezone");
-var config = require("../../config");
-var getImage = require("../getImage");
 
 var TIMEZONE = "America/Los_Angeles"; // TODO: retrieve timezone from device, see tabris-js#726
 
@@ -50,14 +48,14 @@ exports.adaptSession = function(session) {
   return session;
 };
 
-exports.adaptBlocks = function(blocks) {
+exports.adaptBlocks = function(appConfig, blocks) {
   var blocks = JSON.parse(JSON.stringify(blocks));
   var adaptedBlocks = [];
   var conferenceDates = calculateConferenceDates(blocks);
   conferenceDates.forEach(function(conferenceDate) {
     var date = moment({M: conferenceDate.month, d: conferenceDate.day});
     var filteredBlocks = filterBlocks(blocks, date);
-    adaptedBlocks.push({day: date.format("DD MMM"), blocks: adaptBlocks(filteredBlocks)});
+    adaptedBlocks.push({day: date.format("DD MMM"), blocks: adaptBlocks(appConfig, filteredBlocks)});
   });
   return adaptedBlocks;
 };
@@ -86,7 +84,7 @@ function calculateConferenceDates(blocks) {
   });
 }
 
-function adaptBlocks(blocks) {
+function adaptBlocks(appConfig, blocks) {
   var adaptedBlocks = [];
   blocks.forEach(function(block, index) {
     var startTime = moment(block.startTimestamp).tz(TIMEZONE);
@@ -96,7 +94,7 @@ function adaptBlocks(blocks) {
       startTime: startTime.format("HH:mm"),
       summary: startTime.format("HH:mm") + " - " + endTime.format("HH:mm") + " / " + block.room,
       title: block.title,
-      image: getImageForBlockTitle(block.title)
+      image: getImageForBlockTitle(appConfig, block.title)
     });
     if(index !== blocks.length-1) {
       adaptedBlocks.push({type: "smallSeparator"});
@@ -105,8 +103,8 @@ function adaptBlocks(blocks) {
   return adaptedBlocks;
 }
 
-function getImageForBlockTitle(title) {
-  var patternIconMap = config.SCHEDULE_PATTERN_ICON_MAP[config.DATA_FORMAT];
+function getImageForBlockTitle(appConfig, title) {
+  var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT];
   return _.find(patternIconMap, function(icon, pattern) {
     if(title.match(pattern)) {
       return icon;

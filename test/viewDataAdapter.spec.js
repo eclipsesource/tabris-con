@@ -1,14 +1,14 @@
 var expect = require("chai").expect;
 var viewDataAdapter = require("../src/data/viewDataAdapter");
 var fakeGlobalForSuite = require("./fakeGlobalForSuite");
-var PREVIEW_CATEGORIES = require("./data/previewCategories.json");
-var ADAPTED_PREVIEW_CATEGORIES = require("./data/adaptedPreviewCategories.json");
-var PLAY_CATEGORY = require("./data/playCategory.json");
-var ADAPTED_PLAY_CATEGORY = require("./data/adaptedPlayCategory.json");
-var SESSION = require("./data/session.json");
-var ADAPTED_SESSION = require("./data/adaptedSession.json");
-var BLOCKS = require("./data/blocks.json");
-var ADAPTED_BLOCKS = require("./data/adaptedBlocks.json");
+var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
+var ADAPTED_PREVIEW_CATEGORIES = require("./data/googleIO/adaptedPreviewCategories.json");
+var PLAY_CATEGORY = require("./data/googleIO/playCategory.json");
+var ADAPTED_PLAY_CATEGORY = require("./data/googleIO/adaptedPlayCategory.json");
+var SESSION = require("./data/googleIO/session.json");
+var ADAPTED_SESSION = require("./data/googleIO/adaptedSession.json");
+var BLOCKS = require("./data/googleIO/blocks.json");
+var ADAPTED_BLOCKS = require("./data/googleIO/adaptedBlocks.json");
 
 describe("viewDataAdapter", function() {
 
@@ -52,7 +52,19 @@ describe("viewDataAdapter", function() {
   describe("adaptBlocks", function() {
 
     it("adapts blocks for blocks page", function() {
-      var adaptedBlocks = viewDataAdapter.adaptBlocks(BLOCKS);
+      var config = {
+        DATA_FORMAT: "googleIO",
+        SCHEDULE_PATTERN_ICON_MAP: {
+          googleIO: {
+            "^After": "schedule_icon_fun",
+            "^Badge": "schedule_icon_badge",
+            "^Pre-Keynote": "schedule_icon_session",
+            ".*": "schedule_icon_food"
+          }
+        }
+      };
+
+      var adaptedBlocks = viewDataAdapter.adaptBlocks(config, BLOCKS);
 
       expect(adaptedBlocks).to.deep.equal(ADAPTED_BLOCKS);
     });

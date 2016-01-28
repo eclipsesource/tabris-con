@@ -1,28 +1,29 @@
 var Promise = require("promise");
 var viewDataAdapter = require("../data/viewDataAdapter");
-var googleIODataExtractor = require("../data/googleIODataExtractor");
-var googleIODataLoader = require("../data/googleIODataLoader");
+var dataExtractor = require("../data/dataExtractor");
+var dataLoader = require("../data/dataLoader");
+var config = require("../../config");
 
 var conferenceData;
 
 exports.getPreviewCategories = function() {
-  var previewCategories = googleIODataExtractor.extractPreviewCategories(getConferenceData());
+  var previewCategories = dataExtractor.extractPreviewCategories(getConferenceData());
   return viewDataAdapter.adaptPreviewCategories(previewCategories);
 };
 
 exports.getCategory = function(categoryId) {
-  var category = googleIODataExtractor.extractCategory(getConferenceData(), categoryId);
+  var category = dataExtractor.extractCategory(getConferenceData(), categoryId);
   return viewDataAdapter.adaptCategory(category);
 };
 
 exports.getSession = function(sessionId) {
-  var session = googleIODataExtractor.extractSession(getConferenceData(), sessionId);
+  var session = dataExtractor.extractSession(getConferenceData(), sessionId);
   return viewDataAdapter.adaptSession(session);
 };
 
 exports.getBlocks = function() {
-  var blocks = googleIODataExtractor.extractBlocks(getConferenceData());
-  return viewDataAdapter.adaptBlocks(blocks);
+  var blocks = dataExtractor.extractBlocks(getConferenceData());
+  return viewDataAdapter.adaptBlocks(config, blocks);
 };
 
 exports.asyncGetPreviewCategories = function() {
@@ -41,10 +42,10 @@ exports.asyncGetCategory = function(categoryId) {
   });
 };
 
-exports.asyncGetSession = function(categoryId) {
+exports.asyncGetSession = function(sessionId) {
   return new Promise(function(resolve) {
     setTimeout(function() {
-      resolve(exports.getSession(categoryId));
+      resolve(exports.getSession(sessionId));
     });
   });
 };
@@ -58,6 +59,6 @@ exports.asyncGetBlocks = function() {
 };
 
 function getConferenceData() {
-  conferenceData = conferenceData || googleIODataLoader.load();
+  conferenceData = conferenceData || dataLoader.load();
   return conferenceData;
 }
