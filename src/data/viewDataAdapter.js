@@ -1,10 +1,11 @@
 var _ = require("underscore");
 var moment = require("moment-timezone");
+var utility = require("../util");
 
 var TIMEZONE = "America/Los_Angeles"; // TODO: retrieve timezone from device, see tabris-js#726
 
 exports.adaptPreviewCategories = function(previewCategories) {
-  var previewCategories = JSON.parse(JSON.stringify(previewCategories));
+  var previewCategories = utility.deepClone(previewCategories);
   var result = [];
   result.push({type: "separator"});
   previewCategories.forEach(function(categoryPreview) {
@@ -25,7 +26,7 @@ function getCategoryPreviewSessions(categoryPreview) {
 }
 
 exports.adaptCategory = function(category) {
-  var category = JSON.parse(JSON.stringify(category));
+  var category = utility.deepClone(category);
   var result = [];
   result.push({type: "spacer"});
   category.sessions.forEach(function(session) {
@@ -37,7 +38,7 @@ exports.adaptCategory = function(category) {
 };
 
 exports.adaptSession = function(session) {
-  var session = JSON.parse(JSON.stringify(session));
+  var session = utility.deepClone(session);
   var startDateString = moment(session.startTimestamp).tz(TIMEZONE).format("DD MMM YYYY, HH:MM");
   var endTimeString = moment(session.endTimestamp).tz(TIMEZONE).format("HH:MM");
   session.summary = startDateString + " - " + endTimeString + " in " + session.room;
@@ -49,7 +50,7 @@ exports.adaptSession = function(session) {
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
-  var blocks = JSON.parse(JSON.stringify(blocks));
+  var blocks = utility.deepClone(blocks);
   var adaptedBlocks = [];
   var conferenceDates = calculateConferenceDates(blocks);
   conferenceDates.forEach(function(conferenceDate) {
@@ -104,7 +105,7 @@ function adaptBlocks(appConfig, blocks) {
 }
 
 function getImageForBlockTitle(appConfig, title) {
-  var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT];
+  var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT.id];
   return _.find(patternIconMap, function(icon, pattern) {
     if(title.match(pattern)) {
       return icon;

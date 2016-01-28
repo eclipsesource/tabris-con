@@ -53,7 +53,7 @@ describe("viewDataAdapter", function() {
 
     it("adapts blocks for blocks page", function() {
       var config = {
-        DATA_FORMAT: "googleIO",
+        DATA_FORMAT: {id: "googleIO", sessionsHaveImages: true},
         SCHEDULE_PATTERN_ICON_MAP: {
           googleIO: {
             "^After": "schedule_icon_fun",

@@ -1,28 +1,29 @@
 var Promise = require("promise");
 var viewDataAdapter = require("../data/viewDataAdapter");
-var dataExtractor = require("../data/dataExtractor");
+var DataExtractor = require("../data/DataExtractor");
 var dataLoader = require("../data/dataLoader");
 var config = require("../../config");
 
 var conferenceData;
+var dataExtractor;
 
 exports.getPreviewCategories = function() {
-  var previewCategories = dataExtractor.extractPreviewCategories(getConferenceData());
+  var previewCategories = getDataExtractor().extractPreviewCategories();
   return viewDataAdapter.adaptPreviewCategories(previewCategories);
 };
 
 exports.getCategory = function(categoryId) {
-  var category = dataExtractor.extractCategory(getConferenceData(), categoryId);
+  var category = getDataExtractor().extractCategory(categoryId);
   return viewDataAdapter.adaptCategory(category);
 };
 
 exports.getSession = function(sessionId) {
-  var session = dataExtractor.extractSession(getConferenceData(), sessionId);
+  var session = getDataExtractor().extractSession(sessionId);
   return viewDataAdapter.adaptSession(session);
 };
 
 exports.getBlocks = function() {
-  var blocks = dataExtractor.extractBlocks(getConferenceData());
+  var blocks = getDataExtractor().extractBlocks();
   return viewDataAdapter.adaptBlocks(config, blocks);
 };
 
@@ -57,6 +58,12 @@ exports.asyncGetBlocks = function() {
     });
   });
 };
+
+function getDataExtractor() {
+  var conferenceData = getConferenceData();
+  dataExtractor = dataExtractor || new DataExtractor(conferenceData);
+  return dataExtractor;
+}
 
 function getConferenceData() {
   conferenceData = conferenceData || dataLoader.load();

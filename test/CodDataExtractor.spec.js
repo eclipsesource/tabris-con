@@ -1,0 +1,32 @@
+var expect = require("chai").expect;
+
+var CodDataExtractor = require("../src/data/CodDataExtractor");
+var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
+var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
+var OTHER_COOL_STUFF_CATEGORY = require("./data/cod/otherCoolStuffCategory.json");
+
+describe("CodDataExtractor", function() {
+
+  var codDataExtractor;
+
+  before(function() {
+    codDataExtractor = new CodDataExtractor(COD_CONFERENCE_DATA);
+  });
+
+  describe("extractPreviewCategories", function() {
+    it("extracts categories preview list from conference data", function() {
+      var previewCategories = codDataExtractor.extractPreviewCategories();
+
+      expect(previewCategories).to.deep.equal(PREVIEW_CATEGORIES);
+    });
+  });
+
+  describe("extractCategory", function() {
+    it("extracts category for a given category", function() {
+      var otherCoolStuffCategory = codDataExtractor.extractCategory("OTHER_COOL_STUFF");
+
+      expect(otherCoolStuffCategory).to.deep.equal(OTHER_COOL_STUFF_CATEGORY);
+    });
+  });
+
+});

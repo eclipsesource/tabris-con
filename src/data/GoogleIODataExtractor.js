@@ -1,47 +1,52 @@
 var PREVIEW_CATEGORIES = ["TOPIC", "THEME"];
 var tagNameMap;
+var utility = require("../util");
 
-exports.extractPreviewCategories = function(conferenceData) {
-  var previewCategories = [];
-  getTagsForCategories(conferenceData, PREVIEW_CATEGORIES).forEach(function(tagToPreview) {
-    var category = createCategory(conferenceData, tagToPreview, {sessionsLimit: 2});
-    previewCategories.push(category);
-  });
-  return previewCategories;
-};
+module.exports = function(conferenceData) {
+  var _conferenceData = utility.deepClone(conferenceData);
 
-exports.extractCategory = function(conferenceData, tag) {
-  return createCategory(conferenceData, tag);
-};
-
-exports.extractSession = function(conferenceData, id) {
-  var googleIOSession = getGoogleIOSession(conferenceData, id);
-  return {
-    title: googleIOSession.title,
-    description: googleIOSession.description,
-    room: findRoom(conferenceData, googleIOSession.room),
-    image: googleIOSession.photoUrl,
-    startTimestamp: googleIOSession.startTimestamp,
-    endTimestamp: googleIOSession.endTimestamp,
-    speakers: findSpeakers(conferenceData, googleIOSession.speakers)
-  };
-};
-
-exports.extractBlocks = function(conferenceData) {
-  var blocks = [];
-  conferenceData.blocks.blocks
-    .filter(function(googleIOBlock) {
-      return googleIOBlock.type !== "free";
-    })
-    .forEach(function(googleIOBlock) {
-      blocks.push({
-        title: googleIOBlock.title,
-        room: googleIOBlock.subtitle,
-        startTimestamp: googleIOBlock.start,
-        endTimestamp: googleIOBlock.end
-      });
+  this.extractPreviewCategories = function() {
+    var previewCategories = [];
+    getTagsForCategories(_conferenceData, PREVIEW_CATEGORIES).forEach(function(tagToPreview) {
+      var category = createCategory(_conferenceData, tagToPreview, {sessionsLimit: 2});
+      previewCategories.push(category);
     });
-  return blocks;
+    return previewCategories;
+  };
+
+  this.extractCategory = function(tag) {
+    return createCategory(_conferenceData, tag);
+  };
+
+  this.extractSession = function(id) {
+    var googleIOSession = getGoogleIOSession(_conferenceData, id);
+    return {
+      title: googleIOSession.title,
+      description: googleIOSession.description,
+      room: findRoom(_conferenceData, googleIOSession.room),
+      image: googleIOSession.photoUrl,
+      startTimestamp: googleIOSession.startTimestamp,
+      endTimestamp: googleIOSession.endTimestamp,
+      speakers: findSpeakers(_conferenceData, googleIOSession.speakers)
+    };
+  };
+
+  this.extractBlocks = function() {
+    var blocks = [];
+    _conferenceData.blocks.blocks
+      .filter(function(googleIOBlock) {
+        return googleIOBlock.type !== "free";
+      })
+      .forEach(function(googleIOBlock) {
+        blocks.push({
+          title: googleIOBlock.title,
+          room: googleIOBlock.subtitle,
+          startTimestamp: googleIOBlock.start,
+          endTimestamp: googleIOBlock.end
+        });
+      });
+    return blocks;
+  };
 };
 
 function findRoom(conferenceData, roomId) {
