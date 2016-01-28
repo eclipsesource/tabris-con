@@ -9,43 +9,42 @@ exports.adaptPreviewCategories = function(previewCategories) {
   result.push({type: "separator"});
   previewCategories.forEach(function(categoryPreview) {
     result.push({type: "title", id: categoryPreview.id, title: categoryPreview.title});
-    result = _.union(result, getCategoryPreviewSessions(categoryPreview));
+    result = _.union(result, categoryPreview.sessions.map(function(session) {
+      return adaptSessionListItem(session);
+    }));
     result.push({type: "spacer"});
     result.push({type: "separator"});
   });
   return result;
 };
 
-function getCategoryPreviewSessions(categoryPreview) {
-  var sessions = [];
-  categoryPreview.sessions.forEach(function(session) {
-    sessions.push(adaptSessionListItem(session));
-  });
-  return sessions;
-}
-
 exports.adaptCategory = function(category) {
   var category = utility.deepClone(category);
   var result = [];
   result.push({type: "spacer"});
-  category.sessions.forEach(function(session) {
-    var sessionListItem = adaptSessionListItem(session, {timeframeSummary: true});
-    result.push(sessionListItem);
-  });
+  result = _.union(result, category.sessions.map(function(session) {
+    return adaptSessionListItem(session, {timeframeSummary: true});
+  }));
   result.push({type: "spacer"});
   return result;
 };
 
 exports.adaptSession = function(session) {
-  var session = utility.deepClone(session);
   var startDateString = formatDate(session.startTimestamp, "DD MMM YYYY, HH:mm");
   var endTimeString = formatDate(session.endTimestamp, "HH:mm");
-  session.summary = startDateString + " - " + endTimeString + " in " + session.room;
-  session.speakers.forEach(adaptSpeaker);
-  delete session.startTimestamp;
-  delete session.endTimestamp;
-  delete session.room;
-  return session;
+  return {
+    summary: startDateString + " - " + endTimeString + " in " + session.room,
+    description: session.description,
+    title: session.title,
+    image: session.image,
+    speakers: session.speakers.map(function(speaker) {
+      return {
+        summary: createSpeakerSummary(speaker),
+        image: speaker.image || "speaker_avatar",
+        bio: speaker.bio || ""
+      };
+    })
+  };
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
@@ -64,11 +63,13 @@ function adaptSessionListItem(session, options) {
   var timeframeSummary = formatDate(session.startTimestamp, "D MMM - HH:mm") +
     " / " +
     formatDate(session.endTimestamp, "HH:mm");
-  session.summary = options && options.timeframeSummary ? timeframeSummary : session.text;
-  delete session.startTimestamp;
-  delete session.endTimestamp;
-  delete session.text;
-  return _.extend({}, session, {type: "session"});
+  return {
+    summary: options && options.timeframeSummary ? timeframeSummary : session.text,
+    type: "session",
+    id: session.id,
+    image: session.image,
+    title: session.title
+  };
 }
 
 function calculateConferenceDates(blocks) {
@@ -116,14 +117,6 @@ function filterBlocks(blocks, date) {
     var sameMonth = getMonth(block.startTimestamp) === date.M;
     return sameDay && sameMonth;
   });
-}
-
-function adaptSpeaker(speaker) {
-  speaker.summary = createSpeakerSummary(speaker);
-  speaker.image = speaker.image || "speaker_avatar";
-  speaker.bio = speaker.bio || "";
-  delete speaker.name;
-  delete speaker.company;
 }
 
 function createSpeakerSummary(speaker) {

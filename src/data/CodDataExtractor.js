@@ -11,13 +11,10 @@ module.exports = function(conferenceData, appConfig) {
   assignCategoryTypes(conferenceData);
 
   this.extractPreviewCategories = function() {
-    var previewCategories = [];
-    var categoriesList = getCategoriesList({exclude: "SCHEDULE_ITEM"});
-    categoriesList.forEach(function(category) {
-      var cat = createCategory(category.id, {limit: 2});
-      previewCategories.push(cat);
-    });
-    return previewCategories;
+    return getCategoriesList({exclude: "SCHEDULE_ITEM"})
+      .map(function(category) {
+        return createCategory(category.id, {limit: 2});
+      });
   };
 
   this.extractCategory = function(categoryId) {
@@ -25,51 +22,49 @@ module.exports = function(conferenceData, appConfig) {
   };
 
   this.extractSession = function(sessionId) {
-    var codSession = getCodSession(sessionId);
+    var codSession = _.find(conferenceData.scheduledSessions, function(session) {
+      return session.id === sessionId;
+    });
     return {
       title: codSession.title,
       description: stripHtml(codSession.abstract),
       room: codSession.room,
       startTimestamp: adaptCodTime(codSession.start),
       endTimestamp: adaptCodTime(codSession.end),
-      speakers: adaptSpeakers(codSession.presenter)
+      speakers: codSession.presenter.map(function(speaker) {
+        return {
+          name: speaker.fullname,
+          bio: stripHtml(speaker.bio),
+          company: speaker.organization,
+          image: speaker.picture
+        };
+      })
     };
   };
 
   this.extractBlocks = function() {
-    var codScheduleItems = conferenceData.scheduledSessions
+    return _.chain(conferenceData.scheduledSessions)
       .filter(function(codSession) {
         return codSession.type === "schedule_item";
-      });
-    var aggregatedScheduleItems = _.groupBy(codScheduleItems, function(item) {
-      return item.title + "#" + item.start + "#" + item.end;
-    });
-    var adaptedScheduleItems = _.map(aggregatedScheduleItems, function(aggregatedScheduleItem) {
-      return {
-        title: aggregatedScheduleItem[0].title,
-        startTimestamp: adaptCodTime(aggregatedScheduleItem[0].start),
-        endTimestamp: adaptCodTime(aggregatedScheduleItem[0].end),
-        room: _.pluck(aggregatedScheduleItem, "room").join(", ")
-      };
-    });
-    return _.sortBy(adaptedScheduleItems, "startTimestamp");
+      })
+      .groupBy(function(item) {
+        return item.title + "#" + item.start + "#" + item.end;
+      })
+      .map(function(aggregatedScheduleItem) {
+        return {
+          title: aggregatedScheduleItem[0].title,
+          startTimestamp: adaptCodTime(aggregatedScheduleItem[0].start),
+          endTimestamp: adaptCodTime(aggregatedScheduleItem[0].end),
+          room: _.pluck(aggregatedScheduleItem, "room").join(", ")
+        };
+      })
+      .sortBy("startTimestamp").value();
   };
-
-  function getCodSession(sessionId) {
-    var session;
-    for (var i = 0; i < conferenceData.scheduledSessions.length; i++) {
-      if(conferenceData.scheduledSessions[i].id === sessionId) {
-        session = conferenceData.scheduledSessions[i];
-        break;
-      }
-    }
-    return session;
-  }
 
   function createCategory(categoryId, options) {
     return {
       id: categoryId,
-      title: findCategoryName(categoryId),
+      title: getCategoryName(categoryId),
       sessions: getSessions(categoryId, options ? options.limit : undefined)
     };
   }
@@ -82,7 +77,7 @@ module.exports = function(conferenceData, appConfig) {
     return categoryIdNameMap;
   }
 
-  function findCategoryName(categoryId) {
+  function getCategoryName(categoryId) {
     return getCategoryIdNameMap()[categoryId];
   }
 
@@ -102,30 +97,20 @@ module.exports = function(conferenceData, appConfig) {
   }
 
   function getSessions(categoryId, limit) {
-    var codSessions = findSessionWithCategory(categoryId);
-    var sessions = limit ? codSessions.slice(0, limit) : codSessions;
-    return adaptCodSessions(sessions);
-  }
-
-  function findSessionWithCategory(categoryId) {
-    return conferenceData.scheduledSessions.filter(function(session) {
-      return session.categoryId === categoryId;
-    });
-  }
-
-  function adaptCodSessions(sessions) {
-    var adaptedSessions = [];
-    sessions.forEach(function(session) {
-      var adaptedSession = {
-        id: session.id,
-        title: session.title,
-        text: stripHtml(session.abstract),
-        startTimestamp: adaptCodTime(session.start),
-        endTimestamp: adaptCodTime(session.end)
-      };
-      adaptedSessions.push(adaptedSession);
-    });
-    return adaptedSessions;
+    return _.chain(conferenceData.scheduledSessions)
+      .filter(function(session) {
+        return session.categoryId === categoryId;
+      })
+      .slice(0, limit)
+      .map(function(session) {
+        return {
+          id: session.id,
+          title: session.title,
+          text: stripHtml(session.abstract),
+          startTimestamp: adaptCodTime(session.start),
+          endTimestamp: adaptCodTime(session.end)
+        };
+      }).value();
   }
 
   function adaptCodTime(codTime) {
@@ -141,20 +126,6 @@ function assignCategoryTypes(conferenceData) {
     delete session.category;
   });
   return conferenceData;
-}
-
-function adaptSpeakers(codSpeakers) {
-  var adaptedSpeakers = [];
-  codSpeakers.forEach(function(speaker) {
-    var adaptedSpeaker = {
-      name: speaker.fullname,
-      bio: stripHtml(speaker.bio),
-      company: speaker.organization,
-      image: speaker.picture
-    };
-    adaptedSpeakers.push(adaptedSpeaker);
-  });
-  return adaptedSpeakers;
 }
 
 function stripHtml(hypertext) {
