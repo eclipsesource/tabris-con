@@ -1,5 +1,7 @@
 module.exports = {
-  DATA_FORMAT: {id: "googleIO", sessionsHaveImages: true},
+  DATA_FORMAT: "googleIO",
+  SESSIONS_HAVE_IMAGES: true,
+  CONFERENCE_TIMEZONE: "America/Los_Angeles",
   SCHEDULE_PATTERN_ICON_MAP: {
     googleIO: {
       "^After": "schedule_icon_fun",

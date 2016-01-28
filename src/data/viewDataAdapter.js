@@ -1,8 +1,7 @@
 var _ = require("underscore");
 var moment = require("moment-timezone");
 var utility = require("../util");
-
-var TIMEZONE = "America/Los_Angeles"; // TODO: retrieve timezone from device, see tabris-js#726
+var config = require("../../config");
 
 exports.adaptPreviewCategories = function(previewCategories) {
   var previewCategories = utility.deepClone(previewCategories);
@@ -39,8 +38,8 @@ exports.adaptCategory = function(category) {
 
 exports.adaptSession = function(session) {
   var session = utility.deepClone(session);
-  var startDateString = moment(session.startTimestamp).tz(TIMEZONE).format("DD MMM YYYY, HH:mm");
-  var endTimeString = moment(session.endTimestamp).tz(TIMEZONE).format("HH:mm");
+  var startDateString = formatDate(session.startTimestamp, "DD MMM YYYY, HH:mm");
+  var endTimeString = formatDate(session.endTimestamp, "HH:mm");
   session.summary = startDateString + " - " + endTimeString + " in " + session.room;
   session.speakers.forEach(adaptSpeaker);
   delete session.startTimestamp;
@@ -54,17 +53,17 @@ exports.adaptBlocks = function(appConfig, blocks) {
   var adaptedBlocks = [];
   var conferenceDates = calculateConferenceDates(blocks);
   conferenceDates.forEach(function(conferenceDate) {
-    var date = moment({M: conferenceDate.month, d: conferenceDate.day});
+    var date = {M: conferenceDate.month, d: conferenceDate.day};
     var filteredBlocks = filterBlocks(blocks, date);
-    adaptedBlocks.push({day: date.format("DD MMM"), blocks: adaptBlocks(appConfig, filteredBlocks)});
+    adaptedBlocks.push({day: formatDate(date, ("DD MMM")), blocks: adaptBlocks(appConfig, filteredBlocks)});
   });
   return adaptedBlocks;
 };
 
 function adaptSessionListItem(session, options) {
-  var timeframeSummary = moment(session.startTimestamp).tz(TIMEZONE).format("D MMM - HH:mm") +
+  var timeframeSummary = formatDate(session.startTimestamp, "D MMM - HH:mm") +
     " / " +
-    moment(session.endTimestamp).tz(TIMEZONE).format("HH:mm");
+    formatDate(session.endTimestamp, "HH:mm");
   session.summary = options && options.timeframeSummary ? timeframeSummary : session.text;
   delete session.startTimestamp;
   delete session.endTimestamp;
@@ -76,8 +75,8 @@ function calculateConferenceDates(blocks) {
   var conferenceDates = [];
   blocks.forEach(function(block) {
     conferenceDates.push({
-      day: moment(block.startTimestamp).tz(TIMEZONE).get("date"),
-      month: moment(block.startTimestamp).tz(TIMEZONE).get("month")
+      day: getDay(block.startTimestamp),
+      month: getMonth(block.startTimestamp)
     });
   });
   return _.uniq(conferenceDates, function(date) {
@@ -88,12 +87,10 @@ function calculateConferenceDates(blocks) {
 function adaptBlocks(appConfig, blocks) {
   var adaptedBlocks = [];
   blocks.forEach(function(block, index) {
-    var startTime = moment(block.startTimestamp).tz(TIMEZONE);
-    var endTime = moment(block.endTimestamp).tz(TIMEZONE);
     adaptedBlocks.push({
       type: "scheduleItem",
-      startTime: startTime.format("HH:mm"),
-      summary: startTime.format("HH:mm") + " - " + endTime.format("HH:mm") + " / " + block.room,
+      startTime: formatDate(block.startTimestamp, "HH:mm"),
+      summary: formatDate(block.startTimestamp, "HH:mm") + " - " + formatDate(block.endTimestamp, "HH:mm") + " / " + block.room,
       title: block.title,
       image: getImageForBlockTitle(appConfig, block.title)
     });
@@ -105,7 +102,7 @@ function adaptBlocks(appConfig, blocks) {
 }
 
 function getImageForBlockTitle(appConfig, title) {
-  var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT.id];
+  var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT];
   return _.find(patternIconMap, function(icon, pattern) {
     if(title.match(pattern)) {
       return icon;
@@ -115,9 +112,8 @@ function getImageForBlockTitle(appConfig, title) {
 
 function filterBlocks(blocks, date) {
   return blocks.filter(function(block) {
-    var blockDate = moment(block.startTimestamp).tz(TIMEZONE);
-    var sameDay = blockDate.get("date") === date.get("date");
-    var sameMonth = blockDate.get("month") === date.get("month");
+    var sameDay = getDay(block.startTimestamp) === date.d;
+    var sameMonth = getMonth(block.startTimestamp) === date.M;
     return sameDay && sameMonth;
   });
 }
@@ -133,4 +129,16 @@ function adaptSpeaker(speaker) {
 function createSpeakerSummary(speaker) {
   var companyPart = ", " + speaker.company;
   return speaker.name + (speaker.company ? companyPart : "");
+}
+
+function formatDate(timestamp, format) {
+  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).format(format);
+}
+
+function getDay(timestamp) {
+  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).get("date");
+}
+
+function getMonth(timestamp) {
+  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).get("month");
 }

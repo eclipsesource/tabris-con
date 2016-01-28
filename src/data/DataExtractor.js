@@ -1,10 +1,10 @@
 var config = require("../../config");
-var extractorModuleName = capitalizeFirstLetter(config.DATA_FORMAT.id) + "DataExtractor";
+var extractorModuleName = capitalizeFirstLetter(config.DATA_FORMAT) + "DataExtractor";
 var ConcreteDataExtractor = require("./" + extractorModuleName);
 
 module.exports = function(conferenceData) {
 
-  var concreteDataExtractor = new ConcreteDataExtractor(conferenceData);
+  var concreteDataExtractor = new ConcreteDataExtractor(conferenceData, config);
 
   this.extractPreviewCategories = function() {
     return concreteDataExtractor.extractPreviewCategories();

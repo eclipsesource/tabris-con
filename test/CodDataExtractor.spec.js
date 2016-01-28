@@ -11,7 +11,11 @@ describe("CodDataExtractor", function() {
   var codDataExtractor;
 
   before(function() {
-    codDataExtractor = new CodDataExtractor(COD_CONFERENCE_DATA);
+    var config = {
+      DATA_FORMAT: "cod",
+      CONFERENCE_TIMEZONE: "Europe/Berlin"
+    };
+    codDataExtractor = new CodDataExtractor(COD_CONFERENCE_DATA, config);
   });
 
   describe("extractPreviewCategories", function() {
