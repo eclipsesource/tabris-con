@@ -39,8 +39,8 @@ exports.adaptCategory = function(category) {
 
 exports.adaptSession = function(session) {
   var session = utility.deepClone(session);
-  var startDateString = moment(session.startTimestamp).tz(TIMEZONE).format("DD MMM YYYY, HH:MM");
-  var endTimeString = moment(session.endTimestamp).tz(TIMEZONE).format("HH:MM");
+  var startDateString = moment(session.startTimestamp).tz(TIMEZONE).format("DD MMM YYYY, HH:mm");
+  var endTimeString = moment(session.endTimestamp).tz(TIMEZONE).format("HH:mm");
   session.summary = startDateString + " - " + endTimeString + " in " + session.room;
   session.speakers.forEach(adaptSpeaker);
   delete session.startTimestamp;
@@ -62,9 +62,9 @@ exports.adaptBlocks = function(appConfig, blocks) {
 };
 
 function adaptSessionListItem(session, options) {
-  var timeframeSummary = moment(session.startTimestamp).tz(TIMEZONE).format("D MMM - HH:MM") +
+  var timeframeSummary = moment(session.startTimestamp).tz(TIMEZONE).format("D MMM - HH:mm") +
     " / " +
-    moment(session.endTimestamp).tz(TIMEZONE).format("HH:MM");
+    moment(session.endTimestamp).tz(TIMEZONE).format("HH:mm");
   session.summary = options && options.timeframeSummary ? timeframeSummary : session.text;
   delete session.startTimestamp;
   delete session.endTimestamp;

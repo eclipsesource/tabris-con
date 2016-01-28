@@ -4,6 +4,7 @@ var CodDataExtractor = require("../src/data/CodDataExtractor");
 var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
 var OTHER_COOL_STUFF_CATEGORY = require("./data/cod/otherCoolStuffCategory.json");
+var SESSION = require("./data/cod/session.json");
 
 describe("CodDataExtractor", function() {
 
@@ -26,6 +27,14 @@ describe("CodDataExtractor", function() {
       var otherCoolStuffCategory = codDataExtractor.extractCategory("OTHER_COOL_STUFF");
 
       expect(otherCoolStuffCategory).to.deep.equal(OTHER_COOL_STUFF_CATEGORY);
+    });
+  });
+
+  describe("extractSession", function() {
+    it("extracts a session for a given ID", function() {
+      var session = codDataExtractor.extractSession("20301046");
+
+      expect(session).to.deep.equal(SESSION);
     });
   });
 

@@ -21,8 +21,16 @@ module.exports = function(conferenceData) {
     return createCategory(_conferenceData, categoryId);
   };
 
-  this.extractSession = function() {
-    // TODO
+  this.extractSession = function(sessionId) {
+    var codSession = getCodSession(_conferenceData, sessionId);
+    return {
+      title: codSession.title,
+      description: stripHtml(codSession.abstract),
+      room: codSession.room,
+      startTimestamp: moment(codSession.start).toJSON(),
+      endTimestamp: moment(codSession.end).toJSON(),
+      speakers: adaptSpeakers(codSession.presenter)
+    };
   };
 
   this.extractBlocks = function() {
@@ -30,6 +38,31 @@ module.exports = function(conferenceData) {
   };
 
 };
+
+function adaptSpeakers(codSpeakers) {
+  var adaptedSpeakers = [];
+  codSpeakers.forEach(function(speaker) {
+    var adaptedSpeaker = {
+      name: speaker.fullname,
+      bio: stripHtml(speaker.bio),
+      company: speaker.organization,
+      image: speaker.picture
+    };
+    adaptedSpeakers.push(adaptedSpeaker);
+  });
+  return adaptedSpeakers;
+}
+
+function getCodSession(conferenceData, sessionId) {
+  var session;
+  for (var i = 0; i < conferenceData.scheduledSessions.length; i++) {
+    if(conferenceData.scheduledSessions[i].id === sessionId) {
+      session = conferenceData.scheduledSessions[i];
+      break;
+    }
+  }
+  return session;
+}
 
 function prepare(conferenceData) {
   var preparedConferenceData = utility.deepClone(conferenceData);
@@ -88,7 +121,7 @@ function adaptCodSessions(sessions) {
     var adaptedSession = {
       id: session.id,
       title: session.title,
-      text: sanitizeHtml(session.abstract, {allowedTags: [], allowedAttributes: []}),
+      text: stripHtml(session.abstract),
       startTimestamp: moment(session.start).toJSON(),
       endTimestamp: moment(session.end).toJSON()
     };
@@ -103,3 +136,6 @@ function findSessionWithCategory(conferenceData, categoryId) {
   });
 }
 
+function stripHtml(hypertext) {
+  return sanitizeHtml(hypertext, {allowedTags: [], allowedAttributes: []});
+}
