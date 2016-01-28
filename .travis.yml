@@ -3,4 +3,5 @@ node_js:
   - "4.1"
 notifications:
   email:
-    - cpetrov@eclipsesource.com
+    recipients:
+      - cpetrov@eclipsesource.com
