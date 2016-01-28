@@ -1,5 +1,5 @@
 var sanitizeHtml = require("sanitize-html");
-var moment = require("moment");
+var moment = require("moment-timezone");
 var utility = require("../util");
 
 var categoryIdNameMap;
