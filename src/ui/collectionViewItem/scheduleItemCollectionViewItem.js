@@ -13,17 +13,17 @@ module.exports = {
     var startTimeTextView = tabris.create("TextView", {
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-      left: 0, top: sizes.MARGIN_BIG
+      left: 0, top: sizes.MARGIN_BIG, right: 0
     }).appendTo(textContainer);
 
     var titleTextView = tabris.create("TextView", {
       textColor: colors.ACCENTED_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-      left: 0, top: ["prev()", sizes.MARGIN_BIG]
+      left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0
     }).appendTo(textContainer);
 
     var summaryTextView = tabris.create("TextView", {
-      left: 0, top: ["prev()", sizes.MARGIN],
+      left: 0, top: ["prev()", sizes.MARGIN], right: 0,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       maxLines: 2,
       font: fontToString({size: sizes.FONT_MEDIUM})

@@ -1,6 +1,7 @@
 var sanitizeHtml = require("sanitize-html");
 var moment = require("moment-timezone");
 var utility = require("../util");
+var _ = require("underscore");
 
 var categoryIdNameMap;
 
@@ -36,7 +37,22 @@ module.exports = function(conferenceData, appConfig) {
   };
 
   this.extractBlocks = function() {
-    // TODO
+    var codScheduleItems = conferenceData.scheduledSessions
+      .filter(function(codSession) {
+        return codSession.type === "schedule_item";
+      });
+    var aggregatedScheduleItems = _.groupBy(codScheduleItems, function(item) {
+      return item.title + "#" + item.start + "#" + item.end;
+    });
+    var adaptedScheduleItems = _.map(aggregatedScheduleItems, function(aggregatedScheduleItem) {
+      return {
+        title: aggregatedScheduleItem[0].title,
+        startTimestamp: adaptCodTime(aggregatedScheduleItem[0].start),
+        endTimestamp: adaptCodTime(aggregatedScheduleItem[0].end),
+        room: _.pluck(aggregatedScheduleItem, "room").join(", ")
+      };
+    });
+    return _.sortBy(adaptedScheduleItems, "startTimestamp");
   };
 
   function getCodSession(sessionId) {

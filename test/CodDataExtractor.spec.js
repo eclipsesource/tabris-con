@@ -5,6 +5,7 @@ var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
 var OTHER_COOL_STUFF_CATEGORY = require("./data/cod/otherCoolStuffCategory.json");
 var SESSION = require("./data/cod/session.json");
+var BLOCKS = require("./data/cod/blocks.json");
 
 describe("CodDataExtractor", function() {
 
@@ -39,6 +40,14 @@ describe("CodDataExtractor", function() {
       var session = codDataExtractor.extractSession("20301046");
 
       expect(session).to.deep.equal(SESSION);
+    });
+  });
+
+  describe("extractBlocks", function() {
+    it("extracts conference blocks", function() {
+      var blocks = codDataExtractor.extractBlocks();
+
+      expect(blocks).to.deep.equal(BLOCKS);
     });
   });
 

@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Afternoon Break",
+    "room": "FMZ Präsentationsraum, Silchersaal",
+    "startTimestamp": "2015-11-03T15:20:00.000Z",
+    "endTimestamp": "2015-11-03T15:45:00.000Z"
+  }, {
+    "title": "Dedicated Exhibit Time",
+    "room": "Silchersaal",
+    "startTimestamp": "2015-11-04T16:35:00.000Z",
+    "endTimestamp": "2015-11-04T17:00:00.000Z"
+  }
+]
