@@ -110,7 +110,8 @@ module.exports = function(conferenceData, appConfig) {
           startTimestamp: adaptCodTime(session.start),
           endTimestamp: adaptCodTime(session.end)
         };
-      }).value();
+      })
+      .sortBy("startTimestamp").value();
   }
 
   function adaptCodTime(codTime) {
