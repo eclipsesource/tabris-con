@@ -1,5 +1,6 @@
 var colors = require("../../resources/colors");
 var LoadingIndicator = require("../ui/LoadingIndicator");
+var InfoToast = require("../ui/InfoToast");
 var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
 var SessionPageHeader = require("../ui/SessionPageHeader");
@@ -42,7 +43,9 @@ exports.create = function() {
     .on(SessionPageHeader.EVENTS.BACK_BUTTON_TAP, function() {
       page.close();
     })
-    .on(SessionPageHeader.EVENTS.SHARE_BUTTON_TAP, function() {}) // TODO: implement share
+    .on(SessionPageHeader.EVENTS.ADD_SESSION_BUTTON_TAP, function(widget, inList) {
+      infoToast.show(inList ? "Session added to <b>\"My Schedule\"</b>." : "Session removed from <b>\"My Schedule\"</b>.");
+    })
     .appendTo(scrollView);
 
   var descriptionTextView = tabris.create("TextView", {
@@ -128,6 +131,8 @@ exports.create = function() {
   scrollView.once("resize", function() {
     layoutParallax({initialLayout: true});
   });
+
+  var infoToast = InfoToast.create().appendTo(page);
 
   return page;
 };

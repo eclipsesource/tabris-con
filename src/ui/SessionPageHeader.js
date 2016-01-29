@@ -5,7 +5,7 @@ var fontToString = require("../fontToString");
 
 exports.EVENTS = {
   BACK_BUTTON_TAP: "backButtonTap",
-  SHARE_BUTTON_TAP: "shareButtonTap"
+  ADD_SESSION_BUTTON_TAP: "addSessionButtonTap"
 };
 
 exports.create = function() {
@@ -29,10 +29,13 @@ exports.create = function() {
 
   tabris.create("ImageView", {
     right: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
-    image: getImage("share"),
-    highlightOnTouch: true
+    image: getImage("plus"),
+    highlightOnTouch: true,
+    inList: false // TODO: get from app data
   }).on("tap", function() {
-    sessionPageHeader.trigger(exports.EVENTS.SHARE_BUTTON_TAP);
+    this.set("inList", !this.get("inList"));
+    this.set("image", this.get("inList") ? getImage("check") : getImage("plus"));
+    sessionPageHeader.trigger(exports.EVENTS.ADD_SESSION_BUTTON_TAP, sessionPageHeader, this.get("inList"));
   }).appendTo(sessionPageHeader);
 
   var titleTextView = tabris.create("TextView", {
