@@ -2,6 +2,7 @@ var colors = require("../../resources/colors");
 var LoadingIndicator = require("../ui/LoadingIndicator");
 var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
+var SessionPageHeader = require("../ui/SessionPageHeader");
 var getImage = require("../getImage");
 
 var titleCompY = 0;
@@ -32,47 +33,22 @@ exports.create = function() {
   }).appendTo(scrollView);
 
   var contentComposite = tabris.create("Composite", {
-    left: 0, right: 0, top: "#titleComposite",
+    left: 0, right: 0, top: "#sessionPageHeader",
     background: "white"
   }).appendTo(scrollView);
 
-  var titleComposite = tabris.create("Composite", {
-    left: 0, right: 0,
-    id: "titleComposite",
-    background: colors.BACKGROUND_COLOR
-  }).appendTo(scrollView);
-
-  var backButton = tabris.create("ImageView", {
-    left: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
-    image: getImage("back_arrow"),
-    highlightOnTouch: true
-  }).on("tap", function() {
-    page.close();
-  }).appendTo(titleComposite);
-
-  tabris.create("ImageView", { // TODO: implement share
-    right: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
-    image: getImage("share"),
-    highlightOnTouch: true
-  }).appendTo(titleComposite);
-
-  var titleTextView = tabris.create("TextView", {
-    left: sizes.LEFT_CONTENT_MARGIN, top: [backButton, sizes.MARGIN], right: sizes.MARGIN_BIG,
-    font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-    textColor: "white"
-  }).appendTo(titleComposite);
-
-  var summaryTextView = tabris.create("TextView", {
-    left: sizes.LEFT_CONTENT_MARGIN, bottom: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG, top: "prev()",
-    font: fontToString({size: sizes.FONT_LARGE}),
-    textColor: "white"
-  }).appendTo(titleComposite);
+  var sessionPageHeader = SessionPageHeader
+    .create()
+    .on(SessionPageHeader.EVENTS.BACK_BUTTON_TAP, function() {
+      page.close();
+    })
+    .on(SessionPageHeader.EVENTS.SHARE_BUTTON_TAP, function() {}) // TODO: implement share
+    .appendTo(scrollView);
 
   var descriptionTextView = tabris.create("TextView", {
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG, top: sizes.MARGIN_BIG
   }).appendTo(contentComposite);
-
 
   var speakersComposite = tabris.create("Composite", {
     left: 0, top: "prev()", right: 0
@@ -129,8 +105,8 @@ exports.create = function() {
 
   function setWidgetData(data) {
     var scrollViewBounds = scrollView.get("bounds");
-    titleTextView.set("text", data.title);
-    summaryTextView.set("text", data.summary);
+    sessionPageHeader.set("titleText", data.title);
+    sessionPageHeader.set("summaryText", data.summary);
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
     createSpeakers(data.speakers);
@@ -141,12 +117,12 @@ exports.create = function() {
     var imageHeight = showImageView ? scrollView.get("bounds").height / 3 : 0;
     imageView.set("height", imageHeight);
     titleCompY = Math.min(imageHeight, imageHeight) - 1; // -1 to make up for rounding errors
-    titleComposite.set("top", titleCompY);
+    sessionPageHeader.set("top", titleCompY);
   }
 
   scrollView.on("scroll", function(widget, offset) {
     imageView.set("transform", {translationY: Math.max(0, offset.y * 0.4)});
-    titleComposite.set("transform", {translationY: Math.max(0, offset.y - titleCompY)});
+    sessionPageHeader.set("transform", {translationY: Math.max(0, offset.y - titleCompY)});
   });
 
   scrollView.once("resize", function() {
