@@ -47,14 +47,13 @@ exports.adaptSession = function(session) {
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
-  var blocks = _(blocks)
+  return _(blocks)
     .groupBy(function(block) {
       return formatDate(block.startTimestamp, "DD MMM");
     })
     .map(function(datedBlocks) {
       return mapDatedBlock(appConfig, datedBlocks);
     }).value();
-  return blocks;
 };
 
 function mapDatedBlock(appConfig, datedBlocks) {
