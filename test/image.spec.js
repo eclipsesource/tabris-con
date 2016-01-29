@@ -1,7 +1,7 @@
 /*jshint expr: true*/
 
 var expect = require("chai").expect;
-var fakeGlobalForSuite = require("./fakeGlobalForSuite");
+var sinon = require("sinon");
 var fs = require("fs");
 var mockfs = require("mock-fs");
 var sizes = require("../resources/sizes");
@@ -12,7 +12,9 @@ var IMAGES_PATH = "/../resources/images/";
 
 describe("image", function() {
 
-  fakeGlobalForSuite("window");
+  beforeEach(function() {
+    global.window = sinon.stub();
+  });
 
   describe("getImage", function() {
 

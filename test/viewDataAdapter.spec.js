@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
+var sinon = require("sinon");
 var viewDataAdapter = require("../src/data/viewDataAdapter");
-var fakeGlobalForSuite = require("./fakeGlobalForSuite");
 var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
 var ADAPTED_PREVIEW_CATEGORIES = require("./data/googleIO/adaptedPreviewCategories.json");
 var PLAY_CATEGORY = require("./data/googleIO/playCategory.json");
@@ -12,7 +12,9 @@ var ADAPTED_BLOCKS = require("./data/googleIO/adaptedBlocks.json");
 
 describe("viewDataAdapter", function() {
 
-  fakeGlobalForSuite("window");
+  beforeEach(function() {
+    global.window = sinon.stub();
+  });
 
   describe("adaptPreviewCategories", function() {
 
@@ -36,9 +38,9 @@ describe("viewDataAdapter", function() {
   });
 
   describe("adaptSession", function() {
-    fakeGlobalForSuite("screen");
 
     it("adapts session for session page views", function() {
+      global.screen = sinon.stub();
       screen.width = 360;
       screen.height = 642;
 
