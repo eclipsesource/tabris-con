@@ -1,10 +1,9 @@
 var PREVIEW_CATEGORIES = ["TOPIC", "THEME"];
 var tagNameMap;
-var utility = require("../util");
-var _ = require("underscore");
+var _ = require("lodash");
 
 module.exports = function(conferenceData) {
-  var conferenceData = utility.deepClone(conferenceData);
+  var conferenceData = _.cloneDeep(conferenceData);
 
   this.extractPreviewCategories = function() {
     return getTagsForCategories(PREVIEW_CATEGORIES)
@@ -61,11 +60,11 @@ module.exports = function(conferenceData) {
   }
 
   function getTagsForCategories(categories) {
-    return _.chain(conferenceData.sessionData.tags)
+    return _(conferenceData.sessionData.tags)
       .filter(function(tag) {
         return categories.indexOf(tag.category) > -1;
       })
-      .pluck("tag").value();
+      .map("tag").value();
   }
 
   function findGoogleIOSession(id) {
@@ -75,10 +74,10 @@ module.exports = function(conferenceData) {
   }
 
   function getGoogleIOSessionRoom(googleIOSession) {
-    return _.chain(conferenceData.sessionData.rooms)
+    return _(conferenceData.sessionData.rooms)
       .find(function(room) {
         return room.id === googleIOSession.room;
-      }).value().name;
+      }).name;
   }
 
   function createCategory(tag, filter) {

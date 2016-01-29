@@ -6,13 +6,12 @@
     "test": "mocha"
   },
   "dependencies": {
+    "lodash": "^4.0.1",
     "moment-timezone": "^0.5.0",
     "promise": "^7.1.1",
     "sanitize-html": "^1.11.3",
     "tabris": "https://tabrisjs.com/downloads/nightly/tabris.tgz",
-    "tabris-js-node": "^0.1.0",
-    "underscore": "^1.8.3",
-    "underscore.string": "^3.2.2"
+    "tabris-js-node": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",

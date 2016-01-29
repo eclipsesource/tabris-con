@@ -1,4 +1,4 @@
-var _ = require("underscore");
+var _ = require("lodash");
 
 exports.create = function(configuration) {
   return tabris.create("CollectionView", _.extend({

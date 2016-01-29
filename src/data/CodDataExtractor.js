@@ -1,12 +1,11 @@
 var sanitizeHtml = require("sanitize-html");
 var moment = require("moment-timezone");
-var utility = require("../util");
-var _ = require("underscore");
+var _ = require("lodash");
 
 var categoryIdNameMap;
 
 module.exports = function(conferenceData, appConfig) {
-  var conferenceData = utility.deepClone(conferenceData);
+  var conferenceData = _.cloneDeep(conferenceData);
 
   assignCategoryTypes(conferenceData);
 
@@ -43,7 +42,7 @@ module.exports = function(conferenceData, appConfig) {
   };
 
   this.extractBlocks = function() {
-    return _.chain(conferenceData.scheduledSessions)
+    return _(conferenceData.scheduledSessions)
       .filter(function(codSession) {
         return codSession.type === "schedule_item";
       })
@@ -55,7 +54,7 @@ module.exports = function(conferenceData, appConfig) {
           title: aggregatedScheduleItem[0].title,
           startTimestamp: adaptCodTime(aggregatedScheduleItem[0].start),
           endTimestamp: adaptCodTime(aggregatedScheduleItem[0].end),
-          room: _.pluck(aggregatedScheduleItem, "room").join(", ")
+          room: _.map(aggregatedScheduleItem, "room").join(", ")
         };
       })
       .sortBy("startTimestamp").value();
@@ -87,7 +86,7 @@ module.exports = function(conferenceData, appConfig) {
   }
 
   function getCategoriesList(options) {
-    var categories = utility.deepClone(getCategoryIdNameMap());
+    var categories = _.cloneDeep(getCategoryIdNameMap());
     if(options && options.exclude) {
       delete categories[options.exclude];
     }
@@ -97,7 +96,7 @@ module.exports = function(conferenceData, appConfig) {
   }
 
   function getSessions(categoryId, limit) {
-    return _.chain(conferenceData.scheduledSessions)
+    return _(conferenceData.scheduledSessions)
       .filter(function(session) {
         return session.categoryId === categoryId;
       })

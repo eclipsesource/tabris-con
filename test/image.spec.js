@@ -6,7 +6,7 @@ var fs = require("fs");
 var mockfs = require("mock-fs");
 var sizes = require("../resources/sizes");
 var getImage = require("../src/getImage");
-var _ = require("underscore");
+var _ = require("lodash");
 
 var IMAGES_PATH = "/../resources/images/";
 

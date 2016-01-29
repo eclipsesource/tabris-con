@@ -5,7 +5,7 @@ var colors = require("../../../resources/colors");
 var viewDataProvider = require("../../data/viewDataProvider");
 var config = require("../../../config");
 var getImage = require("../../getImage");
-var _ = require("underscore");
+var _ = require("lodash");
 
 module.exports = {
   itemHeight: sizes.SESSION_CELL_HEIGHT,

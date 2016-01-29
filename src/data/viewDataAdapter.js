@@ -1,10 +1,9 @@
-var _ = require("underscore");
+var _ = require("lodash");
 var moment = require("moment-timezone");
-var utility = require("../util");
 var config = require("../../config");
 
 exports.adaptPreviewCategories = function(previewCategories) {
-  var previewCategories = utility.deepClone(previewCategories);
+  var previewCategories = _.cloneDeep(previewCategories);
   var result = [];
   result.push({type: "separator"});
   previewCategories.forEach(function(categoryPreview) {
@@ -19,7 +18,7 @@ exports.adaptPreviewCategories = function(previewCategories) {
 };
 
 exports.adaptCategory = function(category) {
-  var category = utility.deepClone(category);
+  var category = _.cloneDeep(category);
   var result = [];
   result.push({type: "spacer"});
   result = _.union(result, category.sessions.map(function(session) {
@@ -48,7 +47,7 @@ exports.adaptSession = function(session) {
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
-  var blocks = utility.deepClone(blocks);
+  var blocks = _.cloneDeep(blocks);
   var adaptedBlocks = [];
   var conferenceDates = calculateConferenceDates(blocks);
   conferenceDates.forEach(function(conferenceDate) {
@@ -80,7 +79,7 @@ function calculateConferenceDates(blocks) {
       month: getMonth(block.startTimestamp)
     });
   });
-  return _.uniq(conferenceDates, function(date) {
+  return _.uniqBy(conferenceDates, function(date) {
     return JSON.stringify(date);
   });
 }
