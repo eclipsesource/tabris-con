@@ -118,11 +118,3 @@ function createSpeakerSummary(speaker) {
 function formatDate(timestamp, format) {
   return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).format(format);
 }
-
-function getDay(timestamp) {
-  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).get("date");
-}
-
-function getMonth(timestamp) {
-  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).get("month");
-}
