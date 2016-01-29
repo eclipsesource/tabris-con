@@ -47,16 +47,47 @@ exports.adaptSession = function(session) {
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
-  var blocks = _.cloneDeep(blocks);
-  var adaptedBlocks = [];
-  var conferenceDates = calculateConferenceDates(blocks);
-  conferenceDates.forEach(function(conferenceDate) {
-    var date = {M: conferenceDate.month, d: conferenceDate.day};
-    var filteredBlocks = filterBlocks(blocks, date);
-    adaptedBlocks.push({day: formatDate(date, ("DD MMM")), blocks: adaptBlocks(appConfig, filteredBlocks)});
-  });
-  return adaptedBlocks;
+  var blocks = _(blocks)
+    .groupBy(function(block) {
+      return formatDate(block.startTimestamp, "DD MMM");
+    })
+    .map(function(datedBlocks) {
+      return mapDatedBlock(appConfig, datedBlocks);
+    }).value();
+  return blocks;
 };
+
+function mapDatedBlock(appConfig, datedBlocks) {
+  var separators = createSeparators(datedBlocks);
+  return {
+    day: formatDate(datedBlocks[0].startTimestamp, "DD MMM"),
+    blocks: _(datedBlocks)
+      .map(function(datedBlock) {
+        return adaptDatedBlock(appConfig, datedBlock);
+      })
+      .map(function(block, i) {return [block, separators[i]];})
+      .flatten()
+      .pull(undefined).value()
+  };
+}
+
+function adaptDatedBlock(appConfig, datedBlock) {
+  return {
+    image: getImageForBlockTitle(appConfig, datedBlock.title),
+    summary: formatDate(datedBlock.startTimestamp, "HH:mm") + " - " + formatDate(datedBlock.endTimestamp, "HH:mm") + " / " + datedBlock.room,
+    startTime: formatDate(datedBlock.startTimestamp, "HH:mm"),
+    title: datedBlock.title,
+    type: "scheduleItem"
+  };
+}
+
+function createSeparators(blocks) {
+  var separators = [];
+  _.times(blocks.length - 1, function() {
+    separators.push({type: "smallSeparator"});
+  });
+  return separators;
+}
 
 function adaptSessionListItem(session, options) {
   var timeframeSummary = formatDate(session.startTimestamp, "D MMM - HH:mm") +
@@ -71,50 +102,12 @@ function adaptSessionListItem(session, options) {
   };
 }
 
-function calculateConferenceDates(blocks) {
-  var conferenceDates = [];
-  blocks.forEach(function(block) {
-    conferenceDates.push({
-      day: getDay(block.startTimestamp),
-      month: getMonth(block.startTimestamp)
-    });
-  });
-  return _.uniqBy(conferenceDates, function(date) {
-    return JSON.stringify(date);
-  });
-}
-
-function adaptBlocks(appConfig, blocks) {
-  var adaptedBlocks = [];
-  blocks.forEach(function(block, index) {
-    adaptedBlocks.push({
-      type: "scheduleItem",
-      startTime: formatDate(block.startTimestamp, "HH:mm"),
-      summary: formatDate(block.startTimestamp, "HH:mm") + " - " + formatDate(block.endTimestamp, "HH:mm") + " / " + block.room,
-      title: block.title,
-      image: getImageForBlockTitle(appConfig, block.title)
-    });
-    if(index !== blocks.length-1) {
-      adaptedBlocks.push({type: "smallSeparator"});
-    }
-  });
-  return adaptedBlocks;
-}
-
 function getImageForBlockTitle(appConfig, title) {
   var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT];
   return _.find(patternIconMap, function(icon, pattern) {
     if(title.match(pattern)) {
       return icon;
     }
-  });
-}
-
-function filterBlocks(blocks, date) {
-  return blocks.filter(function(block) {
-    var sameDay = getDay(block.startTimestamp) === date.d;
-    var sameMonth = getMonth(block.startTimestamp) === date.M;
-    return sameDay && sameMonth;
   });
 }
 

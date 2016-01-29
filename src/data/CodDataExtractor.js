@@ -49,12 +49,12 @@ module.exports = function(conferenceData, appConfig) {
       .groupBy(function(item) {
         return item.title + "#" + item.start + "#" + item.end;
       })
-      .map(function(aggregatedScheduleItem) {
+      .map(function(group) {
         return {
-          title: aggregatedScheduleItem[0].title,
-          startTimestamp: adaptCodTime(aggregatedScheduleItem[0].start),
-          endTimestamp: adaptCodTime(aggregatedScheduleItem[0].end),
-          room: _.map(aggregatedScheduleItem, "room").join(", ")
+          title: group[0].title,
+          startTimestamp: adaptCodTime(group[0].start),
+          endTimestamp: adaptCodTime(group[0].end),
+          room: _.map(group, "room").join(", ")
         };
       })
       .sortBy("startTimestamp").value();
