@@ -14,10 +14,6 @@ exports.create = function() {
     left: 0, right: 0,
     id: "sessionPageHeader",
     background: colors.BACKGROUND_COLOR
-  }).on("change:titleText", function(widget, text) {
-    titleTextView.set("text", text);
-  }).on("change:summaryText", function(widget, text) {
-    summaryTextView.set("text", text);
   });
 
   var backButton = tabris.create("ImageView", {
@@ -58,6 +54,14 @@ exports.create = function() {
     font: fontToString({size: sizes.FONT_LARGE}),
     textColor: "white"
   }).appendTo(sessionPageHeader);
+
+  sessionPageHeader
+    .on("change:titleText", function(widget, text) {
+      titleTextView.set("text", text);
+    })
+    .on("change:summaryText", function(widget, text) {
+      summaryTextView.set("text", text);
+    });
 
   return sessionPageHeader;
 };

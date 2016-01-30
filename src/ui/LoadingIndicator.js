@@ -13,7 +13,7 @@ var create = {
 };
 
 exports.create = function(options) {
-  if(["Android", "iOS"].indexOf(device.platform) > -1) {
+  if (["Android", "iOS"].indexOf(device.platform) > -1) {
     return create[device.platform](options);
   }
   return tabris.create("Composite"); // not implemented for this platform

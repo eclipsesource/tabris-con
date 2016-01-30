@@ -8,7 +8,7 @@ module.exports = function(options) {
 };
 
 function maybePush(array, element, unit) {
-  if(element) {
+  if (element) {
     array.push(element + (unit ? unit : ""));
   }
 }

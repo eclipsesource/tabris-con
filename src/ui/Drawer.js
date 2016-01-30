@@ -113,7 +113,7 @@ exports.create = function() {
 
   function getPageImageVariant(page) {
     var pageImage = page.get("image");
-    if(pageIsActive(page)) {
+    if (pageIsActive(page)) {
       var imageSource = pageImage.src.replace(/(@.*\.png)$/, function(captured) {
         return "_selected" + captured;
       });

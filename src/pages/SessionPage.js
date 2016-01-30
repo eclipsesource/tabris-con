@@ -12,16 +12,6 @@ exports.create = function() {
   var page = tabris.create("Page", {
     topLevel: false,
     id: "sessionPage"
-  }).on("appear", function() {
-    tabris.ui.set("toolbarVisible", false);
-  }).on("disappear", function() {
-    tabris.ui.set("toolbarVisible", true);
-  }).on("change:data", function(widget, data) {
-    setWidgetData(data);
-    scrollView.on("resize", layoutParallax);
-    sessionPageHeader.set("sessionId", data.id);
-    layoutParallax();
-    loadingIndicator.dispose();
   });
 
   var scrollView = tabris.create("ScrollView", {
@@ -39,15 +29,7 @@ exports.create = function() {
     background: "white"
   }).appendTo(scrollView);
 
-  var sessionPageHeader = SessionPageHeader
-    .create()
-    .on(SessionPageHeader.EVENTS.BACK_BUTTON_TAP, function() {
-      page.close();
-    })
-    .on(SessionPageHeader.EVENTS.ADD_SESSION_BUTTON_TAP, function(widget, inList) {
-      infoToast.show(inList ? "Session added to <b>\"My Schedule\"</b>." : "Session removed from <b>\"My Schedule\"</b>.");
-    })
-    .appendTo(scrollView);
+  var sessionPageHeader = SessionPageHeader.create().appendTo(scrollView);
 
   var descriptionTextView = tabris.create("TextView", {
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
@@ -64,7 +46,7 @@ exports.create = function() {
 
   function createSpeakers(speakers) {
     speakersComposite.children().dispose();
-    if(speakers.length < 1) {
+    if (speakers.length < 1) {
       return;
     }
     tabris.create("TextView", {
@@ -134,6 +116,27 @@ exports.create = function() {
   });
 
   var infoToast = InfoToast.create().appendTo(page);
+
+  sessionPageHeader
+    .on(SessionPageHeader.EVENTS.BACK_BUTTON_TAP, function() {
+      page.close();
+    })
+    .on(SessionPageHeader.EVENTS.ADD_SESSION_BUTTON_TAP, function(widget, inList) {
+      infoToast.show(inList ? "Session added to <b>\"My Schedule\"</b>." :
+        "Session removed from <b>\"My Schedule\"</b>.");
+    });
+
+  page.on("appear", function() {
+    tabris.ui.set("toolbarVisible", false);
+  }).on("disappear", function() {
+    tabris.ui.set("toolbarVisible", true);
+  }).on("change:data", function(widget, data) {
+    setWidgetData(data);
+    scrollView.on("resize", layoutParallax);
+    sessionPageHeader.set("sessionId", data.id);
+    layoutParallax();
+    loadingIndicator.dispose();
+  });
 
   return page;
 };

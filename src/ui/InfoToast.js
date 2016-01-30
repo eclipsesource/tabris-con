@@ -11,27 +11,14 @@ exports.create = function() {
     transform: {translationY: sizes.INFO_TOAST_HEIGHT}
   });
 
-  infoToast.show = function(text) {
-    infoShadeTextView.set("text", text);
-    if(infoToast.get("transform").translationY > 0) {
-      infoToast.animate({transform: {translationY: 0}}, {
+  function hideInfoToast() {
+    if (!infoToast.isDisposed()) {
+      infoToast.animate({
+        transform: {translationY: infoToast.get("height")}
+      }, {
         duration: 1000,
         easing: "ease-out"
       });
-    }
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(hideInfoToast, 3000);
-  };
-
-  function hideInfoToast() {
-    if(!infoToast.isDisposed()) {
-      infoToast.animate(
-        {transform: {translationY: infoToast.get("height")}}, {
-          duration: 1000,
-          easing: "ease-out"
-       });
     }
   }
 
@@ -42,6 +29,20 @@ exports.create = function() {
     markupEnabled: true,
     left: 0, right: 0, centerY: 0
   }).appendTo(infoToast);
+
+  infoToast.show = function(text) {
+    infoShadeTextView.set("text", text);
+    if (infoToast.get("transform").translationY > 0) {
+      infoToast.animate({transform: {translationY: 0}}, {
+        duration: 1000,
+        easing: "ease-out"
+      });
+    }
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(hideInfoToast, 3000);
+  };
 
   return infoToast;
 };

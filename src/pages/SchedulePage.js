@@ -9,8 +9,16 @@ exports.create = function() {
     topLevel: true,
     title: "My Schedule",
     image: getImage("schedule")
-  }).on("change:data", function(widget, adaptedBlocks) {
-    if(page.children("TabFolder").length > 0) {
+  });
+
+  var loadingIndicator = LoadingIndicator.create().appendTo(page);
+
+  function createTab(title) {
+    return tabris.create("Tab", {title: title, background: "white"});
+  }
+
+  page.on("change:data", function(widget, adaptedBlocks) {
+    if (page.children("TabFolder").length > 0) {
       return;
     }
     loadingIndicator.dispose();
@@ -30,12 +38,6 @@ exports.create = function() {
       }).appendTo(tab).animate({opacity: 1}, {duration: 250});
     });
   });
-
-  var loadingIndicator = LoadingIndicator.create().appendTo(page);
-
-  function createTab(title) {
-    return tabris.create("Tab", {title: title, background: "white"});
-  }
 
   return page;
 };

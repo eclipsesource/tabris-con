@@ -8,13 +8,6 @@ exports.create = function() {
     topLevel: true,
     title: "Explore",
     image: getImage("explore")
-  }).on("change:data", function(widget, data) {
-    if(collectionView.get("items").length > 0) {
-      return;
-    }
-    collectionView.set("items", data);
-    collectionView.animate({opacity: 1}, {duration: 250});
-    loadingIndicator.dispose();
   });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(page);
@@ -22,6 +15,15 @@ exports.create = function() {
   var collectionView = CollectionView.create({
     left: 0, top: 0, right: 0, bottom: 0, opacity: 0
   }).appendTo(page);
+
+  page.on("change:data", function(widget, data) {
+    if (collectionView.get("items").length > 0) {
+      return;
+    }
+    collectionView.set("items", data);
+    collectionView.animate({opacity: 1}, {duration: 250});
+    loadingIndicator.dispose();
+  });
 
   return page;
 };

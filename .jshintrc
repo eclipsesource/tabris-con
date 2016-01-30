@@ -35,13 +35,18 @@
 
     "cordova": false,
 
-    // jasmine
+    // mocha and chai
     "describe": false,
     "it": false,
-    "expect": false,
+    "expect": true,
+    "before": false,
+    "after": false,
     "beforeEach": false,
     "afterEach": false,
-    "spyOn": false,
-    "jasmine": false
+
+    // Node
+    "__dirname"   : false,
+    "global"      : false,
+    "Buffer"      : false
   }
 }

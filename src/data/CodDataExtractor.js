@@ -12,6 +12,7 @@ module.exports = function(conferenceData, appConfig) {
   this.extractPreviewCategories = function() {
     return getCategoriesList({exclude: "SCHEDULE_ITEM"})
       .map(function(category) {
+
         return createCategory(category.id, {limit: 2});
       });
   };
@@ -69,7 +70,7 @@ module.exports = function(conferenceData, appConfig) {
     };
   }
 
-  function createCategoryIdNameMap(){
+  function createCategoryIdNameMap() {
     categoryIdNameMap = {};
     conferenceData.scheduledSessions.forEach(function(session) {
       categoryIdNameMap[session.categoryId] = session.categoryName;
@@ -88,7 +89,7 @@ module.exports = function(conferenceData, appConfig) {
 
   function getCategoriesList(options) {
     var categories = _.cloneDeep(getCategoryIdNameMap());
-    if(options && options.exclude) {
+    if (options && options.exclude) {
       delete categories[options.exclude];
     }
     return Object.keys(categories).map(function(categoryId) {

@@ -3,6 +3,9 @@
   "description": "An exemplary Tabris.js conference app.",
   "main": "src/app.js",
   "scripts": {
+    "jshint": "jshint src test",
+    "jscs": "jscs src test",
+    "pretest": "npm run jshint && npm run jscs",
     "test": "mocha"
   },
   "dependencies": {

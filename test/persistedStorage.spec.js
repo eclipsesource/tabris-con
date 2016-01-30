@@ -45,7 +45,7 @@ describe("persisted storage", function() {
     });
 
     it("doesn't add duplicates", function() {
-      var presetItems = JSON.stringify(["foo"])
+      var presetItems = JSON.stringify(["foo"]);
       global.localStorage.getItem.withArgs(CHOSEN_SESSIONS_STORAGE_KEY).returns(presetItems);
 
       persistedStorage.addChosenSessionId("foo");

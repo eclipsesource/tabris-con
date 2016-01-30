@@ -28,5 +28,5 @@ function populateBlocks(page) {
   viewDataProvider.asyncGetBlocks()
     .then(function(blocks) {
       page.set("data", blocks);
-   });
+    });
 }

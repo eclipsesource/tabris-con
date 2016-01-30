@@ -21,19 +21,12 @@ module.exports = {
 function createSession() {
   var categorySession = tabris.create("Composite", {
     left: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG, top: 0, height: sizes.SESSION_CELL_HEIGHT
-  }).on("change:data", function(widget, data) {
-    if(config.SESSIONS_HAVE_IMAGES) {
-      var image = getImage(data.image, sizes.SESSION_CELL_IMAGE_WIDTH, sizes.SESSION_CELL_IMAGE_HEIGHT);
-      imageView.set("image", image);
-    }
-    titleTextView.set("text", data.title);
-    summaryTextView.set("text", data.summary);
   });
-  if(config.SESSIONS_HAVE_IMAGES) {
+  if (config.SESSIONS_HAVE_IMAGES) {
     var imageView = createSessionImage().appendTo(categorySession);
   }
   var textContainer = tabris.create("Composite", _.extend({
-      left: ["#imageView", sizes.MARGIN_BIG], right: sizes.MARGIN_SMALL,
+      left: ["#imageView", sizes.MARGIN_BIG], right: sizes.MARGIN_SMALL
     }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
   ).appendTo(categorySession);
   var titleTextView = createSessionTitleTextView().appendTo(textContainer);
@@ -43,6 +36,14 @@ function createSession() {
     maxLines: 2,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR
   }).appendTo(textContainer);
+  categorySession.on("change:data", function(widget, data) {
+    if (config.SESSIONS_HAVE_IMAGES) {
+      var image = getImage(data.image, sizes.SESSION_CELL_IMAGE_WIDTH, sizes.SESSION_CELL_IMAGE_HEIGHT);
+      imageView.set("image", image);
+    }
+    titleTextView.set("text", data.title);
+    summaryTextView.set("text", data.summary);
+  });
   return categorySession;
 }
 

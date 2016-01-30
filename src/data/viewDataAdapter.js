@@ -74,7 +74,8 @@ function mapDatedBlock(appConfig, datedBlocks) {
 function adaptDatedBlock(appConfig, datedBlock) {
   return {
     image: getImageForBlockTitle(appConfig, datedBlock.title),
-    summary: formatDate(datedBlock.startTimestamp, "HH:mm") + " - " + formatDate(datedBlock.endTimestamp, "HH:mm") + " / " + datedBlock.room,
+    summary: formatDate(datedBlock.startTimestamp, "HH:mm") + " - " +
+      formatDate(datedBlock.endTimestamp, "HH:mm") + " / " + datedBlock.room,
     startTime: formatDate(datedBlock.startTimestamp, "HH:mm"),
     title: datedBlock.title,
     type: "scheduleItem"
@@ -105,7 +106,7 @@ function adaptSessionListItem(session, options) {
 function getImageForBlockTitle(appConfig, title) {
   var patternIconMap = appConfig.SCHEDULE_PATTERN_ICON_MAP[appConfig.DATA_FORMAT];
   return _.find(patternIconMap, function(icon, pattern) {
-    if(title.match(pattern)) {
+    if (title.match(pattern)) {
       return icon;
     }
   });
