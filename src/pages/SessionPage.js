@@ -19,6 +19,7 @@ exports.create = function() {
   }).on("change:data", function(widget, data) {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
+    sessionPageHeader.set("sessionId", data.id);
     layoutParallax();
     loadingIndicator.dispose();
   });

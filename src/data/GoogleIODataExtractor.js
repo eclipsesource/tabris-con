@@ -19,6 +19,7 @@ module.exports = function(conferenceData) {
   this.extractSession = function(id) {
     var googleIOSession = findGoogleIOSession(id);
     return {
+      id: googleIOSession.id,
       title: googleIOSession.title,
       description: googleIOSession.description,
       room: getGoogleIOSessionRoom(googleIOSession),

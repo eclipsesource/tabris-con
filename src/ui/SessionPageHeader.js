@@ -2,6 +2,7 @@ var sizes = require("../../resources/sizes");
 var colors = require("../../resources/colors");
 var getImage = require("../getImage");
 var fontToString = require("../fontToString");
+var persistedStorage = require("../data/persistedStorage");
 
 exports.EVENTS = {
   BACK_BUTTON_TAP: "backButtonTap",
@@ -33,9 +34,17 @@ exports.create = function() {
     highlightOnTouch: true,
     inList: false // TODO: get from app data
   }).on("tap", function() {
-    this.set("inList", !this.get("inList"));
-    this.set("image", this.get("inList") ? getImage("check") : getImage("plus"));
-    sessionPageHeader.trigger(exports.EVENTS.ADD_SESSION_BUTTON_TAP, sessionPageHeader, this.get("inList"));
+    if (sessionPageHeader.get("sessionId")) {
+      var chosenSessionId = sessionPageHeader.get("sessionId");
+      if (this.get("inList")) {
+        persistedStorage.removeChosenSessionId(chosenSessionId);
+      } else {
+        persistedStorage.addChosenSessionId(chosenSessionId);
+      }
+      this.set("inList", !this.get("inList"));
+      this.set("image", this.get("inList") ? getImage("check") : getImage("plus"));
+      sessionPageHeader.trigger(exports.EVENTS.ADD_SESSION_BUTTON_TAP, sessionPageHeader, this.get("inList"));
+    }
   }).appendTo(sessionPageHeader);
 
   var titleTextView = tabris.create("TextView", {

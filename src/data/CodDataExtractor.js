@@ -25,6 +25,7 @@ module.exports = function(conferenceData, appConfig) {
       return session.id === sessionId;
     });
     return {
+      id: codSession.id,
       title: codSession.title,
       description: stripHtml(codSession.abstract),
       room: codSession.room,

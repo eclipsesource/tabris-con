@@ -32,6 +32,7 @@ exports.adaptSession = function(session) {
   var startDateString = formatDate(session.startTimestamp, "DD MMM YYYY, HH:mm");
   var endTimeString = formatDate(session.endTimestamp, "HH:mm");
   return {
+    id: session.id,
     summary: startDateString + " - " + endTimeString + " in " + session.room,
     description: session.description,
     title: session.title,
