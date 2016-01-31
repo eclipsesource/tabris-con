@@ -3,8 +3,8 @@ var expect = require("chai").expect;
 var CodDataExtractor = require("../src/data/CodDataExtractor");
 var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
-var OTHER_COOL_STUFF_CATEGORY = require("./data/cod/otherCoolStuffCategory.json");
-var SESSION = require("./data/cod/session.json");
+var CATEGORIES = require("./data/cod/categories.json");
+var SESSIONS = require("./data/cod/sessions.json");
 var BLOCKS = require("./data/cod/blocks.json");
 
 describe("CodDataExtractor", function() {
@@ -29,17 +29,17 @@ describe("CodDataExtractor", function() {
 
   describe("extractCategory", function() {
     it("extracts category for a given category", function() {
-      var otherCoolStuffCategory = codDataExtractor.extractCategory("OTHER_COOL_STUFF");
+      var categories = codDataExtractor.extractCategories();
 
-      expect(otherCoolStuffCategory).to.deep.equal(OTHER_COOL_STUFF_CATEGORY);
+      expect(categories).to.deep.equal(CATEGORIES);
     });
   });
 
   describe("extractSession", function() {
     it("extracts a session for a given ID", function() {
-      var session = codDataExtractor.extractSession("20301046");
+      var sessions = codDataExtractor.extractSessions();
 
-      expect(session).to.deep.equal(SESSION);
+      expect(sessions).to.deep.equal(SESSIONS);
     });
   });
 

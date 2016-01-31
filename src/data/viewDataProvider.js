@@ -3,6 +3,7 @@ var viewDataAdapter = require("../data/viewDataAdapter");
 var DataExtractor = require("../data/DataExtractor");
 var dataLoader = require("../data/dataLoader");
 var config = require("../../config");
+var _ = require("lodash");
 
 var conferenceData;
 var dataExtractor;
@@ -13,12 +14,16 @@ exports.getPreviewCategories = function() {
 };
 
 exports.getCategory = function(categoryId) {
-  var category = getDataExtractor().extractCategory(categoryId);
+  var categories = getDataExtractor().extractCategories();
+  var category = _.find(categories, function(category) {return category.id === categoryId;});
   return viewDataAdapter.adaptCategory(category);
 };
 
 exports.getSession = function(sessionId) {
-  var session = getDataExtractor().extractSession(sessionId);
+  var sessions = getDataExtractor().extractSessions();
+  var session = _.find(sessions, function(session) {
+    return session.id === sessionId;
+  });
   return viewDataAdapter.adaptSession(session);
 };
 

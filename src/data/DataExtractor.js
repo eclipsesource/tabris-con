@@ -10,12 +10,12 @@ module.exports = function(conferenceData) {
     return concreteDataExtractor.extractPreviewCategories();
   };
 
-  this.extractCategory = function(categoryId) {
-    return concreteDataExtractor.extractCategory(categoryId);
+  this.extractCategories = function() {
+    return concreteDataExtractor.extractCategories();
   };
 
-  this.extractSession = function(sessionId) {
-    return concreteDataExtractor.extractSession(sessionId);
+  this.extractSessions = function() {
+    return concreteDataExtractor.extractSessions();
   };
 
   this.extractBlocks = function() {

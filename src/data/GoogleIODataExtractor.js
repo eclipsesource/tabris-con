@@ -1,10 +1,7 @@
 var PREVIEW_CATEGORIES = ["TOPIC", "THEME"];
-var tagNameMap;
 var _ = require("lodash");
 
 module.exports = function(conferenceData) {
-  var conferenceData = _.cloneDeep(conferenceData);
-
   this.extractPreviewCategories = function() {
     return getTagsForCategories(PREVIEW_CATEGORIES)
       .map(function(tagToPreview) {
@@ -12,22 +9,27 @@ module.exports = function(conferenceData) {
       });
   };
 
-  this.extractCategory = function(tag) {
-    return createCategory(tag);
+  this.extractCategories = function() {
+    var allCategories = _.map(conferenceData.sessionData.tags, "category");
+    return getTagsForCategories(allCategories)
+      .map(function(tagToPreview) {
+        return createCategory(tagToPreview);
+      });
   };
 
-  this.extractSession = function(id) {
-    var googleIOSession = findGoogleIOSession(id);
-    return {
-      id: googleIOSession.id,
-      title: googleIOSession.title,
-      description: googleIOSession.description,
-      room: getGoogleIOSessionRoom(googleIOSession),
-      image: googleIOSession.photoUrl,
-      startTimestamp: googleIOSession.startTimestamp,
-      endTimestamp: googleIOSession.endTimestamp,
-      speakers: findSpeakers(googleIOSession.speakers)
-    };
+  this.extractSessions = function() {
+    return _.map(conferenceData.sessionData.sessions, function(googleIOSession) {
+      return {
+        id: googleIOSession.id,
+        title: googleIOSession.title,
+        description: googleIOSession.description,
+        room: getGoogleIOSessionRoom(googleIOSession),
+        image: googleIOSession.photoUrl,
+        startTimestamp: googleIOSession.startTimestamp,
+        endTimestamp: googleIOSession.endTimestamp,
+        speakers: findSpeakers(googleIOSession.speakers)
+      };
+    });
   };
 
   this.extractBlocks = function() {
@@ -68,12 +70,6 @@ module.exports = function(conferenceData) {
       .map("tag").value();
   }
 
-  function findGoogleIOSession(id) {
-    return _.find(conferenceData.sessionData.sessions, function(session) {
-      return session.id === id;
-    });
-  }
-
   function getGoogleIOSessionRoom(googleIOSession) {
     return _(conferenceData.sessionData.rooms)
       .find(function(room) {
@@ -90,16 +86,10 @@ module.exports = function(conferenceData) {
   }
 
   function getTagName(tag) {
-    tagNameMap = tagNameMap || createTagNameMap();
-    return tagNameMap[tag];
-  }
-
-  function createTagNameMap() {
-    var tagNameMap = {};
-    conferenceData.sessionData.tags.forEach(function(tagObject) {
-      tagNameMap[tagObject.tag] = tagObject.name;
+    var tagObject = _.find(conferenceData.sessionData.tags, function(tagObject) {
+      return tagObject.tag === tag;
     });
-    return tagNameMap;
+    return tagObject.name || null;
   }
 
   function getSessions(tag, limit) {
