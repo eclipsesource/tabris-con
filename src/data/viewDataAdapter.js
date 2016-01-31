@@ -54,7 +54,8 @@ exports.adaptBlocks = function(appConfig, blocks) {
     })
     .map(function(datedBlocks) {
       return mapDatedBlock(appConfig, datedBlocks);
-    }).value();
+    })
+    .value();
 };
 
 function mapDatedBlock(appConfig, datedBlocks) {
@@ -65,9 +66,11 @@ function mapDatedBlock(appConfig, datedBlocks) {
       .map(function(datedBlock) {
         return adaptDatedBlock(appConfig, datedBlock);
       })
+      .sortBy("startTime")
       .map(function(block, i) {return [block, separators[i]];})
       .flatten()
-      .pull(undefined).value()
+      .pull(undefined)
+      .value()
   };
 }
 

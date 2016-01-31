@@ -93,7 +93,6 @@ module.exports = function(conferenceData) {
   }
 
   function getSessions(tag, limit) {
-    // TODO: sort
     return conferenceData.sessionData.sessions
       .filter(function(session) {
         return session.tags.indexOf(tag) > -1;

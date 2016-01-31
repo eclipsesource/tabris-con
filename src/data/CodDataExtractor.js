@@ -61,7 +61,7 @@ module.exports = function(conferenceData, appConfig) {
           room: _.map(group, "room").join(", ")
         };
       })
-      .sortBy("startTimestamp").value();
+      .value();
   };
 
   function createCategory(categoryId, options) {
@@ -104,7 +104,7 @@ module.exports = function(conferenceData, appConfig) {
           endTimestamp: adaptCodTime(session.end)
         };
       })
-      .sortBy("startTimestamp").value();
+      .value();
   }
 
   function adaptCodTime(codTime) {
