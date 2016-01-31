@@ -5,7 +5,7 @@
   "scripts": {
     "jshint": "jshint src test",
     "jscs": "jscs src test",
-    "pretest": "npm run jshint && npm run jscs",
+    "posttest": "npm run jshint && npm run jscs",
     "test": "mocha"
   },
   "dependencies": {
