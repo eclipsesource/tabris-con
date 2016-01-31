@@ -1,13 +1,19 @@
 var persistedStorage = require("../src/data/persistedStorage");
+var capitalizeFirstLetter = require("../src/stringUtility").capitalizeFirstLetter;
+
 var chai = require("chai");
 var expect = chai.expect;
 var sinonChai = require("sinon-chai");
 var sinon = require("sinon");
 chai.use(sinonChai);
 
-describe("persisted storage", function() {
+var CHOSEN_SESSIONS_STORAGE_KEY = persistedStorage.CHOSEN_SESSIONS_STORAGE_KEY;
+var PREVIEW_CATEGORIES = persistedStorage.PREVIEW_CATEGORIES;
+var CATEGORIES = persistedStorage.CATEGORIES;
+var SESSIONS = persistedStorage.SESSIONS;
+var BLOCKS = persistedStorage.BLOCKS;
 
-  var CHOSEN_SESSIONS_STORAGE_KEY = persistedStorage.CHOSEN_SESSIONS_STORAGE_KEY;
+describe("persisted storage", function() {
 
   beforeEach(function() {
     global.window = sinon.stub();
@@ -68,6 +74,47 @@ describe("persisted storage", function() {
 
     it("doesn't fail if element does not exist", function() {
       persistedStorage.removeChosenSessionId("foo");
+    });
+  });
+
+  describe("set", function() {
+    var properties = [PREVIEW_CATEGORIES, CATEGORIES, SESSIONS, BLOCKS];
+    var config = {DATA_FORMAT: "cod"};
+    var value = {bak: "baz"};
+
+    properties.forEach(function(property) {
+      var capitalizedProperty = capitalizeFirstLetter(property);
+      it("set" + capitalizedProperty + " stores " + property + " with data format in localStorage", function() {
+        persistedStorage["set" + capitalizedProperty](config, value);
+
+        expect(localStorage.setItem).to.have.been.calledWith(property, JSON.stringify({
+          cod: value
+        }));
+      });
+    });
+  });
+
+  describe("get", function() {
+    var properties = [PREVIEW_CATEGORIES, CATEGORIES, SESSIONS, BLOCKS];
+    var config = {DATA_FORMAT: "cod"};
+
+    properties.forEach(function(property) {
+      var capitalizedProperty = capitalizeFirstLetter(property);
+      it("get" + capitalizedProperty + " retrieves " + property + " with data format from localStorage", function() {
+        global.localStorage.getItem.withArgs(property).returns(JSON.stringify({
+          cod: {foo: "bar"},
+          googleIO: {baz: "bak"}
+        }));
+
+        var value = persistedStorage["get" + capitalizedProperty](config);
+
+        expect(value).to.deep.equal({foo: "bar"});
+      });
+      it("get" + capitalizedProperty + " returns null if value not present", function() {
+        var value = persistedStorage["get" + capitalizedProperty](config);
+
+        expect(value).to.equal(null);
+      });
     });
   });
 

@@ -1,4 +1,5 @@
 var config = require("../../config");
+var capitalizeFirstLetter = require("../stringUtility.js").capitalizeFirstLetter;
 var extractorModuleName = capitalizeFirstLetter(config.DATA_FORMAT) + "DataExtractor";
 var ConcreteDataExtractor = require("./" + extractorModuleName);
 
@@ -22,7 +23,3 @@ module.exports = function(conferenceData) {
     return concreteDataExtractor.extractBlocks();
   };
 };
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
