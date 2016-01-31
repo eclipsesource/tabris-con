@@ -2,6 +2,7 @@ var Promise = require("promise");
 var _ = require("lodash");
 var viewDataAdapter = require("../data/viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
+var attendedBlockProvider = require("./attendedBlockProvider");
 var config = require("../../config");
 
 exports.getPreviewCategories = function() {
@@ -22,7 +23,9 @@ exports.getSession = function(sessionId) {
 };
 
 exports.getBlocks = function() {
-  return viewDataAdapter.adaptBlocks(config, conferenceDataProvider.get().blocks);
+  var blocks = conferenceDataProvider.get().blocks;
+  var attendedBlocks = attendedBlockProvider.getBlocks();
+  return viewDataAdapter.adaptBlocks(config, _.union(blocks, attendedBlocks));
 };
 
 exports.asyncGetPreviewCategories = function() {

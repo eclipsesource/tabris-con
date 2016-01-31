@@ -2,12 +2,6 @@ var sizes = require("../../resources/sizes");
 var colors = require("../../resources/colors");
 var getImage = require("../getImage");
 var fontToString = require("../fontToString");
-var persistedStorage = require("../data/persistedStorage");
-
-exports.EVENTS = {
-  BACK_BUTTON_TAP: "backButtonTap",
-  ADD_SESSION_BUTTON_TAP: "addSessionButtonTap"
-};
 
 exports.create = function() {
   var sessionPageHeader = tabris.create("Composite", {
@@ -21,26 +15,17 @@ exports.create = function() {
     image: getImage("back_arrow"),
     highlightOnTouch: true
   }).on("tap", function() {
-    sessionPageHeader.trigger(exports.EVENTS.BACK_BUTTON_TAP);
+    sessionPageHeader.trigger("backButtonTap");
   }).appendTo(sessionPageHeader);
 
-  tabris.create("ImageView", {
+  var plusImageView = tabris.create("ImageView", {
     right: 0, top: 0, width: sizes.SESSION_HEADER_ICON, height: sizes.SESSION_HEADER_ICON,
     image: getImage("plus"),
-    highlightOnTouch: true,
-    inList: false // TODO: get from app data
+    highlightOnTouch: true
   }).on("tap", function() {
-    if (sessionPageHeader.get("sessionId")) {
-      var attendedBlockId = sessionPageHeader.get("sessionId");
-      if (this.get("inList")) {
-        persistedStorage.removeAttendedBlockId(attendedBlockId);
-      } else {
-        persistedStorage.addAttendedBlockId(attendedBlockId);
-      }
-      this.set("inList", !this.get("inList"));
-      this.set("image", this.get("inList") ? getImage("check") : getImage("plus"));
-      sessionPageHeader.trigger(exports.EVENTS.ADD_SESSION_BUTTON_TAP, sessionPageHeader, this.get("inList"));
-    }
+    sessionPageHeader.trigger("addTap", this, this.get("checked"));
+  }).on("change:checked", function(widget, checked) {
+    this.set("image", checked ? getImage("check") : getImage("plus"));
   }).appendTo(sessionPageHeader);
 
   var titleTextView = tabris.create("TextView", {
@@ -61,6 +46,9 @@ exports.create = function() {
     })
     .on("change:summaryText", function(widget, text) {
       summaryTextView.set("text", text);
+    })
+    .on("change:attending", function(widget, attending) {
+      plusImageView.set("checked", attending);
     });
 
   return sessionPageHeader;

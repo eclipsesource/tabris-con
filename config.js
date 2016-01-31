@@ -7,7 +7,8 @@ module.exports = {
       "^After": "schedule_icon_fun",
       "^Badge": "schedule_icon_badge",
       "^Pre-Keynote": "schedule_icon_session",
-      ".*": "schedule_icon_food"
+      "^(Lunch|Breakfast)": "schedule_icon_food",
+      ".*": "schedule_icon_session"
     },
     cod: {
       "^Lunch": "schedule_icon_food",
@@ -15,7 +16,8 @@ module.exports = {
       ".*Break$": "schedule_icon_break",
       "^Club": "schedule_icon_fun",
       ".*Stammtisch.*": "schedule_icon_beer",
-      ".*Kahoot.*": "schedule_icon_quiz"
+      ".*Kahoot.*": "schedule_icon_quiz",
+      ".*": "schedule_icon_session"
     }
   }
 };

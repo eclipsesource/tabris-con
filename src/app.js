@@ -10,8 +10,8 @@ var viewDataProvider = require("./data/viewDataProvider");
 tabris.ui.set("background", colors.BACKGROUND_COLOR);
 tabris.ui.set("textColor", colors.LIGHT_PRIMARY_TEXT_COLOR);
 
-SchedulePage.create().on("appear", populateBlocks);
-ExplorePage.create().on("appear", populatePreviewCategories).open();
+SchedulePage.create().once("appear", populateBlocks);
+ExplorePage.create().once("appear", populatePreviewCategories).open();
 MapPage.create();
 SettingsPage.create();
 

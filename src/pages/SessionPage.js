@@ -5,6 +5,7 @@ var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
 var SessionPageHeader = require("../ui/SessionPageHeader");
 var getImage = require("../getImage");
+var attendedBlockService = require("../attendedBlockService");
 
 var titleCompY = 0;
 
@@ -118,12 +119,21 @@ exports.create = function() {
   var infoToast = InfoToast.create().appendTo(page);
 
   sessionPageHeader
-    .on(SessionPageHeader.EVENTS.BACK_BUTTON_TAP, function() {
+    .on("backButtonTap", function() {
       page.close();
     })
-    .on(SessionPageHeader.EVENTS.ADD_SESSION_BUTTON_TAP, function(widget, inList) {
-      infoToast.show(inList ? "Session added to <b>\"My Schedule\"</b>." :
-        "Session removed from <b>\"My Schedule\"</b>.");
+    .on("addTap", function(widget, checked) {
+      if (page.get("data")) {
+        var attendedBlockId = page.get("data").id;
+        if (checked) {
+          attendedBlockService.removeAttendedBlockId(attendedBlockId);
+        } else {
+          attendedBlockService.addAttendedBlockId(attendedBlockId);
+        }
+        sessionPageHeader.set("attending", !checked);
+        infoToast.show(!checked ? "Session added to <b>\"My Schedule\"</b>." :
+          "Session removed from <b>\"My Schedule\"</b>.");
+      }
     });
 
   page.on("appear", function() {
@@ -133,8 +143,8 @@ exports.create = function() {
   }).on("change:data", function(widget, data) {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
-    sessionPageHeader.set("sessionId", data.id);
     layoutParallax();
+    sessionPageHeader.set("attending", attendedBlockService.isAttending(data.id));
     loadingIndicator.dispose();
   });
 
