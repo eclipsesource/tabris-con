@@ -1,7 +1,7 @@
 var _ = require("lodash");
 var stringUtility = require("../stringUtility");
 
-exports.CHOSEN_SESSIONS_STORAGE_KEY = "chosenSessions";
+exports.ATTENDED_BLOCK_STORAGE_KEY = "attendedBlocks";
 
 exports.PREVIEW_CATEGORIES = "previewCategories";
 exports.CATEGORIES = "categories";
@@ -10,25 +10,25 @@ exports.BLOCKS = "blocks";
 
 var CONFERENCE_DATA_PROPERTIES = [exports.PREVIEW_CATEGORIES, exports.CATEGORIES, exports.SESSIONS, exports.BLOCKS];
 
-exports.getChosenSessions = function() {
-  var chosenSessions = localStorage.getItem(exports.CHOSEN_SESSIONS_STORAGE_KEY) || "[]";
-  return JSON.parse(chosenSessions);
+exports.getAttendedBlocks = function() {
+  var attendedBlocks = localStorage.getItem(exports.ATTENDED_BLOCK_STORAGE_KEY) || "[]";
+  return JSON.parse(attendedBlocks);
 };
 
-exports.addChosenSessionId = function(sessionId) {
-  var chosenSessions = exports.getChosenSessions();
-  if (!_.some(chosenSessions, function(el) {return el === sessionId;})) {
-    chosenSessions.push(sessionId);
+exports.addAttendedBlockId = function(sessionId) {
+  var attendedBlocks = exports.getAttendedBlocks();
+  if (!_.some(attendedBlocks, function(el) {return el === sessionId;})) {
+    attendedBlocks.push(sessionId);
   }
-  var chosenSessionsString = JSON.stringify(chosenSessions);
-  localStorage.setItem(exports.CHOSEN_SESSIONS_STORAGE_KEY, chosenSessionsString);
+  var attendedBlocksString = JSON.stringify(attendedBlocks);
+  localStorage.setItem(exports.ATTENDED_BLOCK_STORAGE_KEY, attendedBlocksString);
 };
 
-exports.removeChosenSessionId = function(sessionId) {
-  var chosenSessions = exports.getChosenSessions();
-  _.pull(chosenSessions, sessionId);
-  var chosenSessionsString = JSON.stringify(chosenSessions);
-  localStorage.setItem(exports.CHOSEN_SESSIONS_STORAGE_KEY, chosenSessionsString);
+exports.removeAttendedBlockId = function(sessionId) {
+  var attendedBlocks = exports.getAttendedBlocks();
+  _.pull(attendedBlocks, sessionId);
+  var attendedBlocksString = JSON.stringify(attendedBlocks);
+  localStorage.setItem(exports.ATTENDED_BLOCK_STORAGE_KEY, attendedBlocksString);
 };
 
 defineSetMethods();

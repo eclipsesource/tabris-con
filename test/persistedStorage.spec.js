@@ -7,7 +7,7 @@ var sinonChai = require("sinon-chai");
 var sinon = require("sinon");
 chai.use(sinonChai);
 
-var CHOSEN_SESSIONS_STORAGE_KEY = persistedStorage.CHOSEN_SESSIONS_STORAGE_KEY;
+var ATTENDED_BLOCK_STORAGE_KEY = persistedStorage.ATTENDED_BLOCK_STORAGE_KEY;
 var PREVIEW_CATEGORIES = persistedStorage.PREVIEW_CATEGORIES;
 var CATEGORIES = persistedStorage.CATEGORIES;
 var SESSIONS = persistedStorage.SESSIONS;
@@ -22,58 +22,58 @@ describe("persisted storage", function() {
     global.localStorage.setItem = sinon.spy();
   });
 
-  describe("getChosenSessions", function() {
+  describe("getAttendedBlocks", function() {
     it("returns an empty array if no sessions are present", function() {
-      global.localStorage.getItem.withArgs(CHOSEN_SESSIONS_STORAGE_KEY).returns(null);
+      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(null);
 
-      var chosenSessions = persistedStorage.getChosenSessions();
+      var attendedBlocks = persistedStorage.getAttendedBlocks();
 
-      expect(chosenSessions).to.deep.equal([]);
+      expect(attendedBlocks).to.deep.equal([]);
     });
   });
 
-  describe("addChosenSessionId", function() {
+  describe("addAttendedBlockId", function() {
     it("adds chosen sessionId to localStorage", function() {
-      persistedStorage.addChosenSessionId("foo");
+      persistedStorage.addAttendedBlockId("foo");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(CHOSEN_SESSIONS_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("adds more than one chosen sessionId to localStorage", function() {
       var presetItems = JSON.stringify(["foo"]);
-      global.localStorage.getItem.withArgs(CHOSEN_SESSIONS_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
-      persistedStorage.addChosenSessionId("bar");
+      persistedStorage.addAttendedBlockId("bar");
 
       var chosenItems = JSON.stringify(["foo", "bar"]);
-      expect(localStorage.setItem).to.have.been.calledWith(CHOSEN_SESSIONS_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("doesn't add duplicates", function() {
       var presetItems = JSON.stringify(["foo"]);
-      global.localStorage.getItem.withArgs(CHOSEN_SESSIONS_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
-      persistedStorage.addChosenSessionId("foo");
+      persistedStorage.addAttendedBlockId("foo");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(CHOSEN_SESSIONS_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
   });
 
-  describe("removeChosenSession", function() {
+  describe("removeAttendedBlock", function() {
     it("removes session id from localStorage", function() {
       var presetItems = JSON.stringify(["foo", "bar"]);
-      global.localStorage.getItem.withArgs(CHOSEN_SESSIONS_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
-      persistedStorage.removeChosenSessionId("bar");
+      persistedStorage.removeAttendedBlockId("bar");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(CHOSEN_SESSIONS_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("doesn't fail if element does not exist", function() {
-      persistedStorage.removeChosenSessionId("foo");
+      persistedStorage.removeAttendedBlockId("foo");
     });
   });
 

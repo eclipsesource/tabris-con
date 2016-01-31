@@ -31,11 +31,11 @@ exports.create = function() {
     inList: false // TODO: get from app data
   }).on("tap", function() {
     if (sessionPageHeader.get("sessionId")) {
-      var chosenSessionId = sessionPageHeader.get("sessionId");
+      var attendedBlockId = sessionPageHeader.get("sessionId");
       if (this.get("inList")) {
-        persistedStorage.removeChosenSessionId(chosenSessionId);
+        persistedStorage.removeAttendedBlockId(attendedBlockId);
       } else {
-        persistedStorage.addChosenSessionId(chosenSessionId);
+        persistedStorage.addAttendedBlockId(attendedBlockId);
       }
       this.set("inList", !this.get("inList"));
       this.set("image", this.get("inList") ? getImage("check") : getImage("plus"));
