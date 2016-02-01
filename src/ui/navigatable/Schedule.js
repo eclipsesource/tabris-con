@@ -1,5 +1,5 @@
-var colors = require("../../../resources/colors");
 var CollectionView = require("../../ui/CollectionView");
+var applyPlatformStyle = require("../../ui/applyPlatformStyle");
 var LoadingIndicator = require("../../ui/LoadingIndicator");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
@@ -50,10 +50,9 @@ exports.create = function() {
       layoutData: {left: 0, top: 0, right: 0, bottom: 0},
       elevation: 4,
       tabBarLocation: "top",
-      background: colors.BACKGROUND_COLOR,
-      textColor: "white",
       paging: true
     }).appendTo(schedule);
+    applyPlatformStyle(tabFolder);
     createTabs(tabFolder, adaptedBlocks);
   });
 

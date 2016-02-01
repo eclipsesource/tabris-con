@@ -5,6 +5,7 @@ var config = require("../../../config");
 var getImage = require("../../getImage");
 var viewDataProvider = require("../../data/viewDataProvider");
 var SessionPage = require("../page/SessionPage");
+var applyPlatformStyle = require("../applyPlatformStyle");
 var _ = require("lodash");
 
 module.exports = {
@@ -36,6 +37,7 @@ function createSession() {
     }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
   ).appendTo(categorySession);
   var titleTextView = createSessionTitleTextView().appendTo(textContainer);
+  applyPlatformStyle(titleTextView);
   var summaryTextView = tabris.create("TextView", {
     left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
     font: fontToString({size: sizes.FONT_MEDIUM}),
@@ -63,9 +65,8 @@ function createSessionImage() {
 
 function createSessionTitleTextView() {
   return tabris.create("TextView", {
+    id: "sessionTitleTextView",
     left: 0, top: 0, right: 0,
-    font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-    maxLines: 1,
-    textColor: colors.ACCENTED_TEXT_COLOR
+    maxLines: 1
   });
 }
