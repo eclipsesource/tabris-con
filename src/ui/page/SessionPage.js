@@ -1,11 +1,11 @@
-var colors = require("../../resources/colors");
-var LoadingIndicator = require("../ui/LoadingIndicator");
-var InfoToast = require("../ui/InfoToast");
-var sizes = require("../../resources/sizes");
-var fontToString = require("../fontToString");
-var SessionPageHeader = require("../ui/SessionPageHeader");
-var getImage = require("../getImage");
-var attendedBlockService = require("../attendedBlockService");
+var colors = require("../../../resources/colors");
+var LoadingIndicator = require("../LoadingIndicator");
+var InfoToast = require("../InfoToast");
+var sizes = require("../../../resources/sizes");
+var fontToString = require("../../fontToString");
+var SessionPageHeader = require("../SessionPageHeader");
+var getImage = require("../../getImage");
+var attendedBlockService = require("../../attendedBlockService");
 
 var titleCompY = 0;
 

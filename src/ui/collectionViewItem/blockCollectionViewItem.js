@@ -3,7 +3,7 @@ var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
 var getImage = require("../../getImage");
 var viewDataProvider = require("../../data/viewDataProvider");
-var SessionPage = require("../../pages/SessionPage");
+var SessionPage = require("../../ui/page/SessionPage");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,

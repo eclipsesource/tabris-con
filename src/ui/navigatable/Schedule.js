@@ -1,22 +1,23 @@
-var colors = require("../../resources/colors");
-var CollectionView = require("../ui/CollectionView");
-var LoadingIndicator = require("../ui/LoadingIndicator");
-var getImage = require("../getImage");
+var colors = require("../../../resources/colors");
+var CollectionView = require("../../ui/CollectionView");
+var LoadingIndicator = require("../../ui/LoadingIndicator");
+var getImage = require("../../getImage");
+var Navigatable = require("./Navigatable");
 
 exports.create = function() {
-  var page = tabris.create("Page", {
-    id: "schedulePage",
-    topLevel: true,
+  var schedule = Navigatable.create({
+    id: "schedule",
     title: "My Schedule",
-    image: getImage("schedule")
+    image: getImage("schedule"),
+    left: 0, top: 0, right: 0, bottom: 0
   });
 
-  var loadingIndicator = LoadingIndicator.create().appendTo(page);
+  var loadingIndicator = LoadingIndicator.create().appendTo(schedule);
 
-  page.on("change:data", function(widget, adaptedBlocks) {
-    if (page.children("#scheduleTabFolder").length > 0) {
+  schedule.on("change:data", function(widget, adaptedBlocks) {
+    if (schedule.children("#scheduleTabFolder").length > 0) {
       adaptedBlocks.forEach(function(adaptedBlock) {
-        page.find("#" + adaptedBlock.day).set("items", adaptedBlock.blocks);
+        schedule.find("#" + adaptedBlock.day).set("items", adaptedBlock.blocks);
       });
       return;
     }
@@ -29,11 +30,11 @@ exports.create = function() {
       background: colors.BACKGROUND_COLOR,
       textColor: "white",
       paging: true
-    }).appendTo(page);
+    }).appendTo(schedule);
     populateTabFolder(tabFolder, adaptedBlocks);
   });
 
-  return page;
+  return schedule;
 };
 
 function populateTabFolder(tabFolder, adaptedBlocks) {

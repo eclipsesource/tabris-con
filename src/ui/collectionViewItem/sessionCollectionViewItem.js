@@ -4,7 +4,7 @@ var colors = require("../../../resources/colors");
 var config = require("../../../config");
 var getImage = require("../../getImage");
 var viewDataProvider = require("../../data/viewDataProvider");
-var SessionPage = require("../../pages/SessionPage");
+var SessionPage = require("../page/SessionPage");
 var _ = require("lodash");
 
 module.exports = {

@@ -1,4 +1,5 @@
 module.exports = {
+  TINT_COLOR: "#443684",
   BACKGROUND_COLOR: "#443684",
   INFO_TOAST_BACKGROUND_COLOR: "#FFEB3B",
   DRAWER_TEXT_COLOR: "rgba(0, 0, 0, 0.78)",

@@ -1,5 +1,5 @@
-var LoadingIndicator = require("../ui/LoadingIndicator");
-var CollectionView = require("../ui/CollectionView");
+var LoadingIndicator = require("../LoadingIndicator");
+var CollectionView = require("../CollectionView");
 
 exports.create = function() {
   var page = tabris.create("Page", {

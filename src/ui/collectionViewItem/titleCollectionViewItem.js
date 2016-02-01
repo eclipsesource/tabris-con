@@ -2,7 +2,7 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var viewDataProvider = require("../../data/viewDataProvider");
 var colors = require("../../../resources/colors");
-var CategoryPage = require("../../pages/CategoryPage");
+var CategoryPage = require("../page/CategoryPage");
 
 module.exports = {
   itemHeight: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,

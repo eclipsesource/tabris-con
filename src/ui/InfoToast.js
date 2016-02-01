@@ -11,7 +11,7 @@ exports.create = function() {
     transform: {translationY: sizes.INFO_TOAST_HEIGHT}
   }).on("tap", function() {
     if (this.get("toastType") === "myScheduleOperation") {
-      tabris.ui.find("#schedulePage").first().open();
+      tabris.ui.find("#schedule").first().open();
     }
   });
 
