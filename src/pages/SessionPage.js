@@ -131,8 +131,11 @@ exports.create = function() {
           attendedBlockService.addAttendedBlockId(attendedBlockId);
         }
         sessionPageHeader.set("attending", !checked);
-        infoToast.show(!checked ? "Session added to <b>\"My Schedule\"</b>." :
-          "Session removed from <b>\"My Schedule\"</b>.");
+        infoToast.show({
+          type: "myScheduleOperation",
+          message: !checked ? "Session added to <b>\"My Schedule\"</b>." :
+            "Session removed from <b>\"My Schedule\"</b>."
+        });
       }
     });
 

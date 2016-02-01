@@ -9,6 +9,10 @@ exports.create = function() {
     background: colors.INFO_TOAST_BACKGROUND_COLOR,
     left: 0, bottom: 0, right: 0, height: sizes.INFO_TOAST_HEIGHT,
     transform: {translationY: sizes.INFO_TOAST_HEIGHT}
+  }).on("tap", function() {
+    if (this.get("toastType") === "myScheduleOperation") {
+      tabris.ui.find("#schedulePage").first().open();
+    }
   });
 
   function hideInfoToast() {
@@ -30,8 +34,9 @@ exports.create = function() {
     left: 0, right: 0, centerY: 0
   }).appendTo(infoToast);
 
-  infoToast.show = function(text) {
-    infoShadeTextView.set("text", text);
+  infoToast.show = function(toastObject) {
+    infoToast.set("toastType", toastObject.type);
+    infoShadeTextView.set("text", toastObject.message);
     if (infoToast.get("transform").translationY > 0) {
       infoToast.animate({transform: {translationY: 0}}, {
         duration: 1000,
