@@ -24,6 +24,7 @@ describe("attendedBlockProvider", function() {
     var blocks = attendedBlockProvider.getBlocks(config);
 
     expect(blocks).to.deep.equal([{
+      "sessionId": "20301046",
       "title": "10 Java Idioms Stomped with Xtend",
       "room": "Theater Stage",
       "startTimestamp": "2015-11-05T09:30:00.000Z",

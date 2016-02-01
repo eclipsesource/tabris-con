@@ -1,10 +1,10 @@
-var SessionPage = require("../../pages/SessionPage");
 var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
-var viewDataProvider = require("../../data/viewDataProvider");
 var config = require("../../../config");
 var getImage = require("../../getImage");
+var viewDataProvider = require("../../data/viewDataProvider");
+var SessionPage = require("../../pages/SessionPage");
 var _ = require("lodash");
 
 module.exports = {
@@ -15,7 +15,13 @@ module.exports = {
       session.set("data", item);
     });
   },
-  select: sessionSelectCallback
+  select: function(widget, item) {
+    var sessionPage = SessionPage.create().open();
+    viewDataProvider.asyncGetSession(item.id)
+      .then(function(session) {
+        sessionPage.set("data", session);
+      });
+  }
 };
 
 function createSession() {
@@ -62,12 +68,4 @@ function createSessionTitleTextView() {
     maxLines: 1,
     textColor: colors.ACCENTED_TEXT_COLOR
   });
-}
-
-function sessionSelectCallback(widget, item) {
-  var sessionPage = SessionPage.create().open();
-  viewDataProvider.asyncGetSession(item.id)
-    .then(function(session) {
-      sessionPage.set("data", session);
-    });
 }

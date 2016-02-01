@@ -10,6 +10,7 @@ exports.getBlocks = function() {
     })
     .map(function(session) {
       return {
+        sessionId: session.id,
         title: session.title,
         room: session.room,
         startTimestamp: session.startTimestamp,

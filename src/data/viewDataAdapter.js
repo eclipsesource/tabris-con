@@ -75,14 +75,18 @@ function mapDatedBlock(appConfig, datedBlocks) {
 }
 
 function adaptDatedBlock(appConfig, datedBlock) {
-  return {
+  var block = {
     image: getImageForBlockTitle(appConfig, datedBlock.title),
     summary: formatDate(datedBlock.startTimestamp, "HH:mm") + " - " +
       formatDate(datedBlock.endTimestamp, "HH:mm") + " / " + datedBlock.room,
     startTime: formatDate(datedBlock.startTimestamp, "HH:mm"),
     title: datedBlock.title,
-    type: "scheduleItem"
+    type: "block"
   };
+  if (datedBlock.sessionId) {
+    block.sessionId = datedBlock.sessionId;
+  }
+  return block;
 }
 
 function createSeparators(blocks) {

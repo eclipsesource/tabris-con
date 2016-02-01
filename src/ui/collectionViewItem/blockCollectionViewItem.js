@@ -2,10 +2,19 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
 var getImage = require("../../getImage");
+var viewDataProvider = require("../../data/viewDataProvider");
+var SessionPage = require("../../pages/SessionPage");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
   initializeCell: function(cell) {
+    var circleCanvas = tabris.create("Canvas", {
+      left: sizes.MARGIN, centerY: 0, width: 12, height: 12,
+      visible: false
+    }).appendTo(cell);
+
+    drawCircle(circleCanvas);
+
     var textContainer = tabris.create("Composite", {
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG
     }).appendTo(cell);
@@ -34,11 +43,27 @@ module.exports = {
     }).appendTo(cell);
 
     cell.on("change:item", function(widget, item) {
+      circleCanvas.set("visible", !!item.sessionId);
       startTimeTextView.set("text", item.startTime);
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.summary);
       imageView.set("image", getImage(item.image));
     });
   },
-  select: function() {}
+  select: function(widget, item) {
+    if (item.sessionId) {
+      var sessionPage = SessionPage.create().open();
+      viewDataProvider.asyncGetSession(item.sessionId)
+        .then(function(session) {
+          sessionPage.set("data", session);
+        });
+    }
+  }
 };
+
+function drawCircle(canvas) {
+  var ctx = canvas.getContext("2d", sizes.BLOCK_CIRCLE_SIZE, sizes.BLOCK_CIRCLE_SIZE);
+  ctx.arc(sizes.BLOCK_CIRCLE_SIZE / 2, sizes.BLOCK_CIRCLE_SIZE / 2, sizes.BLOCK_CIRCLE_SIZE / 4, 0, 2 * Math.PI);
+  ctx.fillStyle = colors.BACKGROUND_COLOR;
+  ctx.fill();
+}

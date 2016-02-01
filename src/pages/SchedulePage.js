@@ -14,9 +14,10 @@ exports.create = function() {
   var loadingIndicator = LoadingIndicator.create().appendTo(page);
 
   page.on("change:data", function(widget, adaptedBlocks) {
-    if (page.children("#scheduleTabFolder").length > 0 && !page.children("#scheduleTabFolder").first().isDisposed()) {
-      page.children("#scheduleTabFolder").children().dispose();
-      populateTabFolder(page.children("#scheduleTabFolder").first(), adaptedBlocks);
+    if (page.children("#scheduleTabFolder").length > 0) {
+      adaptedBlocks.forEach(function(adaptedBlock) {
+        page.find("#" + adaptedBlock.day).set("items", adaptedBlock.blocks);
+      });
       return;
     }
     loadingIndicator.dispose();
@@ -39,6 +40,7 @@ function populateTabFolder(tabFolder, adaptedBlocks) {
   adaptedBlocks.forEach(function(blockObject) {
     var tab = createTab(blockObject.day).appendTo(tabFolder);
     CollectionView.create({
+      id: blockObject.day,
       left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
       items: blockObject.blocks
     }).appendTo(tab).animate({opacity: 1}, {duration: 250});

@@ -4,7 +4,7 @@
     "blocks": [
       {
         "image": "schedule_icon_badge",
-        "type": "scheduleItem",
+        "type": "block",
         "title": "Badge Pick-Up",
         "startTime": "07:00",
         "summary": "07:00 - 17:00 / Registration Desk"
@@ -12,7 +12,7 @@
         "type": "smallSeparator"
       }, {
         "image": "schedule_icon_food",
-        "type": "scheduleItem",
+        "type": "block",
         "title": "Breakfast",
         "startTime": "07:00",
         "summary": "07:00 - 09:00 / Cafe, Level 1"
