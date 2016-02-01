@@ -9,10 +9,6 @@ exports.create = function() {
     background: colors.INFO_TOAST_BACKGROUND_COLOR,
     left: 0, bottom: 0, right: 0, height: sizes.INFO_TOAST_HEIGHT,
     transform: {translationY: sizes.INFO_TOAST_HEIGHT}
-  }).on("tap", function() {
-    if (this.get("toastType") === "myScheduleOperation") {
-      tabris.ui.find("#schedule").first().open();
-    }
   });
 
   function hideInfoToast() {
@@ -27,16 +23,24 @@ exports.create = function() {
   }
 
   var infoShadeTextView = tabris.create("TextView", {
-    textColor: colors.DARK_PRIMARY_TEXT_COLOR,
-    font: fontToString({size: sizes.FONT_LARGE}),
-    alignment: "center",
+    textColor: colors.LIGHT_PRIMARY_TEXT_COLOR,
+    font: fontToString({size: sizes.FONT_MEDIUM}),
     markupEnabled: true,
-    left: 0, right: 0, centerY: 0
+    left: sizes.MARGIN_BIG, right: ["#actionTextView", sizes.MARGIN], centerY: 0
   }).appendTo(infoToast);
+
+  var actionTextView = tabris.create("TextView", {
+    highlightOnTouch: true,
+    textColor: colors.INFO_TOAST_ACTION_COLOR,
+    font: fontToString({size: sizes.FONT_MEDIUM}),
+    right: sizes.MARGIN_BIG, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
+  }).on("tap", function() {infoToast.trigger("actionTap", infoToast);})
+    .appendTo(infoToast);
 
   infoToast.show = function(toastObject) {
     infoToast.set("toastType", toastObject.type);
-    infoShadeTextView.set("text", toastObject.message);
+    infoShadeTextView.set("text", toastObject.messageText);
+    actionTextView.set("text", toastObject.actionText);
     if (infoToast.get("transform").translationY > 0) {
       infoToast.animate({transform: {translationY: 0}}, {
         duration: 1000,

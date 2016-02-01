@@ -133,8 +133,15 @@ exports.create = function() {
         sessionPageHeader.set("attending", !checked);
         infoToast.show({
           type: "myScheduleOperation",
-          message: !checked ? "Session added to <b>\"My Schedule\"</b>." :
-            "Session removed from <b>\"My Schedule\"</b>."
+          messageText: !checked ? "Session added." : "Session removed.",
+          actionText: "SHOW \"MY SCHEDULE\""
+        });
+        infoToast.on("actionTap", function() {
+          if (!this.isDisposed()) {
+            if (this.get("toastType") === "myScheduleOperation") {
+              tabris.ui.find("#schedule").first().open();
+            }
+          }
         });
       }
     });
