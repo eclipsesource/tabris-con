@@ -4,6 +4,9 @@ var dataLoader = require("../data/dataLoader");
 var DataExtractor = require("../data/DataExtractor");
 
 exports.get = function() {
+  if (device.platform === "UWP") {
+    return getData();
+  }
   if (conferenceData) {
     return conferenceData;
   }
@@ -18,6 +21,17 @@ exports.get = function() {
   conferenceData = getDataFromCache();
   return conferenceData;
 };
+
+function getData() {
+  var rawData = dataLoader.load();
+  var dataExtractor = new DataExtractor(rawData);
+  return {
+    sessions: dataExtractor.extractSessions(),
+    previewCategories: dataExtractor.extractPreviewCategories(),
+    categories: dataExtractor.extractCategories(),
+    blocks: dataExtractor.extractBlocks()
+  };
+}
 
 function getDataFromCache() {
   return {
