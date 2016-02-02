@@ -49,6 +49,9 @@ exports.adaptSession = function(session) {
 
 exports.adaptBlocks = function(appConfig, blocks) {
   return _(blocks)
+    .sortBy(function(block) {
+      return block.startTimestamp;
+    })
     .groupBy(function(block) {
       return formatDate(block.startTimestamp, "DD MMM");
     })
