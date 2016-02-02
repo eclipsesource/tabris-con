@@ -1,9 +1,9 @@
 var moment = require("moment-timezone");
-var timezone = "America/Los_Angeles";
+var timezone = "America/New_York";
 
 module.exports = {
-  DATA_FORMAT: "googleIO",
-  SESSIONS_HAVE_IMAGES: true,
+  DATA_FORMAT: "cod",
+  SESSIONS_HAVE_IMAGES: false,
   CONFERENCE_TIMEZONE: timezone,
   SCHEDULE_PATTERN_ICON_MAP: {
     googleIO: {
