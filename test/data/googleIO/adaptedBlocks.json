@@ -6,7 +6,10 @@
         "image": "schedule_icon_badge",
         "type": "block",
         "title": "Badge Pick-Up",
+        "sessionType": "session",
         "startTime": "07:00",
+        "startTimestamp": "2015-05-28T14:00:00.000Z",
+        "endTimestamp": "2015-05-29T00:00:00.000Z",
         "summary": "07:00 - 17:00 / Registration Desk"
       }, {
         "type": "smallSeparator"
@@ -14,7 +17,10 @@
         "image": "schedule_icon_food",
         "type": "block",
         "title": "Breakfast",
+        "sessionType": "session",
         "startTime": "07:00",
+        "startTimestamp": "2015-05-28T14:00:00.000Z",
+        "endTimestamp": "2015-05-28T16:00:00.000Z",
         "summary": "07:00 - 09:00 / Cafe, Level 1"
       }
     ]

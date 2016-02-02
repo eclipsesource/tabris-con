@@ -2,8 +2,11 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
 var getImage = require("../../getImage");
+var config = require("../../../config");
 var viewDataProvider = require("../../data/viewDataProvider");
 var SessionPage = require("../../ui/page/SessionPage");
+var CategoryPage = require("../../ui/page/CategoryPage");
+var moment = require("moment-timezone");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
@@ -46,7 +49,7 @@ module.exports = {
       circleCanvas.set("visible", !!item.sessionId);
       startTimeTextView.set("text", item.startTime);
       titleTextView.set("text", item.title);
-      summaryTextView.set("text", item.summary);
+      summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
       imageView.set("image", getImage(item.image));
     });
   },
@@ -56,6 +59,16 @@ module.exports = {
       viewDataProvider.asyncGetSession(item.sessionId)
         .then(function(session) {
           sessionPage.set("data", session);
+        });
+    } else if (item.sessionType === "free") {
+      var page = CategoryPage.create().open();
+      var moment1 = moment.tz(item.startTimestamp, config.CONFERENCE_TIMEZONE);
+      var moment2 = moment.tz(item.endTimestamp, config.CONFERENCE_TIMEZONE);
+      viewDataProvider.asyncGetSessionsStartingInTimeframe(moment1.toJSON(), moment2.toJSON())
+        .then(function(sessions) {
+          var from = moment1.format("HH:mm");
+          var to = moment2.format("HH:mm");
+          page.set("data", {title: from + " - " + to, items: sessions});
         });
     }
   }

@@ -1,6 +1,7 @@
 var _ = require("lodash");
 var moment = require("moment-timezone");
 var config = require("../../config");
+var FreeBlockInsertor = require("./FreeBlockInsertor");
 
 exports.adaptPreviewCategories = function(previewCategories) {
   var previewCategories = _.cloneDeep(previewCategories);
@@ -48,6 +49,7 @@ exports.adaptSession = function(session) {
 };
 
 exports.adaptBlocks = function(appConfig, blocks) {
+  var blocks = new FreeBlockInsertor(appConfig).insertIn(blocks);
   return _(blocks)
     .sortBy(function(block) {
       return block.startTimestamp;
@@ -83,6 +85,9 @@ function adaptDatedBlock(appConfig, datedBlock) {
     summary: formatDate(datedBlock.startTimestamp, "HH:mm") + " - " +
       formatDate(datedBlock.endTimestamp, "HH:mm") + " / " + datedBlock.room,
     startTime: formatDate(datedBlock.startTimestamp, "HH:mm"),
+    startTimestamp: datedBlock.startTimestamp,
+    endTimestamp: datedBlock.endTimestamp,
+    sessionType: datedBlock.sessionType || "session",
     title: datedBlock.title,
     type: "block"
   };
@@ -128,5 +133,5 @@ function createSpeakerSummary(speaker) {
 }
 
 function formatDate(timestamp, format) {
-  return moment(timestamp).tz(config.CONFERENCE_TIMEZONE).format(format);
+  return moment.tz(timestamp, config.CONFERENCE_TIMEZONE).format(format);
 }

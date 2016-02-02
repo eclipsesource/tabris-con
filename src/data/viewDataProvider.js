@@ -4,6 +4,7 @@ var viewDataAdapter = require("../data/viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
 var attendedBlockProvider = require("./attendedBlockProvider");
 var config = require("../../config");
+var moment = require("moment-timezone");
 
 exports.getPreviewCategories = function() {
   return viewDataAdapter.adaptPreviewCategories(conferenceDataProvider.get().previewCategories);
@@ -20,6 +21,15 @@ exports.getSession = function(sessionId) {
     return session.id === sessionId;
   });
   return viewDataAdapter.adaptSession(session);
+};
+
+exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
+  var sessions = _(conferenceDataProvider.get().sessions)
+    .sortBy("startTimestamp")
+    .filter(function(session) {
+      return moment(timestamp1) <= moment(session.startTimestamp) && moment(timestamp2) > moment(session.startTimestamp);
+    }).value();
+  return viewDataAdapter.adaptCategory({sessions: sessions});
 };
 
 exports.getBlocks = function() {
@@ -56,6 +66,14 @@ exports.asyncGetBlocks = function() {
   return new Promise(function(resolve) {
     setTimeout(function() {
       resolve(exports.getBlocks());
+    });
+  });
+};
+
+exports.asyncGetSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve(exports.getSessionsStartingInTimeframe(timestamp1, timestamp2));
     });
   });
 };

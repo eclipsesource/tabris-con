@@ -58,6 +58,7 @@ describe("viewDataAdapter", function() {
         DATA_FORMAT: "googleIO",
         SESSIONS_HAVE_IMAGES: true,
         CONFERENCE_TIMEZONE: "America/Los_Angeles",
+        CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],
         SCHEDULE_PATTERN_ICON_MAP: {
           googleIO: {
             "^After": "schedule_icon_fun",
