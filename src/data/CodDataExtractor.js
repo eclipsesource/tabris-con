@@ -1,9 +1,10 @@
 var sanitizeHtml = require("sanitize-html");
-var moment = require("moment-timezone");
 var _ = require("lodash");
+var TimezonedDate = require("../TimezonedDate");
 
-module.exports = function(conferenceData, appConfig) {
-  var conferenceData = _.cloneDeep(assignCategoryTypes(conferenceData));
+module.exports = function(conferenceData) {
+  var conferenceData = _.cloneDeep(conferenceData);
+  assignCategoryTypes(conferenceData);
 
   this.extractPreviewCategories = function() {
     return getCategoriesList({exclude: "SCHEDULE_ITEM"})
@@ -31,8 +32,8 @@ module.exports = function(conferenceData, appConfig) {
           title: session.title,
           description: stripHtml(session.abstract),
           room: session.room,
-          startTimestamp: adaptCodTime(session.start),
-          endTimestamp: adaptCodTime(session.end),
+          startTimestamp: new TimezonedDate(session.start).toJSON(),
+          endTimestamp: new TimezonedDate(session.end).toJSON(),
           speakers: session.presenter.map(function(speaker) {
             return {
               name: speaker.fullname,
@@ -56,8 +57,8 @@ module.exports = function(conferenceData, appConfig) {
       .map(function(group) {
         return {
           title: group[0].title,
-          startTimestamp: adaptCodTime(group[0].start),
-          endTimestamp: adaptCodTime(group[0].end),
+          startTimestamp: new TimezonedDate(group[0].start).toJSON(),
+          endTimestamp: new TimezonedDate(group[0].end).toJSON(),
           room: _.map(group, "room").join(", ")
         };
       })
@@ -81,7 +82,7 @@ module.exports = function(conferenceData, appConfig) {
 
   function getCategoriesList(options) {
     return _(conferenceData.scheduledSessions)
-      .filter(function(session) {return options && options.exclude ? options.exclude !== session.categoryId : true; })
+      .filter(function(session) {return options && options.exclude ? options.exclude !== session.categoryId : true;})
       .map(function(session) {
         return {id: session.categoryId, name: session.categoryName};
       })
@@ -100,15 +101,11 @@ module.exports = function(conferenceData, appConfig) {
           id: session.id,
           title: session.title,
           text: stripHtml(session.abstract),
-          startTimestamp: adaptCodTime(session.start),
-          endTimestamp: adaptCodTime(session.end)
+          startTimestamp: new TimezonedDate(session.start).toJSON(),
+          endTimestamp: new TimezonedDate(session.end).toJSON()
         };
       })
       .value();
-  }
-
-  function adaptCodTime(codTime) {
-    return moment.tz(codTime, appConfig.CONFERENCE_TIMEZONE).toJSON();
   }
 
 };

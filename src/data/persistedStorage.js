@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var stringUtility = require("../stringUtility");
+var config = require("../../config");
 
 exports.ATTENDED_BLOCK_STORAGE_KEY = "attendedBlocks";
 
@@ -36,27 +37,27 @@ defineGetMethods();
 
 function defineSetMethods() {
   CONFERENCE_DATA_PROPERTIES.forEach(function(property) {
-    exports["set" + stringUtility.capitalizeFirstLetter(property)] = function(appConfig, value) {
-      setValue(appConfig, property, value);
+    exports["set" + stringUtility.capitalizeFirstLetter(property)] = function(value) {
+      setValue(property, value);
     };
   });
 }
 
 function defineGetMethods() {
   CONFERENCE_DATA_PROPERTIES.forEach(function(property) {
-    exports["get" + stringUtility.capitalizeFirstLetter(property)] = function(appConfig) {
-      return getValue(appConfig, property);
+    exports["get" + stringUtility.capitalizeFirstLetter(property)] = function() {
+      return getValue(property);
     };
   });
 }
 
-function setValue(appConfig, property, value) {
+function setValue(property, value) {
   var itemObject = {};
-  itemObject[appConfig.DATA_FORMAT] = value;
+  itemObject[config.DATA_FORMAT] = value;
   localStorage.setItem(property, JSON.stringify(itemObject));
 }
 
-function getValue(appConfig, property) {
+function getValue(property) {
   var itemString = localStorage.getItem(property);
-  return itemString && itemString !== "undefined" ? JSON.parse(itemString)[appConfig.DATA_FORMAT] : null;
+  return itemString && itemString !== "undefined" ? JSON.parse(itemString)[config.DATA_FORMAT] : null;
 }

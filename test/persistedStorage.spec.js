@@ -1,19 +1,20 @@
-var persistedStorage = require("../src/data/persistedStorage");
 var capitalizeFirstLetter = require("../src/stringUtility").capitalizeFirstLetter;
 
+var mockery = require("mockery");
 var chai = require("chai");
 var expect = chai.expect;
 var sinonChai = require("sinon-chai");
 var sinon = require("sinon");
 chai.use(sinonChai);
 
-var ATTENDED_BLOCK_STORAGE_KEY = persistedStorage.ATTENDED_BLOCK_STORAGE_KEY;
-var PREVIEW_CATEGORIES = persistedStorage.PREVIEW_CATEGORIES;
-var CATEGORIES = persistedStorage.CATEGORIES;
-var SESSIONS = persistedStorage.SESSIONS;
-var BLOCKS = persistedStorage.BLOCKS;
-
 describe("persisted storage", function() {
+  var persistedStorage;
+
+  before(function() {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock("../../config", {DATA_FORMAT: "cod"});
+    persistedStorage = require("../src/data/persistedStorage");
+  });
 
   beforeEach(function() {
     global.window = sinon.stub();
@@ -22,9 +23,13 @@ describe("persisted storage", function() {
     global.localStorage.setItem = sinon.spy();
   });
 
+  after(function() {
+    mockery.disable();
+  });
+
   describe("getAttendedBlocks", function() {
     it("returns an empty array if no sessions are present", function() {
-      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(null);
+      global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY).returns(null);
 
       var attendedBlocks = persistedStorage.getAttendedBlocks();
 
@@ -37,39 +42,39 @@ describe("persisted storage", function() {
       persistedStorage.addAttendedBlockId("foo");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("adds more than one chosen sessionId to localStorage", function() {
       var presetItems = JSON.stringify(["foo"]);
-      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
       persistedStorage.addAttendedBlockId("bar");
 
       var chosenItems = JSON.stringify(["foo", "bar"]);
-      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("doesn't add duplicates", function() {
       var presetItems = JSON.stringify(["foo"]);
-      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
       persistedStorage.addAttendedBlockId("foo");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
   });
 
   describe("removeAttendedBlock", function() {
     it("removes session id from localStorage", function() {
       var presetItems = JSON.stringify(["foo", "bar"]);
-      global.localStorage.getItem.withArgs(ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
+      global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY).returns(presetItems);
 
       persistedStorage.removeAttendedBlockId("bar");
 
       var chosenItems = JSON.stringify(["foo"]);
-      expect(localStorage.setItem).to.have.been.calledWith(ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
+      expect(localStorage.setItem).to.have.been.calledWith(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY, chosenItems);
     });
 
     it("doesn't fail if element does not exist", function() {
@@ -78,14 +83,19 @@ describe("persisted storage", function() {
   });
 
   describe("set", function() {
-    var properties = [PREVIEW_CATEGORIES, CATEGORIES, SESSIONS, BLOCKS];
-    var config = {DATA_FORMAT: "cod"};
+    var storage = require("../src/data/persistedStorage");
+    var properties = [
+      storage.PREVIEW_CATEGORIES,
+      storage.CATEGORIES,
+      storage.SESSIONS,
+      storage.BLOCKS
+    ];
     var value = {bak: "baz"};
 
     properties.forEach(function(property) {
       var capitalizedProperty = capitalizeFirstLetter(property);
       it("set" + capitalizedProperty + " stores " + property + " with data format in localStorage", function() {
-        persistedStorage["set" + capitalizedProperty](config, value);
+        persistedStorage["set" + capitalizedProperty](value);
 
         expect(localStorage.setItem).to.have.been.calledWith(property, JSON.stringify({
           cod: value
@@ -95,8 +105,13 @@ describe("persisted storage", function() {
   });
 
   describe("get", function() {
-    var properties = [PREVIEW_CATEGORIES, CATEGORIES, SESSIONS, BLOCKS];
-    var config = {DATA_FORMAT: "cod"};
+    var storage = require("../src/data/persistedStorage");
+    var properties = [
+      storage.PREVIEW_CATEGORIES,
+      storage.CATEGORIES,
+      storage.SESSIONS,
+      storage.BLOCKS
+    ];
 
     properties.forEach(function(property) {
       var capitalizedProperty = capitalizeFirstLetter(property);
@@ -106,12 +121,12 @@ describe("persisted storage", function() {
           googleIO: {baz: "bak"}
         }));
 
-        var value = persistedStorage["get" + capitalizedProperty](config);
+        var value = persistedStorage["get" + capitalizedProperty]();
 
         expect(value).to.deep.equal({foo: "bar"});
       });
       it("get" + capitalizedProperty + " returns null if value not present", function() {
-        var value = persistedStorage["get" + capitalizedProperty](config);
+        var value = persistedStorage["get" + capitalizedProperty]();
 
         expect(value).to.equal(null);
       });

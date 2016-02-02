@@ -3,7 +3,7 @@ var CollectionView = require("../CollectionView");
 
 exports.create = function() {
   var page = tabris.create("Page", {
-    id: "categoryPage",
+    id: "sessionsPage",
     title: "Loading..."
   });
 

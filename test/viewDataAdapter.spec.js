@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 var sinon = require("sinon");
-var viewDataAdapter = require("../src/data/viewDataAdapter");
+var mockery = require("mockery");
 var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
 var ADAPTED_PREVIEW_CATEGORIES = require("./data/googleIO/adaptedPreviewCategories.json");
 var PLAY_CATEGORY = require("./data/googleIO/playCategory.json");
@@ -9,11 +9,34 @@ var SESSION = require("./data/googleIO/session.json");
 var ADAPTED_SESSION = require("./data/googleIO/adaptedSession.json");
 var BLOCKS = require("./data/googleIO/blocks.json");
 var ADAPTED_BLOCKS = require("./data/googleIO/adaptedBlocks.json");
+var FAKE_CONFIG = {
+  DATA_FORMAT: "googleIO",
+  SESSIONS_HAVE_IMAGES: true,
+  CONFERENCE_TIMEZONE: "America/Los_Angeles",
+  CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],
+  SCHEDULE_PATTERN_ICON_MAP: {
+    googleIO: {
+      "^After": "schedule_icon_fun",
+      "^Badge": "schedule_icon_badge",
+      "^Pre-Keynote": "schedule_icon_session",
+      ".*": "schedule_icon_food"
+    }
+  }
+};
 
 describe("viewDataAdapter", function() {
+  var viewDataAdapter;
 
-  beforeEach(function() {
+  before(function() {
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
+    mockery.registerMock("../config", FAKE_CONFIG);
+    mockery.registerMock("../../config", FAKE_CONFIG);
     global.window = sinon.stub();
+    viewDataAdapter = require("../src/data/viewDataAdapter");
+  });
+
+  after(function() {
+    mockery.disable();
   });
 
   describe("adaptPreviewCategories", function() {
@@ -54,22 +77,7 @@ describe("viewDataAdapter", function() {
   describe("adaptBlocks", function() {
 
     it("adapts blocks for blocks page", function() {
-      var config = {
-        DATA_FORMAT: "googleIO",
-        SESSIONS_HAVE_IMAGES: true,
-        CONFERENCE_TIMEZONE: "America/Los_Angeles",
-        CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],
-        SCHEDULE_PATTERN_ICON_MAP: {
-          googleIO: {
-            "^After": "schedule_icon_fun",
-            "^Badge": "schedule_icon_badge",
-            "^Pre-Keynote": "schedule_icon_session",
-            ".*": "schedule_icon_food"
-          }
-        }
-      };
-
-      var adaptedBlocks = viewDataAdapter.adaptBlocks(config, BLOCKS);
+      var adaptedBlocks = viewDataAdapter.adaptBlocks(BLOCKS);
 
       expect(adaptedBlocks).to.deep.equal(ADAPTED_BLOCKS);
     });

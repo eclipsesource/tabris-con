@@ -3,8 +3,7 @@ var _ = require("lodash");
 var viewDataAdapter = require("../data/viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
 var attendedBlockProvider = require("./attendedBlockProvider");
-var config = require("../../config");
-var moment = require("moment-timezone");
+var TimezonedDate = require("../TimezonedDate");
 
 exports.getPreviewCategories = function() {
   return viewDataAdapter.adaptPreviewCategories(conferenceDataProvider.get().previewCategories);
@@ -27,7 +26,8 @@ exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
   var sessions = _(conferenceDataProvider.get().sessions)
     .sortBy("startTimestamp")
     .filter(function(session) {
-      return moment(timestamp1) <= moment(session.startTimestamp) && moment(timestamp2) > moment(session.startTimestamp);
+      return new TimezonedDate(timestamp1).toJSON() <= new TimezonedDate(session.startTimestamp).toJSON() &&
+             new TimezonedDate(timestamp2).toJSON() > new TimezonedDate(session.startTimestamp).toJSON();
     }).value();
   return viewDataAdapter.adaptCategory({sessions: sessions});
 };
@@ -35,7 +35,7 @@ exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
 exports.getBlocks = function() {
   var blocks = conferenceDataProvider.get().blocks;
   var attendedBlocks = attendedBlockProvider.getBlocks();
-  return viewDataAdapter.adaptBlocks(config, _.union(blocks, attendedBlocks));
+  return viewDataAdapter.adaptBlocks(_.union(blocks, attendedBlocks));
 };
 
 exports.asyncGetPreviewCategories = function() {

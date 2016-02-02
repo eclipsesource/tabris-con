@@ -2,7 +2,7 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var viewDataProvider = require("../../data/viewDataProvider");
 var colors = require("../../../resources/colors");
-var CategoryPage = require("../page/CategoryPage");
+var SessionsPage = require("../page/SessionsPage");
 
 module.exports = {
   itemHeight: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,
@@ -27,7 +27,7 @@ module.exports = {
     });
   },
   select: function(widget, item) {
-    var page = CategoryPage.create().open();
+    var page = SessionsPage.create().open();
 
     viewDataProvider.asyncGetCategory(item.id)
       .then(function(category) {

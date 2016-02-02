@@ -1,5 +1,4 @@
 var conferenceData;
-var config = require("../../config");
 var persistedStorage = require("../data/persistedStorage");
 var dataLoader = require("../data/dataLoader");
 var DataExtractor = require("../data/DataExtractor");
@@ -11,10 +10,10 @@ exports.get = function() {
   if (!dataCached()) {
     var rawData = dataLoader.load();
     var dataExtractor = new DataExtractor(rawData);
-    persistedStorage.setSessions(config, dataExtractor.extractSessions());
-    persistedStorage.setPreviewCategories(config, dataExtractor.extractPreviewCategories());
-    persistedStorage.setCategories(config, dataExtractor.extractCategories());
-    persistedStorage.setBlocks(config, dataExtractor.extractBlocks());
+    persistedStorage.setSessions(dataExtractor.extractSessions());
+    persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
+    persistedStorage.setCategories(dataExtractor.extractCategories());
+    persistedStorage.setBlocks(dataExtractor.extractBlocks());
   }
   conferenceData = getDataFromCache();
   return conferenceData;
@@ -22,19 +21,19 @@ exports.get = function() {
 
 function getDataFromCache() {
   return {
-    sessions: persistedStorage.getSessions(config),
-    previewCategories: persistedStorage.getPreviewCategories(config),
-    categories: persistedStorage.getCategories(config),
-    blocks: persistedStorage.getBlocks(config)
+    sessions: persistedStorage.getSessions(),
+    previewCategories: persistedStorage.getPreviewCategories(),
+    categories: persistedStorage.getCategories(),
+    blocks: persistedStorage.getBlocks()
   };
 }
 
 function dataCached() {
   var data = [
-    persistedStorage.getSessions(config),
-    persistedStorage.getPreviewCategories(config),
-    persistedStorage.getCategories(config),
-    persistedStorage.getBlocks(config)
+    persistedStorage.getSessions(),
+    persistedStorage.getPreviewCategories(),
+    persistedStorage.getCategories(),
+    persistedStorage.getBlocks()
   ];
   return data.every(function(data) {return !!data;});
 }

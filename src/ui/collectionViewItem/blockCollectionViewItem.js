@@ -2,11 +2,10 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var colors = require("../../../resources/colors");
 var getImage = require("../../getImage");
-var config = require("../../../config");
 var viewDataProvider = require("../../data/viewDataProvider");
 var SessionPage = require("../../ui/page/SessionPage");
-var CategoryPage = require("../../ui/page/CategoryPage");
-var moment = require("moment-timezone");
+var SessionsPage = require("../../ui/page/SessionsPage");
+var TimezonedDate = require("../../TimezonedDate");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
@@ -61,13 +60,13 @@ module.exports = {
           sessionPage.set("data", session);
         });
     } else if (item.sessionType === "free") {
-      var page = CategoryPage.create().open();
-      var moment1 = moment.tz(item.startTimestamp, config.CONFERENCE_TIMEZONE);
-      var moment2 = moment.tz(item.endTimestamp, config.CONFERENCE_TIMEZONE);
-      viewDataProvider.asyncGetSessionsStartingInTimeframe(moment1.toJSON(), moment2.toJSON())
+      var page = SessionsPage.create().open();
+      var date1 = new TimezonedDate(item.startTimestamp);
+      var date2 = new TimezonedDate(item.endTimestamp);
+      viewDataProvider.asyncGetSessionsStartingInTimeframe(date1.toJSON(), date2.toJSON())
         .then(function(sessions) {
-          var from = moment1.format("HH:mm");
-          var to = moment2.format("HH:mm");
+          var from = date1.format("HH:mm");
+          var to = date2.format("HH:mm");
           page.set("data", {title: from + " - " + to, items: sessions});
         });
     }
