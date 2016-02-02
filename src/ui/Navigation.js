@@ -40,6 +40,15 @@ module.exports = {
       wrapInTab(Settings.create()).appendTo(tabFolder);
       tabFolder.set("selection", exploreTab);
     }
+  },
+  UWP: {
+    create: function() {
+      wrapInPage(Schedule.create()).once("appear", populateBlocks);
+      wrapInPage(Explore.create()).once("appear", populatePreviewCategories).open();
+      wrapInPage(Map.create());
+      wrapInPage(Settings.create());
+      Drawer.create();
+    }
   }
 };
 
