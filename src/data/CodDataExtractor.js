@@ -1,9 +1,11 @@
 var sanitizeHtml = require("sanitize-html");
 var _ = require("lodash");
+_.mixin({squash: require("./squash")});
 var TimezonedDate = require("../TimezonedDate");
 
 module.exports = function(conferenceData) {
   var conferenceData = _.cloneDeep(conferenceData);
+  aggregateSessionRooms(conferenceData);
   assignCategoryTypes(conferenceData);
 
   this.extractPreviewCategories = function() {
@@ -121,4 +123,14 @@ function assignCategoryTypes(conferenceData) {
 
 function stripHtml(hypertext) {
   return sanitizeHtml(hypertext, {allowedTags: [], allowedAttributes: []});
+}
+
+function aggregateSessionRooms(conferenceData) {
+  conferenceData.scheduledSessions = _(conferenceData.scheduledSessions)
+    .squash(function(session) {
+      return session.type === "schedule_item" ? _.uniqueId() : session.title;
+    }, {
+      aggregatee: "room", separator: ", "
+    })
+    .value();
 }

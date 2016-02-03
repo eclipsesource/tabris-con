@@ -87,6 +87,29 @@
     "start": "2015-11-05 15:00",
     "end": "2015-11-05 15:45"
   }, {
+    "id": "22811042",
+    "nid": "2281",
+    "title": "Closing Session",
+    "abstract": "Join us for the conference wrap-up, prize awards, and news about what's next for the community.",
+    "type": "session",
+    "presenter": [{
+      "id": "583",
+      "fullname": "Mike Milinkovich",
+      "twitter": "",
+      "picture": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-583_1.jpg?itok=M3C8BZhn",
+      "bio": "",
+      "jobtitle": "Executive Director",
+      "organization": "Eclipse Foundation",
+      "interests": ""
+    }],
+    "category": "Other Cool Stuff",
+    "session_type": "Standard [35 minutes]",
+    "experience_level": "beginner",
+    "room": "Another room",
+    "date": "2015-11-05",
+    "start": "2015-11-05 15:00",
+    "end": "2015-11-05 15:45"
+  }, {
     "id": "2272874",
     "nid": "2272",
     "title": "Afternoon Break",
