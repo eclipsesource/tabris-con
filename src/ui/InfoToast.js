@@ -3,6 +3,8 @@ var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
 
 exports.create = function() {
+  var POP_ANIMATION_DURATION = 500;
+  var POP_HIDE_DELAY = 5000;
   var timeout;
 
   var infoToast = tabris.create("Composite", {
@@ -16,7 +18,7 @@ exports.create = function() {
       infoToast.animate({
         transform: {translationY: infoToast.get("height")}
       }, {
-        duration: 1000,
+        duration: POP_ANIMATION_DURATION,
         easing: "ease-out"
       });
     }
@@ -43,14 +45,14 @@ exports.create = function() {
     actionTextView.set("text", toastObject.actionText);
     if (infoToast.get("transform").translationY > 0) {
       infoToast.animate({transform: {translationY: 0}}, {
-        duration: 1000,
+        duration: POP_ANIMATION_DURATION,
         easing: "ease-out"
       });
     }
     if (timeout) {
       clearTimeout(timeout);
     }
-    timeout = setTimeout(hideInfoToast, 3000);
+    timeout = setTimeout(hideInfoToast, POP_HIDE_DELAY);
   };
 
   return infoToast;
