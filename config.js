@@ -25,6 +25,7 @@ module.exports = {
       ".*": "schedule_icon_session"
     }
   },
+  IGNORED_COD_BLOCKS: "^Reserved for",
   FREE_BLOCKS: {
     cod: [
       [date("07.03.2016 09:00"), date("07.03.2016 12:00")],

@@ -8,10 +8,16 @@ var BLOCKS = require("./data/cod/blocks.json");
 
 describe("CodDataExtractor", function() {
   var codDataExtractor;
+  var FAKE_CONFIG = {
+    DATA_FORMAT: "cod",
+    CONFERENCE_TIMEZONE: "Europe/Berlin",
+    IGNORED_COD_BLOCKS: "^Dedicated"
+  };
 
   before(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-    mockery.registerMock("../config", {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "Europe/Berlin"});
+    mockery.registerMock("../config", FAKE_CONFIG);
+    mockery.registerMock("../../config", FAKE_CONFIG);
     var CodDataExtractor = require("../src/data/CodDataExtractor");
     codDataExtractor = new CodDataExtractor(COD_CONFERENCE_DATA);
   });

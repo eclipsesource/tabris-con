@@ -2,10 +2,12 @@ var sanitizeHtml = require("sanitize-html");
 var _ = require("lodash");
 _.mixin({squash: require("./squash")});
 var TimezonedDate = require("../TimezonedDate");
+var config = require("../../config");
 
 module.exports = function(conferenceData) {
   var conferenceData = _.cloneDeep(conferenceData);
   aggregateSessionRooms(conferenceData);
+  removeIgnoredBlocks(conferenceData);
   assignCategoryTypes(conferenceData);
 
   this.extractPreviewCategories = function() {
@@ -133,4 +135,10 @@ function aggregateSessionRooms(conferenceData) {
       aggregatee: "room", separator: ", "
     })
     .value();
+}
+
+function removeIgnoredBlocks(conferenceData) {
+  conferenceData.scheduledSessions = _.reject(conferenceData.scheduledSessions, function(session) {
+    return session.type === "schedule_item" && !!session.title.match(config.IGNORED_COD_BLOCKS);
+  });
 }
