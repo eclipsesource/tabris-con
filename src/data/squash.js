@@ -13,7 +13,6 @@ module.exports = function(target, predicate, aggregation) {
       })
       .uniq()
       .join(aggregation.separator);
-    console.log(JSON.stringify(val));
     var uniqueItem = _.uniqBy(value, predicate)[0];
     uniqueItem[aggregation.aggregatee] = val;
     object[key] = uniqueItem;
