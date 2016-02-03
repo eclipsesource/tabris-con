@@ -24,6 +24,7 @@ describe("persisted storage", function() {
   });
 
   after(function() {
+    mockery.deregisterMock("../../config");
     mockery.disable();
   });
 

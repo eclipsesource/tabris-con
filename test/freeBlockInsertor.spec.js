@@ -5,33 +5,34 @@ var moment = require("moment-timezone");
 
 describe("freeBlockInsertor", function() {
   var insertor;
+  var FAKE_CONFIG = {
+    DATA_FORMAT: "cod",
+    CONFERENCE_TIMEZONE: "America/New_York",
+    FREE_BLOCKS: {cod: [[date("07.03.2016 09:00"), date("07.03.2016 12:00")]]}
+  };
 
   before(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-  });
-
-  beforeEach(function() {
-    mockery.registerMock("../../config", {
-      DATA_FORMAT: "cod",
-      CONFERENCE_TIMEZONE: "America/New_York",
-      FREE_BLOCKS: {cod: [[date("07.03.2016 09:00"), date("07.03.2016 12:00")]]}
-    });
+    mockery.registerMock("../../config", FAKE_CONFIG);
     insertor = require("../src/data/freeBlockInsertor");
   });
 
   after(function() {
+    mockery.deregisterMock("../../config");
     mockery.disable();
   });
 
   it("returns input when FREE_BLOCKS not configured", function() {
     mockery.resetCache();
+    mockery.deregisterMock("../../config");
     mockery.registerMock("../../config", {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "America/New_York"});
     var insertor = require("../src/data/freeBlockInsertor");
 
     var inserted = insertor.insertIn("foo");
 
     expect(inserted).to.equal("foo");
-    mockery.resetCache();
+    mockery.deregisterMock("../../config");
+    mockery.registerMock("../../config", FAKE_CONFIG);
   });
 
   it("returns free blocks on empty array", function() {

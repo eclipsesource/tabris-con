@@ -36,6 +36,8 @@ describe("viewDataAdapter", function() {
   });
 
   after(function() {
+    mockery.deregisterMock("../config");
+    mockery.deregisterMock("../../config");
     mockery.disable();
   });
 
