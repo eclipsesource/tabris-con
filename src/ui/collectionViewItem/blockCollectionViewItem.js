@@ -56,10 +56,12 @@ module.exports = {
       imageView.set("image", getImage(item.image));
 
       if (item.shouldPop) {
-        backgroundShade
-          .once("animationend", function() {this.set("visible", false);})
-          .set({visible: true, opacity: 1})
-          .animate({opacity: 0}, {duration: 1000, easing: "ease-out"});
+        setTimeout(function() {
+          backgroundShade
+            .once("animationend", function() {this.set("visible", false);})
+            .set({visible: true, opacity: 1})
+            .animate({opacity: 0}, {duration: 1000, easing: "ease-out"});
+        }, 800);
         item.shouldPop = false;
       } else {
         backgroundShade.set("visible", false);
