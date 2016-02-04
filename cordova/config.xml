@@ -7,5 +7,4 @@
     <author email="tabris@eclipsesource.com" href="https://tabrisjs.com">
         EclipseSource
     </author>
-    <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
