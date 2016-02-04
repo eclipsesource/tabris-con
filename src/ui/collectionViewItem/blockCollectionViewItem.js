@@ -10,8 +10,12 @@ var TimezonedDate = require("../../TimezonedDate");
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
   initializeCell: function(cell) {
+    var backgroundShade = tabris.create("Composite", {
+      visible: false, background: colors.ACTION_COLOR,
+      left: 0, top: 0, right: 0, bottom: 0
+    }).appendTo(cell);
     var circleCanvas = tabris.create("Canvas", {
-      left: sizes.MARGIN, centerY: 0, width: 12, height: 12,
+      left: sizes.MARGIN, centerY: 0, width: sizes.BLOCK_CIRCLE_SIZE, height: sizes.BLOCK_CIRCLE_SIZE,
       visible: false
     }).appendTo(cell);
 
@@ -50,6 +54,16 @@ module.exports = {
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
       imageView.set("image", getImage(item.image));
+
+      if (item.shouldPop) {
+        backgroundShade
+          .once("animationend", function() {this.set("visible", false);})
+          .set({visible: true, opacity: 1})
+          .animate({opacity: 0}, {duration: 1000, easing: "ease-out"});
+        item.shouldPop = false;
+      } else {
+        backgroundShade.set("visible", false);
+      }
     });
   },
   select: function(widget, item) {

@@ -33,14 +33,14 @@ exports.create = function() {
 
   var actionTextView = tabris.create("TextView", {
     highlightOnTouch: true,
-    textColor: colors.INFO_TOAST_ACTION_COLOR,
+    textColor: colors.ACTION_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),
     right: sizes.MARGIN_BIG, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
   }).on("tap", function() {infoToast.trigger("actionTap", infoToast);})
     .appendTo(infoToast);
 
   infoToast.show = function(toastObject) {
-    infoToast.set("toastType", toastObject.type);
+    infoToast.set({toastType: toastObject.type});
     infoShadeTextView.set("text", toastObject.messageText);
     actionTextView.set("text", toastObject.actionText);
     if (infoToast.get("transform").translationY > 0) {

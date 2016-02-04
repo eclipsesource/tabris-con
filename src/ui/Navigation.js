@@ -27,18 +27,19 @@ module.exports = {
         textColor: colors.TINT_COLOR,
         tabBarLocation: "bottom"
       }).on("change:selection", function(widget, tab) {
-        if (tab.get("id") === "scheduleTab") {
-          populateBlocks(tab);
-        } else if (tab.get("id") === "exploreTab") {
-          populatePreviewCategories(tab);
-        }
         mainPage.set("title", tab.get("title"));
       }).appendTo(mainPage);
-      wrapInTab(Schedule.create()).appendTo(tabFolder).once("appear", populateBlocks);
-      var exploreTab = wrapInTab(Explore.create()).appendTo(tabFolder).once("appear", populatePreviewCategories);
-      wrapInTab(Map.create()).appendTo(tabFolder);
-      wrapInTab(Settings.create()).appendTo(tabFolder);
-      tabFolder.set("selection", exploreTab);
+      wrapInTabFolder(Schedule.create(), tabFolder)
+        .once("appear", function() {
+          populateBlocks(this);
+        });
+      wrapInTabFolder(Explore.create(), tabFolder)
+        .once("appear", function() {
+          populatePreviewCategories(this);
+        })
+        .open();
+      wrapInTabFolder(Map.create(), tabFolder);
+      wrapInTabFolder(Settings.create(), tabFolder);
     }
   },
   UWP: {
@@ -52,7 +53,7 @@ module.exports = {
   }
 };
 
-function wrapInTab(component) {
+function wrapInTabFolder(component, tabFolder) {
   var tab = tabris.create("Tab", {
     title: component.get("title"),
     id: component.get("id") + "Tab",
@@ -61,11 +62,18 @@ function wrapInTab(component) {
     left: 0, top: 0, right: 0, bottom: 0
   }).on("change:data", function(widget, data) {component.set("data", data);});
   component.appendTo(tab);
-  component.on("shouldOpen", function() {
+  component.open = function() {
     tab.parent().set("selection", tab);
     tabris.ui.find("#mainPage").first().open();
+    return component;
+  };
+  tab.appendTo(tabFolder);
+  tabFolder.on("change:selection", function(widget, selection) {
+    if (selection === tab) {
+      component.trigger("appear", component, tab);
+    }
   });
-  return tab;
+  return component;
 }
 
 function wrapInPage(component) {
@@ -74,24 +82,30 @@ function wrapInPage(component) {
     title: component.get("title"),
     id: component.get("id") + "Page",
     image: component.get("image")
-  }).on("change:data", function(widget, data) {component.set("data", data);});
+  }).on("change:data", function(widget, data) {component.set("data", data);})
+    .on("appear", function() {component.trigger("appear", component);});
   component.appendTo(page);
-  component.on("shouldOpen", function() {
+  component.open = function() {
     page.open();
-  });
-  return page;
+    return component;
+  };
+  return component;
 }
 
 function populatePreviewCategories(component) {
-  viewDataProvider.asyncGetPreviewCategories()
-    .then(function(previewCategories) {
-      component.set("data", previewCategories);
-    });
+  if (!component.get("data")) {
+    viewDataProvider.asyncGetPreviewCategories()
+      .then(function(previewCategories) {
+        component.set("data", previewCategories);
+      });
+  }
 }
 
 function populateBlocks(component) {
-  viewDataProvider.asyncGetBlocks()
-    .then(function(blocks) {
-      component.set("data", blocks);
-    });
+  if (!component.get("data")) {
+    viewDataProvider.asyncGetBlocks()
+      .then(function(blocks) {
+        component.set("data", blocks);
+      });
+  }
 }

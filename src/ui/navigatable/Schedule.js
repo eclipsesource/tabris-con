@@ -3,6 +3,31 @@ var CollectionView = require("../../ui/CollectionView");
 var LoadingIndicator = require("../../ui/LoadingIndicator");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
+var _ = require("lodash");
+
+function maybeFocusItem(schedule) {
+  var sessionId = schedule.get("shouldFocusItem");
+  if (sessionId) {
+    var tab = findBlockTab(schedule, sessionId);
+    schedule.children("#scheduleTabFolder").set("selection", tab);
+    var collectionView = tab.children("CollectionView").first();
+    var collectionViewItems = collectionView.get("items");
+    var index = _.findIndex(collectionViewItems, function(item) {
+      return item.sessionId === sessionId;
+    });
+    collectionView.get("items")[index].shouldPop = true;
+    schedule.set("shouldFocusItem", null);
+    collectionView.reveal(index);
+  }
+}
+
+function findBlockTab(schedule, sessionId) {
+  var scheduleData = schedule.get("data");
+  var index = _.findIndex(scheduleData, function(object) {
+    return _.some(object.blocks, function(block) {return sessionId === block.sessionId;});
+  });
+  return schedule.children("#scheduleTabFolder").children()[index];
+}
 
 exports.create = function() {
   var schedule = Navigatable.create({
@@ -10,17 +35,15 @@ exports.create = function() {
     title: "My Schedule",
     image: getImage("schedule"),
     left: 0, top: 0, right: 0, bottom: 0
+  }).on("change:focus", function(widget, focus) {
+    schedule.set("shouldFocusItem", focus);
+  }).on("appear", function() {
+    maybeFocusItem(schedule);
   });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(schedule);
 
-  schedule.on("change:data", function(widget, adaptedBlocks) {
-    if (schedule.children("#scheduleTabFolder").length > 0) {
-      adaptedBlocks.forEach(function(adaptedBlock) {
-        schedule.find("#" + adaptedBlock.day).set("items", adaptedBlock.blocks);
-      });
-      return;
-    }
+  schedule.once("change:data", function(widget, adaptedBlocks) {
     loadingIndicator.dispose();
     var tabFolder = tabris.create("TabFolder", {
       id: "scheduleTabFolder",
@@ -31,13 +54,20 @@ exports.create = function() {
       textColor: "white",
       paging: true
     }).appendTo(schedule);
-    populateTabFolder(tabFolder, adaptedBlocks);
+    createTabs(tabFolder, adaptedBlocks);
+  });
+
+  schedule.on("change:data", function(widget, adaptedBlocks) {
+    adaptedBlocks.forEach(function(adaptedBlock) {
+      var collectionView = schedule.find("#" + adaptedBlock.day);
+      collectionView.set("items", adaptedBlock.blocks);
+    });
   });
 
   return schedule;
 };
 
-function populateTabFolder(tabFolder, adaptedBlocks) {
+function createTabs(tabFolder, adaptedBlocks) {
   adaptedBlocks.forEach(function(blockObject) {
     var tab = createTab(blockObject.day).appendTo(tabFolder);
     CollectionView.create({

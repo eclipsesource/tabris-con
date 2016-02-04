@@ -122,24 +122,26 @@ exports.create = function() {
     .on("backButtonTap", function() {
       page.close();
     })
-    .on("addTap", function(widget, checked) {
-      if (page.get("data")) {
-        var attendedBlockId = page.get("data").id;
+    .on("addTap", function(widget, wasChecked) {
+      var checked = !wasChecked;
+      var session = page.get("data");
+      if (session) {
         if (checked) {
-          attendedBlockService.removeAttendedBlockId(attendedBlockId);
+          attendedBlockService.addAttendedBlockId(session.id);
         } else {
-          attendedBlockService.addAttendedBlockId(attendedBlockId);
+          attendedBlockService.removeAttendedBlockId(session.id);
         }
-        sessionPageHeader.set("attending", !checked);
+        sessionPageHeader.set("attending", checked);
+        tabris.ui.find("#schedule").set("focus", checked ? session.id : null);
         infoToast.show({
           type: "myScheduleOperation",
-          messageText: !checked ? "Session added." : "Session removed.",
+          messageText: checked ? "Session added." : "Session removed.",
           actionText: "SHOW \"MY SCHEDULE\""
         });
         infoToast.on("actionTap", function() {
           if (!this.isDisposed()) {
             if (this.get("toastType") === "myScheduleOperation") {
-              tabris.ui.find("#schedule").first().open();
+              tabris.ui.find("#schedule").last().open();
             }
           }
         });
