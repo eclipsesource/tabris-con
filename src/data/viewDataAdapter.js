@@ -4,6 +4,8 @@ var freeBlockInsertor = require("./freeBlockInsertor");
 var config = require("../../config");
 
 exports.adaptPreviewCategories = function(previewCategories) {
+  var previewCategories = _.cloneDeep(previewCategories);
+  previewCategories = _.sortBy(previewCategories, "title");
   var result = [];
   result.push({type: "separator"});
   previewCategories.forEach(function(categoryPreview) {
