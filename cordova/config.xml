@@ -46,5 +46,16 @@
         <!-- iPad Spotlight and Settings Icon -->
         <icon src="resources/ios/icons/icon-50.png" width="50" height="50" />
         <icon src="resources/ios/icons/icon-50@2x.png" width="100" height="100" />
+
+        <!-- images are determined by width and height. The following are supported -->
+        <splash src="resources/ios/screen/Default@2x~iphone.png" width="640" height="960"/>
+        <splash src="resources/ios/screen/Default-Portrait~ipad.png" width="768" height="1024"/>
+        <splash src="resources/ios/screen/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
+        <splash src="resources/ios/screen/Default-Landscape~ipad.png" width="1024" height="768"/>
+        <splash src="resources/ios/screen/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
+        <splash src="resources/ios/screen/Default-568h@2x~iphone.png" width="640" height="1136"/>
+        <splash src="resources/ios/screen/Default-667h.png" width="750" height="1334"/>
+        <splash src="resources/ios/screen/Default-736h.png" width="1242" height="2208"/>
+        <splash src="resources/ios/screen/Default-Landscape-736h.png" width="2208" height="1242"/>
     </platform>
 </widget>
