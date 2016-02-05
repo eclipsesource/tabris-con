@@ -1,6 +1,5 @@
 var LoadingIndicator = require("../LoadingIndicator");
 var CollectionView = require("../CollectionView");
-var applyPlatformStyle = require("../applyPlatformStyle");
 
 exports.create = function() {
   var page = tabris.create("Page", {

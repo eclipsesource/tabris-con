@@ -11,7 +11,11 @@ exports.create = function() {
     left: 0, top: 0, right: 0, bottom: 0
   }).appendTo(drawer);
 
-  DrawerUserArea.create().on("tap", toggleAccountMode).appendTo(scrollView);
+  var drawerUserArea = DrawerUserArea
+    .create()
+    .on("loggedInTap", function() {setAccountMode(this, !accountModeEnabled);})
+    .on("loginPageOpened", function() {drawer.close();})
+    .appendTo(scrollView);
 
   var drawerList = createDrawerList();
   var accountList = createAccountList();
@@ -26,11 +30,11 @@ exports.create = function() {
       });
   });
 
-  function toggleAccountMode(userArea) {
-    accountList.set("visible", !accountModeEnabled);
-    drawerList.set("visible", accountModeEnabled);
-    userArea.find("#menuArrowImageView").set("transform", !accountModeEnabled ? {rotation: Math.PI} : null);
-    accountModeEnabled = !accountModeEnabled;
+  function setAccountMode(userArea, value) {
+    accountList.set("visible", value);
+    drawerList.set("visible", !value);
+    userArea.find("#menuArrowImageView").set("transform", value ? {rotation: Math.PI} : null);
+    accountModeEnabled = value;
   }
 
   function createDrawerList() {
@@ -68,7 +72,12 @@ exports.create = function() {
       left: 0, top: ["#userArea", 8], right: 0,
       visible: false
     }).appendTo(scrollView);
-    createListItem("Logout", getImage("logout")).appendTo(accountList);
+    createListItem("Logout", getImage("logout"))
+      .on("tap", function() {
+        drawerUserArea.set("loggedIn", false);
+        setAccountMode(drawerUserArea, false);
+      })
+      .appendTo(accountList);
     return accountList;
   }
 
