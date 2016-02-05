@@ -3,6 +3,7 @@ var sizes = require("../../resources/sizes");
 var fontToString = require("../fontToString");
 var LoginPage = require("./page/LoginPage");
 var getImage = require("../getImage");
+var loginService = require("../loginService");
 
 exports.create = function() {
   var userArea = tabris.create("Composite", {
@@ -17,7 +18,9 @@ exports.create = function() {
   }).on("tap", function() {
     var loginPage = LoginPage.create().open();
     loginPage.on("loginButtonTapped", function() {
-      userArea.set("loggedIn", true);
+      loginService.login().then(function() {
+        userArea.set("loggedIn", true);
+      });
     });
     userArea.trigger("loginPageOpened", userArea);
   }).appendTo(userArea);
@@ -73,7 +76,7 @@ exports.create = function() {
       loggedInContainer.set("visible", loggedIn);
       loggedOutContainer.set("visible", !loggedIn);
     })
-    .set("loggedIn", false);
+    .set("loggedIn", loginService.isLoggedIn());
 
   return userArea;
 };

@@ -3,6 +3,7 @@ var sizes = require("../../resources/sizes");
 var DrawerUserArea = require("./DrawerUserArea");
 var fontToString = require("../fontToString");
 var getImage = require("../getImage");
+var loginService = require("../loginService");
 
 exports.create = function() {
   var accountModeEnabled = false;
@@ -74,8 +75,10 @@ exports.create = function() {
     }).appendTo(scrollView);
     createListItem("Logout", getImage("logout"))
       .on("tap", function() {
-        drawerUserArea.set("loggedIn", false);
-        setAccountMode(drawerUserArea, false);
+        loginService.logout().then(function() {
+          drawerUserArea.set("loggedIn", false);
+          setAccountMode(drawerUserArea, false);
+        });
       })
       .appendTo(accountList);
     return accountList;
