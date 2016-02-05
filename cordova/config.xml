@@ -1,14 +1,20 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.eclipsesource.tabris.con" version="1.0.2" android-versionCode="6" ios-CFBundleVersion="1.0.2" xmlns="http://www.w3.org/ns/widgets">
-    <name>TabrisCon</name>
-    <description>
-        An exemplary Tabris.js conference app.
-    </description>
+    <name>EclipseCon 2016</name>
     <author email="tabris@eclipsesource.com" href="https://tabrisjs.com">
         EclipseSource
     </author>
+
     <access origin="*" />
     <plugin name="cordova-plugin-dialogs" />
     <plugin name="cordova-plugin-inappbrowser" />
     <plugin name="cordova-plugin-network-information" />
+
+    <platform name="android">
+        <icon src="resources/android/drawable-mdpi/ic_launcher.png" density="mdpi" />
+        <icon src="resources/android/drawable-hdpi/ic_launcher.png" density="hdpi" />
+        <icon src="resources/android/drawable-xhdpi/ic_launcher.png" density="xhdpi" />
+        <icon src="resources/android/drawable-xxhdpi/ic_launcher.png" density="xxhdpi" />
+        <icon src="resources/android/drawable-xxxhdpi/ic_launcher.png" density="xxxhdpi" />
+    </platform>
 </widget>
