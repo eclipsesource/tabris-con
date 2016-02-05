@@ -24,4 +24,8 @@ exports.create = function() {
     action.set("title", mode === "login" ? "Login" : "Logout");
   });
   action.set("mode", loginService.isLoggedIn() ? "logout" : "login");
+
+  tabris.ui.on("change:activePage", function(widget, page) {
+    action.set("visible", page.get("topLevel"));
+  });
 };

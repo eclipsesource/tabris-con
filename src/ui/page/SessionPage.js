@@ -5,14 +5,25 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var SessionPageHeader = require("../SessionPageHeader");
 var getImage = require("../../getImage");
+var applyPlatformStyle = require("../applyPlatformStyle");
 var attendedBlockService = require("../../attendedBlockService");
+var AttendanceAction = require("../AttendanceAction");
 
 var titleCompY = 0;
 
 exports.create = function() {
   var page = tabris.create("Page", {
     topLevel: false,
-    id: "sessionPage"
+    id: "sessionPage",
+    title: "Session"
+  }).on("appear", function() {
+    if (device.platform === "iOS") {
+      AttendanceAction.create().on("select", function() {
+        updateAttendance(this, this.get("attending"));
+      });
+    }
+  }).on("disappear", function() {
+    tabris.ui.find("#attendanceAction").dispose();
   });
 
   var scrollView = tabris.create("ScrollView", {
@@ -33,9 +44,10 @@ exports.create = function() {
   var sessionPageHeader = SessionPageHeader.create().appendTo(scrollView);
 
   var descriptionTextView = tabris.create("TextView", {
-    textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG, top: sizes.MARGIN_BIG
+    id: "sessionPageDescriptionTextView",
+    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG
   }).appendTo(contentComposite);
+  applyPlatformStyle(descriptionTextView);
 
   var speakersComposite = tabris.create("Composite", {
     left: 0, top: "prev()", right: 0
@@ -50,12 +62,15 @@ exports.create = function() {
     if (speakers.length < 1) {
       return;
     }
-    tabris.create("TextView", {
-      left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG, top: ["prev()", sizes.MARGIN_BIG * 2],
+    var speakersTextView = tabris.create("TextView", {
+      id: "sessionPageSpeakersTextView",
+      right: sizes.MARGIN_BIG, top: ["prev()", sizes.MARGIN_BIG * 2],
       text: "Speakers",
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.ACCENTED_TEXT_COLOR
     }).appendTo(speakersComposite);
+    applyPlatformStyle(speakersTextView);
+
     speakers.forEach(function(speaker) {
       createSpeaker(speaker).appendTo(speakersComposite);
     });
@@ -75,18 +90,20 @@ exports.create = function() {
       scaleMode: "fit",
       image: getImage(speaker.image, sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
-    tabris.create("TextView", {
+    var speakerSummary = tabris.create("TextView", {
+      id: "sessionPageSpeakerSummary",
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG,
       text: speaker.summary,
-      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-      textColor: colors.DARK_SECONDARY_TEXT_COLOR
+      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
-    tabris.create("TextView", {
+    applyPlatformStyle(speakerSummary);
+    var speakerBio = tabris.create("TextView", {
+      id: "sessionPageSpeakerBio",
       left: sizes.LEFT_CONTENT_MARGIN, top: ["prev()", 0], right: sizes.MARGIN_BIG,
       text: speaker.bio,
-      font: fontToString({size: sizes.FONT_MEDIUM}),
-      textColor: colors.DARK_SECONDARY_TEXT_COLOR
+      font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
+    applyPlatformStyle(speakerBio);
     return speakerContainer;
   }
 
@@ -107,10 +124,12 @@ exports.create = function() {
     sessionPageHeader.set("top", titleCompY);
   }
 
-  scrollView.on("scroll", function(widget, offset) {
-    imageView.set("transform", {translationY: Math.max(0, offset.y * 0.4)});
-    sessionPageHeader.set("transform", {translationY: Math.max(0, offset.y - titleCompY)});
-  });
+  if (device.platform === "Android") {
+    scrollView.on("scroll", function(widget, offset) {
+      imageView.set("transform", {translationY: Math.max(0, offset.y * 0.4)});
+      sessionPageHeader.set("transform", {translationY: Math.max(0, offset.y - titleCompY)});
+    });
+  }
 
   scrollView.once("resize", function() {
     layoutParallax({initialLayout: true});
@@ -122,41 +141,48 @@ exports.create = function() {
     .on("backButtonTap", function() {
       page.close();
     })
-    .on("addTap", function(widget, wasChecked) {
-      var checked = !wasChecked;
-      var session = page.get("data");
-      if (session) {
-        if (checked) {
-          attendedBlockService.addAttendedBlockId(session.id);
-        } else {
-          attendedBlockService.removeAttendedBlockId(session.id);
-        }
-        sessionPageHeader.set("attending", checked);
-        tabris.ui.find("#schedule").set("focus", checked ? session.id : null);
-        infoToast.show({
-          type: "myScheduleOperation",
-          messageText: checked ? "Session added." : "Session removed.",
-          actionText: "SHOW \"MY SCHEDULE\""
-        });
-        infoToast.on("actionTap", function() {
-          if (!this.isDisposed()) {
-            if (this.get("toastType") === "myScheduleOperation") {
-              tabris.ui.find("#schedule").last().open();
-            }
-          }
-        });
-      }
-    });
+    .on("attendanceButtonTap", updateAttendance);
 
-  page.on("appear", function() {
-    tabris.ui.set("toolbarVisible", false);
-  }).on("disappear", function() {
-    tabris.ui.set("toolbarVisible", true);
-  }).on("change:data", function(widget, data) {
+  function updateAttendance(widget, wasChecked) {
+    var checked = !wasChecked;
+    var session = page.get("data");
+    if (session) {
+      if (checked) {
+        attendedBlockService.addAttendedBlockId(session.id);
+      } else {
+        attendedBlockService.removeAttendedBlockId(session.id);
+      }
+      widget.set("attending", checked);
+      tabris.ui.find("#schedule").set("focus", checked ? session.id : null);
+      infoToast.show({
+        type: "myScheduleOperation",
+        messageText: checked ? "Session added." : "Session removed.",
+        actionText: "SHOW \"MY SCHEDULE\""
+      });
+      infoToast.on("actionTap", function() {
+        if (!this.isDisposed()) {
+          if (this.get("toastType") === "myScheduleOperation") {
+            tabris.ui.find("#schedule").last().open();
+          }
+        }
+      });
+    }
+  }
+
+  if (device.platform === "Android") {
+    page.on("appear", function() {
+      tabris.ui.set("toolbarVisible", false);
+    }).on("disappear", function() {
+      tabris.ui.set("toolbarVisible", true);
+    });
+  }
+
+  page.on("change:data", function(widget, data) {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
     layoutParallax();
-    sessionPageHeader.set("attending", attendedBlockService.isAttending(data.id));
+    var attendanceControl = device.platform === "Android" ? sessionPageHeader : tabris.ui.find("#attendanceAction");
+    attendanceControl.set("attending", attendedBlockService.isAttending(data.id));
     loadingIndicator.dispose();
   });
 

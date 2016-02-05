@@ -35,9 +35,75 @@ module.exports = {
       textColor: colors.DARK_PRIMARY_TEXT_COLOR
     }
   },
+  "#sessionPageHeader": {
+    Android: {background: colors.BACKGROUND_COLOR},
+    iOS: {background: "white"}
+  },
   "#pageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
     iOS: {background: "white"}
+  },
+  "#sessionPageNavigationControls": {
+    Android: {height: sizes.SESSION_HEADER_ICON},
+    iOS: {height: 0}
+  },
+  "#sessionPageNavigationControlsBackButton": {
+    Android: {height: sizes.SESSION_HEADER_ICON},
+    iOS: {height: 0}
+  },
+  "#sessionPageNavigationControlsAttendanceButton": {
+    Android: {height: sizes.SESSION_HEADER_ICON},
+    iOS: {height: 0}
+  },
+  "#sessionPageTitleTextView": {
+    Android: {
+      textColor: "white",
+      left: sizes.LEFT_CONTENT_MARGIN,
+      top: ["#sessionPageNavigationControls", sizes.MARGIN],
+      font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
+    },
+    iOS: {
+      textColor: colors.DARK_PRIMARY_TEXT_COLOR,
+      left: sizes.MARGIN_BIG,
+      top: ["#sessionPageNavigationControls", sizes.MARGIN_BIG],
+      font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
+    }
+  },
+  "#sessionPageSummaryTextView": {
+    Android: {
+      left: sizes.LEFT_CONTENT_MARGIN,
+      bottom: sizes.MARGIN_BIG,
+      font: fontToString({size: sizes.FONT_LARGE}),
+      textColor: "white"
+    },
+    iOS: {
+      left: sizes.MARGIN_BIG,
+      bottom: sizes.MARGIN,
+      textColor: colors.DARK_SECONDARY_TEXT_COLOR,
+      font: fontToString({size: sizes.FONT_MEDIUM})
+    }
+  },
+  "#sessionPageSpeakersTextView": {
+    Android: {left: sizes.LEFT_CONTENT_MARGIN},
+    iOS: {left: sizes.MARGIN_BIG}
+  },
+  "#sessionPageDescriptionTextView": {
+    Android: {
+      top: sizes.MARGIN_BIG, left: sizes.LEFT_CONTENT_MARGIN,
+      textColor: colors.DARK_SECONDARY_TEXT_COLOR
+    },
+    iOS: {
+      top: 0, left: sizes.MARGIN_BIG,
+      textColor: colors.DARK_PRIMARY_TEXT_COLOR
+    }
+  },
+  "#sessionPageSpeakerSummary": {
+    Android: {textColor: colors.DARK_SECONDARY_TEXT_COLOR},
+    iOS: {textColor: colors.DARK_PRIMARY_TEXT_COLOR}
+  },
+  "#sessionPageSpeakerBio": {
+    Android: {textColor: colors.DARK_SECONDARY_TEXT_COLOR},
+    iOS: {textColor: colors.DARK_PRIMARY_TEXT_COLOR}
   },
   ".input": {
     Android: {background: colors.BACKGROUND_COLOR},
