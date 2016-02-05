@@ -34,7 +34,7 @@ exports.create = function() {
 
   var inputContainer = tabris.create("Composite", {
     id: "inputContainer",
-    left: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG, top: [header, sizes.MARGIN_BIG]
+    width: sizes.LOGIN_INPUT_WIDTH, centerX: 0, top: [header, sizes.MARGIN_BIG]
   }).appendTo(scrollView);
 
   var emailInput = Input.create({
@@ -54,7 +54,7 @@ exports.create = function() {
       page.trigger("loginButtonTapped");
       page.close();
     })
-    .appendTo(scrollView);
+    .appendTo(inputContainer);
 
   return page;
 };

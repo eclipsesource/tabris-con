@@ -120,10 +120,10 @@ module.exports = {
     }
   },
   "#loginButton": {
-    Android: {top: "#inputContainer", right: sizes.MARGIN_BIG},
+    Android: {top: ["prev()", sizes.MARGIN], right: 0},
     iOS: {
-      top: ["#inputContainer", sizes.MARGIN], centerX: 0,
-      font: fontToString({weight: "bold", size: sizes.FONT_XXLARGE})
+      top: ["prev()", sizes.MARGIN], centerX: 0,
+      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
     }
   }
 };
