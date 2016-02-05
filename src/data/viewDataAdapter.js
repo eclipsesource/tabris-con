@@ -19,10 +19,11 @@ exports.adaptPreviewCategories = function(previewCategories) {
 
 exports.adaptCategory = function(category) {
   var result = [];
-  result.push({type: "spacer"});
   result = _.union(result, category.sessions.map(function(session) {
     return adaptSessionListItem(session, {timeframeSummary: true});
   }));
+  result = _.sortBy(result, "startTimestamp");
+  result.unshift({type: "spacer"});
   result.push({type: "spacer"});
   return result;
 };
@@ -108,6 +109,7 @@ function adaptSessionListItem(session, options) {
     " / " +
     new TimezonedDate(session.endTimestamp).format("HH:mm");
   return {
+    startTimestamp: session.startTimestamp,
     summary: options && options.timeframeSummary ? timeframeSummary : session.text,
     type: "session",
     id: session.id,

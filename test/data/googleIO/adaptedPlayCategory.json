@@ -4,12 +4,14 @@
   "id": "4d63c164-cbf8-e411-b87f-00155d5066d7",
   "title": "Office Hours with the Play team",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/4d63c164-cbf8-e411-b87f-00155d5066d7.jpg",
+  "startTimestamp": "2016-05-29T16:00:00Z",
   "summary": "29 May - 09:00 / 17:00",
   "type": "session"
 }, {
   "id": "f7ad2c3d-08ea-e411-b87f-00155d5066d7",
   "title": "Office Hours with the Google Play services engineering team",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/f7ad2c3d-08ea-e411-b87f-00155d5066d7.jpg",
+  "startTimestamp": "2016-05-29T23:00:00Z",
   "summary": "29 May - 16:00 / 17:00",
   "type": "session"
 }, {
