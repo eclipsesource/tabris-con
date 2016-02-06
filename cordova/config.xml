@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.eclipsesource.tabris.con" version="1.0.2" android-versionCode="6" ios-CFBundleVersion="1.0.2" xmlns="http://www.w3.org/ns/widgets">
-    <name>EclipseCon 2016</name>
+    <name>EclipseCon NA 2016</name>
     <author email="tabris@eclipsesource.com" href="https://tabrisjs.com">
         EclipseSource
     </author>
