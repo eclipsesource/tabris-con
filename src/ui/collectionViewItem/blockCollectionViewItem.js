@@ -33,6 +33,7 @@ module.exports = {
 
     var titleTextView = tabris.create("TextView", {
       textColor: colors.ACCENTED_TEXT_COLOR,
+      maxLines: 2,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0
     }).appendTo(textContainer);
