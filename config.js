@@ -16,11 +16,9 @@ module.exports = {
     },
     cod: {
       "^Lunch": "schedule_icon_food",
-      ".*(Exhibit|Introduction).*": "schedule_icon_session",
-      ".*Break$": "schedule_icon_break",
-      "^Club": "schedule_icon_fun",
-      ".*Stammtisch.*": "schedule_icon_beer",
-      ".*Kahoot.*": "schedule_icon_quiz",
+      "Break$": "schedule_icon_break",
+      "Late Night$": "schedule_icon_fun",
+      "^(Happy Hour|Exhibitors)": "schedule_icon_dialog",
       "^BROWSE SESSIONS": "schedule_icon_plus",
       ".*": "schedule_icon_session"
     }
