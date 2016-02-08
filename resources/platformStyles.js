@@ -105,6 +105,13 @@ module.exports = {
     Android: {textColor: colors.DARK_SECONDARY_TEXT_COLOR},
     iOS: {textColor: colors.DARK_PRIMARY_TEXT_COLOR}
   },
+  "#loginButton": {
+    Android: {top: ["prev()", sizes.MARGIN], right: 0},
+    iOS: {
+      top: ["prev()", sizes.MARGIN], centerX: 0,
+      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
+    }
+  },
   ".input": {
     Android: {background: colors.BACKGROUND_COLOR},
     iOS: {}
@@ -119,11 +126,20 @@ module.exports = {
       textColor: colors.ACCENTED_TEXT_COLOR
     }
   },
-  "#loginButton": {
-    Android: {top: ["prev()", sizes.MARGIN], right: 0},
+  ".sessionContainer": {
+    Android: {left: sizes.MARGIN_BIG},
+    iOS: {left: 0}
+  },
+  ".groupSeparator": {
+    Android: {background: colors.LIGHT_BACKGROUND_COLOR},
+    iOS: {background: colors.IOS_LINE_SEPARATOR_COLOR}
+  },
+  ".iOSLineSeparator": {
+    Android: {
+      visible: false
+    },
     iOS: {
-      top: ["prev()", sizes.MARGIN], centerX: 0,
-      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
+      visible: true
     }
   }
 };

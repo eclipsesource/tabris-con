@@ -1,6 +1,5 @@
+var sessionCollectionViewItem = require("./sessionCollectionViewItem.js");
 var sizes = require("../../../resources/sizes");
-var viewDataProvider = require("../../data/viewDataProvider");
-var SessionPage = require("../page/SessionPage");
 var SessionContainer = require("./SessionContainer");
 
 module.exports = {
@@ -11,15 +10,9 @@ module.exports = {
       session.set("data", item);
     });
   },
-  select: function(widget, item) {
-    var sessionPage = SessionPage.create().open();
-    viewDataProvider.asyncGetSession(item.id)
-      .then(function(session) {
-        sessionPage.set("data", session);
-      });
-  }
+  select: sessionCollectionViewItem.select
 };
 
 function getCellHeight() {
-  return sizes.SESSION_CELL_HEIGHT[device.platform];
+  return sizes.PREVIEW_SESSION_CELL_HEIGHT;
 }

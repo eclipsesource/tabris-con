@@ -1,7 +1,7 @@
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  return tabris.create("CollectionView", _.extend({
+  var collectionView = tabris.create("CollectionView", _.extend({
     left: 0, top: 0, right: 0, bottom: 0,
     cellType: function(item) {
       return item.type;
@@ -15,6 +15,7 @@ exports.create = function(configuration) {
   }, configuration)).on("select", function(widget, item) {
     requireItemType(item.type).select(widget, item);
   });
+  return collectionView;
 };
 
 function requireItemType(type) {

@@ -7,26 +7,32 @@ exports.adaptPreviewCategories = function(previewCategories) {
   var previewCategories = _.cloneDeep(previewCategories);
   previewCategories = _.sortBy(previewCategories, "title");
   var result = [];
-  result.push({type: "separator"});
+  result.push({type: "groupSeparator"});
   previewCategories.forEach(function(categoryPreview) {
     result.push({type: "title", id: categoryPreview.id, title: categoryPreview.title});
     result = _.union(result, categoryPreview.sessions.map(function(session) {
-      return adaptSessionListItem(session);
+      return adaptSessionListItem(session, "previewSession");
     }));
-    result.push({type: "spacer"});
-    result.push({type: "separator"});
+    result.push({type: "previewCategoriesSpacer"});
+    result.push({type: "groupSeparator"});
   });
   return result;
 };
 
 exports.adaptCategory = function(category) {
+  var separators = createSeparators(category.sessions.length, "iOSLineSeparator");
   var result = [];
-  result = _.union(result, category.sessions.map(function(session) {
-    return adaptSessionListItem(session, {timeframeSummary: true});
-  }));
-  result = _.sortBy(result, "startTimestamp");
-  result.unshift({type: "spacer"});
-  result.push({type: "spacer"});
+  result = _(result)
+    .union(category.sessions.map(function(session) {
+      return adaptSessionListItem(session, "session", {timeframeSummary: true});
+    }))
+    .sortBy("startTime")
+    .map(function(block, i) {return [block, separators[i]];})
+    .flatten()
+    .pull(undefined)
+    .value();
+  result.unshift({type: "sessionsSpacer"});
+  result.push({type: "sessionsSpacer"});
   return result;
 };
 
@@ -65,7 +71,7 @@ exports.adaptBlocks = function(blocks) {
 };
 
 function mapDatedBlock(datedBlocks) {
-  var separators = createSeparators(datedBlocks);
+  var separators = createSeparators(datedBlocks.length, "smallSeparator");
   return {
     day: new TimezonedDate(datedBlocks[0].startTimestamp).format("DD MMM"),
     blocks: _(datedBlocks)
@@ -98,22 +104,22 @@ function adaptDatedBlock(datedBlock) {
   return block;
 }
 
-function createSeparators(blocks) {
+function createSeparators(itemCount, type) {
   var separators = [];
-  _.times(blocks.length - 1, function() {
-    separators.push({type: "smallSeparator"});
+  _.times(itemCount - 1, function() {
+    separators.push({type: type});
   });
   return separators;
 }
 
-function adaptSessionListItem(session, options) {
+function adaptSessionListItem(session, type, options) {
   var timeframeSummary = new TimezonedDate(session.startTimestamp).format("D MMM - HH:mm") +
     " / " +
     new TimezonedDate(session.endTimestamp).format("HH:mm");
   return {
     startTimestamp: session.startTimestamp,
     summary: options && options.timeframeSummary ? timeframeSummary : session.text,
-    type: "session",
+    type: type,
     id: session.id,
     image: session.image,
     title: session.title

@@ -17,7 +17,8 @@ module.exports = {
     }).appendTo(header);
     tabris.create("TextView", {
       id: "moreTextView",
-      right: sizes.MARGIN_BIG, centerY: 0,
+      alignment: "right",
+      width: 50, right: sizes.MARGIN_BIG, centerY: 0,
       textColor: colors.ACCENTED_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       text: "MORE"
