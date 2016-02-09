@@ -41,7 +41,7 @@ module.exports = {
     var summaryTextView = tabris.create("TextView", {
       left: 0, top: ["prev()", sizes.MARGIN], right: 0,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-      maxLines: 2,
+      maxLines: 1,
       font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(textContainer);
 
