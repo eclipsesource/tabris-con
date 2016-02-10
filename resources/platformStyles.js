@@ -8,7 +8,11 @@ module.exports = {
       background: colors.BACKGROUND_COLOR,
       textColor: colors.LIGHT_PRIMARY_TEXT_COLOR
     },
-    iOS: {textColor: colors.ACCENTED_TEXT_COLOR}
+    iOS: {textColor: colors.ACCENTED_TEXT_COLOR},
+    UWP: {
+      uwp_toolbarTheme: "dark",
+      uwp_theme: "light"
+    }
   },
   "#scheduleTabFolder": {
     Android: {
