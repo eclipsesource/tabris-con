@@ -21,7 +21,8 @@ module.exports = {
       background: colors.BACKGROUND_COLOR,
       textColor: "white"
     },
-    iOS: {textColor: colors.ACCENTED_TEXT_COLOR}
+    iOS: {textColor: colors.ACCENTED_TEXT_COLOR},
+    UWP: {}
   },
   "#sessionTitleTextView": {
     Android: {
