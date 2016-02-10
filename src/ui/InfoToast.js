@@ -35,7 +35,7 @@ exports.create = function() {
     highlightOnTouch: true,
     textColor: colors.ACTION_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),
-    right: sizes.MARGIN_BIG, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
+    right: sizes.MARGIN_BIG, centerY: 0
   }).on("tap", function() {infoToast.trigger("actionTap", infoToast);})
     .appendTo(infoToast);
 
