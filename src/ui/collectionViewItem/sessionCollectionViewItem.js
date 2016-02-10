@@ -13,10 +13,8 @@ module.exports = {
   },
   select: function(widget, item) {
     var sessionPage = SessionPage.create().open();
-    viewDataProvider.asyncGetSession(item.id)
-      .then(function(session) {
-        sessionPage.set("data", session);
-      });
+    var session = viewDataProvider.getSession(item.id)
+    sessionPage.set("data", session);
   }
 };
 
