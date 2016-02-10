@@ -122,13 +122,16 @@ describe("image", function() {
   describe("resource", function() {
     var iOSImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "iOS"].join("/")))
       .map(extractFilenames)
+      .compact()
       .value();
     var androidImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "Android"].join("/")))
       .map(extractFilenames)
+      .compact()
       .value();
     var commonImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
       .map(extractFilenames)
       .filter(function(filename) {return ["iOS", "Android", "UWP"].indexOf(filename) < 0;})
+      .compact()
       .value();
     _.uniq(iOSImageNames).forEach(assertVariantsExist("iOS"));
     _.uniq(androidImageNames).forEach(assertVariantsExist("Android"));
@@ -155,7 +158,11 @@ function assertVariantsExist(platform) {
 }
 
 function extractFilenames(el) {
-  return el.match(/[^@]*/)[0];
+  if (el.indexOf("@") > -1) {
+    return el.match(/[^@]*/)[0];
+  } else {
+    return null;
+  }
 }
 
 function getMockedPath(platform, devicePixelRatio) {
