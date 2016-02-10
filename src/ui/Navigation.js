@@ -10,10 +10,11 @@ module.exports = {
   Android: {
     create: function() {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      wrapInPage(Explore.create()).once("appear", populatePreviewCategories).open();
+      var exporePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
       wrapInPage(Settings.create());
       Drawer.create();
+      exporePage.open();
     }
   },
   iOS: {
@@ -26,86 +27,89 @@ module.exports = {
         left: 0, top: 0, right: 0, bottom: 0,
         textColor: colors.TINT_COLOR,
         tabBarLocation: "bottom"
-      }).on("change:selection", function(widget, tab) {
+      }).on("change:selection", function(tabFolder, tab) {
         mainPage.set("title", tab.get("title"));
+        updateNavigatablesActiveState(tab);
+        tabFolder.children("Tab").forEach(function(tab) {
+          tab.set("image", tab.find(".navigatable").first().get("image"));
+        });
       }).appendTo(mainPage);
       wrapInTabFolder(Schedule.create(), tabFolder)
         .once("appear", function() {
           populateBlocks(this);
         });
-      wrapInTabFolder(Explore.create(), tabFolder)
+      var exploreTab = wrapInTabFolder(Explore.create(), tabFolder)
         .once("appear", function() {
           populatePreviewCategories(this);
-        })
-        .open();
+        });
       wrapInTabFolder(Map.create(), tabFolder);
       wrapInTabFolder(Settings.create(), tabFolder);
+      exploreTab.open();
     }
   },
   UWP: {
     create: function() {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      wrapInPage(Explore.create()).once("appear", populatePreviewCategories).open();
+      var explorePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
       wrapInPage(Settings.create());
       Drawer.create();
+      explorePage.open();
     }
   }
 };
 
-function wrapInTabFolder(component, tabFolder) {
+function wrapInTabFolder(navigatable, tabFolder) {
   var tab = tabris.create("Tab", {
-    title: component.get("title"),
-    id: component.get("id") + "Tab",
-    image: component.get("image"),
+    title: navigatable.get("title"),
+    id: navigatable.get("id") + "Tab",
     textColor: colors.TINT_COLOR,
     left: 0, top: 0, right: 0, bottom: 0
-  }).on("change:data", function(widget, data) {component.set("data", data);});
-  component.appendTo(tab);
-  component.open = function() {
-    tab.parent().set("selection", tab);
-    tabris.ui.find("#mainPage").first().open();
-    return component;
-  };
+  }).on("change:data", function(widget, data) {navigatable.set("data", data);});
+  navigatable.appendTo(tab);
   tab.appendTo(tabFolder);
-  tabFolder.on("change:selection", function(widget, selection) {
-    if (selection === tab) {
-      component.trigger("appear", component, tab);
-    }
-  });
-  return component;
+  tab.set("image", navigatable.get("image"));
+  return navigatable;
 }
 
-function wrapInPage(component) {
+function wrapInPage(navigatable) {
   var page = tabris.create("Page", {
     topLevel: true,
-    title: component.get("title"),
-    id: component.get("id") + "Page",
-    image: component.get("image")
-  }).on("change:data", function(widget, data) {component.set("data", data);})
-    .on("appear", function() {component.trigger("appear", component);});
-  component.appendTo(page);
-  component.open = function() {
-    page.open();
-    return component;
-  };
-  return component;
+    title: navigatable.get("title"),
+    id: navigatable.get("id") + "Page"
+  }).on("change:data", function(widget, data) {navigatable.set("data", data);})
+    .on("appear", updateNavigatablesActiveState);
+
+  navigatable.appendTo(page);
+  return navigatable;
 }
 
-function populatePreviewCategories(component) {
-  if (!component.get("data")) {
+function updateNavigatablesActiveState(navigatableWrapper) {
+  var selectedNavigatable = navigatableWrapper.find(".navigatable").first();
+  tabris.ui
+    .find(".navigatable")
+    .forEach(function(navigatable) {
+      if (navigatable.get("active")) {
+        navigatable.set("active", false);
+      }
+    });
+  selectedNavigatable.set("active", true);
+}
+
+function populatePreviewCategories(navigatable) {
+  if (!navigatable.get("data")) {
     viewDataProvider.asyncGetPreviewCategories()
       .then(function(previewCategories) {
-        component.set("data", previewCategories);
+        navigatable.set("data", previewCategories);
       });
   }
 }
 
-function populateBlocks(component) {
-  if (!component.get("data")) {
+function populateBlocks(navigatable) {
+  if (!navigatable.get("data")) {
     viewDataProvider.asyncGetBlocks()
       .then(function(blocks) {
-        component.set("data", blocks);
+        navigatable.set("data", blocks);
       });
   }
 }

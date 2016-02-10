@@ -7,7 +7,7 @@ exports.create = function() {
   var explore = Navigatable.create({
     id: "explore",
     title: "Explore",
-    image: getImage("explore")
+    image: getImage("explore_selected") // TODO: selected image initially shown as part of workaround for tabris-ios#841
   });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(explore);

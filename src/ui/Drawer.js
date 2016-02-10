@@ -22,14 +22,18 @@ exports.create = function() {
   var accountList = createAccountList();
 
   tabris.ui.on("change:activePage", function() {
+    updateDrawerListSelection();
+  });
+
+  function updateDrawerListSelection() {
     drawerList.children()
       .filter(function(child) {
-        return child.get("page") instanceof tabris.Page;
+        return child.get("page") instanceof tabris.Page && child.get("page").get("topLevel");
       })
       .forEach(function(pageItem) {
         pageItem.updateSelection();
       });
-  });
+  }
 
   function setAccountMode(userArea, value) {
     accountList.set("visible", value);
@@ -54,17 +58,17 @@ exports.create = function() {
     var page = tabris.ui.find("#" + id).first();
     var pageListItem = createListItem(page.get("title"), page.get("image"));
     pageListItem.updateSelection = function() {
-      pageListItem.find("#iconImageView").set("image", getPageImageVariant(page));
-      pageListItem.set("background", pageIsActive(page) ? colors.LIGHT_BACKGROUND_COLOR : "transparent");
+      pageListItem.find("#iconImageView").set("image", page.find(".navigatable").get("image"));
+      pageListItem.set("background", page.find(".navigatable").get("active") ?
+        colors.LIGHT_BACKGROUND_COLOR : "transparent");
     };
-    pageListItem.set("page", page)
-      .on("tap", function() {
-        if (tabris.ui.drawer) {
-          tabris.ui.drawer.close();
-        }
-        page.open();
-      });
-    pageListItem.updateSelection();
+    pageListItem.set("page", page);
+    pageListItem.on("tap", function() {
+      if (tabris.ui.drawer) {
+        tabris.ui.drawer.close();
+      }
+      page.open();
+    });
     return pageListItem;
   }
 
@@ -121,21 +125,6 @@ exports.create = function() {
       textColor: colors.DRAWER_TEXT_COLOR
     }).appendTo(container);
     return container;
-  }
-
-  function getPageImageVariant(page) {
-    var pageImage = page.get("image");
-    if (pageIsActive(page)) {
-      var imageSource = pageImage.src.replace(/(@.*\.png)$/, function(captured) {
-        return "_selected" + captured;
-      });
-      pageImage.src = imageSource;
-    }
-    return pageImage;
-  }
-
-  function pageIsActive(page) {
-    return tabris.ui.get("activePage").get("id") === page.get("id");
   }
 
 };

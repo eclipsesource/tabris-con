@@ -1,4 +1,5 @@
 var sizes = require("../resources/sizes");
+var FALLBACK_PLATFORM = "Android";
 
 module.exports = function(image, width, height) {
   if (!image) {
@@ -23,5 +24,13 @@ function closest(array, goal) {
 
 function getImageSource(image, closestSupportedRatio) {
   return image.match(/^https?:\/\//) ? image :
-    "resources/images/" + image + "@" + closestSupportedRatio + "x.png";
+    ["resources/images", getDevicePlatform(), image + "@" + closestSupportedRatio + "x.png"].join("/");
+}
+
+function getDevicePlatform() {
+  var supportedPlatforms = ["Android", "iOS"];
+  if (supportedPlatforms.indexOf(device.platform) < 0) {
+    return FALLBACK_PLATFORM;
+  }
+  return device.platform;
 }

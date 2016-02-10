@@ -33,7 +33,7 @@ exports.create = function() {
   var schedule = Navigatable.create({
     id: "schedule",
     title: "My Schedule",
-    image: getImage("schedule"),
+    image: getImage("schedule_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
     left: 0, top: 0, right: 0, bottom: 0
   }).on("change:focus", function(widget, focus) {
     schedule.set("shouldFocusItem", focus);
