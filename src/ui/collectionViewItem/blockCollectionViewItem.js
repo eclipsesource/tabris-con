@@ -54,7 +54,7 @@ module.exports = {
       startTimeTextView.set("text", item.startTime);
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
-      imageView.set("image", getImage(item.image));
+      imageView.set("image", getImage.forDevicePlatform(item.image));
 
       if (item.shouldPop) {
         setTimeout(function() {

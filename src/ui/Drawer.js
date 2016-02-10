@@ -77,7 +77,7 @@ exports.create = function() {
       left: 0, top: ["#userArea", 8], right: 0,
       visible: false
     }).appendTo(scrollView);
-    createListItem("Logout", getImage("logout"))
+    createListItem("Logout", getImage.forDevicePlatform("logout"))
       .on("tap", function() {
         loginService.logout().then(function() {
           drawerUserArea.set("loggedIn", false);

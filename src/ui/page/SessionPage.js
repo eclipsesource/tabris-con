@@ -88,7 +88,7 @@ exports.create = function() {
         height: sizes.SESSION_SPEAKER_IMAGE
       },
       scaleMode: "fit",
-      image: getImage(speaker.image, sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
+      image: getImage.common(speaker.image, sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
     var speakerSummary = tabris.create("TextView", {
       id: "sessionPageSpeakerSummary",
@@ -112,7 +112,7 @@ exports.create = function() {
     sessionPageHeader.set("titleText", data.title);
     sessionPageHeader.set("summaryText", data.summary);
     descriptionTextView.set("text", data.description);
-    imageView.set("image", getImage(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
+    imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
     createSpeakers(data.speakers);
   }
 

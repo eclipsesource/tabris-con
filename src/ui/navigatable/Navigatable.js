@@ -33,6 +33,6 @@ exports.create = function(configuration) {
 
   function getImageVariant(navigatable, active) {
     var imageName = navigatable.get("id");
-    return getImage(active ? imageName + "_selected" : imageName);
+    return getImage.forDevicePlatform(active ? imageName + "_selected" : imageName);
   }
 };

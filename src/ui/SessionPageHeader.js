@@ -18,7 +18,7 @@ exports.create = function() {
   var backButton = tabris.create("ImageView", {
     id: "sessionPageNavigationControlsBackButton",
     left: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
-    image: getImage("back_arrow"),
+    image: getImage.forDevicePlatform("back_arrow"),
     highlightOnTouch: true
   }).on("tap", function() {
     sessionPageHeader.trigger("backButtonTap");
@@ -28,12 +28,12 @@ exports.create = function() {
   var attendanceButton = tabris.create("ImageView", {
     id: "sessionPageNavigationControlsAttendanceButton",
     right: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
-    image: getImage("plus"),
+    image: getImage.common("plus"),
     highlightOnTouch: true
   }).on("tap", function() {
     sessionPageHeader.trigger("attendanceButtonTap", sessionPageHeader, this.get("checked"));
   }).on("change:checked", function(widget, checked) {
-    this.set("image", checked ? getImage("check") : getImage("plus"));
+    this.set("image", checked ? getImage.common("check") : getImage.common("plus"));
   }).appendTo(navigationControls);
   applyPlatformStyle(attendanceButton);
 

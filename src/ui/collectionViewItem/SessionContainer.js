@@ -29,7 +29,11 @@ exports.create = function(configuration) {
   }).appendTo(textContainer);
   sessionContainer.on("change:data", function(widget, data) {
     if (config.SESSIONS_HAVE_IMAGES) {
-      var image = getImage(data.image, sizes.SESSION_CELL_IMAGE_WIDTH, sizes.SESSION_CELL_IMAGE_HEIGHT);
+      var image = getImage.forDevicePlatform(
+        data.image,
+        sizes.SESSION_CELL_IMAGE_WIDTH,
+        sizes.SESSION_CELL_IMAGE_HEIGHT
+      );
       imageView.set("image", image);
     }
     titleTextView.set("text", data.title);

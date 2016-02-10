@@ -26,7 +26,7 @@ exports.create = function() {
   }).appendTo(userArea);
   var accountImage = tabris.create("ImageView", {
     left: sizes.MARGIN_XSMALL, centerY: 0,
-    image: getImage("account")
+    image: getImage.forDevicePlatform("account")
   }).appendTo(loggedOutContainer);
   tabris.create("TextView", {
     text: "LOGIN",
@@ -41,7 +41,7 @@ exports.create = function() {
     userArea.trigger("loggedInTap", userArea);
   }).appendTo(userArea);
   tabris.create("ImageView", {
-    image: getImage("drawer_background"),
+    image: getImage.forDevicePlatform("drawer_background"),
     left: 0, top: 0, right: 0, bottom: 0,
     scaleMode: "fill"
   }).appendTo(loggedInContainer);
@@ -65,7 +65,7 @@ exports.create = function() {
   }).appendTo(userTextContainer);
   tabris.create("ImageView", {
     id: "menuArrowImageView",
-    image: getImage("menu_down"),
+    image: getImage.forDevicePlatform("menu_down"),
     layoutData: {centerY: 0, right: 0}
   }).appendTo(userTextContainer);
 
