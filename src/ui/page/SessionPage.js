@@ -169,7 +169,7 @@ exports.create = function() {
     }
   }
 
-  if (device.platform === "Android") {
+  if (device.platform !== "iOS") {
     page.on("appear", function() {
       tabris.ui.set("toolbarVisible", false);
     }).on("disappear", function() {
