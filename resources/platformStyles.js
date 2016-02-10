@@ -10,6 +10,8 @@ module.exports = {
     },
     iOS: {textColor: colors.ACCENTED_TEXT_COLOR},
     UWP: {
+      background: colors.BACKGROUND_COLOR,
+      textColor: colors.LIGHT_PRIMARY_TEXT_COLOR,
       uwp_toolbarTheme: "dark",
       uwp_theme: "light"
     }
