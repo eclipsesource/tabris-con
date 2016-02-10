@@ -50,7 +50,7 @@ exports.create = function() {
   }).appendTo(inputContainer);
 
   Button.create({id: "loginButton", text: "Login"})
-    .on("tap", function() {
+    .on("select", function() {
       page.trigger("loginButtonTapped");
       page.close();
     })
