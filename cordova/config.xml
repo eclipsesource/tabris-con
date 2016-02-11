@@ -7,4 +7,5 @@
     <author email="tabris@eclipsesource.com" href="https://tabrisjs.com">
         EclipseSource
     </author>
+    <access origin="*" />
 </widget>
