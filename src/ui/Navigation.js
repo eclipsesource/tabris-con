@@ -44,7 +44,9 @@ module.exports = {
         });
       wrapInTabFolder(Map.create(), tabFolder);
       wrapInTabFolder(Settings.create(), tabFolder);
-      exploreTab.open();
+      setTimeout(function() {
+        exploreTab.open(); // TODO: tab open delayed as part of a workaround for tabris-ios#841
+      }, 100);
     }
   },
   UWP: {
