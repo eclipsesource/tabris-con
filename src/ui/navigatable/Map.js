@@ -1,6 +1,8 @@
 /* globals fetch: false, Promise: true*/
 var getImage = require("../../getImage");
+var colors = require("../../../resources/colors");
 var Navigatable = require("./Navigatable");
+var LoadingIndicator = require("../LoadingIndicator");
 Promise = require("promise");
 require("whatwg-fetch");
 
@@ -9,22 +11,40 @@ exports.create = function() {
     id: "map",
     title: "Map",
     image: getImage.forDevicePlatform("map_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
-    left: 0, top: 0, right: 0, bottom: 0,
-    background: "#cdcbcc"
+    left: 0, top: 0, right: 0, bottom: 0
   });
-  if (device.platform === "Android") {
-    createWebViewMapContainer(map).set("html", getWebviewHtml(getBundledMapResource()));
-  } else {
-    internetConnectionAvailable()
-      .then(function() {createWebViewMapContainer(map).set("html", getWebviewHtml(getRemoteMapResource()));})
-      .catch(function() {createImageViewMapContainer(map);});
-  }
+  var loadingIndicator = LoadingIndicator.create().appendTo(map);
+  map.once("appear", function() {
+    if (device.platform === "Android") {
+      createWebViewMapContainer(map)
+        .set("html", getWebviewHtml(getBundledMapResource()))
+        .on("load", showWebView);
+    } else {
+      internetConnectionAvailable()
+        .then(function() {
+          createWebViewMapContainer(map)
+            .set("html", getWebviewHtml(getRemoteMapResource()))
+            .on("load", showWebView);
+        })
+        .catch(function() {
+          createImageViewMapContainer(map);
+          loadingIndicator.dispose();
+        });
+    }
+  });
   return map;
 };
+
+function showWebView(webView) {
+  webView.set("visible", true);
+  webView.parent().set("background", colors.MAP_BACKGROUND_COLOR);
+  webView.parent().find("#loadingIndicator").dispose();
+}
 
 function createWebViewMapContainer(map) {
   return tabris.create("WebView", {
     left: 0, top: 0, right: 0, bottom: 0,
+    visible: false,
     background: "#cdcbcc"
   }).appendTo(map);
 }
