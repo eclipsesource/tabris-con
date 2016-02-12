@@ -27,6 +27,7 @@ function createWebViewMapContainer(map) {
   return tabris.create("WebView", {
     left: 0, top: 0, right: 0, bottom: 0,
     visible: false,
-    background: "#cdcbcc"
+    background: "#cdcbcc",
+    url: tabris.app.getResourceLocation("resources/map.html")
   }).appendTo(map);
 }
