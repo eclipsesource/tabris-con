@@ -8,4 +8,5 @@
         EclipseSource
     </author>
     <access origin="*" />
+    <plugin name="cordova-plugin-dialogs" />
 </widget>
