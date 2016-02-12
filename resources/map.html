@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #cdcbcc;
+      }
+    </style>
+    <script type='text/javascript' src='../../../lib/jquery-2.2.0.min.js'></script>
+    <script type='text/javascript' src='../../../lib/jquery.panzoom.min.js'></script>
+  </head>
+  <body>
+    <img src='../../../resources/images/floorplan.png' />
+    <script>
+      $(document).ready(
+        function(){
+          $("img").panzoom("fit": $("#fit"));
+        }
+      );
+    </script>
+  </body>
+</html>
