@@ -5,6 +5,7 @@ module.exports = {
   DATA_FORMAT: "cod",
   SESSIONS_HAVE_IMAGES: false,
   CONFERENCE_TIMEZONE: timezone,
+  VOTING_SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SCHEDULE_PATTERN_ICON_MAP: {
     googleIO: {
       "^After": "schedule_icon_fun",

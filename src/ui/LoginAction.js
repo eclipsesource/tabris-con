@@ -10,18 +10,34 @@ exports.create = function() {
     if (this.get("mode") === "login") {
       LoginPage.create()
         .open()
-        .on("loginButtonTapped", function() {
-          loginService.login().then(function() {
+        .on("loginButtonTapped", function(page) {
+          loginService.login(page.find("#username").get("text"), page.find("#password").get("text"))
+          .then(function() {
             action.set("mode", "logout");
+            page.trigger("success", this);
+          })
+          .catch(function(error) {
+            page.trigger("error", this, error);
           });
         });
     } else {
-      loginService.logout().then(function() {
-        action.set("mode", "login");
-      });
+      action.set("mode", "loggingOut");
+      loginService.logout()
+        .then(function() {
+          action.set("mode", "login");
+        })
+        .catch(function() {
+          action.set("mode", "logout");
+        });
     }
   }).on("change:mode", function(widget, mode) {
-    action.set("title", mode === "login" ? "Login" : "Logout");
+    var modeTitle = {
+      login: "Login",
+      logout: "Logout",
+      loggingOut: "Logging out..."
+    };
+    action.set("enabled", mode !== "loggingOut");
+    action.set("title", modeTitle[mode]);
   });
   action.set("mode", loginService.isLoggedIn() ? "logout" : "login");
 

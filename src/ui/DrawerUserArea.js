@@ -17,10 +17,15 @@ exports.create = function() {
     left: sizes.MARGIN_BIG, bottom: 0, right: sizes.MARGIN_BIG, height: sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT
   }).on("tap", function() {
     var loginPage = LoginPage.create().open();
-    loginPage.on("loginButtonTapped", function() {
-      loginService.login().then(function() {
-        userArea.set("loggedIn", true);
-      });
+    loginPage.on("loginButtonTapped", function(widget, username, password) {
+      loginService.login(username, password)
+        .then(function() {
+          userArea.set("loggedIn", true);
+          loginPage.trigger("success", this);
+        })
+        .catch(function(error) {
+          loginPage.trigger("error", this, error);
+        });
     });
     userArea.trigger("loginPageOpened", userArea);
   }).appendTo(userArea);
@@ -51,13 +56,12 @@ exports.create = function() {
     right: sizes.MARGIN_BIG,
     height: sizes.DRAWER_USER_TEXT_CONTAINER_HEIGHT
   }).appendTo(loggedInContainer);
-  tabris.create("TextView", {
+  var nameTextView = tabris.create("TextView", {
     top: sizes.MARGIN,
-    text: "John Smith",
     textColor: "white",
     font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
   }).appendTo(userTextContainer);
-  tabris.create("TextView", {
+  var mailTextView = tabris.create("TextView", {
     bottom: sizes.MARGIN,
     text: "jsmith@me.com",
     textColor: "white",
@@ -73,6 +77,8 @@ exports.create = function() {
     .on("change:loggedIn", function(widget, loggedIn) {
       userArea.set("height",
         loggedIn ? sizes.DRAWER_USER_AREA_LOGGED_IN_HEIGHT : sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT);
+      nameTextView.set("text", localStorage.getItem("username"));
+      mailTextView.set("text", localStorage.getItem("mail"));
       loggedInContainer.set("visible", loggedIn);
       loggedOutContainer.set("visible", !loggedIn);
     })

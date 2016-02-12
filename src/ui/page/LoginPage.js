@@ -2,16 +2,12 @@ var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var applyPlatformStyle = require("../applyPlatformStyle");
 var Input = require("../Input");
-var Button = require("../Button");
+var ProgressButton = require("../ProgressButton");
 
 exports.create = function() {
   var page = tabris.create("Page", {
     topLevel: false,
     id: "loginPage"
-  }).on("appear", function() {
-    tabris.ui.find("#loginAction").set("visible", false);
-  }).on("disappear", function() {
-    tabris.ui.find("#loginAction").set("visible", true);
   });
 
   var scrollView = tabris.create("ScrollView", {left: 0, top: 0, right: 0, bottom: 0}).appendTo(page);
@@ -38,23 +34,38 @@ exports.create = function() {
   }).appendTo(scrollView);
 
   var emailInput = Input.create({
+    id: "username",
     left: 0, right: 0,
     message: "eclipse.org e-mail address"
   }).appendTo(inputContainer);
 
-  Input.create({
+  var passwordInput = Input.create({
     type: "password",
+    id: "password",
     left: 0, right: 0,
     top: [emailInput, sizes.MARGIN],
     message: "password"
   }).appendTo(inputContainer);
 
-  Button.create({id: "loginButton", text: "Login"})
+  var button = ProgressButton.create({id: "loginButton", text: "Login"})
     .on("select", function() {
-      page.trigger("loginButtonTapped");
-      page.close();
+      this.set("progress", true);
+      page.trigger("loginButtonTapped", page, emailInput.get("text"), passwordInput.get("text"));
     })
     .appendTo(inputContainer);
 
+  page
+    .on("appear", function() {
+      tabris.ui.find("#loginAction").set("visible", false);
+    })
+    .on("disappear", function() {
+      tabris.ui.find("#loginAction").set("visible", true);
+    })
+    .on("success", function() {
+      this.close();
+    })
+    .on("error", function() {
+      button.set("progress", false);
+    });
   return page;
 };

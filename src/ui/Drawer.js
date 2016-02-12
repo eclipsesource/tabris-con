@@ -4,6 +4,7 @@ var DrawerUserArea = require("./DrawerUserArea");
 var fontToString = require("../fontToString");
 var getImage = require("../getImage");
 var loginService = require("../loginService");
+var addProgressTo = require("./addProgressTo");
 
 exports.create = function() {
   var accountModeEnabled = false;
@@ -78,11 +79,16 @@ exports.create = function() {
       visible: false
     }).appendTo(scrollView);
     createListItem("Logout", getImage.forDevicePlatform("logout"))
-      .on("tap", function() {
-        loginService.logout().then(function() {
-          drawerUserArea.set("loggedIn", false);
-          setAccountMode(drawerUserArea, false);
-        });
+      .on("tap", function(logoutListItem) {
+        this.set("progress", true);
+        loginService.logout()
+          .then(function() {
+            drawerUserArea.set("loggedIn", false);
+            setAccountMode(drawerUserArea, false);
+          })
+          .finally(function() {
+            logoutListItem.set("progress", false);
+          });
       })
       .appendTo(accountList);
     return accountList;
@@ -104,15 +110,17 @@ exports.create = function() {
   }
 
   function createListItem(text, image) {
-    var container = tabris.create("Composite", {
+    var listItem = tabris.create("Composite", {
       left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
-      highlightOnTouch: true
+      highlightOnTouch: true,
+      progress: false
     });
+    addProgressTo(listItem);
     tabris.create("ImageView", {
       id: "iconImageView",
       image: image,
       left: sizes.MARGIN_BIG, centerY: 0
-    }).appendTo(container);
+    }).appendTo(listItem);
     tabris.create("TextView", {
       id: "titleTextView",
       text: text,
@@ -123,8 +131,8 @@ exports.create = function() {
         family: device.platform === "iOS" ? ".HelveticaNeueInterface-Bold" : null
       }),
       textColor: colors.DRAWER_TEXT_COLOR
-    }).appendTo(container);
-    return container;
+    }).appendTo(listItem);
+    return listItem;
   }
 
 };

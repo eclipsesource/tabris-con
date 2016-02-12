@@ -12,6 +12,5 @@ exports.create = function(configuration) {
     button.set("text", button.get("text").toUpperCase());
   }
   applyPlatformStyle(button);
-  applyPlatformStyle(button);
   return button;
 };
