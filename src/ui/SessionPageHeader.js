@@ -39,13 +39,13 @@ exports.create = function() {
 
   var titleTextView = tabris.create("TextView", {
     id: "sessionPageTitleTextView",
-    top: ["#sessionPageNavigationControls", sizes.MARGIN], right: sizes.MARGIN_BIG
+    top: ["#sessionPageNavigationControls", sizes.MARGIN], right: sizes.MARGIN_LARGE
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(titleTextView);
 
   var summaryTextView = tabris.create("TextView", {
     id: "sessionPageSummaryTextView",
-    right: sizes.MARGIN_BIG, top: "prev()",
+    right: sizes.MARGIN_LARGE, top: "prev()",
     textColor: "white"
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(summaryTextView);

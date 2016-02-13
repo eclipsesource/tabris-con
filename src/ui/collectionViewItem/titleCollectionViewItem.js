@@ -11,14 +11,14 @@ module.exports = {
       left: 0, top: 0, right: 0, height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT
     }).appendTo(cell);
     var titleTextView = tabris.create("TextView", {
-      left: sizes.MARGIN_BIG, centerY: 0, right: ["#moreTextView", sizes.MARGIN],
+      left: sizes.MARGIN_LARGE, centerY: 0, right: ["#moreTextView", sizes.MARGIN],
       maxLines: 1,
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
     }).appendTo(header);
     tabris.create("TextView", {
       id: "moreTextView",
       alignment: "right",
-      width: 50, right: sizes.MARGIN_BIG, centerY: 0,
+      width: 50, right: sizes.MARGIN_LARGE, centerY: 0,
       textColor: colors.ACCENTED_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       text: "MORE"

@@ -14,7 +14,7 @@ exports.create = function() {
 
   var loggedOutContainer = tabris.create("Composite", {
     highlightOnTouch: true,
-    left: sizes.MARGIN_BIG, bottom: 0, right: sizes.MARGIN_BIG, height: sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT
+    left: sizes.MARGIN_LARGE, bottom: 0, right: sizes.MARGIN_LARGE, height: sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT
   }).on("tap", function() {
     var loginPage = LoginPage.create().open();
     loginPage.on("loginButtonTapped", function(widget, username, password) {
@@ -37,7 +37,7 @@ exports.create = function() {
     text: "LOGIN",
     textColor: "white",
     font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-    left: [accountImage, sizes.MARGIN_BIG], centerY: 0
+    left: [accountImage, sizes.MARGIN_LARGE], centerY: 0
   }).appendTo(loggedOutContainer);
 
   var loggedInContainer = tabris.create("Composite", {
@@ -51,9 +51,9 @@ exports.create = function() {
     scaleMode: "fill"
   }).appendTo(loggedInContainer);
   var userTextContainer = tabris.create("Composite", {
-    left: sizes.MARGIN_BIG,
+    left: sizes.MARGIN_LARGE,
     bottom: 0,
-    right: sizes.MARGIN_BIG,
+    right: sizes.MARGIN_LARGE,
     height: sizes.DRAWER_USER_TEXT_CONTAINER_HEIGHT
   }).appendTo(loggedInContainer);
   var nameTextView = tabris.create("TextView", {

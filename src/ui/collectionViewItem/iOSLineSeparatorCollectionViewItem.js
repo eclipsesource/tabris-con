@@ -7,8 +7,8 @@ module.exports = {
   initializeCell: function(cell) {
     var separator = tabris.create("Composite", {
       class: "iOSLineSeparator",
-      left: sizes.MARGIN_BIG, top: 0, right: 0, bottom: 0,
-      background: colors.IOS_LINE_SEPARATOR_COLOR
+      left: sizes.MARGIN_LARGE, top: 0, right: 0, bottom: 0,
+      background: colors.LINE_SEPARATOR_COLOR
     }).appendTo(cell);
     applyPlatformStyle(separator);
   },

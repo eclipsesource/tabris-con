@@ -9,4 +9,5 @@
     </author>
     <access origin="*" />
     <plugin name="cordova-plugin-dialogs" />
+    <plugin name="cordova-plugin-inappbrowser" />
 </widget>

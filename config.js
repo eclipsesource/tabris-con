@@ -3,6 +3,10 @@ var timezone = "America/New_York";
 
 module.exports = {
   DATA_FORMAT: "cod",
+  VENDOR: "EclipseSource",
+  VENDOR_WEBSITE: "http://eclipsesource.com/",
+  CONFERENCE_NAME: "EclipseCon NA 2016",
+  PROJECT_URL: "https://github.com/eclipsesource/tabris-con",
   SESSIONS_HAVE_IMAGES: false,
   CONFERENCE_TIMEZONE: timezone,
   VOTING_SERVICE_URL: "https://www.eclipsecon.org/na2016",

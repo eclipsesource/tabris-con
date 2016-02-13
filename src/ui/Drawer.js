@@ -51,7 +51,7 @@ exports.create = function() {
     createPageListItem("Explore", "explorePage").appendTo(drawerList);
     createPageListItem("Map", "mapPage").appendTo(drawerList);
     createSeparator().appendTo(drawerList);
-    createPageListItem("Settings", "settingsPage").appendTo(drawerList);
+    createPageListItem("About", "aboutPage").appendTo(drawerList);
     return drawerList;
   }
 
@@ -119,7 +119,7 @@ exports.create = function() {
     tabris.create("ImageView", {
       id: "iconImageView",
       image: image,
-      left: sizes.MARGIN_BIG, centerY: 0
+      left: sizes.MARGIN_LARGE, centerY: 0
     }).appendTo(listItem);
     tabris.create("TextView", {
       id: "titleTextView",

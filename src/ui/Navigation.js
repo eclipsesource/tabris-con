@@ -2,7 +2,7 @@ var Schedule = require("./navigatable/Schedule");
 var Explore = require("./navigatable/Explore");
 var Map = require("./navigatable/Map");
 var Drawer = require("./Drawer");
-var Settings = require("./navigatable/Settings");
+var About = require("./navigatable/About");
 var viewDataProvider = require("../data/viewDataProvider");
 var colors = require("../../resources/colors");
 
@@ -12,7 +12,7 @@ module.exports = {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
       var exporePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
-      wrapInPage(Settings.create());
+      wrapInPage(About.create());
       Drawer.create();
       exporePage.open();
     }
@@ -43,7 +43,7 @@ module.exports = {
           populatePreviewCategories(this);
         });
       wrapInTabFolder(Map.create(), tabFolder);
-      wrapInTabFolder(Settings.create(), tabFolder);
+      wrapInTabFolder(About.create(), tabFolder);
       setTimeout(function() {
         exploreTab.open(); // TODO: tab open delayed as part of a workaround for tabris-ios#841
       }, 100);
@@ -54,7 +54,7 @@ module.exports = {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
       var explorePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
-      wrapInPage(Settings.create());
+      wrapInPage(About.create());
       Drawer.create();
       explorePage.open();
     }

@@ -71,20 +71,20 @@ module.exports = {
     },
     iOS: {
       textColor: colors.DARK_PRIMARY_TEXT_COLOR,
-      left: sizes.MARGIN_BIG,
-      top: ["#sessionPageNavigationControls", sizes.MARGIN_BIG],
+      left: sizes.MARGIN_LARGE,
+      top: ["#sessionPageNavigationControls", sizes.MARGIN_LARGE],
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
     }
   },
   "#sessionPageSummaryTextView": {
     Android: {
       left: sizes.LEFT_CONTENT_MARGIN,
-      bottom: sizes.MARGIN_BIG,
+      bottom: sizes.MARGIN_LARGE,
       font: fontToString({size: sizes.FONT_LARGE}),
       textColor: "white"
     },
     iOS: {
-      left: sizes.MARGIN_BIG,
+      left: sizes.MARGIN_LARGE,
       bottom: sizes.MARGIN,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({size: sizes.FONT_MEDIUM})
@@ -92,15 +92,15 @@ module.exports = {
   },
   "#sessionPageSpeakersTextView": {
     Android: {left: sizes.LEFT_CONTENT_MARGIN},
-    iOS: {left: sizes.MARGIN_BIG}
+    iOS: {left: sizes.MARGIN_LARGE}
   },
   "#sessionPageDescriptionTextView": {
     Android: {
-      top: sizes.MARGIN_BIG, left: sizes.LEFT_CONTENT_MARGIN,
+      top: sizes.MARGIN_LARGE, left: sizes.LEFT_CONTENT_MARGIN,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     },
     iOS: {
-      top: 0, left: sizes.MARGIN_BIG,
+      top: 0, left: sizes.MARGIN_LARGE,
       textColor: colors.DARK_PRIMARY_TEXT_COLOR
     }
   },
@@ -134,12 +134,12 @@ module.exports = {
     }
   },
   ".sessionContainer": {
-    Android: {left: sizes.MARGIN_BIG},
+    Android: {left: sizes.MARGIN_LARGE},
     iOS: {left: 0}
   },
   ".groupSeparator": {
     Android: {background: colors.LIGHT_BACKGROUND_COLOR},
-    iOS: {background: colors.IOS_LINE_SEPARATOR_COLOR}
+    iOS: {background: colors.LINE_SEPARATOR_COLOR}
   },
   ".iOSLineSeparator": {
     Android: {

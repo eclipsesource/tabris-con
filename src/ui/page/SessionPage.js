@@ -45,7 +45,7 @@ exports.create = function() {
 
   var descriptionTextView = tabris.create("TextView", {
     id: "sessionPageDescriptionTextView",
-    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_BIG
+    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_LARGE
   }).appendTo(contentComposite);
   applyPlatformStyle(descriptionTextView);
 
@@ -53,7 +53,7 @@ exports.create = function() {
     left: 0, top: "prev()", right: 0
   }).appendTo(contentComposite);
 
-  tabris.create("Composite", {left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0}).appendTo(contentComposite);
+  tabris.create("Composite", {left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0}).appendTo(contentComposite);
 
   var loadingIndicator = LoadingIndicator.create({shade: true}).appendTo(page);
 
@@ -64,7 +64,7 @@ exports.create = function() {
     }
     var speakersTextView = tabris.create("TextView", {
       id: "sessionPageSpeakersTextView",
-      right: sizes.MARGIN_BIG, top: ["prev()", sizes.MARGIN_BIG * 2],
+      right: sizes.MARGIN_LARGE, top: ["prev()", sizes.MARGIN_LARGE * 2],
       text: "Speakers",
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.ACCENTED_TEXT_COLOR
@@ -78,11 +78,11 @@ exports.create = function() {
 
   function createSpeaker(speaker) {
     var speakerContainer = tabris.create("Composite", {
-      left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0
+      left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
     });
     tabris.create("ImageView", {
       layoutData: {
-        left: sizes.MARGIN_BIG,
+        left: sizes.MARGIN_LARGE,
         top: sizes.MARGIN_SMALL,
         width: sizes.SESSION_SPEAKER_IMAGE,
         height: sizes.SESSION_SPEAKER_IMAGE
@@ -92,14 +92,14 @@ exports.create = function() {
     }).appendTo(speakerContainer);
     var speakerSummary = tabris.create("TextView", {
       id: "sessionPageSpeakerSummary",
-      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG,
+      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE,
       text: speaker.summary,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerSummary);
     var speakerBio = tabris.create("TextView", {
       id: "sessionPageSpeakerBio",
-      left: sizes.LEFT_CONTENT_MARGIN, top: ["prev()", 0], right: sizes.MARGIN_BIG,
+      left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
       text: speaker.bio,
       font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);

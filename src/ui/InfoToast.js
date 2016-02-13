@@ -28,14 +28,14 @@ exports.create = function() {
     textColor: colors.LIGHT_PRIMARY_TEXT_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),
     markupEnabled: true,
-    left: sizes.MARGIN_BIG, right: ["#actionTextView", sizes.MARGIN], centerY: 0
+    left: sizes.MARGIN_LARGE, right: ["#actionTextView", sizes.MARGIN], centerY: 0
   }).appendTo(infoToast);
 
   var actionTextView = tabris.create("TextView", {
     highlightOnTouch: true,
     textColor: colors.ACTION_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),
-    right: sizes.MARGIN_BIG, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
+    right: sizes.MARGIN_LARGE, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
   }).on("tap", function() {infoToast.trigger("actionTap", infoToast);})
     .appendTo(infoToast);
 

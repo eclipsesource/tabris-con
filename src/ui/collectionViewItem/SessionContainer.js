@@ -9,14 +9,14 @@ var _ = require("lodash");
 exports.create = function(configuration) {
   var sessionContainer = tabris.create("Composite", _.extend({
     class: "sessionContainer",
-    right: sizes.MARGIN_BIG, top: 0
+    right: sizes.MARGIN_LARGE, top: 0
   }, configuration));
   applyPlatformStyle(sessionContainer);
   if (config.SESSIONS_HAVE_IMAGES) {
     var imageView = createSessionImage().appendTo(sessionContainer);
   }
   var textContainer = tabris.create("Composite", _.extend({
-      left: ["#imageView", sizes.MARGIN_BIG], right: sizes.MARGIN_SMALL
+      left: ["#imageView", sizes.MARGIN_LARGE], right: sizes.MARGIN_SMALL
     }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
   ).appendTo(sessionContainer);
   var titleTextView = createSessionTitleTextView().appendTo(textContainer);

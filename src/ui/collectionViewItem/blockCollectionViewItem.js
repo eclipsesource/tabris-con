@@ -22,20 +22,20 @@ module.exports = {
     drawCircle(circleCanvas);
 
     var textContainer = tabris.create("Composite", {
-      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_BIG
+      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE
     }).appendTo(cell);
 
     var startTimeTextView = tabris.create("TextView", {
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-      left: 0, top: sizes.MARGIN_BIG, right: 0
+      left: 0, top: sizes.MARGIN_LARGE, right: 0
     }).appendTo(textContainer);
 
     var titleTextView = tabris.create("TextView", {
       textColor: colors.ACCENTED_TEXT_COLOR,
       maxLines: 2,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-      left: 0, top: ["prev()", sizes.MARGIN_BIG], right: 0
+      left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
     }).appendTo(textContainer);
 
     var summaryTextView = tabris.create("TextView", {

@@ -11,6 +11,7 @@ module.exports = {
   LIGHT_TEXT_COLOR: "#ffffff",
   ACCENTED_TEXT_COLOR: "#443684",
   LIGHT_BACKGROUND_COLOR: "#efefef",
-  IOS_LINE_SEPARATOR_COLOR: "#d9d9d9",
-  MAP_BACKGROUND_COLOR: "#cdcbcc"
+  LINE_SEPARATOR_COLOR: "#d9d9d9",
+  MAP_BACKGROUND_COLOR: "#cdcbcc",
+  LINK_COLOR: "#48a8f4"
 };

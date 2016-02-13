@@ -23,14 +23,14 @@ exports.create = function() {
     id: "loginTextView",
     text: "EclipseCon Login",
     font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-    left: sizes.MARGIN_BIG, bottom: sizes.MARGIN_BIG, right: sizes.MARGIN_BIG
+    left: sizes.MARGIN_LARGE, bottom: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE
   }).appendTo(header);
 
   applyPlatformStyle(loginTextView);
 
   var inputContainer = tabris.create("Composite", {
     id: "inputContainer",
-    width: sizes.LOGIN_INPUT_WIDTH, centerX: 0, top: [header, sizes.MARGIN_BIG]
+    width: sizes.LOGIN_INPUT_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
   }).appendTo(scrollView);
 
   var emailInput = Input.create({
