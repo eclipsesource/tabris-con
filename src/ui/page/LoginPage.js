@@ -5,10 +5,7 @@ var Input = require("../Input");
 var ProgressButton = require("../ProgressButton");
 
 exports.create = function() {
-  var page = tabris.create("Page", {
-    topLevel: false,
-    id: "loginPage"
-  });
+  var page = tabris.create("Page", {topLevel: false, id: "loginPage"});
 
   var scrollView = tabris.create("ScrollView", {left: 0, top: 0, right: 0, bottom: 0}).appendTo(page);
 
@@ -37,7 +34,7 @@ exports.create = function() {
     id: "username",
     left: 0, right: 0,
     message: "eclipse.org e-mail address"
-  }).appendTo(inputContainer);
+  }).on("change:text", updateLoginButtonState).appendTo(inputContainer);
 
   var passwordInput = Input.create({
     type: "password",
@@ -45,9 +42,9 @@ exports.create = function() {
     left: 0, right: 0,
     top: [emailInput, sizes.MARGIN],
     message: "password"
-  }).appendTo(inputContainer);
+  }).on("change:text", updateLoginButtonState).appendTo(inputContainer);
 
-  var button = ProgressButton.create({id: "loginButton", text: "Login"})
+  var button = ProgressButton.create({id: "loginButton", text: "Login", enabled: false})
     .on("select", function() {
       this.set("progress", true);
       page.trigger("loginButtonTapped", page, emailInput.get("text"), passwordInput.get("text"));
@@ -67,5 +64,14 @@ exports.create = function() {
     .on("error", function() {
       button.set("progress", false);
     });
+
+  function updateLoginButtonState() {
+    button.set("enabled", inputValid());
+  }
+
+  function inputValid() {
+    return emailInput.get("text").length > 0 && passwordInput.get("text").length > 0;
+  }
+
   return page;
 };
