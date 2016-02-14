@@ -1,5 +1,5 @@
 var Schedule = require("./navigatable/Schedule");
-var Explore = require("./navigatable/Explore");
+var Tracks = require("./navigatable/Tracks");
 var Map = require("./navigatable/Map");
 var Drawer = require("./Drawer");
 var About = require("./navigatable/About");
@@ -10,11 +10,11 @@ module.exports = {
   Android: {
     create: function() {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      var exporePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
+      var tracksPage = wrapInPage(Tracks.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
       wrapInPage(About.create());
       Drawer.create();
-      exporePage.open();
+      tracksPage.open();
     }
   },
   iOS: {
@@ -38,25 +38,25 @@ module.exports = {
         .once("appear", function() {
           populateBlocks(this);
         });
-      var exploreTab = wrapInTabFolder(Explore.create(), tabFolder)
+      var tracksTab = wrapInTabFolder(Tracks.create(), tabFolder)
         .once("appear", function() {
           populatePreviewCategories(this);
         });
       wrapInTabFolder(Map.create(), tabFolder);
       wrapInTabFolder(About.create(), tabFolder);
       setTimeout(function() {
-        exploreTab.open(); // TODO: tab open delayed as part of a workaround for tabris-ios#841
+        tracksTab.open(); // TODO: tab open delayed as part of a workaround for tabris-ios#841
       }, 100);
     }
   },
   UWP: {
     create: function() {
       wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      var explorePage = wrapInPage(Explore.create()).once("appear", populatePreviewCategories);
+      var tracksPage = wrapInPage(Tracks.create()).once("appear", populatePreviewCategories);
       wrapInPage(Map.create());
       wrapInPage(About.create());
       Drawer.create();
-      explorePage.open();
+      tracksPage.open();
     }
   }
 };

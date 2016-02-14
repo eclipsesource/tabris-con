@@ -47,15 +47,15 @@ exports.create = function() {
     var drawerList = tabris.create("Composite", {
       left: 0, top: ["#userArea", sizes.MARGIN], right: 0
     }).appendTo(scrollView);
-    createPageListItem("My Schedule", "schedulePage").appendTo(drawerList);
-    createPageListItem("Explore", "explorePage").appendTo(drawerList);
-    createPageListItem("Map", "mapPage").appendTo(drawerList);
+    createPageListItem("schedulePage").appendTo(drawerList);
+    createPageListItem("tracksPage").appendTo(drawerList);
+    createPageListItem("mapPage").appendTo(drawerList);
     createSeparator().appendTo(drawerList);
-    createPageListItem("About", "aboutPage").appendTo(drawerList);
+    createPageListItem("aboutPage").appendTo(drawerList);
     return drawerList;
   }
 
-  function createPageListItem(name, id) {
+  function createPageListItem(id) {
     var page = tabris.ui.find("#" + id).first();
     var pageListItem = createListItem(page.get("title"), page.get("image"));
     pageListItem.updateSelection = function() {

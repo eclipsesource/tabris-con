@@ -4,19 +4,19 @@ var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
 
 exports.create = function() {
-  var explore = Navigatable.create({
-    id: "explore",
-    title: "Explore",
-    image: getImage.forDevicePlatform("explore_selected") // TODO: selected image initially shown as part of workaround for tabris-ios#841
+  var tracks = Navigatable.create({
+    id: "tracks",
+    title: "Tracks",
+    image: getImage.forDevicePlatform("tracks_selected") // TODO: selected image initially shown as part of workaround for tabris-ios#841
   });
 
-  var loadingIndicator = LoadingIndicator.create().appendTo(explore);
+  var loadingIndicator = LoadingIndicator.create().appendTo(tracks);
 
   var collectionView = CollectionView.create({
     left: 0, top: 0, right: 0, bottom: 0, opacity: 0
-  }).appendTo(explore);
+  }).appendTo(tracks);
 
-  explore.on("change:data", function(widget, data) {
+  tracks.on("change:data", function(widget, data) {
     if (collectionView.get("items").length > 0) {
       return;
     }
@@ -25,5 +25,5 @@ exports.create = function() {
     loadingIndicator.dispose();
   });
 
-  return explore;
+  return tracks;
 };
