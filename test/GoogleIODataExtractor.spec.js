@@ -5,6 +5,7 @@ var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
 var CATEGORIES = require("./data/googleIO/categories.json");
 var SESSIONS = require("./data/googleIO/sessions.json");
 var BLOCKS = require("./data/googleIO/blocks.json");
+var KEYNOTES = require("./data/googleIO/keynotes.json");
 
 describe("googleIODataExtractor", function() {
 
@@ -27,6 +28,14 @@ describe("googleIODataExtractor", function() {
       var categories = googleIODataExtractor.extractCategories();
 
       expect(categories).to.deep.equal(CATEGORIES);
+    });
+  });
+
+  describe("extractKeynotes", function() {
+    it("extracts keynotes", function() {
+      var keynotes = googleIODataExtractor.extractKeynotes();
+
+      expect(keynotes).to.deep.equal(KEYNOTES);
     });
   });
 

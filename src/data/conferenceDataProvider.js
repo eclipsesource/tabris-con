@@ -16,6 +16,7 @@ exports.get = function() {
     persistedStorage.setSessions(dataExtractor.extractSessions());
     persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
     persistedStorage.setCategories(dataExtractor.extractCategories());
+    persistedStorage.setKeynotes(dataExtractor.extractKeynotes());
     persistedStorage.setBlocks(dataExtractor.extractBlocks());
   }
   conferenceData = getDataFromCache();
@@ -29,6 +30,7 @@ function getData() {
     sessions: dataExtractor.extractSessions(),
     previewCategories: dataExtractor.extractPreviewCategories(),
     categories: dataExtractor.extractCategories(),
+    keynotes: dataExtractor.extractKeynotes(),
     blocks: dataExtractor.extractBlocks()
   };
 }
@@ -38,6 +40,7 @@ function getDataFromCache() {
     sessions: persistedStorage.getSessions(),
     previewCategories: persistedStorage.getPreviewCategories(),
     categories: persistedStorage.getCategories(),
+    keynotes: persistedStorage.getKeynotes(),
     blocks: persistedStorage.getBlocks()
   };
 }
@@ -47,6 +50,7 @@ function dataCached() {
     persistedStorage.getSessions(),
     persistedStorage.getPreviewCategories(),
     persistedStorage.getCategories(),
+    persistedStorage.getKeynotes(),
     persistedStorage.getBlocks()
   ];
   return data.every(function(data) {return !!data;});

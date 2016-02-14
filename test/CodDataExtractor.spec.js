@@ -3,6 +3,7 @@ var expect = require("chai").expect;
 var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
 var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
 var CATEGORIES = require("./data/cod/categories.json");
+var KEYNOTES = require("./data/cod/keynotes.json");
 var SESSIONS = require("./data/cod/sessions.json");
 var BLOCKS = require("./data/cod/blocks.json");
 
@@ -41,6 +42,14 @@ describe("CodDataExtractor", function() {
       var categories = codDataExtractor.extractCategories();
 
       expect(categories).to.deep.equal(CATEGORIES);
+    });
+  });
+
+  describe("extractKeynotes", function() {
+    it("extracts all keynotes", function() {
+      var keynotes = codDataExtractor.extractKeynotes();
+
+      expect(keynotes).to.deep.equal(KEYNOTES);
     });
   });
 

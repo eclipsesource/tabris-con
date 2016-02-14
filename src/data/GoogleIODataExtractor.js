@@ -3,10 +3,26 @@ var _ = require("lodash");
 
 module.exports = function(conferenceData) {
   this.extractPreviewCategories = function() {
-    return getTagsForCategories(PREVIEW_CATEGORIES)
+    var previewCategories = getTagsForCategories(PREVIEW_CATEGORIES)
       .map(function(tagToPreview) {
         return createCategory(tagToPreview, {sessionsLimit: 2});
       });
+    var keynotes = {
+      id: "KEYNOTES",
+      title: "Keynotes",
+      sessions: this.extractKeynotes().map(function(keynote) {
+        return {
+          id: keynote.id,
+          title: keynote.title,
+          image: keynote.image,
+          text: keynote.description,
+          startTimestamp: keynote.startTimestamp,
+          endTimestamp: keynote.endTimestamp
+        };
+      })
+    };
+    previewCategories.push(keynotes);
+    return previewCategories;
   };
 
   this.extractCategories = function() {
@@ -17,19 +33,12 @@ module.exports = function(conferenceData) {
       });
   };
 
+  this.extractKeynotes = function() {
+    return conferenceData.keynote.sessions.map(sessionMap);
+  };
+
   this.extractSessions = function() {
-    return _.map(conferenceData.sessionData.sessions, function(googleIOSession) {
-      return {
-        id: googleIOSession.id,
-        title: googleIOSession.title,
-        description: googleIOSession.description,
-        room: getGoogleIOSessionRoom(googleIOSession),
-        image: googleIOSession.photoUrl,
-        startTimestamp: googleIOSession.startTimestamp,
-        endTimestamp: googleIOSession.endTimestamp,
-        speakers: findSpeakers(googleIOSession.speakers)
-      };
-    });
+    return conferenceData.sessionData.sessions.map(sessionMap);
   };
 
   this.extractBlocks = function() {
@@ -46,6 +55,19 @@ module.exports = function(conferenceData) {
         };
       });
   };
+
+  function sessionMap(googleIOSession) {
+    return {
+      id: googleIOSession.id,
+      title: googleIOSession.title,
+      description: googleIOSession.description,
+      room: getGoogleIOSessionRoom(googleIOSession),
+      image: googleIOSession.photoUrl,
+      startTimestamp: googleIOSession.startTimestamp,
+      endTimestamp: googleIOSession.endTimestamp,
+      speakers: findSpeakers(googleIOSession.speakers)
+    };
+  }
 
   function findSpeakers(googleIOSessionSpeakers) {
     return conferenceData.sessionData.speakers

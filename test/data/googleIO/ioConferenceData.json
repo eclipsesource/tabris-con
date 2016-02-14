@@ -1,4 +1,25 @@
 {
+  "keynote": {
+    "sessions": [{
+      "id": "__keynote__",
+      "url": "https://events.google.com/io2015/",
+      "title": "Keynote",
+      "description": "Join us to learn about product and platform innovations at Google, starting with a live kickoff from our Senior Vice-President of Products, Sundar Pichai.",
+      "startTimestamp": "2015-05-28T16:30:00Z",
+      "endTimestamp": "2015-05-28T18:30:00Z",
+      "photoUrl": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg",
+      "isLivestream": true,
+      "youtubeUrl": "7V-fIGMDsmE",
+      "tags": [
+        "FLAG_KEYNOTE"
+      ],
+      "mainTag": "FLAG_KEYNOTE",
+      "color": "#3f51b5",
+      "hashtag": "keynote",
+      "room": "keynote",
+      "speakers": []
+    }]
+  },
   "sessionData": {
     "sessions": [
       {
@@ -100,6 +121,10 @@
         "id": "04f7ffb6-2df8-e411-b87f-00155d5066d7",
         "original_id": "04f7ffb6-2df8-e411-b87f-00155d5066d7",
         "name": "Earn \u0026 Engage Sandbox"
+      }, {
+        "id": "keynote",
+        "original_id": "e9f3b25f-d4e2-e411-b87f-00155d5066d7",
+        "name": "Keynote Room (L3)"
       }
     ],
     "speakers": [

@@ -11,10 +11,25 @@ module.exports = function(conferenceData) {
   assignCategoryTypes(conferenceData);
 
   this.extractPreviewCategories = function() {
-    return getCategoriesList({exclude: "SCHEDULE_ITEM"})
+    var keynoteCategory = {
+      id: "KEYNOTES",
+      title: "Keynotes",
+      sessions: this.extractKeynotes().map(function(keynote) {
+        return {
+          id: keynote.id,
+          title: keynote.title,
+          text: stripHtml(keynote.description),
+          startTimestamp: new TimezonedDate(keynote.startTimestamp).toJSON(),
+          endTimestamp: new TimezonedDate(keynote.endTimestamp).toJSON()
+        };
+      })
+    };
+    var previewCategories = getCategoriesList({exclude: "SCHEDULE_ITEM"})
       .map(function(category) {
         return createCategory(category.id, {limit: 2});
       });
+    previewCategories.push(keynoteCategory);
+    return previewCategories;
   };
 
   this.extractCategories = function() {
@@ -27,27 +42,12 @@ module.exports = function(conferenceData) {
       }).value();
   };
 
+  this.extractKeynotes = function() {
+    return getMappedSessions(function(session) {return session.session_type === "Keynote";});
+  };
+
   this.extractSessions = function() {
-    return conferenceData.scheduledSessions
-      .filter(function(session) {return session.type !== "schedule_item";})
-      .map(function(session) {
-        return {
-          id: session.id,
-          title: session.title,
-          description: stripHtml(session.abstract),
-          room: session.room,
-          startTimestamp: new TimezonedDate(session.start).toJSON(),
-          endTimestamp: new TimezonedDate(session.end).toJSON(),
-          speakers: session.presenter.map(function(speaker) {
-            return {
-              name: speaker.fullname,
-              bio: stripHtml(speaker.bio),
-              company: speaker.organization,
-              image: speaker.picture
-            };
-          })
-        };
-      });
+    return getMappedSessions(function(session) {return session.type !== "schedule_item";});
   };
 
   this.extractBlocks = function() {
@@ -68,6 +68,29 @@ module.exports = function(conferenceData) {
       })
       .value();
   };
+
+  function getMappedSessions(predicate) {
+    return conferenceData.scheduledSessions
+      .filter(predicate)
+      .map(function(session) {
+        return {
+          id: session.id,
+          title: session.title,
+          description: stripHtml(session.abstract),
+          room: session.room,
+          startTimestamp: new TimezonedDate(session.start).toJSON(),
+          endTimestamp: new TimezonedDate(session.end).toJSON(),
+          speakers: session.presenter.map(function(speaker) {
+            return {
+              name: speaker.fullname,
+              bio: stripHtml(speaker.bio),
+              company: speaker.organization,
+              image: speaker.picture
+            };
+          })
+        };
+      });
+  }
 
   function createCategory(categoryId, options) {
     return {
@@ -94,25 +117,27 @@ module.exports = function(conferenceData) {
       .value();
   }
 
-  function getSessions(categoryId, limit) {
+  function getSessions(value, limit) {
     return _(conferenceData.scheduledSessions)
       .filter(function(session) {
-        return session.categoryId === categoryId;
+        return session.categoryId === value;
       })
       .slice(0, limit)
-      .map(function(session) {
-        return {
-          id: session.id,
-          title: session.title,
-          text: stripHtml(session.abstract),
-          startTimestamp: new TimezonedDate(session.start).toJSON(),
-          endTimestamp: new TimezonedDate(session.end).toJSON()
-        };
-      })
+      .map(categorySessionMap)
       .value();
   }
 
 };
+
+function categorySessionMap(session) {
+  return {
+    id: session.id,
+    title: session.title,
+    text: stripHtml(session.abstract),
+    startTimestamp: new TimezonedDate(session.start).toJSON(),
+    endTimestamp: new TimezonedDate(session.end).toJSON()
+  };
+}
 
 function assignCategoryTypes(conferenceData) {
   conferenceData.scheduledSessions.forEach(function(session) {

@@ -7,9 +7,12 @@ exports.ATTENDED_BLOCK_STORAGE_KEY = "attendedBlocks";
 exports.PREVIEW_CATEGORIES = "previewCategories";
 exports.CATEGORIES = "categories";
 exports.SESSIONS = "sessions";
+exports.KEYNOTES = "keynotes";
 exports.BLOCKS = "blocks";
 
-var CONFERENCE_DATA_PROPERTIES = [exports.PREVIEW_CATEGORIES, exports.CATEGORIES, exports.SESSIONS, exports.BLOCKS];
+var CONFERENCE_DATA_PROPERTIES = [
+  exports.PREVIEW_CATEGORIES, exports.CATEGORIES, exports.SESSIONS, exports.BLOCKS, exports.KEYNOTES
+];
 
 exports.getAttendedBlocks = function() {
   var attendedBlocks = localStorage.getItem(exports.ATTENDED_BLOCK_STORAGE_KEY) || "[]";

@@ -15,6 +15,10 @@ module.exports = function(conferenceData) {
     return concreteDataExtractor.extractCategories();
   };
 
+  this.extractKeynotes = function() {
+    return concreteDataExtractor.extractKeynotes();
+  };
+
   this.extractSessions = function() {
     return concreteDataExtractor.extractSessions();
   };

@@ -89,6 +89,7 @@ describe("persisted storage", function() {
       storage.PREVIEW_CATEGORIES,
       storage.CATEGORIES,
       storage.SESSIONS,
+      storage.KEYNOTES,
       storage.BLOCKS
     ];
     var value = {bak: "baz"};
@@ -111,6 +112,7 @@ describe("persisted storage", function() {
       storage.PREVIEW_CATEGORIES,
       storage.CATEGORIES,
       storage.SESSIONS,
+      storage.KEYNOTES,
       storage.BLOCKS
     ];
 

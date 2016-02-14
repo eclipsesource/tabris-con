@@ -6,12 +6,18 @@ var config = require("../../config");
 exports.adaptPreviewCategories = function(previewCategories) {
   var previewCategories = _.cloneDeep(previewCategories);
   previewCategories = _.sortBy(previewCategories, "title");
+  moveKeynotesToFirstPosition(previewCategories);
   var result = [];
   result.push({type: "groupSeparator"});
   previewCategories.forEach(function(categoryPreview) {
-    result.push({type: "title", id: categoryPreview.id, title: categoryPreview.title});
+    var isKeynote = categoryPreview.id === "KEYNOTES";
+    result.push({
+      type: isKeynote ? "keynoteTitle" : "title",
+      id: categoryPreview.id,
+      title: categoryPreview.title
+    });
     result = _.union(result, categoryPreview.sessions.map(function(session) {
-      return adaptSessionListItem(session, "previewSession");
+      return adaptSessionListItem(session, isKeynote ? "keynoteSession" : "previewSession");
     }));
     result.push({type: "previewCategoriesSpacer"});
     result.push({type: "groupSeparator"});
@@ -19,21 +25,20 @@ exports.adaptPreviewCategories = function(previewCategories) {
   return result;
 };
 
+function moveKeynotesToFirstPosition(previewCategories) {
+  var keynote = _.find(previewCategories, function(category) {return category.id === "KEYNOTES";});
+  if (keynote) {
+    previewCategories.splice(previewCategories.indexOf(keynote), 1);
+    previewCategories.unshift(keynote);
+  }
+}
+
 exports.adaptCategory = function(category) {
-  var separators = createSeparators(category.sessions.length, "iOSLineSeparator");
-  var result = [];
-  result = _(result)
-    .union(category.sessions.map(function(session) {
-      return adaptSessionListItem(session, "session", {timeframeSummary: true});
-    }))
-    .sortBy("startTime")
-    .map(function(block, i) {return [block, separators[i]];})
-    .flatten()
-    .pull(undefined)
-    .value();
-  result.unshift({type: "sessionsSpacer"});
-  result.push({type: "sessionsSpacer"});
-  return result;
+  return adaptList("session", category.sessions);
+};
+
+exports.adaptKeynotes = function(keynotes) {
+  return adaptList("keynoteSession", keynotes);
 };
 
 exports.adaptSession = function(session) {
@@ -55,6 +60,10 @@ exports.adaptSession = function(session) {
   };
 };
 
+exports.adaptKeynote = function(keynote) {
+  return exports.adaptSession(keynote);
+};
+
 exports.adaptBlocks = function(blocks) {
   var blocks = freeBlockInsertor.insertIn(blocks);
   return _(blocks)
@@ -69,6 +78,23 @@ exports.adaptBlocks = function(blocks) {
     })
     .value();
 };
+
+function adaptList(itemType, dataList) {
+  var separators = createSeparators(dataList.length, "iOSLineSeparator");
+  var result = [];
+  result = _(result)
+    .union(dataList.map(function(session) {
+      return adaptSessionListItem(session, itemType, {timeframeSummary: true});
+    }))
+    .sortBy("startTime")
+    .map(function(block, i) {return [block, separators[i]];})
+    .flatten()
+    .pull(undefined)
+    .value();
+  result.unshift({type: "sessionsSpacer"});
+  result.push({type: "sessionsSpacer"});
+  return result;
+}
 
 function mapDatedBlock(datedBlocks) {
   var separators = createSeparators(datedBlocks.length, "smallSeparator");

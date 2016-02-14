@@ -13,5 +13,6 @@ module.exports = {
   LIGHT_BACKGROUND_COLOR: "#efefef",
   LINE_SEPARATOR_COLOR: "#d9d9d9",
   MAP_BACKGROUND_COLOR: "#cdcbcc",
-  LINK_COLOR: "#48a8f4"
+  LINK_COLOR: "#48a8f4",
+  KEYNOTE_TITLE_COLOR: "#FFC107"
 };

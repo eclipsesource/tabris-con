@@ -15,11 +15,23 @@ exports.getCategory = function(categoryId) {
   return viewDataAdapter.adaptCategory(category);
 };
 
+exports.getKeynotes = function() {
+  var keynotes = conferenceDataProvider.get().keynotes;
+  return viewDataAdapter.adaptKeynotes(keynotes);
+};
+
 exports.getSession = function(sessionId) {
   var session = _.find(conferenceDataProvider.get().sessions, function(session) {
     return session.id === sessionId;
   });
   return viewDataAdapter.adaptSession(session);
+};
+
+exports.getKeynote = function(keynoteId) {
+  var keynote = _.find(conferenceDataProvider.get().keynotes, function(keynote) {
+    return keynote.id === keynoteId;
+  });
+  return viewDataAdapter.adaptKeynote(keynote);
 };
 
 exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
@@ -50,6 +62,14 @@ exports.asyncGetCategory = function(categoryId) {
   return new Promise(function(resolve) {
     setTimeout(function() {
       resolve(exports.getCategory(categoryId));
+    });
+  });
+};
+
+exports.asyncGetKeynotes = function() {
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve(exports.getKeynotes());
     });
   });
 };
