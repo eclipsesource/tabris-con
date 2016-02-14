@@ -88,7 +88,7 @@ exports.create = function() {
         height: sizes.SESSION_SPEAKER_IMAGE
       },
       scaleMode: "fit",
-      image: getImage.common(speaker.image, sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
+      image: getImage.common(getSpeakerImage(speaker), sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
     var speakerSummary = tabris.create("TextView", {
       id: "sessionPageSpeakerSummary",
@@ -105,6 +105,19 @@ exports.create = function() {
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerBio);
     return speakerContainer;
+  }
+
+  function getSpeakerImage(speaker) {
+    return hasConnection() ? speaker.image : "speaker_avatar";
+  }
+
+  function hasConnection() {
+    if (!navigator.connection) {
+      console.warn("cordova-plugin-network-information is not available in this Tabris.js client. Trying to download" +
+      " speaker image.");
+      return true;
+    }
+    return navigator.connection.type !== window.Connection.NONE;
   }
 
   function setWidgetData(data) {
