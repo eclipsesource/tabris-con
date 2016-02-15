@@ -79,5 +79,5 @@ function alert(error) {
     console.error("cordova-plugin-dialogs is not available in this Tabris.js client. The error was: " + error);
     return;
   }
-  navigator.notification.alert(error, function() {}, "Error", "OK");
+  navigator.notification.alert(error.message || error, function() {}, "Error", "OK");
 }
