@@ -6,6 +6,7 @@ var viewDataProvider = require("../../data/viewDataProvider");
 var SessionPage = require("../../ui/page/SessionPage");
 var SessionsPage = require("../../ui/page/SessionsPage");
 var TimezonedDate = require("../../TimezonedDate");
+var Circle = require("../Circle");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
@@ -14,12 +15,11 @@ module.exports = {
       visible: false, background: colors.ACTION_COLOR,
       left: 0, top: 0, right: 0, bottom: 0
     }).appendTo(cell);
-    var circleCanvas = tabris.create("Canvas", {
-      left: sizes.MARGIN, centerY: 0, width: sizes.BLOCK_CIRCLE_SIZE, height: sizes.BLOCK_CIRCLE_SIZE,
-      visible: false
-    }).appendTo(cell);
 
-    drawCircle(circleCanvas);
+    var circle = Circle.create({
+      left: sizes.MARGIN, centerY: 0, radius: sizes.BLOCK_CIRCLE_RADIUS,
+      color: colors.BACKGROUND_COLOR
+    }).appendTo(cell);
 
     var textContainer = tabris.create("Composite", {
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE
@@ -50,7 +50,7 @@ module.exports = {
     }).appendTo(cell);
 
     cell.on("change:item", function(widget, item) {
-      circleCanvas.set("visible", !!item.sessionId);
+      circle.set("visible", !!item.sessionId);
       startTimeTextView.set("text", item.startTime);
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
@@ -89,10 +89,3 @@ module.exports = {
     }
   }
 };
-
-function drawCircle(canvas) {
-  var ctx = canvas.getContext("2d", sizes.BLOCK_CIRCLE_SIZE, sizes.BLOCK_CIRCLE_SIZE);
-  ctx.arc(sizes.BLOCK_CIRCLE_SIZE / 2, sizes.BLOCK_CIRCLE_SIZE / 2, sizes.BLOCK_CIRCLE_SIZE / 4, 0, 2 * Math.PI);
-  ctx.fillStyle = colors.BACKGROUND_COLOR;
-  ctx.fill();
-}

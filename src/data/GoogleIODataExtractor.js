@@ -17,7 +17,8 @@ module.exports = function(conferenceData) {
           image: keynote.image,
           text: keynote.description,
           startTimestamp: keynote.startTimestamp,
-          endTimestamp: keynote.endTimestamp
+          endTimestamp: keynote.endTimestamp,
+          categoryName: getTagName(keynote.mainTag)
         };
       })
     };
@@ -65,7 +66,8 @@ module.exports = function(conferenceData) {
       image: googleIOSession.photoUrl,
       startTimestamp: googleIOSession.startTimestamp,
       endTimestamp: googleIOSession.endTimestamp,
-      speakers: findSpeakers(googleIOSession.speakers)
+      speakers: findSpeakers(googleIOSession.speakers),
+      categoryName: getTagName(googleIOSession.mainTag)
     };
   }
 
@@ -111,7 +113,7 @@ module.exports = function(conferenceData) {
     var tagObject = _.find(conferenceData.sessionData.tags, function(tagObject) {
       return tagObject.tag === tag;
     });
-    return tagObject.name || null;
+    return tagObject && tagObject.name || null;
   }
 
   function getSessions(tag, limit) {
@@ -127,7 +129,8 @@ module.exports = function(conferenceData) {
           image: session.photoUrl,
           text: session.description,
           startTimestamp: session.startTimestamp,
-          endTimestamp: session.endTimestamp
+          endTimestamp: session.endTimestamp,
+          categoryName: getTagName(session.mainTag)
         };
       });
   }

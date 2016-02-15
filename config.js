@@ -28,6 +28,19 @@ module.exports = {
       ".*": "schedule_icon_session"
     }
   },
+  TRACK_COLOR: {
+    "Other Cool Stuff": "#00dedb",
+    "Eclipse Platform / RCP / Runtimes": "#b56bdb",
+    "Embedded": "#ff5f6a",
+    "IDEs": "#a8d1ac",
+    "IoT Summit": "#e88c09",
+    "Java 9": "#77ed6b",
+    "Languages and Tools": "#bebebe",
+    "Methodology and Devops": "#fdd700",
+    "Modeling": "#a08d75",
+    "Science": "#00bfff",
+    "Web / Mobile / Cloud Development": "#a1acff"
+  },
   IGNORED_COD_BLOCKS: "^Reserved for",
   FREE_BLOCKS: {
     cod: [

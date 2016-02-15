@@ -6,11 +6,13 @@
       "id": "20301046",
       "title": "10 Java Idioms Stomped with Xtend",
       "text": "Eclipse Xtend is an emerging, object oriented language on the JVM that encourages functional programming and comes with state of the art IDE support for Eclipse and IntelliJ IDEA. This session is going to show how Xtend is applied in 10 practical use cases. We will focus on common Java idioms and the integration with popular Java APIs like Android, JavaFX and more.\nYou will see how literally any given Java library is even easier to be used and consumed from Xtend than from Java itself. That\u2019s what we call Java-Interop! Xtend code is more concise and readable due to greatly improved signal to noise ratio. Even the simplest tasks become a breeze and powerful language features like the superior annotation processing infrastructure help to automate repetitive coding styles. At the same time all language features are carefully designed to leverage known Java concepts. Java developers get productive in a couple of hours. Xtend will not force you into an entirely new ecosystem but complements Java and allows to stick to all your beloved libraries and tools.\nJoin this session and learn how to write cleaner code against any Java APIs and how to solve day-to-day challenges in much better ways.",
+      "categoryName": "Other Cool Stuff",
       "startTimestamp": "2015-11-05T09:30:00.000Z",
       "endTimestamp": "2015-11-05T10:05:00.000Z"
     }, {
       "id": "22811042",
       "title": "Closing Session",
+      "categoryName": "Other Cool Stuff",
       "text": "Join us for the conference wrap-up, prize awards, and news about what's next for the community.",
       "startTimestamp": "2015-11-05T14:00:00.000Z",
       "endTimestamp": "2015-11-05T14:45:00.000Z"
@@ -22,6 +24,7 @@
     "sessions": [{
       "id": "2005796",
       "title": "30 minutes to fix bugs and to show you that you can do it!",
+      "categoryName": "Introduction to the Eclipse Ecosystem",
       "text": "Eclipse is an open source project which reflects the work of its community. At their respective level, anyone can contribute without necessarily having to be an advanced developer.\nFollowing an introduction of the different types of contributions and the role that anyone can have, this talk will then focus more specifically on the code contribution.\nWe will explain the standard use cases and then we will show you how to fix some bugs in live and how to use git and gerrit in this purpose.\nFor this talk we will focus on some E4 tools or platform-ui bugs that could be easily fixed.\nIf you also plan to attend the hackathon session, and if you have no idea on how to fix bugs, this talk will be a very good introduction to learn the basics. ",
       "startTimestamp": "2015-11-03T15:45:00.000Z",
       "endTimestamp": "2015-11-03T16:20:00.000Z"
@@ -33,6 +36,7 @@
     "sessions": [{
       "id": "20301046",
       "title": "10 Java Idioms Stomped with Xtend",
+      "categoryName": "Other Cool Stuff",
       "text": "Eclipse Xtend is an emerging, object oriented language on the JVM that encourages functional programming and comes with state of the art IDE support for Eclipse and IntelliJ IDEA. This session is going to show how Xtend is applied in 10 practical use cases. We will focus on common Java idioms and the integration with popular Java APIs like Android, JavaFX and more.\nYou will see how literally any given Java library is even easier to be used and consumed from Xtend than from Java itself. That\u2019s what we call Java-Interop! Xtend code is more concise and readable due to greatly improved signal to noise ratio. Even the simplest tasks become a breeze and powerful language features like the superior annotation processing infrastructure help to automate repetitive coding styles. At the same time all language features are carefully designed to leverage known Java concepts. Java developers get productive in a couple of hours. Xtend will not force you into an entirely new ecosystem but complements Java and allows to stick to all your beloved libraries and tools.\nJoin this session and learn how to write cleaner code against any Java APIs and how to solve day-to-day challenges in much better ways.",
       "startTimestamp": "2015-11-05T09:30:00.000Z",
       "endTimestamp": "2015-11-05T10:05:00.000Z"

@@ -50,6 +50,7 @@ exports.adaptSession = function(session) {
     description: session.description,
     title: session.title,
     image: session.image,
+    categoryName: session.categoryName,
     speakers: session.speakers.map(function(speaker) {
       return {
         summary: createSpeakerSummary(speaker),
@@ -148,7 +149,8 @@ function adaptSessionListItem(session, type, options) {
     type: type,
     id: session.id,
     image: session.image,
-    title: session.title
+    title: session.title,
+    categoryName: session.categoryName
   };
 }
 

@@ -1,11 +1,11 @@
 var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
+var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var title = tabris.create("Composite", {
-    left: 0, top: 0, right: 0, height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,
-    background: configuration ? configuration.background || "initial" : "initial"
-  });
+  var title = tabris.create("Composite", _.extend({
+    left: 0, top: 0, right: 0, height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT
+  }, configuration));
   var titleTextView = tabris.create("TextView", {
     class: "titleTextView",
     left: sizes.MARGIN_LARGE, centerY: 0, right: ["#moreTextView", sizes.MARGIN],

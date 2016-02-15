@@ -7,18 +7,19 @@ var applyPlatformStyle = require("../applyPlatformStyle");
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var sessionContainer = tabris.create("Composite", _.extend({
-    class: "sessionContainer",
-    right: sizes.MARGIN_LARGE, top: 0
-  }, configuration));
-  applyPlatformStyle(sessionContainer);
+  var sessionItem = tabris.create("Composite", _.extend({class: "sessionItem"}, configuration));
+  applyPlatformStyle(sessionItem);
   if (config.SESSIONS_HAVE_IMAGES) {
-    var imageView = createSessionImage().appendTo(sessionContainer);
+    var imageView = createSessionImage().appendTo(sessionItem);
   }
+  var trackIndicator = tabris.create("Composite", {
+    left: 0, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
+  }).appendTo(sessionItem);
   var textContainer = tabris.create("Composite", _.extend({
-      left: ["#imageView", sizes.MARGIN_LARGE], right: sizes.MARGIN_SMALL
+      left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
     }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
-  ).appendTo(sessionContainer);
+  ).appendTo(sessionItem);
+  applyPlatformStyle(textContainer);
   var titleTextView = createSessionTitleTextView().appendTo(textContainer);
   applyPlatformStyle(titleTextView);
   var summaryTextView = tabris.create("TextView", {
@@ -27,7 +28,7 @@ exports.create = function(configuration) {
     maxLines: 2,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR
   }).appendTo(textContainer);
-  sessionContainer.on("change:data", function(widget, data) {
+  sessionItem.on("change:data", function(widget, data) {
     if (config.SESSIONS_HAVE_IMAGES) {
       var image = getImage.forDevicePlatform(
         data.image,
@@ -36,10 +37,11 @@ exports.create = function(configuration) {
       );
       imageView.set("image", image);
     }
+    trackIndicator.set("background", config.TRACK_COLOR[data.categoryName] || "initial");
     titleTextView.set("text", data.title);
     summaryTextView.set("text", data.summary);
   });
-  return sessionContainer;
+  return sessionItem;
 };
 
 function createSessionImage() {

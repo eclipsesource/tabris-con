@@ -1,5 +1,6 @@
 var sizes = require("../../resources/sizes");
 var getImage = require("../getImage");
+var SessionPageHeaderTrackIndicator = require("./SessionPageHeaderTrackIndicator");
 var applyPlatformStyle = require("./applyPlatformStyle");
 
 exports.create = function() {
@@ -14,6 +15,8 @@ exports.create = function() {
     left: 0, top: 0, right: 0
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(navigationControls);
+
+  var trackIndicator = SessionPageHeaderTrackIndicator.create().appendTo(sessionPageHeader);
 
   var backButton = tabris.create("ImageView", {
     id: "sessionPageNavigationControlsBackButton",
@@ -38,8 +41,8 @@ exports.create = function() {
   applyPlatformStyle(attendanceButton);
 
   var titleTextView = tabris.create("TextView", {
-    id: "sessionPageTitleTextView",
-    top: ["#sessionPageNavigationControls", sizes.MARGIN], right: sizes.MARGIN_LARGE
+    maxLines: 2,
+    id: "sessionPageTitleTextView", right: sizes.MARGIN_LARGE
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(titleTextView);
 
@@ -59,6 +62,9 @@ exports.create = function() {
     })
     .on("change:attending", function(widget, attending) {
       attendanceButton.set("checked", attending);
+    })
+    .on("change:trackIndicatorColor", function(widget, trackIndicatorColor) {
+      trackIndicator.set("color", trackIndicatorColor);
     });
 
   return sessionPageHeader;

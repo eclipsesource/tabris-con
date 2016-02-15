@@ -8,6 +8,7 @@ var getImage = require("../../getImage");
 var applyPlatformStyle = require("../applyPlatformStyle");
 var attendedBlockService = require("../../attendedBlockService");
 var AttendanceAction = require("../AttendanceAction");
+var config = require("../../../config");
 
 var titleCompY = 0;
 
@@ -126,6 +127,7 @@ exports.create = function() {
     sessionPageHeader.set("summaryText", data.summary);
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
+    sessionPageHeader.set("trackIndicatorColor", config.TRACK_COLOR[data.categoryName]);
     createSpeakers(data.speakers);
   }
 

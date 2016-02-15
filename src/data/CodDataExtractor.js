@@ -19,6 +19,7 @@ module.exports = function(conferenceData) {
           id: keynote.id,
           title: keynote.title,
           text: stripHtml(keynote.description),
+          categoryName: keynote.categoryName || null,
           startTimestamp: new TimezonedDate(keynote.startTimestamp).toJSON(),
           endTimestamp: new TimezonedDate(keynote.endTimestamp).toJSON()
         };
@@ -78,6 +79,7 @@ module.exports = function(conferenceData) {
           title: session.title,
           description: stripHtml(session.abstract),
           room: session.room,
+          categoryName: session.categoryName || null,
           startTimestamp: new TimezonedDate(session.start).toJSON(),
           endTimestamp: new TimezonedDate(session.end).toJSON(),
           speakers: session.presenter.map(function(speaker) {
@@ -134,6 +136,7 @@ function categorySessionMap(session) {
     id: session.id,
     title: session.title,
     text: stripHtml(session.abstract),
+    categoryName: session.categoryName || null,
     startTimestamp: new TimezonedDate(session.start).toJSON(),
     endTimestamp: new TimezonedDate(session.end).toJSON()
   };
@@ -142,7 +145,7 @@ function categorySessionMap(session) {
 function assignCategoryTypes(conferenceData) {
   conferenceData.scheduledSessions.forEach(function(session) {
     session.categoryId = session.category.toUpperCase().replace(/ /g, "_");
-    session.categoryName = session.category;
+    session.categoryName = session.category || null;
     delete session.category;
   });
   return conferenceData;

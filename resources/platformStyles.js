@@ -71,7 +71,7 @@ module.exports = {
     },
     iOS: {
       textColor: colors.DARK_PRIMARY_TEXT_COLOR,
-      left: sizes.MARGIN_LARGE,
+      left: sizes.MARGIN_XLARGE,
       top: ["#sessionPageNavigationControls", sizes.MARGIN_LARGE],
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
     }
@@ -84,8 +84,8 @@ module.exports = {
       textColor: "white"
     },
     iOS: {
-      left: sizes.MARGIN_LARGE,
-      bottom: sizes.MARGIN,
+      left: sizes.MARGIN_XLARGE,
+      bottom: sizes.MARGIN_LARGE,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({size: sizes.FONT_MEDIUM})
     }
@@ -133,9 +133,9 @@ module.exports = {
       textColor: colors.ACCENTED_TEXT_COLOR
     }
   },
-  ".sessionContainer": {
-    Android: {left: sizes.MARGIN_LARGE},
-    iOS: {left: 0}
+  ".sessionItem": {
+    Android: {left: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE, top: 0},
+    iOS: {left: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE, top: 0}
   },
   ".groupSeparator": {
     Android: {background: colors.LIGHT_BACKGROUND_COLOR},
