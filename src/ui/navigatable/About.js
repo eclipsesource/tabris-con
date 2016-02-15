@@ -91,7 +91,7 @@ function createVendorAttribution() {
 function createProjectAttribution() {
   var projectAttribution = tabris.create("Composite", {
     id: "projectAttribution",
-    left: sizes.MARGIN_LARGE, bottom: ["#attributionsList", sizes.MARGIN], right: sizes.MARGIN_LARGE
+    left: sizes.MARGIN_LARGE, bottom: ["#attributionsList", sizes.MARGIN_LARGE], right: sizes.MARGIN_LARGE
   });
   var firstLine = tabris.create("TextView", {
     left: 0, top: 0, right: 0,
@@ -128,14 +128,19 @@ function createAttributionRow(attribution) {
   tabris.create("TextView", {
     left: 0, centerY: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
+    font: fontToString({size: sizes.FONT_SMALL}),
     text: attribution.subject + " by "
   }).appendTo(row);
-  Link.create({left: "prev()", centerY: 0, text: attribution.author.name, url: attribution.author.url}).appendTo(row);
+  Link.create({
+    left: "prev()", centerY: 0, text: attribution.author.name, url: attribution.author.url,
+    font: fontToString({size: sizes.FONT_SMALL})
+  }).appendTo(row);
   Link.create({
     right: 0, centerY: 0,
     text: attribution.information.label,
     page: attribution.information.page,
-    url: attribution.information.url
+    url: attribution.information.url,
+    font: fontToString({size: sizes.FONT_SMALL})
   }).appendTo(row);
   return row;
 }
