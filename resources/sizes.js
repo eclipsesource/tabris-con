@@ -3,6 +3,7 @@ var config = require("../config");
 module.exports = {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],
 
+  MARGIN_XXSMALL: 1,
   MARGIN_XSMALL: 2,
   MARGIN_SMALL: 4,
   MARGIN: 8,
@@ -63,5 +64,6 @@ module.exports = {
 
   ABOUT_CONTENT_MIN_HEIGHT: 450,
 
-  TRACK_CIRCLE_RADIUS: 12
+  TRACK_CIRCLE_RADIUS: 12,
+  TRACK_SQUARE_SIZE: 18
 };

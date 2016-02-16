@@ -1,4 +1,3 @@
-var Circle = require("./Circle");
 var sizes = require("../../resources/sizes");
 
 exports.create = function() {
@@ -13,12 +12,12 @@ exports.create = function() {
       right: "#sessionPageTitleTextView",
       top: ["#sessionPageNavigationControls", sizes.MARGIN + 2]
     });
-    var circle = Circle.create({
-      centerX: 0,
-      top: 0,
-      radius: sizes.TRACK_CIRCLE_RADIUS
+    var square = tabris.create("Composite", {
+      centerX: 0, top: sizes.MARGIN_XXSMALL,
+      width: sizes.TRACK_SQUARE_SIZE,
+      height: sizes.TRACK_SQUARE_SIZE
     }).appendTo(indicator);
-    indicator.on("change:color", function(widget, color) {circle.set("color", color);});
+    indicator.on("change:color", function(widget, color) {square.set("background", color);});
   }
   return indicator;
 };
