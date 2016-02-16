@@ -68,9 +68,7 @@ exports.adaptKeynote = function(keynote) {
 exports.adaptBlocks = function(blocks) {
   var blocks = freeBlockInsertor.insertIn(blocks);
   return _(blocks)
-    .sortBy(function(block) {
-      return block.startTimestamp;
-    })
+    .sortBy("startTimestamp")
     .groupBy(function(block) {
       return new TimezonedDate(block.startTimestamp).format("DD MMM");
     })
@@ -87,7 +85,7 @@ function adaptList(itemType, dataList, options) {
     .union(dataList.map(function(session) {
       return adaptSessionListItem(session, itemType, {summaryType: options.summaryType});
     }))
-    .sortBy("startTime")
+    .sortBy("startTimestamp")
     .map(function(block, i) {return [block, separators[i]];})
     .flatten()
     .pull(undefined)
@@ -102,10 +100,10 @@ function mapDatedBlock(datedBlocks) {
   return {
     day: new TimezonedDate(datedBlocks[0].startTimestamp).format("DD MMM"),
     blocks: _(datedBlocks)
+      .sortBy("startTimestamp")
       .map(function(datedBlock) {
         return adaptDatedBlock(datedBlock);
       })
-      .sortBy("startTime")
       .map(function(block, i) {return [block, separators[i]];})
       .flatten()
       .pull(undefined)
