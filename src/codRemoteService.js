@@ -55,6 +55,7 @@ exports.logout = function() {
       }
       return response;
     })
+    .catch(resolveExpiredSession)
     .catch(alert);
 };
 
@@ -64,6 +65,13 @@ exports.csrfToken = function() {
     return response.text();
   });
 };
+
+function resolveExpiredSession(e) {
+  if (e === "User is not logged in.") {
+    return Promise.resolve();
+  }
+  return Promise.reject(e);
+}
 
 function jsonify(response) {
   return response.json();
@@ -77,7 +85,8 @@ function log(error) {
 function alert(error) {
   if (!navigator.notification) {
     console.error("cordova-plugin-dialogs is not available in this Tabris.js client. The error was: " + error);
-    return;
+    return Promise.reject(error);
   }
   navigator.notification.alert(error.message || error, function() {}, "Error", "OK");
+  return Promise.reject(error);
 }

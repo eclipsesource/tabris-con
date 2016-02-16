@@ -31,9 +31,7 @@ function showProfilePage(action) {
   IOSProfilePage.create()
     .open()
     .set("data", loginService.getUserData())
-    .on("logoutSuccess", function() {
-      action.set("mode", "login");
-    })
+    .on("logoutSuccess", function() {action.set("mode", "login");})
     .on("logoutFailure", function() {action.set("mode", "loggedIn");});
 }
 

@@ -24,15 +24,15 @@ exports.create = function() {
     id: "logoutButton", text: "Logout",
     top: ["prev()", sizes.MARGIN], centerX: 0,
     font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
-  }).on("select", function() {
-      this.set("progress", true);
+  }).on("select", function(progressButton) {
+      progressButton.set("progress", true);
       loginService.logout()
         .then(function() {
           page.trigger("logoutSuccess");
           page.close();
         })
         .catch(function() {
-          this.set("progress", false);
+          progressButton.set("progress", false);
           page.trigger("logoutFailure");
         });
     })
