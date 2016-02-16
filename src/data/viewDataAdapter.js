@@ -17,7 +17,7 @@ exports.adaptPreviewCategories = function(previewCategories) {
       title: categoryPreview.title
     });
     result = _.union(result, categoryPreview.sessions.map(function(session) {
-      return adaptSessionListItem(session, isKeynote ? "keynoteSession" : "previewSession");
+      return adaptSessionListItem(session, "previewSession", {summaryType: "previewText"});
     }));
     result.push({type: "previewCategoriesSpacer"});
     result.push({type: "groupSeparator"});
@@ -34,11 +34,11 @@ function moveKeynotesToFirstPosition(previewCategories) {
 }
 
 exports.adaptCategory = function(category) {
-  return adaptList("session", category.sessions);
+  return adaptList("session", category.sessions, {summaryType: "timeframe"});
 };
 
-exports.adaptKeynotes = function(keynotes) {
-  return adaptList("keynoteSession", keynotes);
+exports.adaptTimeframe = function(category) {
+  return adaptList("session", category.sessions, {summaryType: "category"});
 };
 
 exports.adaptSession = function(session) {
@@ -80,12 +80,12 @@ exports.adaptBlocks = function(blocks) {
     .value();
 };
 
-function adaptList(itemType, dataList) {
+function adaptList(itemType, dataList, options) {
   var separators = createSeparators(dataList.length, "iOSLineSeparator");
   var result = [];
   result = _(result)
     .union(dataList.map(function(session) {
-      return adaptSessionListItem(session, itemType, {timeframeSummary: true});
+      return adaptSessionListItem(session, itemType, {summaryType: options.summaryType});
     }))
     .sortBy("startTime")
     .map(function(block, i) {return [block, separators[i]];})
@@ -140,18 +140,26 @@ function createSeparators(itemCount, type) {
 }
 
 function adaptSessionListItem(session, type, options) {
-  var timeframeSummary = new TimezonedDate(session.startTimestamp).format("D MMM - HH:mm") +
-    " / " +
-    new TimezonedDate(session.endTimestamp).format("HH:mm");
   return {
     startTimestamp: session.startTimestamp,
-    summary: options && options.timeframeSummary ? timeframeSummary : session.text,
+    summary: getSummary(session, options.summaryType),
     type: type,
     id: session.id,
     image: session.image,
     title: session.title,
     categoryName: session.categoryName
   };
+}
+
+function getSummary(session, summaryType) {
+  var typeData = {
+    timeframe: new TimezonedDate(session.startTimestamp).format("D MMM - HH:mm") +
+      " / " +
+      new TimezonedDate(session.endTimestamp).format("HH:mm"),
+    previewText: session.text,
+    category: session.categoryName
+  };
+  return typeData[summaryType];
 }
 
 function getImageForBlockTitle(title) {

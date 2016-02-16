@@ -41,7 +41,7 @@ exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
       return new TimezonedDate(timestamp1).toJSON() <= new TimezonedDate(session.startTimestamp).toJSON() &&
              new TimezonedDate(timestamp2).toJSON() > new TimezonedDate(session.startTimestamp).toJSON();
     }).value();
-  return viewDataAdapter.adaptCategory({sessions: sessions});
+  return viewDataAdapter.adaptTimeframe({sessions: sessions});
 };
 
 exports.getBlocks = function() {
