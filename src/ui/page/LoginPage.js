@@ -1,6 +1,7 @@
 var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var applyPlatformStyle = require("../applyPlatformStyle");
+var loginService = require("../../loginService");
 var Input = require("../Input");
 var ProgressButton = require("../ProgressButton");
 
@@ -11,7 +12,7 @@ exports.create = function() {
 
   var header = tabris.create("Composite", {
     id: "pageHeader",
-    left: 0, top: 0, right: 0, height: sizes.DRAWER_USER_AREA_LOGGED_IN_HEIGHT
+    left: 0, top: 0, right: 0, height: sizes.PROFILE_AREA_TOP_OFFSET
   }).appendTo(scrollView);
 
   applyPlatformStyle(header);
@@ -27,10 +28,10 @@ exports.create = function() {
 
   var inputContainer = tabris.create("Composite", {
     id: "inputContainer",
-    width: sizes.LOGIN_INPUT_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
+    width: sizes.PROFILE_AREA_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
   }).appendTo(scrollView);
 
-  var emailInput = Input.create({
+  var usernameInput = Input.create({
     id: "username",
     left: 0, right: 0,
     message: "eclipse.org e-mail address"
@@ -40,14 +41,16 @@ exports.create = function() {
     type: "password",
     id: "password",
     left: 0, right: 0,
-    top: [emailInput, sizes.MARGIN],
+    top: [usernameInput, sizes.MARGIN],
     message: "password"
   }).on("change:text", updateLoginButtonState).appendTo(inputContainer);
 
   var button = ProgressButton.create({id: "loginButton", text: "Login", enabled: false})
     .on("select", function() {
       this.set("progress", true);
-      page.trigger("loginButtonTapped", page, emailInput.get("text"), passwordInput.get("text"));
+      loginService.login(usernameInput.get("text"), passwordInput.get("text"))
+        .then(function() {page.trigger("loginSuccess", page);})
+        .catch(function() {page.trigger("loginError", page);});
     })
     .appendTo(inputContainer);
 
@@ -58,10 +61,10 @@ exports.create = function() {
     .on("disappear", function() {
       tabris.ui.find("#loginAction").set("visible", true);
     })
-    .on("success", function() {
+    .on("loginSuccess", function() {
       this.close();
     })
-    .on("error", function() {
+    .on("loginError", function() {
       button.set("progress", false);
     });
 
@@ -70,7 +73,7 @@ exports.create = function() {
   }
 
   function inputValid() {
-    return emailInput.get("text").length > 0 && passwordInput.get("text").length > 0;
+    return usernameInput.get("text").length > 0 && passwordInput.get("text").length > 0;
   }
 
   return page;

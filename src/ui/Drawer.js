@@ -16,7 +16,6 @@ exports.create = function() {
   var drawerUserArea = DrawerUserArea
     .create()
     .on("loggedInTap", function() {setAccountMode(this, !accountModeEnabled);})
-    .on("loginPageOpened", function() {drawer.close();})
     .appendTo(scrollView);
 
   var drawerList = createDrawerList();
@@ -24,6 +23,7 @@ exports.create = function() {
 
   tabris.ui.on("change:activePage", function() {
     updateDrawerListSelection();
+    drawer.close();
   });
 
   function updateDrawerListSelection() {
@@ -64,12 +64,7 @@ exports.create = function() {
         colors.LIGHT_BACKGROUND_COLOR : "transparent");
     };
     pageListItem.set("page", page);
-    pageListItem.on("tap", function() {
-      if (tabris.ui.drawer) {
-        tabris.ui.drawer.close();
-      }
-      page.open();
-    });
+    pageListItem.on("tap", function() {page.open();});
     return pageListItem;
   }
 

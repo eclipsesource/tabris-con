@@ -17,17 +17,7 @@ exports.create = function() {
     left: sizes.MARGIN_LARGE, bottom: 0, right: sizes.MARGIN_LARGE, height: sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT
   }).on("tap", function() {
     var loginPage = LoginPage.create().open();
-    loginPage.on("loginButtonTapped", function(widget, username, password) {
-      loginService.login(username, password)
-        .then(function() {
-          userArea.set("loggedIn", true);
-          loginPage.trigger("success", this);
-        })
-        .catch(function(error) {
-          loginPage.trigger("error", this, error);
-        });
-    });
-    userArea.trigger("loginPageOpened", userArea);
+    loginPage.on("loginSuccess", function() {userArea.set("loggedIn", true);});
   }).appendTo(userArea);
   var accountImage = tabris.create("ImageView", {
     left: sizes.MARGIN_XSMALL, centerY: 0,
@@ -56,7 +46,7 @@ exports.create = function() {
     right: sizes.MARGIN_LARGE,
     height: sizes.DRAWER_USER_TEXT_CONTAINER_HEIGHT
   }).appendTo(loggedInContainer);
-  var nameTextView = tabris.create("TextView", {
+  var fullNameTextView = tabris.create("TextView", {
     top: sizes.MARGIN,
     textColor: "white",
     font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
@@ -77,8 +67,8 @@ exports.create = function() {
     .on("change:loggedIn", function(widget, loggedIn) {
       userArea.set("height",
         loggedIn ? sizes.DRAWER_USER_AREA_LOGGED_IN_HEIGHT : sizes.DRAWER_USER_AREA_NOT_LOGGED_IN_HEIGHT);
-      nameTextView.set("text", localStorage.getItem("username"));
-      mailTextView.set("text", localStorage.getItem("mail"));
+      fullNameTextView.set("text", loginService.getUserData().fullName);
+      mailTextView.set("text", loginService.getUserData().mail);
       loggedInContainer.set("visible", loggedIn);
       loggedOutContainer.set("visible", !loggedIn);
     })

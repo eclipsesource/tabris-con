@@ -22,8 +22,17 @@ exports.isLoggedIn = function() {
   return !!localStorage.getItem("username");
 };
 
+exports.getUserData = function() {
+  return {
+    username: localStorage.getItem("username"),
+    fullName: localStorage.getItem("fullName"),
+    mail: localStorage.getItem("mail")
+  };
+};
+
 function persistUserData(response) {
-  localStorage.setItem("username",
+  localStorage.setItem("username", response.user.name);
+  localStorage.setItem("fullName",
     response.user.field_profile_first.und[0].value +
     " " +
     response.user.field_profile_last.und[0].value
@@ -33,5 +42,6 @@ function persistUserData(response) {
 
 function resetUserData() {
   localStorage.setItem("username", "");
+  localStorage.setItem("fullName", "");
   localStorage.setItem("mail", "");
 }
