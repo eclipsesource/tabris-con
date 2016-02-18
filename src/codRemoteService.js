@@ -3,6 +3,7 @@ Promise = require("promise");
 require("whatwg-fetch");
 var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
+var _ = require("lodash");
 
 var URI = require("urijs");
 
@@ -66,6 +67,54 @@ exports.csrfToken = function() {
   });
 };
 
+exports.evaluations = function() {
+  var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
+  return fetch(serviceUrl).then(jsonify);
+};
+
+exports.createEvaluation = function(sessionNid, comment) {
+  return exports.evaluations()
+    .then(verifyNotAlreadyExisting(sessionNid))
+    .then(exports.csrfToken)
+    .then(createEvaluation(sessionNid, comment))
+    .then(jsonify)
+    .then(verifyCreateEvaluationResponse(sessionNid))
+    .catch(log)
+    .catch(alert);
+};
+
+function createEvaluation(sessionNid, comment) {
+  return function(csrfToken) {
+    var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
+    return fetch(serviceUrl, {
+      method: "POST",
+      headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
+      body: JSON.stringify({session_id: sessionNid, comment: comment})
+    });
+  };
+}
+
+function verifyNotAlreadyExisting(sessionNid) {
+  return function(evaluations) {
+    var alreadySubmitted = _.some(evaluations, function(evaluation) {
+      return sessionNid === evaluation.nid;
+    });
+    if (alreadySubmitted) {
+      return Promise.reject("Evaluation already submitted for this talk.");
+    }
+    return Promise.resolve();
+  };
+}
+
+function verifyCreateEvaluationResponse(sessionNid) {
+  return function(response) {
+    if (response.nid !== sessionNid) {
+      return Promise.reject("Could not submit evaluation.");
+    }
+    return Promise.resolve(response);
+  };
+}
+
 function resolveExpiredSession(e) {
   if (e === "User is not logged in.") {
     return Promise.resolve();
@@ -83,7 +132,7 @@ function log(error) {
 }
 
 function alert(error) {
-  if (!navigator.notification) {
+  if (typeof navigator === "undefined" || !navigator.notification) {
     console.error("cordova-plugin-dialogs is not available in this Tabris.js client. The error was: " + error);
     return Promise.reject(error);
   }

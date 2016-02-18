@@ -57,7 +57,7 @@ describe("codRemoteService", function() {
           expect(fetchMock.lastCall()[1].headers).to.deep.equal({
             Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": "token"
           });
-          return expect(response).to.deep.equal([true]);
+          expect(response).to.deep.equal([true]);
         });
     });
 
@@ -81,4 +81,51 @@ describe("codRemoteService", function() {
       return expect(tokenPromise).to.eventually.equal("token");
     });
   });
+
+  describe("evaluations", function() {
+    it("returns a list of evaluations", function() {
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", [{nid: "200"}]);
+
+      var evaluations = codRemoteService.evaluations();
+
+      expect(fetchMock.called("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations")).to.be.true;
+      return expect(evaluations).to.eventually.deep.equal([{nid: "200"}]);
+    });
+  });
+
+  describe("createEvaluation", function() {
+    it("fails when evaluation is already submitted", function() {
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", [{nid: "200"}]);
+
+      var evaluation = codRemoteService.createEvaluation("200", "foo");
+
+      return expect(evaluation).to.eventually.be.rejectedWith(/already submitted/);
+    });
+
+    it("fails when server sends an unexpected response", function() {
+      var evaluationResponse = {nid: "400", uri: "https://www.eclipsecon.org/na2016/api/1.0/node/200"};
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "GET", [{nid: "300"}]);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", evaluationResponse);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
+
+      var evaluation = codRemoteService.createEvaluation("200", "foo");
+
+      return expect(evaluation).to.eventually.be.rejectedWith("Could not submit evaluation.");
+    });
+
+    it("creates an evaluation", function() {
+      var evaluationResponse = {nid: "200", uri: "https://www.eclipsecon.org/na2016/api/1.0/node/200"};
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "GET", [{nid: "300"}]);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", evaluationResponse);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
+
+      return codRemoteService.createEvaluation("200", "foo").then(function(response) {
+        expect(response).to.deep.equal(evaluationResponse);
+        var body = JSON.parse(fetchMock.lastCall()[1].body);
+        expect(body.session_id).to.equal("200");
+        expect(body.comment).to.equal("foo");
+      });
+    });
+  });
+
 });
