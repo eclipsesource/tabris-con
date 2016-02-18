@@ -69,6 +69,15 @@ describe("codRemoteService", function() {
 
       return expect(logoutPromise).to.eventually.be.rejected;
     });
+
+    it("doesn't reject when cookie expired", function() {
+      fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/user/logout", ["User is not logged in."]);
+
+      var logoutPromise = codRemoteService.logout();
+
+      return expect(logoutPromise).eventually.not.to.be.rejected;
+    });
   });
 
   describe("csrfToken", function() {
