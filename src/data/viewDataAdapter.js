@@ -44,9 +44,10 @@ exports.adaptTimeframe = function(category) {
 exports.adaptSession = function(session) {
   var startDateString = new TimezonedDate(session.startTimestamp).format("DD MMM YYYY, HH:mm");
   var endTimeString = new TimezonedDate(session.endTimestamp).format("HH:mm");
-  return {
+  var adaptedSession = {
     id: session.id,
     summary: startDateString + " - " + endTimeString + " in " + session.room,
+    endTimestamp: session.endTimestamp,
     description: session.description,
     title: session.title,
     image: session.image,
@@ -59,6 +60,10 @@ exports.adaptSession = function(session) {
       };
     })
   };
+  if (session.nid) {
+    adaptedSession.nid = session.nid;
+  }
+  return adaptedSession;
 };
 
 exports.adaptKeynote = function(keynote) {
@@ -101,9 +106,7 @@ function mapDatedBlock(datedBlocks) {
     day: new TimezonedDate(datedBlocks[0].startTimestamp).format("DD MMM"),
     blocks: _(datedBlocks)
       .sortBy("startTimestamp")
-      .map(function(datedBlock) {
-        return adaptDatedBlock(datedBlock);
-      })
+      .map(adaptDatedBlock)
       .map(function(block, i) {return [block, separators[i]];})
       .flatten()
       .pull(undefined)
@@ -125,6 +128,9 @@ function adaptDatedBlock(datedBlock) {
   };
   if (datedBlock.sessionId) {
     block.sessionId = datedBlock.sessionId;
+  }
+  if (datedBlock.sessionNid) {
+    block.sessionNid = datedBlock.sessionNid;
   }
   return block;
 }

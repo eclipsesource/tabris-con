@@ -28,7 +28,7 @@ exports.create = function() {
 
   var inputContainer = tabris.create("Composite", {
     id: "inputContainer",
-    width: sizes.PROFILE_AREA_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
+    width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
   }).appendTo(scrollView);
 
   var usernameInput = Input.create({
@@ -48,9 +48,7 @@ exports.create = function() {
   var button = ProgressButton.create({id: "loginButton", text: "Login", enabled: false})
     .on("select", function() {
       this.set("progress", true);
-      loginService.login(usernameInput.get("text"), passwordInput.get("text"))
-        .then(function() {page.trigger("loginSuccess", page);})
-        .catch(function() {page.trigger("loginError", page);});
+      loginService.login(usernameInput.get("text"), passwordInput.get("text"));
     })
     .appendTo(inputContainer);
 
@@ -64,7 +62,7 @@ exports.create = function() {
     .on("loginSuccess", function() {
       this.close();
     })
-    .on("loginError", function() {
+    .on("loginFailure", function() {
       button.set("progress", false);
     });
 

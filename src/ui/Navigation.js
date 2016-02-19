@@ -3,14 +3,13 @@ var Tracks = require("./navigatable/Tracks");
 var Map = require("./navigatable/Map");
 var Drawer = require("./Drawer");
 var About = require("./navigatable/About");
-var viewDataProvider = require("../data/viewDataProvider");
 var colors = require("../../resources/colors");
 
 module.exports = {
   Android: {
     create: function() {
-      wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      var tracksPage = wrapInPage(Tracks.create()).once("appear", populatePreviewCategories);
+      wrapInPage(Schedule.create());
+      var tracksPage = wrapInPage(Tracks.create());
       wrapInPage(Map.create());
       wrapInPage(About.create());
       Drawer.create();
@@ -34,14 +33,8 @@ module.exports = {
           tab.set("image", tab.find(".navigatable").first().get("image"));
         });
       }).appendTo(mainPage);
-      wrapInTabFolder(Schedule.create(), tabFolder)
-        .once("appear", function() {
-          populateBlocks(this);
-        });
-      var tracksTab = wrapInTabFolder(Tracks.create(), tabFolder)
-        .once("appear", function() {
-          populatePreviewCategories(this);
-        });
+      wrapInTabFolder(Schedule.create(), tabFolder);
+      var tracksTab = wrapInTabFolder(Tracks.create(), tabFolder);
       wrapInTabFolder(Map.create(), tabFolder);
       wrapInTabFolder(About.create(), tabFolder);
       setTimeout(function() {
@@ -51,8 +44,8 @@ module.exports = {
   },
   UWP: {
     create: function() {
-      wrapInPage(Schedule.create()).once("appear", populateBlocks);
-      var tracksPage = wrapInPage(Tracks.create()).once("appear", populatePreviewCategories);
+      wrapInPage(Schedule.create());
+      var tracksPage = wrapInPage(Tracks.create());
       wrapInPage(Map.create());
       wrapInPage(About.create());
       Drawer.create();
@@ -96,22 +89,4 @@ function updateNavigatablesActiveState(navigatableWrapper) {
       }
     });
   selectedNavigatable.set("active", true);
-}
-
-function populatePreviewCategories(navigatable) {
-  if (!navigatable.get("data")) {
-    viewDataProvider.asyncGetPreviewCategories()
-      .then(function(previewCategories) {
-        navigatable.set("data", previewCategories);
-      });
-  }
-}
-
-function populateBlocks(navigatable) {
-  if (!navigatable.get("data")) {
-    viewDataProvider.asyncGetBlocks()
-      .then(function(blocks) {
-        navigatable.set("data", blocks);
-      });
-  }
 }

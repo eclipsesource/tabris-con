@@ -2,8 +2,13 @@ module.exports = function(widget) {
   widget.on("change:progress", function(widget, progress) {
     widget.set("visible", !progress);
     if (progress) {
-      var indicator = tabris.create("ActivityIndicator", {layoutData: widget.get("bounds")}).appendTo(widget.parent());
-      widget.set("indicator", indicator);
+      if (widget.get("bounds").width) {
+        widget.set("indicator", createLoadingIndicator(widget));
+      } else {
+        widget.on("resize", function() {
+          widget.set("indicator", createLoadingIndicator(widget));
+        });
+      }
     } else {
       var indicator = widget.get("indicator");
       if (indicator && !indicator.isDisposed()) {
@@ -13,3 +18,7 @@ module.exports = function(widget) {
     }
   });
 };
+
+function createLoadingIndicator(widget) {
+  return tabris.create("ActivityIndicator", {layoutData: widget.get("bounds")}).appendTo(widget.parent());
+}

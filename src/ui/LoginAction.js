@@ -17,6 +17,8 @@ exports.create = function() {
     action.set("image", {login: null, loggedIn: actionImage}[mode]);
   });
 
+  action.on("logoutSuccess", function() {action.set("mode", "login");});
+  action.on("logoutFailure", function() {action.set("mode", "loggedIn");});
   action.set("mode", loginService.isLoggedIn() ? "loggedIn" : "login");
   tabris.ui.on("change:activePage", maybeShowAction(action));
 };
@@ -27,12 +29,10 @@ function showLoginPage(action) {
     .on("loginSuccess", function() {action.set("mode", "loggedIn");});
 }
 
-function showProfilePage(action) {
+function showProfilePage() {
   IOSProfilePage.create()
     .open()
-    .set("data", loginService.getUserData())
-    .on("logoutSuccess", function() {action.set("mode", "login");})
-    .on("logoutFailure", function() {action.set("mode", "loggedIn");});
+    .set("data", loginService.getUserData());
 }
 
 function maybeShowAction(action) {

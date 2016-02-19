@@ -76,6 +76,7 @@ module.exports = function(conferenceData) {
       .map(function(session) {
         return {
           id: session.id,
+          nid: session.nid,
           title: session.title,
           description: stripHtml(session.abstract),
           room: session.room,

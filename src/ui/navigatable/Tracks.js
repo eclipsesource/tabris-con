@@ -2,6 +2,7 @@ var CollectionView = require("../CollectionView");
 var LoadingIndicator = require("../LoadingIndicator");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
+var viewDataProvider = require("../../data/viewDataProvider");
 
 exports.create = function() {
   var tracks = Navigatable.create({
@@ -9,6 +10,13 @@ exports.create = function() {
     title: "Tracks",
     image: getImage.forDevicePlatform("tracks_selected") // TODO: selected image initially shown as part of workaround for tabris-ios#841
   });
+
+  tracks.initializeItems = function() {
+    viewDataProvider.asyncGetPreviewCategories()
+      .then(function(previewCategories) {
+        tracks.set("data", previewCategories);
+      });
+  };
 
   var loadingIndicator = LoadingIndicator.create().appendTo(tracks);
 

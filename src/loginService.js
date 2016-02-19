@@ -6,16 +6,33 @@ exports.login = function(username, password) {
     .login(username, password)
     .then(function(response) {
       persistUserData(response);
+      reloadScheduleItems();
       return Promise.resolve();
+    })
+    .then(function() {
+      maybeTrigger("#loginPage", "loginSuccess");
     })
     .catch(function(e) {
       resetUserData();
       return Promise.reject(e);
+    })
+    .catch(function() {
+      maybeTrigger("#loginPage", "loginFailure");
     });
 };
 
 exports.logout = function() {
-  return codRemoteService.logout().then(resetUserData);
+  return codRemoteService.logout()
+    .then(exports.destroySession)
+    .catch(function() {
+      triggerLogoutFailureEvents();
+    });
+};
+
+exports.destroySession = function() {
+  resetUserData();
+  reloadScheduleItems();
+  triggerLogoutSuccessEvents();
 };
 
 exports.isLoggedIn = function() {
@@ -29,6 +46,24 @@ exports.getUserData = function() {
     mail: localStorage.getItem("mail")
   };
 };
+
+function triggerLogoutSuccessEvents() {
+  if (device.platform === "iOS") {
+    maybeTrigger("#iOSProfilePage", "logoutSuccess");
+    maybeTrigger("#loginAction", "logoutSuccess");
+  } else {
+    maybeTrigger("Drawer", "logoutSuccess");
+  }
+}
+
+function triggerLogoutFailureEvents() {
+  if (device.platform === "iOS") {
+    maybeTrigger("#iOSProfilePage", "logoutFailure");
+    maybeTrigger("#loginAction", "logoutFailure");
+  } else {
+    maybeTrigger("Drawer", "logoutFailure");
+  }
+}
 
 function persistUserData(response) {
   localStorage.setItem("username", response.user.name);
@@ -44,4 +79,18 @@ function resetUserData() {
   localStorage.setItem("username", "");
   localStorage.setItem("fullName", "");
   localStorage.setItem("mail", "");
+}
+
+function maybeTrigger(selector, event) {
+  var widget = tabris.ui.find(selector).first();
+  if (widget) {
+    widget.trigger(event, widget);
+  }
+}
+
+function reloadScheduleItems() {
+  var schedule = tabris.ui.find("#schedule").first();
+  if (schedule) {
+    schedule.initializeItems();
+  }
 }

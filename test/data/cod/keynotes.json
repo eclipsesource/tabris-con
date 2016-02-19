@@ -1,5 +1,6 @@
 [{
   "id": "20301046",
+  "nid": "2030",
   "title": "10 Java Idioms Stomped with Xtend",
   "description": "Eclipse Xtend is an emerging, object oriented language on the JVM that encourages functional programming and comes with state of the art IDE support for Eclipse and IntelliJ IDEA. This session is going to show how Xtend is applied in 10 practical use cases. We will focus on common Java idioms and the integration with popular Java APIs like Android, JavaFX and more.\nYou will see how literally any given Java library is even easier to be used and consumed from Xtend than from Java itself. That’s what we call Java-Interop! Xtend code is more concise and readable due to greatly improved signal to noise ratio. Even the simplest tasks become a breeze and powerful language features like the superior annotation processing infrastructure help to automate repetitive coding styles. At the same time all language features are carefully designed to leverage known Java concepts. Java developers get productive in a couple of hours. Xtend will not force you into an entirely new ecosystem but complements Java and allows to stick to all your beloved libraries and tools.\nJoin this session and learn how to write cleaner code against any Java APIs and how to solve day-to-day challenges in much better ways.",
   "categoryName": "Other Cool Stuff",

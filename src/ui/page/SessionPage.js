@@ -6,8 +6,9 @@ var fontToString = require("../../fontToString");
 var SessionPageHeader = require("../SessionPageHeader");
 var getImage = require("../../getImage");
 var applyPlatformStyle = require("../applyPlatformStyle");
-var attendedBlockService = require("../../attendedBlockService");
+var attendedSessionService = require("../../attendedSessionService");
 var AttendanceAction = require("../AttendanceAction");
+var SessionPageFeedbackWidget = require("././SessionPageFeedbackWidget");
 var config = require("../../../config");
 
 var titleCompY = 0;
@@ -46,7 +47,7 @@ exports.create = function() {
 
   var descriptionTextView = tabris.create("TextView", {
     id: "sessionPageDescriptionTextView",
-    left: sizes.LEFT_CONTENT_MARGIN, right: sizes.MARGIN_LARGE
+    right: sizes.MARGIN_LARGE
   }).appendTo(contentComposite);
   applyPlatformStyle(descriptionTextView);
 
@@ -128,6 +129,7 @@ exports.create = function() {
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
     sessionPageHeader.set("trackIndicatorColor", config.TRACK_COLOR[data.categoryName]);
+    SessionPageFeedbackWidget.create(contentComposite, data);
     createSpeakers(data.speakers);
   }
 
@@ -163,12 +165,11 @@ exports.create = function() {
     var session = page.get("data");
     if (session) {
       if (checked) {
-        attendedBlockService.addAttendedBlockId(session.id);
+        attendedSessionService.addAttendedSessionId(session.id);
       } else {
-        attendedBlockService.removeAttendedBlockId(session.id);
+        attendedSessionService.removeAttendedSessionId(session.id);
       }
       widget.set("attending", checked);
-      tabris.ui.find("#schedule").set("focus", checked ? session.id : null);
       infoToast.show({
         type: "myScheduleOperation",
         messageText: checked ? "Session added." : "Session removed.",
@@ -192,12 +193,19 @@ exports.create = function() {
     });
   }
 
+  page.on("appear", function() {
+    var feedbackWidget = page.find("#sessionPageFeedbackWidget").first();
+    if (feedbackWidget) {
+      feedbackWidget.refresh();
+    }
+  });
+
   page.on("change:data", function(widget, data) {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
     layoutParallax();
     var attendanceControl = device.platform === "Android" ? sessionPageHeader : tabris.ui.find("#attendanceAction");
-    attendanceControl.set("attending", attendedBlockService.isAttending(data.id));
+    attendanceControl.set("attending", attendedSessionService.isAttending(data.id));
     loadingIndicator.dispose();
   });
 

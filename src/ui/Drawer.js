@@ -8,14 +8,16 @@ var addProgressTo = require("./addProgressTo");
 
 exports.create = function() {
   var accountModeEnabled = false;
-  var drawer = tabris.create("Drawer");
+  var drawer = tabris.create("Drawer", {
+    accountMode: false
+  });
   var scrollView = tabris.create("ScrollView", {
     left: 0, top: 0, right: 0, bottom: 0
   }).appendTo(drawer);
 
   var drawerUserArea = DrawerUserArea
     .create()
-    .on("loggedInTap", function() {setAccountMode(this, !accountModeEnabled);})
+    .on("loggedInTap", function() {drawer.set("accountMode", !drawer.get("accountMode"));})
     .appendTo(scrollView);
 
   var drawerList = createDrawerList();
@@ -36,12 +38,17 @@ exports.create = function() {
       });
   }
 
-  function setAccountMode(userArea, value) {
+  drawer.on("change:accountMode", function(widget, value) {
     accountList.set("visible", value);
     drawerList.set("visible", !value);
-    userArea.find("#menuArrowImageView").set("transform", value ? {rotation: Math.PI} : null);
+    drawerUserArea.find("#menuArrowImageView").set("transform", value ? {rotation: Math.PI} : null);
     accountModeEnabled = value;
-  }
+  });
+
+  drawer.on("logoutSuccess", function() {
+    drawerUserArea.set("loggedIn", false);
+    drawer.set("accountMode", false);
+  });
 
   function createDrawerList() {
     var drawerList = tabris.create("Composite", {
@@ -74,16 +81,9 @@ exports.create = function() {
       visible: false
     }).appendTo(scrollView);
     createListItem("Logout", getImage.forDevicePlatform("logout"))
-      .on("tap", function(logoutListItem) {
+      .on("tap", function(widget) {
         this.set("progress", true);
-        loginService.logout()
-          .then(function() {
-            drawerUserArea.set("loggedIn", false);
-            setAccountMode(drawerUserArea, false);
-          })
-          .finally(function() {
-            logoutListItem.set("progress", false);
-          });
+        loginService.logout().then(function() {widget.set("progress", false);});
       })
       .appendTo(accountList);
     return accountList;

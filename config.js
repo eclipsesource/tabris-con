@@ -9,7 +9,8 @@ module.exports = {
   PROJECT_URL: "https://github.com/eclipsesource/tabris-con",
   SESSIONS_HAVE_IMAGES: false,
   CONFERENCE_TIMEZONE: timezone,
-  VOTING_SERVICE_URL: "https://www.eclipsecon.org/na2016",
+  FEEDBACK_DEADLINE: date("10.03.2016 16:00"),
+  FEEDBACK_SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SCHEDULE_PATTERN_ICON_MAP: {
     googleIO: {
       "^After": "schedule_icon_fun",

@@ -18,17 +18,18 @@ describe("attendedBlockProvider", function() {
 
   it("provides blocks referenced in localStorage", function() {
     var config = {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "Europe/Berlin"};
-    global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_BLOCK_STORAGE_KEY).returns("[\"20301046\"]");
+    global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSION_STORAGE_KEY).returns("[\"20301046\"]");
     conferenceDataProvider.get.returns({sessions: SESSIONS});
 
     var blocks = attendedBlockProvider.getBlocks(config);
 
     expect(blocks).to.deep.equal([{
-      "sessionId": "20301046",
-      "title": "10 Java Idioms Stomped with Xtend",
-      "room": "Theater Stage",
-      "startTimestamp": "2015-11-05T09:30:00.000Z",
-      "endTimestamp": "2015-11-05T10:05:00.000Z"
+      sessionId: "20301046",
+      title: "10 Java Idioms Stomped with Xtend",
+      sessionNid: "2030",
+      room: "Theater Stage",
+      startTimestamp: "2015-11-05T09:30:00.000Z",
+      endTimestamp: "2015-11-05T10:05:00.000Z"
     }]);
   });
 

@@ -4,6 +4,9 @@ var viewDataAdapter = require("../data/viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
 var attendedBlockProvider = require("./attendedBlockProvider");
 var TimezonedDate = require("../TimezonedDate");
+var loginService = require("../loginService");
+var codRemoteService = require("../codRemoteService");
+var codFeedbackService = require("../codFeedbackService");
 
 exports.getPreviewCategories = function() {
   return viewDataAdapter.adaptPreviewCategories(conferenceDataProvider.get().previewCategories);
@@ -88,6 +91,19 @@ exports.asyncGetBlocks = function() {
       resolve(exports.getBlocks());
     });
   });
+};
+
+exports.asyncGetScheduleBlocks = function() {
+  var promises = [exports.asyncGetBlocks()];
+  if (loginService.isLoggedIn()) {
+    promises.push(codRemoteService.evaluations());
+  }
+  return Promise.all(promises)
+    .then(function(values) {
+      var blocksEvaluations = {blocks: values[0], evaluations: values[1]};
+      codFeedbackService.addFeedbackIndicatorState(blocksEvaluations);
+      return blocksEvaluations.blocks;
+    });
 };
 
 exports.asyncGetSessionsStartingInTimeframe = function(timestamp1, timestamp2) {

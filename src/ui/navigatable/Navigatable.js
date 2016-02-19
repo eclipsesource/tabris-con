@@ -6,11 +6,9 @@ exports.create = function(configuration) {
     class: "navigatable",
     left: 0, top: 0, right: 0, bottom: 0,
     active: true
-  }, configuration))
-    .on("change:active", function(widget, active) {
-      navigatable.updateImage();
-      this.trigger(active ? "appear" : "disappear", this);
-    });
+  }, configuration));
+
+  navigatable.initializeItems = function() {}; // stub
 
   navigatable.updateImage = function() {
     this.set("image", getImageVariant(navigatable, this.get("active")));
@@ -28,6 +26,17 @@ exports.create = function(configuration) {
   };
 
   navigatable.updateImage();
+
+  navigatable.on("change:active", function(widget, active) {
+    navigatable.updateImage();
+    this.trigger(active ? "appear" : "disappear", this);
+  });
+
+  navigatable.once("appear", function() {
+    if (!navigatable.get("data")) {
+      navigatable.initializeItems();
+    }
+  });
 
   return navigatable;
 

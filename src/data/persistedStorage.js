@@ -2,7 +2,7 @@ var _ = require("lodash");
 var stringUtility = require("../stringUtility");
 var config = require("../../config");
 
-exports.ATTENDED_BLOCK_STORAGE_KEY = "attendedBlocks";
+exports.ATTENDED_SESSION_STORAGE_KEY = "attendedSessions";
 
 exports.PREVIEW_CATEGORIES = "previewCategories";
 exports.CATEGORIES = "categories";
@@ -14,25 +14,25 @@ var CONFERENCE_DATA_PROPERTIES = [
   exports.PREVIEW_CATEGORIES, exports.CATEGORIES, exports.SESSIONS, exports.BLOCKS, exports.KEYNOTES
 ];
 
-exports.getAttendedBlocks = function() {
-  var attendedBlocks = localStorage.getItem(exports.ATTENDED_BLOCK_STORAGE_KEY) || "[]";
-  return JSON.parse(attendedBlocks);
+exports.getAttendedSessions = function() {
+  var attendedSessions = localStorage.getItem(exports.ATTENDED_SESSION_STORAGE_KEY) || "[]";
+  return JSON.parse(attendedSessions);
 };
 
-exports.addAttendedBlockId = function(sessionId) {
-  var attendedBlocks = exports.getAttendedBlocks();
-  if (!_.some(attendedBlocks, function(el) {return el === sessionId;})) {
-    attendedBlocks.push(sessionId);
+exports.addAttendedSessionId = function(sessionId) {
+  var attendedSessions = exports.getAttendedSessions();
+  if (!_.some(attendedSessions, function(el) {return el === sessionId;})) {
+    attendedSessions.push(sessionId);
   }
-  var attendedBlocksString = JSON.stringify(attendedBlocks);
-  localStorage.setItem(exports.ATTENDED_BLOCK_STORAGE_KEY, attendedBlocksString);
+  var attendedSessionsString = JSON.stringify(attendedSessions);
+  localStorage.setItem(exports.ATTENDED_SESSION_STORAGE_KEY, attendedSessionsString);
 };
 
-exports.removeAttendedBlockId = function(sessionId) {
-  var attendedBlocks = exports.getAttendedBlocks();
-  _.pull(attendedBlocks, sessionId);
-  var attendedBlocksString = JSON.stringify(attendedBlocks);
-  localStorage.setItem(exports.ATTENDED_BLOCK_STORAGE_KEY, attendedBlocksString);
+exports.removeAttendedSessionId = function(sessionId) {
+  var attendedSessions = exports.getAttendedSessions();
+  _.pull(attendedSessions, sessionId);
+  var attendedSessionsString = JSON.stringify(attendedSessions);
+  localStorage.setItem(exports.ATTENDED_SESSION_STORAGE_KEY, attendedSessionsString);
 };
 
 defineSetMethods();

@@ -4,10 +4,11 @@ require("whatwg-fetch");
 var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");
+var loginService = require("./loginService");
 
 var URI = require("urijs");
 
-var API_URL = URI(config.VOTING_SERVICE_URL).segment("api").segment("1.0").toString();
+var API_URL = URI(config.FEEDBACK_SERVICE_URL).segment("api").segment("1.0").toString();
 
 exports.login = function(username, password) {
   var serviceUrl = URI(API_URL).segment("user").segment("login").toString();
@@ -61,7 +62,7 @@ exports.logout = function() {
 };
 
 exports.csrfToken = function() {
-  var serviceUrl = URI(config.VOTING_SERVICE_URL).segment("services").segment("session").segment("token").toString();
+  var serviceUrl = URI(config.FEEDBACK_SERVICE_URL).segment("services").segment("session").segment("token").toString();
   return fetch(serviceUrl).then(function(response) {
     return response.text();
   });
@@ -69,29 +70,49 @@ exports.csrfToken = function() {
 
 exports.evaluations = function() {
   var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
-  return fetch(serviceUrl).then(jsonify);
-};
-
-exports.createEvaluation = function(sessionNid, comment) {
-  return exports.evaluations()
-    .then(verifyNotAlreadyExisting(sessionNid))
-    .then(exports.csrfToken)
-    .then(createEvaluation(sessionNid, comment))
+  return fetch(serviceUrl)
     .then(jsonify)
-    .then(verifyCreateEvaluationResponse(sessionNid))
+    .then(function(response) {
+      if (responseIsAnErrorArray(response)) {
+        return Promise.reject(response[0]);
+      }
+      return Promise.resolve(response);
+    })
+    .catch(function(e) {
+      if (e.match(/Access denied/)) {
+        loginService.destroySession();
+        return Promise.reject("Session expired. Please log in again.");
+      }
+      return Promise.reject(e);
+    })
     .catch(log)
     .catch(alert);
 };
 
-function createEvaluation(sessionNid, comment) {
+exports.createEvaluation = function(sessionNid, comment, rating) {
+  return exports.evaluations()
+    .then(verifyNotAlreadyExisting(sessionNid))
+    .then(exports.csrfToken)
+    .then(createEvaluation(sessionNid, comment, rating))
+    .then(jsonify)
+    .then(verifyCreateEvaluationResponse)
+    .catch(log)
+    .catch(alert);
+};
+
+function createEvaluation(sessionNid, comment, rating) {
   return function(csrfToken) {
     var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
     return fetch(serviceUrl, {
       method: "POST",
       headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
-      body: JSON.stringify({session_id: sessionNid, comment: comment})
+      body: JSON.stringify({session_id: sessionNid, comment: comment, rating: rating})
     });
   };
+}
+
+function responseIsAnErrorArray(response) {
+  return response instanceof Array && typeof response[0] === "string";
 }
 
 function verifyNotAlreadyExisting(sessionNid) {
@@ -106,13 +127,14 @@ function verifyNotAlreadyExisting(sessionNid) {
   };
 }
 
-function verifyCreateEvaluationResponse(sessionNid) {
-  return function(response) {
-    if (response.nid !== sessionNid) {
-      return Promise.reject("Could not submit evaluation.");
-    }
-    return Promise.resolve(response);
-  };
+function verifyCreateEvaluationResponse(response) {
+  if (responseIsAnErrorArray(response)) {
+    return Promise.reject(response[0]);
+  }
+  if (!response.nid) {
+    return Promise.reject("Could not submit evaluation.");
+  }
+  return Promise.resolve(response);
 }
 
 function resolveExpiredSession(e) {

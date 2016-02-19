@@ -100,6 +100,14 @@ describe("codRemoteService", function() {
       expect(fetchMock.called("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations")).to.be.true;
       return expect(evaluations).to.eventually.deep.equal([{nid: "200"}]);
     });
+
+    it("fails when response is an error", function() {
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", ["User is not logged in."]);
+
+      var evaluations = codRemoteService.evaluations();
+
+      return expect(evaluations).to.eventually.be.rejectedWith(/User is not logged in/);
+    });
   });
 
   describe("createEvaluation", function() {
@@ -111,10 +119,19 @@ describe("codRemoteService", function() {
       return expect(evaluation).to.eventually.be.rejectedWith(/already submitted/);
     });
 
-    it("fails when server sends an unexpected response", function() {
-      var evaluationResponse = {nid: "400", uri: "https://www.eclipsecon.org/na2016/api/1.0/node/200"};
+    it("fails when server responds with an error", function() {
       fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "GET", [{nid: "300"}]);
-      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", evaluationResponse);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", ["error"]);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
+
+      var evaluation = codRemoteService.createEvaluation("200", "foo");
+
+      return expect(evaluation).to.eventually.be.rejectedWith("error");
+    });
+
+    it("fails when server sends an unexpected response", function() {
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "GET", [{nid: "300"}]);
+      fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", {foo: "bar"});
       fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
 
       var evaluation = codRemoteService.createEvaluation("200", "foo");
@@ -128,11 +145,12 @@ describe("codRemoteService", function() {
       fetchMock.mock("https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_evaluations", "POST", evaluationResponse);
       fetchMock.mock("https://www.eclipsecon.org/na2016/services/session/token", "token");
 
-      return codRemoteService.createEvaluation("200", "foo").then(function(response) {
+      return codRemoteService.createEvaluation("200", "foo", "+1").then(function(response) {
         expect(response).to.deep.equal(evaluationResponse);
         var body = JSON.parse(fetchMock.lastCall()[1].body);
         expect(body.session_id).to.equal("200");
         expect(body.comment).to.equal("foo");
+        expect(body.rating).to.equal("+1");
       });
     });
   });

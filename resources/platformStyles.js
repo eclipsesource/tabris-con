@@ -90,17 +90,21 @@ module.exports = {
       font: fontToString({size: sizes.FONT_MEDIUM})
     }
   },
+  "#sessionPageFeedbackWidget": {
+    Android: {left: sizes.LEFT_CONTENT_MARGIN},
+    iOS: {left: sizes.MARGIN_LARGE}
+  },
   "#sessionPageSpeakersTextView": {
     Android: {left: sizes.LEFT_CONTENT_MARGIN},
     iOS: {left: sizes.MARGIN_LARGE}
   },
   "#sessionPageDescriptionTextView": {
     Android: {
-      top: sizes.MARGIN_LARGE, left: sizes.LEFT_CONTENT_MARGIN,
+      top: ["#sessionPageFeedbackWidget", sizes.MARGIN_LARGE], left: sizes.LEFT_CONTENT_MARGIN,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     },
     iOS: {
-      top: 0, left: sizes.MARGIN_LARGE,
+      top: ["#sessionPageFeedbackWidget", sizes.MARGIN], left: sizes.MARGIN_LARGE,
       textColor: colors.DARK_PRIMARY_TEXT_COLOR
     }
   },
@@ -124,6 +128,7 @@ module.exports = {
     iOS: {}
   },
   ".button": {
+
     Android: {
       background: colors.BACKGROUND_COLOR,
       textColor: "white"
@@ -140,6 +145,10 @@ module.exports = {
   ".groupSeparator": {
     Android: {background: colors.LIGHT_BACKGROUND_COLOR},
     iOS: {background: colors.LINE_SEPARATOR_COLOR}
+  },
+  ".feedbackIndicator": {
+    Android: {top: sizes.MARGIN_LARGE},
+    iOS: {top: sizes.MARGIN + sizes.MARGIN_SMALL}
   },
   ".iOSLineSeparator": {
     Android: {

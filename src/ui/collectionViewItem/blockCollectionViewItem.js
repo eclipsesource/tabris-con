@@ -7,6 +7,8 @@ var SessionPage = require("../../ui/page/SessionPage");
 var SessionsPage = require("../../ui/page/SessionsPage");
 var TimezonedDate = require("../../TimezonedDate");
 var Circle = require("../Circle");
+var applyPlatformStyle = require("../applyPlatformStyle");
+var addProgressTo = require("../addProgressTo");
 
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
@@ -24,6 +26,15 @@ module.exports = {
     var textContainer = tabris.create("Composite", {
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE
     }).appendTo(cell);
+
+    var feedbackIndicator = tabris.create("ImageView", {
+      class: "feedbackIndicator",
+      width: 24, height: 24,
+      right: sizes.MARGIN_LARGE,
+      progress: false
+    }).appendTo(cell);
+    addProgressTo(feedbackIndicator);
+    applyPlatformStyle(feedbackIndicator);
 
     var startTimeTextView = tabris.create("TextView", {
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
@@ -55,6 +66,12 @@ module.exports = {
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
       imageView.set("image", getImage.forDevicePlatform(item.image));
+      if (item.feedbackIndicatorState) {
+        feedbackIndicator.set("image", getImage.forDevicePlatform("schedule_feedback_" + item.feedbackIndicatorState));
+      } else {
+        feedbackIndicator.set("image", null);
+      }
+      feedbackIndicator.set("progress", item.feedbackIndicatorState === "loading");
 
       if (item.shouldPop) {
         setTimeout(function() {
@@ -76,6 +93,7 @@ module.exports = {
         .then(function(session) {
           sessionPage.set("data", session);
         });
+      tabris.ui.find("#schedule").set("lastSelectedSessionId", item.sessionId);
     } else if (item.sessionType === "free") {
       var page = SessionsPage.create().open();
       var date1 = new TimezonedDate(item.startTimestamp);
