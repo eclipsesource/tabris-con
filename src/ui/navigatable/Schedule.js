@@ -44,6 +44,28 @@ exports.create = function() {
       });
   };
 
+  schedule.updateSessionWithId = function(id, property, value) {
+    var collectionView = getItemCollectionView(schedule, id);
+    if (collectionView) {
+      var items = collectionView.get("items");
+      var index = _.findIndex(items, {sessionId: id});
+      items[index][property] = value;
+      collectionView.refresh(index);
+    }
+  };
+
+  schedule.findSessionById = function(sessionId) {
+    var found;
+    schedule.get("data").forEach(function(blockObject) {
+      blockObject.blocks.forEach(function(block) {
+        if (block.sessionId === sessionId) {
+          found = block;
+        }
+      });
+    });
+    return found;
+  };
+
   schedule.once("change:data", function(widget, blocks) {
     loadingIndicator.dispose();
     var tabFolder = tabris.create("TabFolder", {
@@ -80,6 +102,12 @@ exports.create = function() {
 
   return schedule;
 };
+
+
+function getItemCollectionView(schedule, sessionId) {
+  var tab = schedule.getSessionIdTab(sessionId);
+  return tab ? tab.find("CollectionView").first() : null;
+}
 
 function maybeFocusItem(schedule) {
   var sessionId = schedule.get("shouldFocusSessionWithId");

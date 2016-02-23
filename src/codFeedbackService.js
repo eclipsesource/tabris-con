@@ -9,28 +9,25 @@ exports.updateLastSelectedSessionFeedbackIndicator = function(schedule) {
   var lastSelectedSessionId = schedule.get("lastSelectedSessionId");
   if (lastSelectedSessionId && loginService.isLoggedIn()) {
     schedule.set("lastSelectedSessionId", null);
-    var collectionView = getItemCollectionView(schedule, lastSelectedSessionId);
-    if (collectionView) {
-      if (device.platform === "iOS") {
-        setTimeout(setIndicatorState, 700);
-      } else {
-        updateCollectionViewItem(collectionView, lastSelectedSessionId, "loading");
-        setIndicatorState();
-      }
+    if (device.platform === "iOS") {
+      setTimeout(setIndicatorState, 700);
+    } else {
+      schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", "loading");
+      setIndicatorState();
     }
   }
 
   function setIndicatorState() {
     codRemoteService.evaluations()
       .then(function(evaluations) {
-        var session = findSessionById(schedule.get("data"), lastSelectedSessionId);
-        updateCollectionViewItem(collectionView, lastSelectedSessionId,
-          getSessionFeedbackIndicatorState(evaluations, session));
+        var session = schedule.findSessionById(lastSelectedSessionId);
+        var feedbackIndicatorState = getSessionFeedbackIndicatorState(evaluations, session);
+        schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", feedbackIndicatorState);
       })
       .catch(function(e) {
+        schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", null);
         console.log(e);
         console.log(e.stack);
-        updateCollectionViewItem(collectionView, lastSelectedSessionId, null);
       });
   }
 };
@@ -67,28 +64,4 @@ function getSessionFeedbackIndicatorState(evaluations, block) {
 function validFeedbackWindow(session) {
   var currentDate = new Date();
   return currentDate > new Date(session.endTimestamp) && currentDate < new Date(config.FEEDBACK_DEADLINE);
-}
-
-function getItemCollectionView(schedule, sessionId) {
-  var tab = schedule.getSessionIdTab(sessionId);
-  return tab ? tab.find("CollectionView").first() : null;
-}
-
-function updateCollectionViewItem(collectionView, sessionId, value) {
-  var items = collectionView.get("items");
-  var index = _.findIndex(items, {sessionId: sessionId});
-  items[index].feedbackIndicatorState = value;
-  collectionView.refresh(index);
-}
-
-function findSessionById(adaptedBlocks, sessionId) {
-  var found;
-  adaptedBlocks.forEach(function(blockObject) {
-    blockObject.blocks.forEach(function(block) {
-      if (block.sessionId === sessionId) {
-        found = block;
-      }
-    });
-  });
-  return found;
 }
