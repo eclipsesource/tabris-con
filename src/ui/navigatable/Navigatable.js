@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var getImage = require("../../getImage");
+var Promise = require("promise");
 
 exports.create = function(configuration) {
   var navigatable = tabris.create("Composite", _.extend({
@@ -8,7 +9,7 @@ exports.create = function(configuration) {
     active: true
   }, configuration));
 
-  navigatable.initializeItems = function() {}; // stub
+  navigatable.initializeItems = function() {return Promise.resolve();}; // stub
 
   navigatable.updateImage = function() {
     this.set("image", getImageVariant(navigatable, this.get("active")));

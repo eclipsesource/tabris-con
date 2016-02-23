@@ -35,6 +35,17 @@ exports.removeAttendedSessionId = function(sessionId) {
   localStorage.setItem(exports.ATTENDED_SESSION_STORAGE_KEY, attendedSessionsString);
 };
 
+exports.conferenceDataStored = function() {
+  var data = [
+    exports.getSessions(),
+    exports.getPreviewCategories(),
+    exports.getCategories(),
+    exports.getKeynotes(),
+    exports.getBlocks()
+  ];
+  return data.every(function(data) {return !!data;});
+};
+
 defineSetMethods();
 defineGetMethods();
 

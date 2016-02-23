@@ -1,5 +1,6 @@
 var CollectionView = require("../../ui/CollectionView");
 var applyPlatformStyle = require("../../ui/applyPlatformStyle");
+var makeUpdatable = require("../../ui/makeUpdatable");
 var LoadingIndicator = require("../../ui/LoadingIndicator");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
@@ -25,13 +26,13 @@ exports.create = function() {
   };
 
   schedule.initializeItems = function() {
-    if (device.platform === "iOS") {
+    if (device.platform === "iOS" && !pulledToRefresh(schedule)) {
       var indicator = LoadingIndicator.create({shade: true, semitransparent: true}).appendTo(schedule);
     } else {
       schedule.find("CollectionView").set("refreshIndicator", true);
     }
     schedule.set("initializingItems", true);
-    return viewDataProvider.asyncGetScheduleBlocks()
+    return viewDataProvider.getScheduleBlocks()
       .then(function(data) {
         schedule.set("data", data);
         schedule.set("initializingItems", false);
@@ -99,10 +100,8 @@ exports.create = function() {
     }
     codFeedbackService.updateLastSelectedSessionFeedbackIndicator(schedule);
   });
-
   return schedule;
 };
-
 
 function getItemCollectionView(schedule, sessionId) {
   var tab = schedule.getSessionIdTab(sessionId);
@@ -134,14 +133,21 @@ function maybeFocusItem(schedule) {
 function createTabs(tabFolder, adaptedBlocks) {
   adaptedBlocks.forEach(function(blockObject) {
     var tab = createTab(blockObject.day).appendTo(tabFolder);
-    CollectionView.create({
+    var collectionView = CollectionView.create({
       id: blockObject.day,
       left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
       items: blockObject.blocks
-    }).appendTo(tab).animate({opacity: 1}, {duration: 250});
+    }).appendTo(tab);
+    makeUpdatable(collectionView);
+    collectionView.animate({opacity: 1}, {duration: 250});
   });
 }
 
 function createTab(title) {
   return tabris.create("Tab", {title: title, background: "white"});
+}
+
+function pulledToRefresh(schedule) {
+  return schedule.find("CollectionView").toArray()
+    .some(function(collectionView) {return collectionView.get("refreshIndicator");});
 }

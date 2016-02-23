@@ -89,7 +89,7 @@ module.exports = {
   select: function(widget, item) {
     if (item.sessionId) {
       var sessionPage = SessionPage.create().open();
-      viewDataProvider.asyncGetSession(item.sessionId)
+      viewDataProvider.getSession(item.sessionId)
         .then(function(session) {
           sessionPage.set("data", session);
         });
@@ -98,7 +98,7 @@ module.exports = {
       var page = SessionsPage.create().open();
       var date1 = new TimezonedDate(item.startTimestamp);
       var date2 = new TimezonedDate(item.endTimestamp);
-      viewDataProvider.asyncGetSessionsStartingInTimeframe(date1.toJSON(), date2.toJSON())
+      viewDataProvider.getSessionsStartingInTimeframe(date1.toJSON(), date2.toJSON())
         .then(function(sessions) {
           var from = date1.format("HH:mm");
           var to = date2.format("HH:mm");

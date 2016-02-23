@@ -1,9 +1,13 @@
+/* globals Promise: true */
+Promise = require("promise");
 var chai = require("chai");
 var persistedStorage = require("../src/data/persistedStorage");
 var expect = chai.expect;
 var sinon = require("sinon");
 var attendedBlockProvider = require("../src/data/attendedBlockProvider");
 var conferenceDataProvider = require("../src/data/conferenceDataProvider");
+var chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
 var SESSIONS = require("./data/cod/sessions.json");
 
 describe("attendedBlockProvider", function() {
@@ -19,11 +23,11 @@ describe("attendedBlockProvider", function() {
   it("provides blocks referenced in localStorage", function() {
     var config = {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "Europe/Berlin"};
     global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSION_STORAGE_KEY).returns("[\"20301046\"]");
-    conferenceDataProvider.get.returns({sessions: SESSIONS});
+    conferenceDataProvider.get.returns(Promise.resolve({sessions: SESSIONS}));
 
     var blocks = attendedBlockProvider.getBlocks(config);
 
-    expect(blocks).to.deep.equal([{
+    expect(blocks).to.eventually.deep.equal([{
       sessionId: "20301046",
       title: "10 Java Idioms Stomped with Xtend",
       sessionNid: "2030",

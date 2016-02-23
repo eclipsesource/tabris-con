@@ -1,41 +1,56 @@
+/*globals Promise: true*/
+Promise = require("promise");
+var persistedStorage = require("./persistedStorage");
+var DataExtractor = require("./DataExtractor");
+var fetchNewData = require("./fetchNewData");
+var initialData = require("./initialData");
 var conferenceData;
-var persistedStorage = require("../data/persistedStorage");
-var dataLoader = require("../data/dataLoader");
-var DataExtractor = require("../data/DataExtractor");
 
 exports.get = function() {
-  if (device.platform === "UWP") {
-    return getData();
-  }
   if (conferenceData) {
-    return conferenceData;
+    return Promise.resolve(conferenceData);
   }
-  if (!dataCached()) {
-    var rawData = dataLoader.load();
-    var dataExtractor = new DataExtractor(rawData);
-    persistedStorage.setSessions(dataExtractor.extractSessions());
-    persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
-    persistedStorage.setCategories(dataExtractor.extractCategories());
-    persistedStorage.setKeynotes(dataExtractor.extractKeynotes());
-    persistedStorage.setBlocks(dataExtractor.extractBlocks());
-  }
-  conferenceData = getDataFromCache();
-  return conferenceData;
+  return fetchNewData()
+    .then(function(data) {
+      if (data) {
+        persistData(data);
+      } else {
+        handleFallingBackToOldData({fetchFailed: false});
+      }
+    })
+    .catch(function() {
+      handleFallingBackToOldData({fetchFailed: true});
+    })
+    .then(function() {
+      conferenceData = getDataFromStorage();
+      return conferenceData;
+    });
 };
 
-function getData() {
-  var rawData = dataLoader.load();
-  var dataExtractor = new DataExtractor(rawData);
-  return {
-    sessions: dataExtractor.extractSessions(),
-    previewCategories: dataExtractor.extractPreviewCategories(),
-    categories: dataExtractor.extractCategories(),
-    keynotes: dataExtractor.extractKeynotes(),
-    blocks: dataExtractor.extractBlocks()
-  };
+exports.invalidateCache = function() {
+  conferenceData = null;
+};
+
+function handleFallingBackToOldData(options) {
+  var dataStored = persistedStorage.conferenceDataStored();
+  if (options.fetchFailed || !dataStored) {
+    navigator.notification.alert(dataMayBeOutdatedMessage(), function() {}, "Warning", "OK");
+  }
+  if (!dataStored) {
+    persistData(initialData.get());
+  }
 }
 
-function getDataFromCache() {
+function persistData(data) {
+  var dataExtractor = new DataExtractor({scheduledSessions: data});
+  persistedStorage.setSessions(dataExtractor.extractSessions());
+  persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
+  persistedStorage.setCategories(dataExtractor.extractCategories());
+  persistedStorage.setKeynotes(dataExtractor.extractKeynotes());
+  persistedStorage.setBlocks(dataExtractor.extractBlocks());
+}
+
+function getDataFromStorage() {
   return {
     sessions: persistedStorage.getSessions(),
     previewCategories: persistedStorage.getPreviewCategories(),
@@ -45,13 +60,6 @@ function getDataFromCache() {
   };
 }
 
-function dataCached() {
-  var data = [
-    persistedStorage.getSessions(),
-    persistedStorage.getPreviewCategories(),
-    persistedStorage.getCategories(),
-    persistedStorage.getKeynotes(),
-    persistedStorage.getBlocks()
-  ];
-  return data.every(function(data) {return !!data;});
+function dataMayBeOutdatedMessage() {
+  return "We could not determine whether newer conference data is available. Shown data may be outdated.";
 }

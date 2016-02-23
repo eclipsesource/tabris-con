@@ -10,7 +10,7 @@ exports.updateLastSelectedSessionFeedbackIndicator = function(schedule) {
   if (lastSelectedSessionId && loginService.isLoggedIn()) {
     schedule.set("lastSelectedSessionId", null);
     if (device.platform === "iOS") {
-      setTimeout(setIndicatorState, 700);
+      setTimeout(setIndicatorState, 1000);
     } else {
       schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", "loading");
       setIndicatorState();

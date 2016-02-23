@@ -8,7 +8,7 @@ var loginService = require("./loginService");
 
 var URI = require("urijs");
 
-var API_URL = URI(config.FEEDBACK_SERVICE_URL).segment("api").segment("1.0").toString();
+var API_URL = URI(config.SERVICE_URL).segment("api").segment("1.0").toString();
 
 exports.login = function(username, password) {
   var serviceUrl = URI(API_URL).segment("user").segment("login").toString();
@@ -62,7 +62,7 @@ exports.logout = function() {
 };
 
 exports.csrfToken = function() {
-  var serviceUrl = URI(config.FEEDBACK_SERVICE_URL).segment("services").segment("session").segment("token").toString();
+  var serviceUrl = URI(config.SERVICE_URL).segment("services").segment("session").segment("token").toString();
   return fetch(serviceUrl).then(function(response) {
     return response.text();
   });

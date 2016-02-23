@@ -1,5 +1,6 @@
 var CollectionView = require("../CollectionView");
 var LoadingIndicator = require("../LoadingIndicator");
+var makeUpdatable = require("../makeUpdatable");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
 var viewDataProvider = require("../../data/viewDataProvider");
@@ -12,7 +13,7 @@ exports.create = function() {
   });
 
   tracks.initializeItems = function() {
-    viewDataProvider.asyncGetPreviewCategories()
+    return viewDataProvider.getPreviewCategories()
       .then(function(previewCategories) {
         tracks.set("data", previewCategories);
       });
@@ -23,6 +24,8 @@ exports.create = function() {
   var collectionView = CollectionView.create({
     left: 0, top: 0, right: 0, bottom: 0, opacity: 0
   }).appendTo(tracks);
+
+  makeUpdatable(collectionView);
 
   tracks.on("change:data", function(widget, data) {
     if (collectionView.get("items").length > 0) {

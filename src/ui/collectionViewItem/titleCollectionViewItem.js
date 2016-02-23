@@ -24,7 +24,7 @@ module.exports = {
   select: function(widget, item) {
     var page = SessionsPage.create().open();
 
-    viewDataProvider.asyncGetCategory(item.id)
+    viewDataProvider.getCategory(item.id)
       .then(function(category) {
         page.set("data", {title: item.title, items: category});
       });
