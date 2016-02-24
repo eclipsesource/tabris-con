@@ -20,6 +20,9 @@ module.exports = function() {
       }
       throw new CouldNotFetchDataError();
     })
+    .then(function(json) {
+      return {scheduledSessions: json};
+    })
     .catch(function() {
       throw new CouldNotFetchDataError();
     });

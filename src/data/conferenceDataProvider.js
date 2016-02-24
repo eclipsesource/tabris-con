@@ -53,7 +53,7 @@ function handleFallingBackToOldData(options) {
 }
 
 function persistData(data) {
-  var dataExtractor = new DataExtractor({scheduledSessions: data});
+  var dataExtractor = new DataExtractor(data);
   persistedStorage.setSessions(dataExtractor.extractSessions());
   persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
   persistedStorage.setCategories(dataExtractor.extractCategories());
