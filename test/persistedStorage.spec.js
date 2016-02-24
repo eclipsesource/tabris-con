@@ -20,6 +20,7 @@ describe("persisted storage", function() {
     global.window = sinon.stub();
     global.localStorage = sinon.stub();
     global.localStorage.getItem = sinon.stub();
+    global.localStorage.removeItem = sinon.stub();
     global.localStorage.setItem = sinon.spy();
   });
 
@@ -132,6 +133,25 @@ describe("persisted storage", function() {
         var value = persistedStorage["get" + capitalizedProperty]();
 
         expect(value).to.equal(null);
+      });
+    });
+  });
+
+  describe("deleteConferenceData", function() {
+    it("removes data from storage", function() {
+      var storage = require("../src/data/persistedStorage");
+      var properties = [
+        storage.PREVIEW_CATEGORIES,
+        storage.CATEGORIES,
+        storage.SESSIONS,
+        storage.KEYNOTES,
+        storage.BLOCKS
+      ];
+
+      persistedStorage.removeConferenceData();
+
+      properties.forEach(function(property) {
+        expect(localStorage.removeItem).to.have.been.calledWith(property);
       });
     });
   });

@@ -46,8 +46,17 @@ exports.conferenceDataStored = function() {
   return data.every(function(data) {return !!data;});
 };
 
+exports.removeConferenceData = function() {
+  exports.removeSessions();
+  exports.removePreviewCategories();
+  exports.removeCategories();
+  exports.removeKeynotes();
+  exports.removeBlocks();
+};
+
 defineSetMethods();
 defineGetMethods();
+defineRemoveMethods();
 
 function defineSetMethods() {
   CONFERENCE_DATA_PROPERTIES.forEach(function(property) {
@@ -65,6 +74,14 @@ function defineGetMethods() {
   });
 }
 
+function defineRemoveMethods() {
+  CONFERENCE_DATA_PROPERTIES.forEach(function(property) {
+    exports["remove" + stringUtility.capitalizeFirstLetter(property)] = function() {
+      return remove(property);
+    };
+  });
+}
+
 function setValue(property, value) {
   var itemObject = {};
   itemObject[config.DATA_FORMAT] = value;
@@ -74,4 +91,8 @@ function setValue(property, value) {
 function getValue(property) {
   var itemString = localStorage.getItem(property);
   return itemString && itemString !== "undefined" ? JSON.parse(itemString)[config.DATA_FORMAT] : null;
+}
+
+function remove(property) {
+  localStorage.removeItem(property);
 }

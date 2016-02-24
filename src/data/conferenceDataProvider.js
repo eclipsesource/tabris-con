@@ -11,6 +11,7 @@ exports.get = function() {
   if (conferenceData) {
     return Promise.resolve(conferenceData);
   }
+  handleAppUpgrade();
   return fetchNewData()
     .then(function(data) {
       if (data) {
@@ -31,6 +32,15 @@ exports.get = function() {
 exports.invalidateCache = function() {
   conferenceData = null;
 };
+
+function handleAppUpgrade() {
+  var currentVersion = tabris._client.get("tabris.App", "version");
+  var appVersion = localStorage.getItem("appVersion");
+  if (currentVersion !== appVersion && device.platform !== "UWP") { // TODO: also handle on Windows when client supports app version
+    persistedStorage.removeConferenceData();
+  }
+  localStorage.setItem("appVersion", currentVersion);
+}
 
 function handleFallingBackToOldData(options) {
   var dataStored = persistedStorage.conferenceDataStored();
