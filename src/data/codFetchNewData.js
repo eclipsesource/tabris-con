@@ -21,7 +21,7 @@ module.exports = function() {
       throw new CouldNotFetchDataError();
     })
     .then(function(json) {
-      return {scheduledSessions: json};
+      return json ? {scheduledSessions: json} : null;
     })
     .catch(function() {
       throw new CouldNotFetchDataError();

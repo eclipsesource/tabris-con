@@ -34,7 +34,7 @@ describe("codFetchNewData", function() {
     return codFetchNewData()
       .then(function(data) {
         expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
-        expect(data).to.deep.equal({});
+        expect(data).to.deep.equal({scheduledSessions: {}});
       });
   });
 
@@ -56,7 +56,7 @@ describe("codFetchNewData", function() {
     return codFetchNewData()
       .then(function(data) {
         expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
-        expect(data).to.deep.equal({});
+        expect(data).to.deep.equal({scheduledSessions: {}});
         expect(localStorage.setItem).to.have.been.calledWith("codScheduledSessionsLastModified", "bar");
         expect(localStorage.setItem).to.have.been.calledWith("codScheduledSessionsETag", "foo");
       });
