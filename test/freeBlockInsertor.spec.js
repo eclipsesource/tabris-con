@@ -60,10 +60,17 @@ describe("freeBlockInsertor", function() {
     ]);
   });
 
-  it("removes free blocks overlapping startTimestamp of an attended block", function() {
+  it("doesn't remove free blocks overlapping startTimestamp of an attended block", function() {
     var blocks = insertor.insertIn([{startTimestamp: date("07.03.2016 09:00")}]);
 
-    expect(blocks).to.deep.equal([{"startTimestamp": date("07.03.2016 09:00")}]);
+    expect(blocks).to.deep.equal([
+      {startTimestamp: date("07.03.2016 09:00")}, {
+        endTimestamp: "2016-03-07T17:00:00.000Z",
+        sessionType: "free",
+        startTimestamp: "2016-03-07T14:00:00.000Z",
+        title: "BROWSE SESSIONS"
+      }
+    ]);
   });
 
   it("doesn't remove overlapping attended blocks", function() {
@@ -72,7 +79,12 @@ describe("freeBlockInsertor", function() {
     ]);
 
     expect(blocks).to.deep.equal([
-      {startTimestamp: date("07.03.2016 09:00")}, {startTimestamp: date("07.03.2016 09:00")}
+      {startTimestamp: date("07.03.2016 09:00")}, {startTimestamp: date("07.03.2016 09:00")}, {
+        endTimestamp: "2016-03-07T17:00:00.000Z",
+        sessionType: "free",
+        startTimestamp: "2016-03-07T14:00:00.000Z",
+        title: "BROWSE SESSIONS"
+      }
     ]);
   });
 
