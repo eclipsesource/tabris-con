@@ -5,7 +5,7 @@ var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");
 var loginService = require("./loginService");
-var alert = require("./ui/alert");
+var alertDialog = require("./ui/alert");
 
 var URI = require("urijs");
 
@@ -155,6 +155,6 @@ function log(error) {
 }
 
 function alert(error) {
-  alert.show(error.message || error, "Error", "OK");
+  alertDialog.show(error.message || error, "Error", "OK");
   return Promise.reject(error);
 }
