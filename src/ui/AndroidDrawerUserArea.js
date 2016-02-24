@@ -7,7 +7,7 @@ var loginService = require("../loginService");
 
 exports.create = function() {
   var userArea = tabris.create("Composite", {
-    id: "userArea",
+    id: "androidDrawerUserArea",
     layoutData: {left: 0, top: 0, right: 0, height: sizes.DRAWER_USER_AREA_LOGGED_IN_HEIGHT},
     background: colors.BACKGROUND_COLOR
   });

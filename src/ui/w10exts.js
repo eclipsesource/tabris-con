@@ -13,6 +13,16 @@ if (device.platform === "UWP") {
       default: "default"
     }
   });
+  addProperties(tabris.Drawer, {
+    "uwp_displayMode": {
+      type: ["choice", ["overlay", "compactOverlay"]],
+      default: "overlay"
+    },
+    "uwp_buttonBackground": {
+      type: "color",
+      default: null
+    }
+  });
 }
 
 function addProperties(widgetType, properties) {
@@ -25,8 +35,8 @@ function addProperties(widgetType, properties) {
 function forEachWidgetType(fn) {
   for (var type in tabris) {
     if (tabris[type].prototype &&
-        tabris[type].prototype.append === tabris.Widgets.append &&
-        tabris[type] !== tabris.Widgets) {
+        tabris[type].prototype.append === tabris.Widget.prototype.append &&
+        tabris[type] !== tabris.Widget) {
       fn(tabris[type]);
     }
   }

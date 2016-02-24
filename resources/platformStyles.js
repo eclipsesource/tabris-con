@@ -46,6 +46,14 @@ module.exports = {
     Android: {background: colors.BACKGROUND_COLOR},
     iOS: {background: "white"}
   },
+  "#drawerList": {
+    Android: {top: ["#androidDrawerUserArea", sizes.MARGIN]},
+    UWP: {top: 0}
+  },
+  "#drawerSecondaryPageItems": {
+    UWP: {bottom: 0},
+    Android: {top: "prev()"}
+  },
   "#pageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
     iOS: {background: "white"}
@@ -156,6 +164,16 @@ module.exports = {
     },
     iOS: {
       visible: true
+    }
+  },
+  ".drawerIconImageView": {
+    Android: {left: sizes.MARGIN_LARGE},
+    UWP: {left: 1.5 * sizes.MARGIN}
+  },
+  ".drawerTitleTextView": {
+    UWP: {
+      textColor: "white",
+      left: [".drawerIconImageView", sizes.MARGIN_XLARGE]
     }
   }
 };

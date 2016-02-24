@@ -12,6 +12,11 @@ module.exports = {
   LIGHT_TEXT_COLOR: "#ffffff",
   ACCENTED_TEXT_COLOR: "#443684",
   LIGHT_BACKGROUND_COLOR: "#efefef",
+  DRAWER_LIST_ITEM_BACKGROUND: {
+    iOS: "#efefef",
+    Android: "#efefef",
+    UWP: "#443684"
+  },
   LINE_SEPARATOR_COLOR: "#d9d9d9",
   MAP_BACKGROUND_COLOR: "#cdcbcc",
   LINK_COLOR: "#48a8f4",
