@@ -44,7 +44,7 @@ exports.addFeedbackIndicatorState = function(blocksEvaluations) {
 };
 
 exports.canGiveFeedbackForSession = function(session) {
-  return attendedSessionService.isAttending(session.id) && validFeedbackWindow(session);
+  return validFeedbackWindow(session);
 };
 
 function setSessionFeedbackIndicatorState(blocksEvaluations, block) {
