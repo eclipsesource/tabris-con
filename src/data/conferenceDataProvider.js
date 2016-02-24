@@ -8,6 +8,7 @@ var alert = require("../ui/alert");
 var conferenceData;
 
 exports.get = function() {
+  handleUWP();
   if (conferenceData) {
     return Promise.resolve(conferenceData);
   }
@@ -32,6 +33,21 @@ exports.get = function() {
 exports.invalidateCache = function() {
   conferenceData = null;
 };
+
+function handleUWP() {
+  if (device.platform === "UWP") {
+    if (!conferenceData) {
+      var dataExtractor = new DataExtractor(initialData.get());
+      conferenceData = {
+        sessions: dataExtractor.extractSessions(),
+        previewCategories: dataExtractor.extractPreviewCategories(),
+        categories: dataExtractor.extractCategories(),
+        keynotes: dataExtractor.extractKeynotes(),
+        blocks: dataExtractor.extractBlocks()
+      };
+    }
+  }
+}
 
 function handleAppUpgrade() {
   var currentVersion = tabris._client.get("tabris.App", "version");
