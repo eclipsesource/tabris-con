@@ -1,3 +1,3 @@
 exports.get = function() {
-  return require("../../resources/data/cod/scheduled_sessions.json");
+  return {scheduledSessions: require("../../resources/data/cod/scheduled_sessions.json")};
 };
