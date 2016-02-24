@@ -4,6 +4,7 @@ var persistedStorage = require("./persistedStorage");
 var DataExtractor = require("./DataExtractor");
 var fetchNewData = require("./fetchNewData");
 var initialData = require("./initialData");
+var alert = require("../ui/alert");
 var conferenceData;
 
 exports.get = function() {
@@ -34,7 +35,7 @@ exports.invalidateCache = function() {
 function handleFallingBackToOldData(options) {
   var dataStored = persistedStorage.conferenceDataStored();
   if (options.fetchFailed || !dataStored) {
-    navigator.notification.alert(dataMayBeOutdatedMessage(), function() {}, "Warning", "OK");
+    alert.show(dataMayBeOutdatedMessage(), "Warning", "OK");
   }
   if (!dataStored) {
     persistData(initialData.get());

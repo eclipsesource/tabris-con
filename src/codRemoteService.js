@@ -5,6 +5,7 @@ var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");
 var loginService = require("./loginService");
+var alert = require("./ui/alert");
 
 var URI = require("urijs");
 
@@ -154,10 +155,6 @@ function log(error) {
 }
 
 function alert(error) {
-  if (typeof navigator === "undefined" || !navigator.notification) {
-    console.error("cordova-plugin-dialogs is not available in this Tabris.js client. The error was: " + error);
-    return Promise.reject(error);
-  }
-  navigator.notification.alert(error.message || error, function() {}, "Error", "OK");
+  alert.show(error.message || error, "Error", "OK");
   return Promise.reject(error);
 }
