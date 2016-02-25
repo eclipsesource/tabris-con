@@ -10,6 +10,7 @@ exports.create = function(configuration) {
   maybeSetTextViewProperty(textViewConfiguration, configuration, "font");
   maybeSetTextViewProperty(textViewConfiguration, configuration, "text");
   maybeSetTextViewProperty(textViewConfiguration, configuration, "alignment");
+  maybeSetTextViewProperty(textViewConfiguration, configuration, "height");
   tabris.create("TextView", textViewConfiguration).appendTo(link);
   link.on("tap", function() {
     if (link.get("url")) {

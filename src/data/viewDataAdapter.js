@@ -47,6 +47,7 @@ exports.adaptSession = function(session) {
   var adaptedSession = {
     id: session.id,
     summary: startDateString + " - " + endTimeString + " in " + session.room,
+    startTimestamp: session.startTimestamp,
     endTimestamp: session.endTimestamp,
     description: session.description,
     title: session.title,

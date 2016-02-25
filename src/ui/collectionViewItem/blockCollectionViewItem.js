@@ -98,7 +98,7 @@ module.exports = {
       var page = SessionsPage.create().open();
       var date1 = new TimezonedDate(item.startTimestamp);
       var date2 = new TimezonedDate(item.endTimestamp);
-      viewDataProvider.getSessionsStartingInTimeframe(date1.toJSON(), date2.toJSON())
+      viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
         .then(function(sessions) {
           var from = date1.format("HH:mm");
           var to = date2.format("HH:mm");

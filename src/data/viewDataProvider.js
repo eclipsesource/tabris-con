@@ -2,10 +2,10 @@ var _ = require("lodash");
 var viewDataAdapter = require("../data/viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
 var attendedBlockProvider = require("./attendedBlockProvider");
-var TimezonedDate = require("../TimezonedDate");
 var loginService = require("../loginService");
 var codRemoteService = require("../codRemoteService");
 var codFeedbackService = require("../codFeedbackService");
+var getSessionsInTimeframe = require("../getSessionsInTimeframe");
 var Promise = require("promise");
 
 exports.getKeynote = function(keynoteId) {
@@ -72,14 +72,8 @@ exports.getScheduleBlocks = function() {
     });
 };
 
-exports.getSessionsStartingInTimeframe = function(timestamp1, timestamp2) {
-  return conferenceDataProvider.get().then(function(data) {
-    var sessions = _(data.sessions)
-      .sortBy("startTimestamp")
-      .filter(function(session) {
-        return new TimezonedDate(timestamp1).toJSON() <= new TimezonedDate(session.startTimestamp).toJSON() &&
-               new TimezonedDate(timestamp2).toJSON() > new TimezonedDate(session.startTimestamp).toJSON();
-      }).value();
+exports.getSessionsInTimeframe = function(timestamp1, timestamp2) {
+  return getSessionsInTimeframe(timestamp1, timestamp2).then(function(sessions) {
     return viewDataAdapter.adaptCategory({sessions: sessions});
   });
 };

@@ -4,12 +4,19 @@ var InfoToast = require("../InfoToast");
 var sizes = require("../../../resources/sizes");
 var fontToString = require("../../fontToString");
 var SessionPageHeader = require("../SessionPageHeader");
+var TimezonedDate = require("../../TimezonedDate");
 var getImage = require("../../getImage");
 var applyPlatformStyle = require("../applyPlatformStyle");
 var attendedSessionService = require("../../attendedSessionService");
+var viewDataAdapter = require("../../data/viewDataAdapter");
+var getSessionsInTimeframe = require("../../getSessionsInTimeframe");
 var AttendanceAction = require("../AttendanceAction");
 var SessionPageFeedbackWidget = require("././SessionPageFeedbackWidget");
+var Link = require("../Link");
+var getSessionFreeBlock = require("../../getSessionFreeBlock");
+var SessionsPage = require("./SessionsPage");
 var config = require("../../../config");
+var _ = require("lodash");
 
 var titleCompY = 0;
 
@@ -52,10 +59,9 @@ exports.create = function() {
   applyPlatformStyle(descriptionTextView);
 
   var speakersComposite = tabris.create("Composite", {
+    id: "speakersComposite",
     left: 0, top: "prev()", right: 0
   }).appendTo(contentComposite);
-
-  tabris.create("Composite", {left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0}).appendTo(contentComposite);
 
   var loadingIndicator = LoadingIndicator.create({shade: true}).appendTo(page);
 
@@ -131,6 +137,7 @@ exports.create = function() {
     sessionPageHeader.set("trackIndicatorColor", config.TRACK_COLOR[data.categoryName]);
     SessionPageFeedbackWidget.create(contentComposite, data);
     createSpeakers(data.speakers);
+    maybeCreateOtherSessionsLink(data);
   }
 
   function layoutParallax(options) {
@@ -183,6 +190,45 @@ exports.create = function() {
         }
       });
     }
+  }
+
+  function maybeCreateOtherSessionsLink(session) {
+    var freeBlock = getSessionFreeBlock(session);
+    if (freeBlock) {
+      var date1 = new TimezonedDate(freeBlock[0]);
+      var date2 = new TimezonedDate(freeBlock[1]);
+      getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
+        .then(function(sessions) {
+          var otherSessions = _.filter(sessions, function(value) {return value.id !== session.id;});
+          if (otherSessions.length > 0) {
+            createOtherSessionsLink()
+              .on("tap", function() {
+                var sessionsPage = SessionsPage.create().open();
+                var adaptedSessions = viewDataAdapter.adaptCategory({sessions: otherSessions});
+                var from = date1.format("HH:mm");
+                var to = date2.format("HH:mm");
+                sessionsPage.set("data", {title: from + " - " + to, items: adaptedSessions});
+              })
+              .appendTo(contentComposite);
+          }
+          createSpacer().appendTo(contentComposite);
+        });
+    }
+  }
+
+  function createOtherSessionsLink() {
+    return Link.create({
+      left: sizes.LEFT_CONTENT_MARGIN,
+      top: ["#speakersComposite", sizes.MARGIN_LARGE],
+      height: sizes.SESSION_PAGE_OTHER_SESSIONS_LINK_HEIGHT,
+      text: "Other sessions at the same time"
+    });
+  }
+
+  function createSpacer() {
+    return tabris.create("Composite", {
+      left: 0, top: "prev()", right: 0, height: sizes.SESSION_PAGE_SPACER_HEIGHT
+    });
   }
 
   if (device.platform !== "iOS") {
