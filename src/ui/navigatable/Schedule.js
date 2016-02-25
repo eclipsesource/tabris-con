@@ -16,6 +16,13 @@ exports.create = function() {
     left: 0, top: 0, right: 0, bottom: 0
   });
 
+  tabris.app.on("resume", function() {schedule.initializeItems({silent: true});});
+  schedule.on("appear", function() {
+    if (!schedule.get("lastSelectedSessionId")) {
+      schedule.initializeItems({silent: true});
+    }
+  });
+
   var loadingIndicator = LoadingIndicator.create().appendTo(schedule);
 
   schedule.getSessionIdTab = function(sessionId) {
@@ -25,24 +32,22 @@ exports.create = function() {
     return schedule.children("#scheduleTabFolder").children()[index];
   };
 
-  schedule.initializeItems = function() {
-    if (device.platform === "iOS" && !pulledToRefresh(schedule)) {
-      var indicator = LoadingIndicator.create({shade: true, semitransparent: true}).appendTo(schedule);
-    } else {
-      schedule.find("CollectionView").set("refreshIndicator", true);
+  schedule.initializeItems = function(options) {
+    if (!schedule.get("initializingItems")) {
+      if (!(options && options.silent)) {
+        showProgressIndicator(schedule);
+      }
+      schedule.set("initializingItems", true);
+      return viewDataProvider.getScheduleBlocks()
+        .then(function(data) {
+          schedule.set("data", data);
+        })
+        .finally(function() {
+          schedule.find("CollectionView").set("refreshIndicator", false);
+          schedule.children("#loadingIndicator").dispose();
+          schedule.set("initializingItems", false);
+        });
     }
-    schedule.set("initializingItems", true);
-    return viewDataProvider.getScheduleBlocks()
-      .then(function(data) {
-        schedule.set("data", data);
-        schedule.set("initializingItems", false);
-        schedule.find("CollectionView").set("refreshIndicator", false);
-      })
-      .finally(function() {
-        if (indicator) {
-          indicator.dispose();
-        }
-      });
   };
 
   schedule.updateSessionWithId = function(id, property, value) {
@@ -102,6 +107,14 @@ exports.create = function() {
   });
   return schedule;
 };
+
+function showProgressIndicator(schedule) {
+  if (device.platform === "iOS" && !pulledToRefresh(schedule)) {
+    LoadingIndicator.create({shade: true, semitransparent: true}).appendTo(schedule);
+  } else {
+    schedule.find("CollectionView").set("refreshIndicator", true);
+  }
+}
 
 function getItemCollectionView(schedule, sessionId) {
   var tab = schedule.getSessionIdTab(sessionId);

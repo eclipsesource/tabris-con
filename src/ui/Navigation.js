@@ -40,6 +40,13 @@ module.exports = {
       setTimeout(function() {
         tracksTab.open(); // TODO: tab open delayed as part of a workaround for tabris-ios#841
       }, 100);
+      mainPage.on("appear", function() {
+        mainPage.find(".navigatable")
+          .filter(function(navigatable) {return navigatable.get("active");})
+          .forEach(function(navigatable) {
+            navigatable.trigger("appear");
+          });
+      });
     }
   },
   UWP: {
