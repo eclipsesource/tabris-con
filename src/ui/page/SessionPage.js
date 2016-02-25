@@ -210,8 +210,10 @@ exports.create = function() {
                 sessionsPage.set("data", {title: from + " - " + to, items: adaptedSessions});
               })
               .appendTo(contentComposite);
+            createSpacer("prev()").appendTo(contentComposite);
+          } else {
+            createSpacer("#speakersComposite").appendTo(contentComposite);
           }
-          createSpacer().appendTo(contentComposite);
         });
     }
   }
@@ -225,9 +227,9 @@ exports.create = function() {
     });
   }
 
-  function createSpacer() {
+  function createSpacer(prev) {
     return tabris.create("Composite", {
-      left: 0, top: "prev()", right: 0, height: sizes.SESSION_PAGE_SPACER_HEIGHT
+      left: 0, top: prev, right: 0, height: sizes.SESSION_PAGE_SPACER_HEIGHT
     });
   }
 
