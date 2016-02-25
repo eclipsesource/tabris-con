@@ -1,5 +1,6 @@
 var loginService = require("./loginService");
 var codRemoteService = require("./codRemoteService");
+var attendedSessionService = require("./attendedSessionService");
 var loginService = require("./loginService");
 var config = require("../config");
 var _ = require("lodash");

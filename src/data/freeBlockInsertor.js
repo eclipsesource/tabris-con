@@ -19,6 +19,9 @@ exports.insertIn = function(blocks) {
     .concat(blocks)
     .sortBy("sessionType")
     .reverse()
+    .uniqWith(function(block1, block2) {
+      return block1.startTimestamp === block2.startTimestamp && block1.sessionType !== block2.sessionType;
+    })
     .sortBy("startTimestamp")
     .value();
 };
