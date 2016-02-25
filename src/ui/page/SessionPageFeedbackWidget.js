@@ -42,7 +42,7 @@ function showState(feedbackWidget, adaptedSession) {
 function showFeedbackState(feedbackWidget, adaptedSession) {
   codRemoteService.evaluations()
     .then(handleSessionValid(feedbackWidget, adaptedSession))
-    .catch(handleSessionExpired(feedbackWidget))
+    .catch(handleErrors(feedbackWidget))
     .finally(function() {feedbackWidget.set("progress", false);});
 }
 
@@ -55,10 +55,14 @@ function handleSessionValid(feedbackWidget, adaptedSession) {
   };
 }
 
-function handleSessionExpired(feedbackWidget) {
+function handleErrors(feedbackWidget) {
   return function(e) {
-    if (e.match(/Session expired/)) {
+    if (e.match && e.match(/Session expired/)) {
       createErrorTextView("Please login again to give feedback.").appendTo(feedbackWidget);
+    } else if (e.match && e.match(/Network request failed/)) {
+      createErrorTextView("Connect to the Internet to give feedback.").appendTo(feedbackWidget);
+    } else {
+      createErrorTextView("Something went wrong. Try giving feedback later.").appendTo(feedbackWidget);
     }
   };
 }
@@ -73,8 +77,8 @@ function createNoticeTextView(text) {
 
 function createInfoTextView(text, color) {
   var infoTextView = tabris.create("TextView", {
-    left: 0, centerY: 0,
-    maxLines: 1,
+    left: 0, centerY: 0, right: sizes.MARGIN,
+    maxLines: 2,
     textColor: color,
     font: fontToString({style: "italic", size: sizes.FONT_MEDIUM}),
     text: text

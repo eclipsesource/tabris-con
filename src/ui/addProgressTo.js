@@ -5,7 +5,7 @@ module.exports = function(widget) {
       if (widget.get("bounds").width) {
         widget.set("indicator", createLoadingIndicator(widget));
       } else {
-        widget.on("resize", function() {
+        widget.once("resize", function() {
           widget.set("indicator", createLoadingIndicator(widget));
         });
       }

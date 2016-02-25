@@ -13,7 +13,9 @@ exports.create = function(configuration) {
       requireItemType(type).initializeCell(cell);
     }
   }, configuration)).on("select", function(widget, item) {
-    requireItemType(item.type).select(widget, item);
+    if (item) {
+      requireItemType(item.type).select(widget, item);
+    }
   });
 };
 

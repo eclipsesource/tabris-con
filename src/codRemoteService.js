@@ -80,14 +80,18 @@ exports.evaluations = function() {
       return Promise.resolve(response);
     })
     .catch(function(e) {
-      if (e.match(/Access denied/)) {
+      if (e.match && e.match(/Access denied/)) {
         loginService.destroySession();
         return Promise.reject("Session expired. Please log in again.");
       }
       return Promise.reject(e);
     })
-    .catch(log)
-    .catch(alert);
+    .catch(function(e) {
+      if (e.message && e.message.match(/request failed/)) {
+        return Promise.reject(e.message);
+      }
+      return Promise.reject(e);
+    });
 };
 
 exports.createEvaluation = function(sessionNid, comment, rating) {
