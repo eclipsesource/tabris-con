@@ -4,7 +4,6 @@ var makeUpdatable = require("../../ui/makeUpdatable");
 var LoadingIndicator = require("../../ui/LoadingIndicator");
 var getImage = require("../../getImage");
 var Navigatable = require("./Navigatable");
-var codFeedbackService = require("../../codFeedbackService");
 var viewDataProvider = require("../../data/viewDataProvider");
 var _ = require("lodash");
 
@@ -17,11 +16,6 @@ exports.create = function() {
   });
 
   tabris.app.on("resume", function() {schedule.initializeItems({silent: true});});
-  schedule.on("appear", function() {
-    if (!schedule.get("lastSelectedSessionId")) {
-      schedule.initializeItems({silent: true});
-    }
-  });
 
   var loadingIndicator = LoadingIndicator.create().appendTo(schedule);
 
@@ -94,16 +88,15 @@ exports.create = function() {
 
   schedule.on("change:focus", function(widget, focus) {
     schedule.set("shouldFocusSessionWithId", focus);
-    schedule.set("lastSelectedSessionId", null);
   });
 
   schedule.on("appear", function() {
+    schedule.initializeItems({silent: true});
     if (schedule.get("initializingItems")) {
       schedule.once("change:initializingItems", maybeFocusItem);
     } else {
       maybeFocusItem(this);
     }
-    codFeedbackService.updateLastSelectedSessionFeedbackIndicator(schedule);
   });
   return schedule;
 };

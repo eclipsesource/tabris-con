@@ -92,7 +92,13 @@ function createFeedbackButton(adaptedSession) {
     left: 0, centerY: 0,
     text: "Give feedback"
   }).on("select", function() {
-    FeedbackPage.create(adaptedSession).open();
+    var page = FeedbackPage.create(adaptedSession).open();
+    page.on("success", function() {
+      var scheduleNavigatable = tabris.ui.find("#schedule").first();
+      if (scheduleNavigatable) {
+        scheduleNavigatable.initializeItems();
+      }
+    });
   });
   applyPlatformStyle(feedbackButton);
   return feedbackButton;

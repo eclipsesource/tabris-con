@@ -1,35 +1,7 @@
 var loginService = require("./loginService");
-var codRemoteService = require("./codRemoteService");
 var loginService = require("./loginService");
 var config = require("../config");
 var _ = require("lodash");
-
-exports.updateLastSelectedSessionFeedbackIndicator = function(schedule) {
-  var lastSelectedSessionId = schedule.get("lastSelectedSessionId");
-  if (lastSelectedSessionId && loginService.isLoggedIn()) {
-    schedule.set("lastSelectedSessionId", null);
-    if (device.platform === "iOS") {
-      setTimeout(setIndicatorState, 1000);
-    } else {
-      schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", "loading");
-      setIndicatorState();
-    }
-  }
-
-  function setIndicatorState() {
-    codRemoteService.evaluations()
-      .then(function(evaluations) {
-        var session = schedule.findSessionById(lastSelectedSessionId);
-        var feedbackIndicatorState = getSessionFeedbackIndicatorState(evaluations, session);
-        schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", feedbackIndicatorState);
-      })
-      .catch(function(e) {
-        schedule.updateSessionWithId(lastSelectedSessionId, "feedbackIndicatorState", null);
-        console.log(e);
-        console.log(e.stack);
-      });
-  }
-};
 
 exports.addFeedbackIndicatorState = function(blocksEvaluations) {
   if (loginService.isLoggedIn()) {

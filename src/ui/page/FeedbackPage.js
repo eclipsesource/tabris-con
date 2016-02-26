@@ -28,7 +28,10 @@ exports.create = function(adaptedSession) {
   button.on("select", function() {
     button.set("progress", true);
     codRemoteService.createEvaluation(adaptedSession.nid, commentTextInput.get("text"), feedbackThumbs.get("feedback"))
-      .then(function() {page.close();})
+      .then(function() {
+        page.trigger("success");
+        page.close();
+      })
       .catch(function() {button.set("progress", false);});
   });
   return page;
