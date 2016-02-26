@@ -6,6 +6,7 @@ var config = require("../config");
 var _ = require("lodash");
 var loginService = require("./loginService");
 var alertDialog = require("./ui/alert");
+var isFeedbackTime = require("./isFeedbackTime");
 
 var URI = require("urijs");
 
@@ -24,6 +25,7 @@ exports.login = function(username, password) {
       }
       return response;
     })
+    .catch(logoutIfAlreadyLoggedIn(username, password))
     .catch(alert);
 
   function login(csrfToken) {
@@ -80,9 +82,11 @@ exports.evaluations = function() {
       return Promise.resolve(response);
     })
     .catch(function(e) {
-      if (e.match && e.match(/Access denied/)) {
+      if (e.match && e.match(/Access denied/) && isFeedbackTime()) {
         loginService.destroySession();
-        return Promise.reject("Session expired. Please log in again.");
+        var error = "Session expired or evaluations service unavailable. Please log in again.";
+        alert(error);
+        return Promise.reject(error);
       }
       return Promise.reject(e);
     })
@@ -104,6 +108,17 @@ exports.createEvaluation = function(sessionNid, comment, rating) {
     .catch(log)
     .catch(alert);
 };
+
+function logoutIfAlreadyLoggedIn(username, password) {
+  return function(e) {
+    if (e && e.match && e.match(/Already logged in/)) {
+      return exports.logout().then(function() {
+        return exports.login(username, password);
+      });
+    }
+    return Promise.reject(e);
+  };
+}
 
 function createEvaluation(sessionNid, comment, rating) {
   return function(csrfToken) {

@@ -6,6 +6,7 @@ var loginService = require("../loginService");
 var codRemoteService = require("../codRemoteService");
 var codFeedbackService = require("../codFeedbackService");
 var getSessionsInTimeframe = require("../getSessionsInTimeframe");
+var isFeedbackTime = require("../isFeedbackTime");
 
 exports.getKeynote = function(keynoteId) {
   return conferenceDataProvider.get().then(function(data) {
@@ -61,7 +62,7 @@ exports.getBlocks = function() {
 exports.getScheduleBlocks = function() {
   return exports.getBlocks()
     .then(function(blocks) {
-      if (loginService.isLoggedIn()) {
+      if (loginService.isLoggedIn() && isFeedbackTime()) {
         return codRemoteService.evaluations()
           .then(function(evaluations) {
             return processScheduleBlocks(blocks, evaluations);
