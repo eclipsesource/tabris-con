@@ -4,8 +4,8 @@ require("whatwg-fetch");
 var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");
-var loginService = require("./loginService");
-var alertDialog = require("./ui/alert");
+var loginService = require("./helpers/loginService");
+var alertDialog = require("./components/alert");
 var isFeedbackTime = require("./isFeedbackTime");
 
 var URI = require("urijs");

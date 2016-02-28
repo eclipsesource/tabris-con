@@ -1,4 +1,4 @@
-var squash = require("../src/data/squash");
+var squash = require("../src/squash");
 var chai = require("chai");
 var expect = chai.expect;
 

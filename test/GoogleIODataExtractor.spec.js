@@ -1,11 +1,11 @@
 var expect = require("chai").expect;
-var GoogleIODataExtractor = require("../src/data/GoogleIODataExtractor");
-var IO_CONFERENCE_DATA = require("./data/googleIO/ioConferenceData.json");
-var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
-var CATEGORIES = require("./data/googleIO/categories.json");
-var SESSIONS = require("./data/googleIO/sessions.json");
-var BLOCKS = require("./data/googleIO/blocks.json");
-var KEYNOTES = require("./data/googleIO/keynotes.json");
+var GoogleIODataExtractor = require("../src/GoogleIODataExtractor");
+var IO_CONFERENCE_DATA = require("./json/googleIO/ioConferenceData.json");
+var PREVIEW_CATEGORIES = require("./json/googleIO/previewCategories.json");
+var CATEGORIES = require("./json/googleIO/categories.json");
+var SESSIONS = require("./json/googleIO/sessions.json");
+var BLOCKS = require("./json/googleIO/blocks.json");
+var KEYNOTES = require("./json/googleIO/keynotes.json");
 
 describe("googleIODataExtractor", function() {
 

@@ -1,9 +1,9 @@
 require("tabris-js-node");
-require("./ui/w10exts");
+require("./w10exts");
 
-var Navigation = require("./ui/Navigation");
-var applyPlatformStyle = require("./ui/applyPlatformStyle");
-var LoginAction = require("./ui/LoginAction");
+var Navigation = require("./components/Navigation");
+var applyPlatformStyle = require("./helpers/applyPlatformStyle");
+var LoginAction = require("./actions/LoginAction");
 
 applyPlatformStyle(tabris.ui);
 

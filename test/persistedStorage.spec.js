@@ -1,4 +1,4 @@
-var capitalizeFirstLetter = require("../src/stringUtility").capitalizeFirstLetter;
+var capitalizeFirstLetter = require("../src/helpers/stringUtility").capitalizeFirstLetter;
 
 var mockery = require("mockery");
 var chai = require("chai");
@@ -9,11 +9,12 @@ chai.use(sinonChai);
 
 describe("persisted storage", function() {
   var persistedStorage;
+  var PERSISTED_STORAGE_MODULE_PATH = "../src/persistedStorage";
 
   before(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock("../../config", {DATA_FORMAT: "cod"});
-    persistedStorage = require("../src/data/persistedStorage");
+    persistedStorage = require(PERSISTED_STORAGE_MODULE_PATH);
   });
 
   beforeEach(function() {
@@ -85,7 +86,7 @@ describe("persisted storage", function() {
   });
 
   describe("set", function() {
-    var storage = require("../src/data/persistedStorage");
+    var storage = require(PERSISTED_STORAGE_MODULE_PATH);
     var properties = [
       storage.PREVIEW_CATEGORIES,
       storage.CATEGORIES,
@@ -108,7 +109,7 @@ describe("persisted storage", function() {
   });
 
   describe("get", function() {
-    var storage = require("../src/data/persistedStorage");
+    var storage = require(PERSISTED_STORAGE_MODULE_PATH);
     var properties = [
       storage.PREVIEW_CATEGORIES,
       storage.CATEGORIES,
@@ -139,7 +140,7 @@ describe("persisted storage", function() {
 
   describe("deleteConferenceData", function() {
     it("removes data from storage", function() {
-      var storage = require("../src/data/persistedStorage");
+      var storage = require(PERSISTED_STORAGE_MODULE_PATH);
       var properties = [
         storage.PREVIEW_CATEGORIES,
         storage.CATEGORIES,

@@ -1,4 +1,4 @@
-var conferenceDataProvider = require("./data/conferenceDataProvider");
+var conferenceDataProvider = require("./conferenceDataProvider");
 var TimezonedDate = require("./TimezonedDate");
 var _ = require("lodash");
 

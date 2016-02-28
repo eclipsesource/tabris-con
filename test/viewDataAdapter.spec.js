@@ -1,16 +1,16 @@
 var expect = require("chai").expect;
 var sinon = require("sinon");
 var mockery = require("mockery");
-var PREVIEW_CATEGORIES = require("./data/googleIO/previewCategories.json");
-var ADAPTED_PREVIEW_CATEGORIES = require("./data/googleIO/adaptedPreviewCategories.json");
-var PLAY_CATEGORY = require("./data/googleIO/playCategory.json");
-var ADAPTED_PLAY_CATEGORY = require("./data/googleIO/adaptedPlayCategory.json");
-var KEYNOTE = require("./data/googleIO/keynote.json");
-var SESSION = require("./data/googleIO/session.json");
-var ADAPTED_SESSION = require("./data/googleIO/adaptedSession.json");
-var BLOCKS = require("./data/googleIO/blocks.json");
-var ADAPTED_BLOCKS = require("./data/googleIO/adaptedBlocks.json");
-var ADAPTED_KEYNOTE = require("./data/googleIO/adaptedKeynote.json");
+var PREVIEW_CATEGORIES = require("./json/googleIO/previewCategories.json");
+var ADAPTED_PREVIEW_CATEGORIES = require("./json/googleIO/adaptedPreviewCategories.json");
+var PLAY_CATEGORY = require("./json/googleIO/playCategory.json");
+var ADAPTED_PLAY_CATEGORY = require("./json/googleIO/adaptedPlayCategory.json");
+var KEYNOTE = require("./json/googleIO/keynote.json");
+var SESSION = require("./json/googleIO/session.json");
+var ADAPTED_SESSION = require("./json/googleIO/adaptedSession.json");
+var BLOCKS = require("./json/googleIO/blocks.json");
+var ADAPTED_BLOCKS = require("./json/googleIO/adaptedBlocks.json");
+var ADAPTED_KEYNOTE = require("./json/googleIO/adaptedKeynote.json");
 var FAKE_CONFIG = {
   DATA_FORMAT: "googleIO",
   SESSIONS_HAVE_IMAGES: true,
@@ -34,7 +34,7 @@ describe("viewDataAdapter", function() {
     mockery.registerMock("../config", FAKE_CONFIG);
     mockery.registerMock("../../config", FAKE_CONFIG);
     global.window = sinon.stub();
-    viewDataAdapter = require("../src/data/viewDataAdapter");
+    viewDataAdapter = require("../src/viewDataAdapter");
   });
 
   after(function() {

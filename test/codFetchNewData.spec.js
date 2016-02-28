@@ -10,7 +10,7 @@ Promise = require("promise");
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
-var codFetchNewData = require("../src/data/codFetchNewData");
+var codFetchNewData = require("../src/codFetchNewData");
 
 var SCHEDULED_SESSIONS_SERVICE = "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions";
 

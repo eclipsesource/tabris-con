@@ -1,14 +1,14 @@
 /* globals Promise: true */
 Promise = require("promise");
 var chai = require("chai");
-var persistedStorage = require("../src/data/persistedStorage");
+var persistedStorage = require("../src/persistedStorage");
 var expect = chai.expect;
 var sinon = require("sinon");
-var attendedBlockProvider = require("../src/data/attendedBlockProvider");
-var conferenceDataProvider = require("../src/data/conferenceDataProvider");
+var attendedBlockProvider = require("../src/attendedBlockProvider");
+var conferenceDataProvider = require("../src/conferenceDataProvider");
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
-var SESSIONS = require("./data/cod/sessions.json");
+var SESSIONS = require("./json/cod/sessions.json");
 
 describe("attendedBlockProvider", function() {
 

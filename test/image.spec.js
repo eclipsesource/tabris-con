@@ -4,11 +4,11 @@ var expect = require("chai").expect;
 var sinon = require("sinon");
 var fs = require("fs");
 var mockfs = require("mock-fs");
-var sizes = require("../resources/sizes");
-var getImage = require("../src/getImage");
+var sizes = require("../src/resources/sizes");
+var getImage = require("../src/helpers/getImage");
 var _ = require("lodash");
 
-var IMAGES_PATH = "../resources/images";
+var IMAGES_PATH = "../images";
 var PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
 
 describe("image", function() {
@@ -56,7 +56,7 @@ describe("image", function() {
               var image = getImage.forDevicePlatform("foobar");
 
               expect(image).to.deep.equal({
-                src: ["resources/images", platform, "foobar@" + devicePixelRatio + "x.png"].join("/"),
+                src: ["images", platform, "foobar@" + devicePixelRatio + "x.png"].join("/"),
                 scale: devicePixelRatio
               });
             });
@@ -74,7 +74,7 @@ describe("image", function() {
 
           var image = getImage.forDevicePlatform("foobar");
 
-          expect(image).to.deep.equal({src: "resources/images/Android/foobar@3x.png", scale: 3});
+          expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
         });
 
         it("returns image with scale 3 for devicePixelRatio 2.6", function() {
@@ -82,7 +82,7 @@ describe("image", function() {
 
           var image = getImage.forDevicePlatform("foobar");
 
-          expect(image).to.deep.equal({src: "resources/images/Android/foobar@3x.png", scale: 3});
+          expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
         });
 
         it("returns image with scale 2 for devicePixelRatio 2.46", function() {
@@ -90,7 +90,7 @@ describe("image", function() {
 
           var image = getImage.forDevicePlatform("foobar");
 
-          expect(image).to.deep.equal({src: "resources/images/Android/foobar@2x.png", scale: 2});
+          expect(image).to.deep.equal({src: "images/Android/foobar@2x.png", scale: 2});
         });
 
         it("returns image with explicit image size", function() {
@@ -112,7 +112,7 @@ describe("image", function() {
 
         var image = getImage.common("foobar");
 
-        expect(image).to.deep.equal({src: "resources/images/foobar@2x.png", scale: 2});
+        expect(image).to.deep.equal({src: "images/foobar@2x.png", scale: 2});
       });
 
     });
@@ -168,7 +168,7 @@ function extractFilenames(el) {
 function getMockedPath(platform, devicePixelRatio) {
   return [
     __dirname,
-    "../../resources/images",
+    "../../images",
     platform,
     "foobar@" + devicePixelRatio + "x.png"
   ];

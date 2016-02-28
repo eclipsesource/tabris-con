@@ -13,26 +13,26 @@ describe("freeBlockInsertor", function() {
 
   before(function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-    mockery.registerMock("../../config", FAKE_CONFIG);
-    insertor = require("../src/data/freeBlockInsertor");
+    mockery.registerMock("../config", FAKE_CONFIG);
+    insertor = require("../src/freeBlockInsertor");
   });
 
   after(function() {
-    mockery.deregisterMock("../../config");
+    mockery.deregisterMock("../config");
     mockery.disable();
   });
 
   it("returns input when FREE_BLOCKS not configured", function() {
     mockery.resetCache();
-    mockery.deregisterMock("../../config");
-    mockery.registerMock("../../config", {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "America/New_York"});
-    var insertor = require("../src/data/freeBlockInsertor");
+    mockery.deregisterMock("../config");
+    mockery.registerMock("../config", {DATA_FORMAT: "cod", CONFERENCE_TIMEZONE: "America/New_York"});
+    var insertor = require("../src/freeBlockInsertor");
 
     var inserted = insertor.insertIn("foo");
 
     expect(inserted).to.equal("foo");
-    mockery.deregisterMock("../../config");
-    mockery.registerMock("../../config", FAKE_CONFIG);
+    mockery.deregisterMock("../config");
+    mockery.registerMock("../config", FAKE_CONFIG);
   });
 
   it("returns free blocks on empty array", function() {

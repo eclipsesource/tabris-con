@@ -1,11 +1,11 @@
 var mockery = require("mockery");
 var expect = require("chai").expect;
-var COD_CONFERENCE_DATA = require("./data/cod/codConferenceData.json");
-var PREVIEW_CATEGORIES = require("./data/cod/previewCategories.json");
-var CATEGORIES = require("./data/cod/categories.json");
-var KEYNOTES = require("./data/cod/keynotes.json");
-var SESSIONS = require("./data/cod/sessions.json");
-var BLOCKS = require("./data/cod/blocks.json");
+var COD_CONFERENCE_DATA = require("./json/cod/codConferenceData.json");
+var PREVIEW_CATEGORIES = require("./json/cod/previewCategories.json");
+var CATEGORIES = require("./json/cod/categories.json");
+var KEYNOTES = require("./json/cod/keynotes.json");
+var SESSIONS = require("./json/cod/sessions.json");
+var BLOCKS = require("./json/cod/blocks.json");
 
 describe("CodDataExtractor", function() {
   var codDataExtractor;
@@ -19,7 +19,7 @@ describe("CodDataExtractor", function() {
     mockery.enable({useCleanCache: true, warnOnUnregistered: false});
     mockery.registerMock("../config", FAKE_CONFIG);
     mockery.registerMock("../../config", FAKE_CONFIG);
-    var CodDataExtractor = require("../src/data/CodDataExtractor");
+    var CodDataExtractor = require("../src/CodDataExtractor");
     codDataExtractor = new CodDataExtractor(COD_CONFERENCE_DATA);
   });
 
