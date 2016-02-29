@@ -1,9 +1,9 @@
-var fontToString = require("../../helpers/fontToString");
-var colors = require("../../resources/colors");
-var sizes = require("../../resources/sizes");
-var config = require("../../../config");
-var getImage = require("../../helpers/getImage");
-var applyPlatformStyle = require("../../helpers/applyPlatformStyle");
+var fontToString = require("../helpers/fontToString");
+var colors = require("../resources/colors");
+var sizes = require("../resources/sizes");
+var config = require("../../config");
+var getImage = require("../helpers/getImage");
+var applyPlatformStyle = require("../helpers/applyPlatformStyle");
 var _ = require("lodash");
 
 exports.create = function(configuration) {

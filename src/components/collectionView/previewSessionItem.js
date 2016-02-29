@@ -1,6 +1,6 @@
 var sessionItem = require("./sessionItem");
 var sizes = require("../../resources/sizes");
-var SessionItem = require("./SessionItem");
+var SessionItem = require("../SessionItem");
 
 module.exports = {
   itemHeight: getCellHeight(),
