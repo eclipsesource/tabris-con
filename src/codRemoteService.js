@@ -1,12 +1,11 @@
-/* globals fetch: false, Promise: true*/
-Promise = require("promise");
-require("whatwg-fetch");
+var Promise = require("promise");
 var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");
 var loginService = require("./helpers/loginService");
 var alertDialog = require("./components/alert");
 var isFeedbackTime = require("./isFeedbackTime");
+var timeoutFetch = require("./timeoutFetch");
 
 var URI = require("urijs");
 
@@ -29,7 +28,7 @@ exports.login = function(username, password) {
     .catch(alert);
 
   function login(csrfToken) {
-    return fetch(serviceUrl, {
+    return timeoutFetch(serviceUrl, {
       method: "post",
       headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
       body: JSON.stringify({
@@ -44,7 +43,7 @@ exports.logout = function() {
   var serviceUrl = URI(API_URL).segment("user").segment("logout").toString();
   return exports.csrfToken()
     .then(function(csrfToken) {
-      return fetch(serviceUrl, {
+      return timeoutFetch(serviceUrl, {
         method: "post",
         headers: {
           Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken
@@ -66,14 +65,14 @@ exports.logout = function() {
 
 exports.csrfToken = function() {
   var serviceUrl = URI(config.SERVICE_URL).segment("services").segment("session").segment("token").toString();
-  return fetch(serviceUrl).then(function(response) {
+  return timeoutFetch(serviceUrl).then(function(response) {
     return response.text();
   });
 };
 
 exports.evaluations = function() {
   var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
-  return fetch(serviceUrl)
+  return timeoutFetch(serviceUrl)
     .then(jsonify)
     .then(function(response) {
       if (responseIsAnErrorArray(response)) {
@@ -123,7 +122,7 @@ function logoutIfAlreadyLoggedIn(username, password) {
 function createEvaluation(sessionNid, comment, rating) {
   return function(csrfToken) {
     var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
-    return fetch(serviceUrl, {
+    return timeoutFetch(serviceUrl, {
       method: "POST",
       headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
       body: JSON.stringify({session_id: sessionNid, comment: comment, rating: rating})

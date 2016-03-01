@@ -1,14 +1,11 @@
-/* globals fetch: false, Promise: true*/
-
 var config = require("../config");
-Promise = require("promise");
-require("whatwg-fetch");
+var timeoutFetch = require("./timeoutFetch");
 var URI = require("urijs");
 var API_URL = URI(config.SERVICE_URL).segment("api").segment("1.0").toString();
 
 module.exports = function() {
   var scheduledSessionsApiUrl = URI(API_URL).segment("eclipsecon_scheduled_sessions").toString();
-  return fetch(scheduledSessionsApiUrl, {method: "GET", headers: getFetchHeaders()})
+  return timeoutFetch(scheduledSessionsApiUrl, {method: "GET", headers: getFetchHeaders()})
     .then(function(response) {
       if (response.status === 200) {
         localStorage.setItem("codScheduledSessionsETag", response.headers.get("ETag"));
