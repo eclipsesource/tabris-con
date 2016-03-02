@@ -10,7 +10,7 @@ module.exports = function() {
 function timeout(ms, promise) {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      reject(new Error("timeout"));
+      reject(new Error("Server timeout. Please try again later."));
     }, ms);
     promise.then(resolve, reject);
   });
