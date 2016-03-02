@@ -179,7 +179,7 @@ function maybeFocusItem(schedule) {
 function notFocusing(schedule) {
   setTimeout(function() {
     schedule.set("focusing", false);
-  }, 1600);
+  }, 2000);
 }
 
 function createTabs(tabFolder, adaptedBlocks) {
