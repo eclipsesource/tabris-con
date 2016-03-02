@@ -41,7 +41,6 @@ exports.create = function() {
   applyPlatformStyle(attendanceButton);
 
   var titleTextView = tabris.create("TextView", {
-    maxLines: 2,
     id: "sessionPageTitleTextView", right: sizes.MARGIN_LARGE
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(titleTextView);
