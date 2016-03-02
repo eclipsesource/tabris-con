@@ -11,6 +11,7 @@ exports.getBlocks = function() {
       .map(function(session) {
         var attendedBlock = {
           sessionId: session.id,
+          sessionNid: session.nid,
           title: session.title,
           room: session.room,
           startTimestamp: session.startTimestamp,

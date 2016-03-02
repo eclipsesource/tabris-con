@@ -2,7 +2,7 @@ var fontToString = require("../helpers/fontToString");
 var sizes = require("../resources/sizes");
 var Button = require("../components/Button");
 var FeedbackThumbs = require("../components/FeedbackThumbs");
-var codRemoteService = require("../codRemoteService");
+var codFeedbackService = require("../helpers/codFeedbackService");
 var addProgressTo = require("../helpers/addProgressTo");
 
 exports.create = function(adaptedSession) {
@@ -27,12 +27,12 @@ exports.create = function(adaptedSession) {
   addProgressTo(button);
   button.on("select", function() {
     button.set("progress", true);
-    codRemoteService.createEvaluation(adaptedSession.nid, commentTextInput.get("text"), feedbackThumbs.get("feedback"))
-      .then(function() {
-        page.trigger("success");
-        page.close();
-      })
-      .catch(function() {button.set("progress", false);});
+    codFeedbackService.createEvaluation(
+      adaptedSession.id, adaptedSession.nid, commentTextInput.get("text"), feedbackThumbs.get("feedback")
+    ).then(function() {
+      page.close();
+    })
+    .catch(function() {button.set("progress", false);});
   });
   return page;
 };

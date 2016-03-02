@@ -1,12 +1,14 @@
+/*globals Promise:true*/
+
 var _ = require("lodash");
 var viewDataAdapter = require("./viewDataAdapter");
 var conferenceDataProvider = require("./conferenceDataProvider");
 var attendedBlockProvider = require("./attendedBlockProvider");
-var loginService = require("./helpers/loginService");
 var codRemoteService = require("./codRemoteService");
 var codFeedbackService = require("./helpers/codFeedbackService");
+var loginService = require("./helpers/loginService");
 var getSessionsInTimeframe = require("./getSessionsInTimeframe");
-var isFeedbackTime = require("./isFeedbackTime");
+Promise = require("promise");
 
 exports.getKeynote = function(keynoteId) {
   return conferenceDataProvider.get().then(function(data) {
@@ -52,36 +54,26 @@ exports.getSession = function(sessionId) {
 };
 
 exports.getBlocks = function() {
-  return conferenceDataProvider.get().then(function(data) {
-    return attendedBlockProvider.getBlocks().then(function(blocks) {
-      return viewDataAdapter.adaptBlocks(_.union(data.blocks, blocks));
-    });
-  });
-};
-
-exports.getScheduleBlocks = function() {
-  return exports.getBlocks()
-    .then(function(blocks) {
-      if (loginService.isLoggedIn() && isFeedbackTime()) {
-        return codRemoteService.evaluations()
-          .then(function(evaluations) {
-            return processScheduleBlocks(blocks, evaluations);
-          })
-          .catch(function() {return processScheduleBlocks(blocks);});
-      } else {
-        return processScheduleBlocks(blocks);
-      }
+  return Promise.all([conferenceDataProvider.get(), attendedBlockProvider.getBlocks()])
+    .then(function(values) {
+      var conferenceData = values[0];
+      var blocks = values[1];
+      return viewDataAdapter.adaptBlocks(_.union(conferenceData.blocks, blocks));
     });
 };
 
-function processScheduleBlocks(blocks, evaluations) {
-  var blocksEvaluations = {blocks: blocks};
-  if (evaluations) {
-    blocksEvaluations.evaluations = evaluations;
+exports.getSessionIdIndicatorStates = function() {
+  if (!loginService.isLoggedIn()) {
+    return Promise.resolve([]);
   }
-  codFeedbackService.addFeedbackIndicatorState(blocksEvaluations);
-  return blocksEvaluations.blocks;
-}
+  return Promise.all([attendedBlockProvider.getBlocks(), codRemoteService.evaluations()])
+    .then(function(values) {
+      var blocks = values[0];
+      var evaluations = values[1];
+      return codFeedbackService.getSessionsIndicatorState(blocks, evaluations);
+    })
+    .catch(function() {return [];});
+};
 
 exports.getSessionsInTimeframe = function(timestamp1, timestamp2) {
   return getSessionsInTimeframe(timestamp1, timestamp2).then(function(sessions) {

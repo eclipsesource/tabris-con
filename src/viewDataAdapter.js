@@ -1,6 +1,8 @@
 var _ = require("lodash");
 var TimezonedDate = require("./TimezonedDate");
 var freeBlockInsertor = require("./freeBlockInsertor");
+var codFeedbackService = require("./helpers/codFeedbackService");
+var loginService = require("./helpers/loginService");
 var config = require("../config");
 
 exports.adaptPreviewCategories = function(previewCategories) {
@@ -123,6 +125,7 @@ function adaptDatedBlock(datedBlock) {
     startTime: new TimezonedDate(datedBlock.startTimestamp).format("HH:mm"),
     startTimestamp: datedBlock.startTimestamp,
     endTimestamp: datedBlock.endTimestamp,
+    feedbackIndicatorState: getFeedbackIndicatorState(datedBlock),
     sessionType: datedBlock.sessionType || "session",
     title: datedBlock.title,
     type: "block"
@@ -134,6 +137,13 @@ function adaptDatedBlock(datedBlock) {
     block.sessionNid = datedBlock.sessionNid;
   }
   return block;
+}
+
+function getFeedbackIndicatorState(session) {
+  if (session.sessionNid) {
+    return codFeedbackService.canGiveFeedbackForSession(session) && loginService.isLoggedIn() ? "loading" : null;
+  }
+  return null;
 }
 
 function createSeparators(itemCount, type) {

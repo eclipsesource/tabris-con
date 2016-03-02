@@ -15,8 +15,6 @@ exports.create = function() {
     left: 0, top: 0, right: 0, bottom: 0
   });
 
-  tabris.app.on("resume", function() {schedule.initializeItems({silent: true});});
-
   var loadingIndicator = LoadingIndicator.create().appendTo(schedule);
 
   schedule.getSessionIdTab = function(sessionId) {
@@ -26,15 +24,13 @@ exports.create = function() {
     return schedule.children("#scheduleTabFolder").children()[index];
   };
 
-  schedule.initializeItems = function(options) {
+  schedule.initializeItems = function() {
     if (!schedule.get("initializingItems")) {
-      if (!(options && options.silent)) {
-        showProgressIndicator(schedule);
-      }
       schedule.set("initializingItems", true);
-      return viewDataProvider.getScheduleBlocks()
+      return viewDataProvider.getBlocks()
         .then(function(data) {
           schedule.set("data", data);
+          initializeIndicators();
         })
         .finally(function() {
           schedule.find("CollectionView").set("refreshIndicator", false);
@@ -91,23 +87,62 @@ exports.create = function() {
   });
 
   schedule.on("appear", function() {
-    schedule.initializeItems({silent: true});
     if (schedule.get("initializingItems")) {
       schedule.once("change:initializingItems", maybeFocusItem);
     } else {
       maybeFocusItem(this);
     }
+    updateFeedbackIndicators();
   });
+
+  tabris.app.on("resume", function() {
+    updateFeedbackIndicators();
+  });
+
+  function initializeIndicators() {
+    if (!schedule.get("indicatorsInitialized") && !schedule.get("evaluatedSessionId")) {
+      updateAllFeedbackIndicators();
+      schedule.set("indicatorsInitialized", true);
+    }
+  }
+
+  function updateFeedbackIndicators() {
+    if (schedule.get("evaluatedSessionId")) {
+      updateEvaluatedSessionIndicator();
+    } else {
+      updateAllFeedbackIndicators();
+    }
+  }
+
+  function updateEvaluatedSessionIndicator() {
+    if (schedule.get("evaluatedSessionId")) {
+      schedule.updateSessionWithId(schedule.get("evaluatedSessionId"), "feedbackIndicatorState", "sent");
+      schedule.set("evaluatedSessionId", null);
+    }
+  }
+
+  function updateAllFeedbackIndicators() {
+    updateEvaluatedSessionIndicator();
+    viewDataProvider.getSessionIdIndicatorStates()
+      .then(function(idStates) {
+        if (schedule.get("focusing")) {
+          schedule.once("change:focusing", function() {
+            applyIdStates(idStates);
+          });
+        } else {
+          applyIdStates(idStates);
+        }
+      });
+  }
+
+  function applyIdStates(idStates) {
+    idStates.forEach(function(idState) {
+      schedule.updateSessionWithId(idState.id, "feedbackIndicatorState", idState.state);
+    });
+  }
+
   return schedule;
 };
-
-function showProgressIndicator(schedule) {
-  if (device.platform !== "Android" && !pulledToRefresh(schedule)) {
-    LoadingIndicator.create({shade: true, semitransparent: true}).appendTo(schedule);
-  } else {
-    schedule.find("CollectionView").set("refreshIndicator", true);
-  }
-}
 
 function getItemCollectionView(schedule, sessionId) {
   var tab = schedule.getSessionIdTab(sessionId);
@@ -118,6 +153,7 @@ function maybeFocusItem(schedule) {
   var sessionId = schedule.get("shouldFocusSessionWithId");
   if (sessionId) {
     schedule.set("shouldFocusSessionWithId", null);
+    schedule.set("focusing", true);
     var tab = schedule.getSessionIdTab(sessionId);
     if (tab) {
       schedule.children("#scheduleTabFolder").set("selection", tab);
@@ -128,12 +164,22 @@ function maybeFocusItem(schedule) {
       });
       collectionView.get("items")[index].shouldPop = true;
       if (collectionView.get("bounds").height === 0) { // TODO: workaround for reveal only working after resize on iOS
-        collectionView.once("resize", function() {collectionView.reveal(index);});
+        collectionView.once("resize", function() {
+          collectionView.reveal(index);
+          notFocusing(schedule);
+        });
       } else {
         collectionView.reveal(index);
+        notFocusing(schedule);
       }
     }
   }
+}
+
+function notFocusing(schedule) {
+  setTimeout(function() {
+    schedule.set("focusing", false);
+  }, 1600);
 }
 
 function createTabs(tabFolder, adaptedBlocks) {
@@ -151,9 +197,4 @@ function createTabs(tabFolder, adaptedBlocks) {
 
 function createTab(title) {
   return tabris.create("Tab", {title: title, background: "white"});
-}
-
-function pulledToRefresh(schedule) {
-  return schedule.find("CollectionView").toArray()
-    .some(function(collectionView) {return collectionView.get("refreshIndicator");});
 }

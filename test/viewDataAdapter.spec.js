@@ -13,6 +13,7 @@ var ADAPTED_BLOCKS = require("./json/googleIO/adaptedBlocks.json");
 var ADAPTED_KEYNOTE = require("./json/googleIO/adaptedKeynote.json");
 var FAKE_CONFIG = {
   DATA_FORMAT: "googleIO",
+  SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SESSIONS_HAVE_IMAGES: true,
   CONFERENCE_TIMEZONE: "America/Los_Angeles",
   CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],
