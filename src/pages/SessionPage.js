@@ -252,7 +252,7 @@ exports.create = function() {
     setWidgetData(data);
     scrollView.on("resize", layoutParallax);
     layoutParallax();
-    var attendanceControl = device.platform === "Android" ? sessionPageHeader : tabris.ui.find("#attendanceAction");
+    var attendanceControl = device.platform === "iOS" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
     attendanceControl.set("attending", attendedSessionService.isAttending(data.id));
     loadingIndicator.dispose();
   });
