@@ -66,7 +66,7 @@ module.exports = {
       titleTextView.set("text", item.title);
       summaryTextView.set("text", item.sessionType !== "free" ? item.summary : "");
       imageView.set("image", getImage.forDevicePlatform(item.image));
-      if (item.feedbackIndicatorState) {
+      if (item.feedbackIndicatorState && item.feedbackIndicatorState !== "loading") {
         feedbackIndicator.set("image", getImage.forDevicePlatform("schedule_feedback_" + item.feedbackIndicatorState));
       } else {
         feedbackIndicator.set("image", null);
