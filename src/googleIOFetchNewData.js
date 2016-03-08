@@ -1,4 +1,6 @@
+var Promise = require("promise");
+
 module.exports = function() {
   // TODO: stub
-  return null;
+  return Promise.resolve(null);
 };
