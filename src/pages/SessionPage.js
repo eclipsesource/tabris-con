@@ -89,12 +89,11 @@ exports.create = function() {
       left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
     });
     tabris.create("ImageView", {
-      layoutData: {
-        left: sizes.MARGIN_LARGE,
-        top: sizes.MARGIN_SMALL,
-        width: sizes.SESSION_SPEAKER_IMAGE,
-        height: sizes.SESSION_SPEAKER_IMAGE
-      },
+      left: sizes.MARGIN_LARGE,
+      top: sizes.MARGIN_SMALL,
+      width: sizes.SESSION_SPEAKER_IMAGE,
+      height: sizes.SESSION_SPEAKER_IMAGE,
+      cornerRadius: sizes.SESSION_SPEAKER_IMAGE / 2,
       scaleMode: "fit",
       image: getImage.common(getSpeakerImage(speaker), sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
