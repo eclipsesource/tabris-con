@@ -11,6 +11,7 @@ module.exports = {
   CONFERENCE_TIMEZONE: timezone,
   FEEDBACK_START: date("07.03.2016 12:00"),
   FEEDBACK_DEADLINE: date("18.03.2016 23:59"),
+  DATE_LOCALE: "en-US",
   SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SCHEDULE_PATTERN_ICON_MAP: {
     googleIO: {

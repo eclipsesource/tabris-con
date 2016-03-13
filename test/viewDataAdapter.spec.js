@@ -1,6 +1,7 @@
 var expect = require("chai").expect;
 var sinon = require("sinon");
 var mockery = require("mockery");
+var moment = require("moment-timezone");
 var PREVIEW_CATEGORIES = require("./json/googleIO/previewCategories.json");
 var ADAPTED_PREVIEW_CATEGORIES = require("./json/googleIO/adaptedPreviewCategories.json");
 var PLAY_CATEGORY = require("./json/googleIO/playCategory.json");
@@ -35,6 +36,7 @@ describe("viewDataAdapter", function() {
     mockery.registerMock("../config", FAKE_CONFIG);
     mockery.registerMock("../../config", FAKE_CONFIG);
     global.window = sinon.stub();
+    moment.locale("en-GB");
     viewDataAdapter = require("../src/viewDataAdapter");
   });
 

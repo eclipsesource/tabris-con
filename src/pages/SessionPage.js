@@ -204,8 +204,8 @@ exports.create = function() {
               .on("tap", function() {
                 var sessionsPage = SessionsPage.create().open();
                 var adaptedSessions = viewDataAdapter.adaptCategory({sessions: otherSessions});
-                var from = date1.format("HH:mm");
-                var to = date2.format("HH:mm");
+                var from = date1.format("LT");
+                var to = date2.format("LT");
                 sessionsPage.set("data", {title: from + " - " + to, items: adaptedSessions});
               })
               .appendTo(contentComposite);

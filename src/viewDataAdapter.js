@@ -44,8 +44,11 @@ exports.adaptTimeframe = function(category) {
 };
 
 exports.adaptSession = function(session) {
-  var startDateString = new TimezonedDate(session.startTimestamp).format("DD MMM YYYY, HH:mm");
-  var endTimeString = new TimezonedDate(session.endTimestamp).format("HH:mm");
+  var startDateString = [
+    new TimezonedDate(session.startTimestamp).format("ll"),
+    new TimezonedDate(session.startTimestamp).format("LT")
+  ].join(", ");
+  var endTimeString = new TimezonedDate(session.endTimestamp).format("LT");
   var adaptedSession = {
     id: session.id,
     summary: startDateString + " - " + endTimeString + " in " + session.room,
@@ -120,9 +123,9 @@ function mapDatedBlock(datedBlocks) {
 function adaptDatedBlock(datedBlock) {
   var block = {
     image: getImageForBlockTitle(datedBlock.title),
-    summary: new TimezonedDate(datedBlock.startTimestamp).format("HH:mm") + " - " +
-      new TimezonedDate(datedBlock.endTimestamp).format("HH:mm") + " / " + datedBlock.room,
-    startTime: new TimezonedDate(datedBlock.startTimestamp).format("HH:mm"),
+    summary: new TimezonedDate(datedBlock.startTimestamp).format("LT") + " - " +
+      new TimezonedDate(datedBlock.endTimestamp).format("LT") + " / " + datedBlock.room,
+    startTime: new TimezonedDate(datedBlock.startTimestamp).format("LT"),
     startTimestamp: datedBlock.startTimestamp,
     endTimestamp: datedBlock.endTimestamp,
     feedbackIndicatorState: getFeedbackIndicatorState(datedBlock),
@@ -168,13 +171,21 @@ function adaptSessionListItem(session, type, options) {
 
 function getSummary(session, summaryType) {
   var typeData = {
-    timeframe: new TimezonedDate(session.startTimestamp).format("D MMM - HH:mm") +
-      " / " +
-      new TimezonedDate(session.endTimestamp).format("HH:mm"),
+    timeframe: [
+      new TimezonedDate(session.startTimestamp).format("D MMM"),
+      getTimeframeTimePart(session)
+    ].join(" - "),
     previewText: session.text,
     category: session.categoryName
   };
   return typeData[summaryType];
+}
+
+function getTimeframeTimePart(session) {
+  return [
+    new TimezonedDate(session.startTimestamp).format("LT"),
+    new TimezonedDate(session.endTimestamp).format("LT")
+  ].join(" / ");
 }
 
 function getImageForBlockTitle(title) {

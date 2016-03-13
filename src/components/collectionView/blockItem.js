@@ -100,8 +100,8 @@ module.exports = {
       var date2 = new TimezonedDate(item.endTimestamp);
       viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
         .then(function(sessions) {
-          var from = date1.format("HH:mm");
-          var to = date2.format("HH:mm");
+          var from = date1.format("LT");
+          var to = date2.format("LT");
           page.set("data", {title: from + " - " + to, items: sessions});
         });
     }
