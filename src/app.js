@@ -10,7 +10,7 @@ var LoginAction = require("./actions/LoginAction");
 
 applyPlatformStyle(tabris.ui);
 
-Navigation[device.platform].create();
+Navigation.create();
 if (device.platform === "iOS") {
   LoginAction.create();
 }
