@@ -21,7 +21,7 @@ var _ = require("lodash");
 var titleCompY = 0;
 
 exports.create = function() {
-  var page = tabris.create("Page", {
+  var page = new tabris.Page({
     topLevel: false,
     id: "sessionPage",
     title: "Session"
@@ -35,30 +35,30 @@ exports.create = function() {
     tabris.ui.find("#attendanceAction").dispose();
   });
 
-  var scrollView = tabris.create("ScrollView", {
+  var scrollView = new tabris.ScrollView({
     left: 0, right: 0, top: 0, bottom: 0
   }).appendTo(page);
 
-  var imageView = tabris.create("ImageView", {
+  var imageView = new tabris.ImageView({
     left: 0, top: 0, right: 0,
     background: colors.BACKGROUND_COLOR,
     scaleMode: "fill"
   }).appendTo(scrollView);
 
-  var contentComposite = tabris.create("Composite", {
+  var contentComposite = new tabris.Composite({
     left: 0, right: 0, top: "#sessionPageHeader",
     background: "white"
   }).appendTo(scrollView);
 
   var sessionPageHeader = SessionPageHeader.create().appendTo(scrollView);
 
-  var descriptionTextView = tabris.create("TextView", {
+  var descriptionTextView = new tabris.TextView({
     id: "sessionPageDescriptionTextView",
     right: sizes.MARGIN_LARGE
   }).appendTo(contentComposite);
   applyPlatformStyle(descriptionTextView);
 
-  var speakersComposite = tabris.create("Composite", {
+  var speakersComposite = new tabris.Composite({
     id: "speakersComposite",
     left: 0, top: "prev()", right: 0
   }).appendTo(contentComposite);
@@ -70,7 +70,7 @@ exports.create = function() {
     if (speakers.length < 1) {
       return;
     }
-    var speakersTextView = tabris.create("TextView", {
+    var speakersTextView = new tabris.TextView({
       id: "sessionPageSpeakersTextView",
       right: sizes.MARGIN_LARGE, top: ["prev()", sizes.MARGIN_LARGE * 2],
       text: "Speakers",
@@ -85,10 +85,10 @@ exports.create = function() {
   }
 
   function createSpeaker(speaker) {
-    var speakerContainer = tabris.create("Composite", {
+    var speakerContainer = new tabris.Composite({
       left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
     });
-    tabris.create("ImageView", {
+    new tabris.ImageView({
       left: sizes.MARGIN_LARGE,
       top: sizes.MARGIN_SMALL,
       width: sizes.SESSION_SPEAKER_IMAGE,
@@ -97,14 +97,14 @@ exports.create = function() {
       scaleMode: "fit",
       image: getImage.common(getSpeakerImage(speaker), sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
-    var speakerSummary = tabris.create("TextView", {
+    var speakerSummary = new tabris.TextView({
       id: "sessionPageSpeakerSummary",
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE,
       text: speaker.summary,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerSummary);
-    var speakerBio = tabris.create("TextView", {
+    var speakerBio = new tabris.TextView({
       id: "sessionPageSpeakerBio",
       left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
       text: speaker.bio,
@@ -227,7 +227,7 @@ exports.create = function() {
   }
 
   function createSpacer(prev) {
-    return tabris.create("Composite", {
+    return new tabris.Composite({
       left: 0, top: prev, right: 0, height: sizes.SESSION_PAGE_SPACER_HEIGHT
     });
   }

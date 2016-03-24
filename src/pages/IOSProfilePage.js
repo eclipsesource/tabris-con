@@ -4,18 +4,18 @@ var ProgressButton = require("../components/ProgressButton");
 var loginService = require("../helpers/loginService");
 
 exports.create = function() {
-  var page = tabris.create("Page", {id: "iOSProfilePage", title: "Profile", topLevel: false});
+  var page = new tabris.Page({id: "iOSProfilePage", title: "Profile", topLevel: false});
 
-  var container = tabris.create("Composite", {
+  var container = new tabris.Composite({
     width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
   }).appendTo(page);
 
-  var fullNameTextView = tabris.create("TextView", {
+  var fullNameTextView = new tabris.TextView({
     left: 0, top: "prev()", right: 0,
     font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
   }).appendTo(container);
 
-  var mailTextView = tabris.create("TextView", {
+  var mailTextView = new tabris.TextView({
     left: 0, top: ["prev()", sizes.MARGIN_SMALL], right: 0,
     font: fontToString({size: sizes.FONT_LARGE})
   }).appendTo(container);

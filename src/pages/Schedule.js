@@ -64,7 +64,7 @@ exports.create = function() {
 
   schedule.once("change:data", function(widget, blocks) {
     loadingIndicator.dispose();
-    var tabFolder = tabris.create("TabFolder", {
+    var tabFolder = new tabris.TabFolder({
       id: "scheduleTabFolder",
       layoutData: {left: 0, top: 0, right: 0, bottom: 0},
       elevation: 4,
@@ -196,5 +196,5 @@ function createTabs(tabFolder, adaptedBlocks) {
 }
 
 function createTab(title) {
-  return tabris.create("Tab", {title: title, background: "white"});
+  return new tabris.Tab({title: title, background: "white"});
 }

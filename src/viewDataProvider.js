@@ -8,7 +8,6 @@ var codRemoteService = require("./codRemoteService");
 var codFeedbackService = require("./helpers/codFeedbackService");
 var loginService = require("./helpers/loginService");
 var getSessionsInTimeframe = require("./getSessionsInTimeframe");
-Promise = require("promise");
 
 exports.getKeynote = function(keynoteId) {
   return conferenceDataProvider.get().then(function(data) {

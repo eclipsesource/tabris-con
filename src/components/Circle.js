@@ -1,7 +1,7 @@
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var circleCanvas = tabris.create("Canvas", _.extend({
+  var circleCanvas = new tabris.Canvas(_.extend({
     width: configuration.radius * 2, height: configuration.radius * 2
   }, configuration));
   if (configuration.color) {

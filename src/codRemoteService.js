@@ -1,4 +1,3 @@
-var Promise = require("promise");
 var sanitizeHtml = require("sanitize-html");
 var config = require("../config");
 var _ = require("lodash");

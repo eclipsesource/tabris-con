@@ -1,5 +1,4 @@
 /* globals Promise: true */
-Promise = require("promise");
 var chai = require("chai");
 var persistedStorage = require("../src/persistedStorage");
 var expect = chai.expect;

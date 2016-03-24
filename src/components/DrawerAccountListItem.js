@@ -8,22 +8,22 @@ var LoginPage = require("../pages/LoginPage");
 
 exports.create = function() {
   var pageListItem = createAccountListItem("Login", getImage.forDevicePlatform("account"));
-  var textViewContainer = tabris.create("Composite", {
+  var textViewContainer = new tabris.Composite({
     left: [".drawerIconImageView", sizes.MARGIN_XLARGE], top: 0, right: 0, bottom: 0
   }).appendTo(pageListItem);
   addProgressTo(pageListItem);
-  var emailTextView = tabris.create("TextView", {
+  var emailTextView = new tabris.TextView({
     font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
     textColor: "white",
     left: 0, top: sizes.MARGIN_SMALL
   }).appendTo(textViewContainer);
-  var logoutTextView = tabris.create("TextView", {
+  var logoutTextView = new tabris.TextView({
     font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
     textColor: "white",
     text: "Logout",
     left: 0, bottom: sizes.MARGIN_SMALL
   }).appendTo(textViewContainer);
-  var loginTextView = tabris.create("TextView", {
+  var loginTextView = new tabris.TextView({
     font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
     text: "Login",
     textColor: "white",
@@ -54,12 +54,12 @@ exports.create = function() {
 };
 
 function createAccountListItem(text, image) {
-  var listItem = tabris.create("Composite", {
+  var listItem = new tabris.Composite({
     left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
     highlightOnTouch: true,
     progress: false
   });
-  var drawerIconImageView = tabris.create("ImageView", {
+  var drawerIconImageView = new tabris.ImageView({
     class: "drawerIconImageView", image: image,
     centerY: 0
   }).appendTo(listItem);

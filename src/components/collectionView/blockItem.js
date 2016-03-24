@@ -13,7 +13,7 @@ var addProgressTo = require("../../helpers/addProgressTo");
 module.exports = {
   itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
   initializeCell: function(cell) {
-    var backgroundShade = tabris.create("Composite", {
+    var backgroundShade = new tabris.Composite({
       visible: false, background: colors.ACTION_COLOR,
       left: 0, top: 0, right: 0, bottom: 0
     }).appendTo(cell);
@@ -23,11 +23,11 @@ module.exports = {
       color: colors.BACKGROUND_COLOR
     }).appendTo(cell);
 
-    var textContainer = tabris.create("Composite", {
+    var textContainer = new tabris.Composite({
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE
     }).appendTo(cell);
 
-    var feedbackIndicator = tabris.create("ImageView", {
+    var feedbackIndicator = new tabris.ImageView({
       class: "feedbackIndicator",
       width: 24, height: 24,
       right: sizes.MARGIN_LARGE,
@@ -36,27 +36,27 @@ module.exports = {
     addProgressTo(feedbackIndicator);
     applyPlatformStyle(feedbackIndicator);
 
-    var startTimeTextView = tabris.create("TextView", {
+    var startTimeTextView = new tabris.TextView({
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
       left: 0, top: sizes.MARGIN_LARGE, right: 0
     }).appendTo(textContainer);
 
-    var titleTextView = tabris.create("TextView", {
+    var titleTextView = new tabris.TextView({
       textColor: colors.ACCENTED_TEXT_COLOR,
       maxLines: 2,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
     }).appendTo(textContainer);
 
-    var summaryTextView = tabris.create("TextView", {
+    var summaryTextView = new tabris.TextView({
       left: 0, top: ["prev()", sizes.MARGIN], right: 0,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       maxLines: 1,
       font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(textContainer);
 
-    var imageView = tabris.create("ImageView", {
+    var imageView = new tabris.ImageView({
       left: 0, right: textContainer, centerY: 0
     }).appendTo(cell);
 

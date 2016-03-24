@@ -7,7 +7,7 @@ exports.create = function() {
   var POP_HIDE_DELAY = 5000;
   var timeout;
 
-  var infoToast = tabris.create("Composite", {
+  var infoToast = new tabris.Composite({
     background: colors.INFO_TOAST_BACKGROUND_COLOR,
     left: 0, bottom: 0, right: 0, height: sizes.INFO_TOAST_HEIGHT,
     transform: {translationY: sizes.INFO_TOAST_HEIGHT}
@@ -24,14 +24,14 @@ exports.create = function() {
     }
   }
 
-  var infoShadeTextView = tabris.create("TextView", {
+  var infoShadeTextView = new tabris.TextView({
     textColor: colors.LIGHT_PRIMARY_TEXT_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),
     markupEnabled: true,
     left: sizes.MARGIN_LARGE, right: ["#actionTextView", sizes.MARGIN], centerY: 0
   }).appendTo(infoToast);
 
-  var actionTextView = tabris.create("TextView", {
+  var actionTextView = new tabris.TextView({
     highlightOnTouch: true,
     textColor: colors.ACTION_COLOR,
     font: fontToString({size: sizes.FONT_MEDIUM}),

@@ -13,15 +13,15 @@ exports.create = function() {
     image: getImage.forDevicePlatform("about_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
     left: 0, top: 0, right: 0, bottom: 0
   });
-  var scrollView = tabris.create("ScrollView", {left: 0, top: 0, right: 0, bottom: 0}).appendTo(about);
-  var container = tabris.create("Composite", {id: "container"}).appendTo(scrollView);
-  tabris.create("ImageView", {
+  var scrollView = new tabris.ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(about);
+  var container = new tabris.Composite({id: "container"}).appendTo(scrollView);
+  new tabris.ImageView({
     id: "logo",
     centerX: 0, top: "8%",
     image: getImage.common("about_logo")
   }).appendTo(container);
   createVendorAttribution().appendTo(container);
-  tabris.create("TextView", {
+  new tabris.TextView({
     id: "version",
     centerX: 0, top: ["#vendorAttribution", sizes.MARGIN],
     text: "v" + tabris._client.get("tabris.App", "version")
@@ -53,13 +53,13 @@ function calculateContainerHeight(scrollViewBounds) {
 }
 
 function createTabrisJsAttribution() {
-  var tabrisJsAttribution = tabris.create("Composite", {left: 0, top: "58%", right: 0});
-  var container = tabris.create("Composite", {centerX: 0, top: 0, height: 48}).appendTo(tabrisJsAttribution);
-  tabris.create("ImageView", {
+  var tabrisJsAttribution = new tabris.Composite({left: 0, top: "58%", right: 0});
+  var container = new tabris.Composite({centerX: 0, top: 0, height: 48}).appendTo(tabrisJsAttribution);
+  new tabris.ImageView({
     left: 0, top: 0, width: 48, height: 48,
     image: getImage.common("tabrisjs_logo")
   }).appendTo(container);
-  tabris.create("TextView", {
+  new tabris.TextView({
     left: "prev()", centerY: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     text: "Built with "
@@ -69,11 +69,11 @@ function createTabrisJsAttribution() {
 }
 
 function createVendorAttribution() {
-  var vendorAttribution = tabris.create("Composite", {
+  var vendorAttribution = new tabris.Composite({
     id: "vendorAttribution",
     left: 0, top: ["#logo", sizes.MARGIN_LARGE], right: 0
   });
-  var firstLine = tabris.create("TextView", {
+  var firstLine = new tabris.TextView({
     centerX: 0, top: 0,
     font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
     alignment: "center",
@@ -89,18 +89,18 @@ function createVendorAttribution() {
 }
 
 function createProjectAttribution() {
-  var projectAttribution = tabris.create("Composite", {
+  var projectAttribution = new tabris.Composite({
     id: "projectAttribution",
     left: sizes.MARGIN_LARGE, bottom: ["#attributionsList", sizes.MARGIN_LARGE], right: sizes.MARGIN_LARGE
   });
-  var firstLine = tabris.create("TextView", {
+  var firstLine = new tabris.TextView({
     left: 0, top: 0, right: 0,
     alignment: "center",
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     text: "This app is open source."
   }).appendTo(projectAttribution);
-  var secondLine = tabris.create("Composite", {centerX: 0, top: firstLine}).appendTo(projectAttribution);
-  var seeSourceText = tabris.create("TextView", {
+  var secondLine = new tabris.Composite({centerX: 0, top: firstLine}).appendTo(projectAttribution);
+  var seeSourceText = new tabris.TextView({
     left: 0, top: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     text: "View it on "
@@ -110,7 +110,7 @@ function createProjectAttribution() {
 }
 
 function createAttributionsList(attributions) {
-  var attributionsList = tabris.create("Composite", {
+  var attributionsList = new tabris.Composite({
     id: "attributionsList",
     left: sizes.MARGIN_LARGE, bottom: sizes.MARGIN, right: sizes.MARGIN_LARGE
   });
@@ -124,8 +124,8 @@ function createAttributionsList(attributions) {
 }
 
 function createAttributionRow(attribution) {
-  var row = tabris.create("Composite", {left: 0, top: "prev()", right: 0, height: sizes.ATTRIBUTION_LIST_ROW_HEIGHT});
-  tabris.create("TextView", {
+  var row = new tabris.Composite({left: 0, top: "prev()", right: 0, height: sizes.ATTRIBUTION_LIST_ROW_HEIGHT});
+  new tabris.TextView({
     left: 0, centerY: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     font: fontToString({size: sizes.FONT_SMALL}),
@@ -145,7 +145,7 @@ function createAttributionRow(attribution) {
   return row;
 }
 function createAttributionListSeparator() {
-  return tabris.create("Composite", {
+  return new tabris.Composite({
     left: 0, top: "prev()", right: 0, height: 1,
     background: colors.LINE_SEPARATOR_COLOR
   });

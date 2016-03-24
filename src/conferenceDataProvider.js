@@ -1,5 +1,4 @@
 /*globals Promise: true*/
-Promise = require("promise");
 var persistedStorage = require("./persistedStorage");
 var DataExtractor = require("./DataExtractor");
 var fetchNewData = require("./fetchNewData");

@@ -1,5 +1,6 @@
 require("tabris-js-node");
 require("./w10exts");
+require("promise.prototype.finally");
 var config = require("../config");
 var moment = require("moment-timezone");
 moment.locale(config.DATE_LOCALE);

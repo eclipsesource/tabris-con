@@ -1,7 +1,7 @@
 var getImage = require("../helpers/getImage");
 
 exports.create = function() {
-  var action = tabris.create("Action", {
+  var action = new tabris.Action({
     id: "attendanceAction",
     image: getImage.common("plus"),
     placementPriority: "high"

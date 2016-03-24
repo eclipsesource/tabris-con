@@ -4,7 +4,7 @@ var colors = require("../resources/colors");
 var fontToString = require("../helpers/fontToString");
 
 exports.create = function(configuration) {
-  var button = tabris.create("TextView", _.extend({
+  var button = new tabris.TextView(_.extend({
     textColor: colors.ACTION_COLOR,
     highlightOnTouch: true,
     font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})

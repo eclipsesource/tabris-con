@@ -1,8 +1,8 @@
 var colors = require("../resources/colors");
 
 exports.createWith = function(navigatables) {
-  var page = tabris.create("Page", {id: "mainPage", topLevel: true}).open();
-  var navigation = tabris.create("TabFolder", {
+  var page = new tabris.Page({id: "mainPage", topLevel: true}).open();
+  var navigation = new tabris.TabFolder({
     left: 0, top: 0, right: 0, bottom: 0,
     textColor: colors.TINT_COLOR,
     tabBarLocation: "bottom"

@@ -9,7 +9,7 @@ var DrawerAccountListItem = require("./DrawerAccountListItem");
 
 exports.create = function() {
   var accountModeEnabled = false;
-  var drawer = tabris.create("Drawer", {
+  var drawer = new tabris.Drawer({
     accountMode: false,
     uwp_displayMode: "compactOverlay",
     uwp_theme: "dark",
@@ -51,7 +51,7 @@ exports.create = function() {
 };
 
 function createDrawerList() {
-  var drawerList = tabris.create("Composite", {id: "drawerList", left: 0, right: 0, bottom: 0});
+  var drawerList = new tabris.Composite({id: "drawerList", left: 0, right: 0, bottom: 0});
   drawerList.updateSelection = function() {
     drawerList.find()
     .filter(function(child) {
@@ -68,7 +68,7 @@ function createDrawerList() {
 }
 
 function createPrimaryPageItems() {
-  var pageItems = tabris.create("Composite", {left: 0, top: 0, right: 0});
+  var pageItems = new tabris.Composite({left: 0, top: 0, right: 0});
   DrawerPageListItem.create("schedulePage").appendTo(pageItems);
   DrawerPageListItem.create("tracksPage").appendTo(pageItems);
   DrawerPageListItem.create("mapPage").appendTo(pageItems);
@@ -76,7 +76,7 @@ function createPrimaryPageItems() {
 }
 
 function createSecondaryPageItems() {
-  var pageItems = tabris.create("Composite", {
+  var pageItems = new tabris.Composite({
     id: "drawerSecondaryPageItems",
     left: 0, right: 0
   });
@@ -90,7 +90,7 @@ function createSecondaryPageItems() {
 }
 
 function createAccountList() {
-  var accountList = tabris.create("Composite", {
+  var accountList = new tabris.Composite({
     left: 0, top: ["#androidDrawerUserArea", 8], right: 0,
     visible: false
   });
@@ -104,13 +104,13 @@ function createAccountList() {
 }
 
 function createSeparator() {
-  var container = tabris.create("Composite", {
+  var container = new tabris.Composite({
     left: 0,
     top: "prev()",
     right: 0,
     height: sizes.DRAWER_SEPARATOR_HEIGHT[device.platform]
   });
-  tabris.create("Composite", {
+  new tabris.Composite({
     left: 0, right: 0, centerY: 0, height: 1,
     id: "separator",
     background: "#e8e8e8"

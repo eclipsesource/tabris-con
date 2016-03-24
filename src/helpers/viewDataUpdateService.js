@@ -1,5 +1,4 @@
 var conferenceDataProvider = require("../conferenceDataProvider");
-var Promise = require("promise");
 
 exports.updateData = function() {
   conferenceDataProvider.invalidateCache();

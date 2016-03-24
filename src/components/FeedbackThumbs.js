@@ -2,11 +2,11 @@ var getImage = require("../helpers/getImage");
 var sizes = require("../resources/sizes");
 
 exports.create = function() {
-  var feedbackThumbs = tabris.create("Composite", {
+  var feedbackThumbs = new tabris.Composite({
     top: ["prev()", sizes.MARGIN_LARGE], centerX: 0,
     feedback: "0"
   });
-  var thumbUp = tabris.create("ImageView", {
+  var thumbUp = new tabris.ImageView({
     id: "thumbUp",
     left: 0, top: 0, width: sizes.FEEDBACK_THUMB_SIZE,
     highlightOnTouch: true,
@@ -14,7 +14,7 @@ exports.create = function() {
     selection: false
   }).appendTo(feedbackThumbs);
   addThumbButtonListeners(feedbackThumbs, thumbUp);
-  var thumbDown = tabris.create("ImageView", {
+  var thumbDown = new tabris.ImageView({
     id: "thumbDown",
     left: [thumbUp, sizes.MARGIN_LARGE], top: 0, width: sizes.FEEDBACK_THUMB_SIZE,
     highlightOnTouch: true,

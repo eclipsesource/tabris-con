@@ -7,22 +7,22 @@ var applyPlatformStyle = require("../helpers/applyPlatformStyle");
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var sessionItem = tabris.create("Composite", _.extend({class: "sessionItem"}, configuration));
+  var sessionItem = new tabris.Composite(_.extend({class: "sessionItem"}, configuration));
   applyPlatformStyle(sessionItem);
   if (config.SESSIONS_HAVE_IMAGES) {
     var imageView = createSessionImage().appendTo(sessionItem);
   }
-  var trackIndicator = tabris.create("Composite", {
+  var trackIndicator = new tabris.Composite({
     left: 0, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
   }).appendTo(sessionItem);
-  var textContainer = tabris.create("Composite", _.extend({
+  var textContainer = new tabris.Composite(_.extend({
       left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
     }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
   ).appendTo(sessionItem);
   applyPlatformStyle(textContainer);
   var titleTextView = createSessionTitleTextView().appendTo(textContainer);
   applyPlatformStyle(titleTextView);
-  var summaryTextView = tabris.create("TextView", {
+  var summaryTextView = new tabris.TextView({
     left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
     font: fontToString({size: sizes.FONT_MEDIUM}),
     maxLines: 2,
@@ -45,7 +45,7 @@ exports.create = function(configuration) {
 };
 
 function createSessionImage() {
-  return tabris.create("ImageView", {
+  return new tabris.ImageView({
     id: "imageView",
     centerY: 0, width: sizes.SESSION_CELL_IMAGE_WIDTH, height: sizes.SESSION_CELL_IMAGE_HEIGHT,
     scaleMode: "fill"
@@ -53,7 +53,7 @@ function createSessionImage() {
 }
 
 function createSessionTitleTextView() {
-  return tabris.create("TextView", {
+  return new tabris.TextView({
     id: "sessionTitleTextView",
     left: 0, top: 0, right: 0,
     maxLines: 1

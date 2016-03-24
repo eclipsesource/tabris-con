@@ -3,10 +3,10 @@ var fontToString = require("../helpers/fontToString");
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var title = tabris.create("Composite", _.extend({
+  var title = new tabris.Composite(_.extend({
     left: 0, top: 0, right: 0, height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT
   }, configuration));
-  var titleTextView = tabris.create("TextView", {
+  var titleTextView = new tabris.TextView({
     class: "titleTextView",
     left: sizes.MARGIN_LARGE, centerY: 0, right: ["#moreTextView", sizes.MARGIN],
     maxLines: 1,

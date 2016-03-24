@@ -5,7 +5,7 @@ var applyPlatformStyle = require("../helpers/applyPlatformStyle");
 var fontToString = require("../helpers/fontToString");
 
 exports.create = function(configuration) {
-  var button = tabris.create("Button", _.extend({
+  var button = new tabris.Button(_.extend({
     class: "button",
     font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
   }, configuration));

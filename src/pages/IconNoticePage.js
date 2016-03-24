@@ -3,19 +3,19 @@ var fontToString = require("../helpers/fontToString");
 var Link = require("../components/Link");
 
 exports.create = function() {
-  var page = tabris.create("Page", {topLevel: false});
-  var scrollView = tabris.create("ScrollView", {
+  var page = new tabris.Page({topLevel: false});
+  var scrollView = new tabris.ScrollView({
     left: 0, top: 0, right: 0, bottom: 0
   }).appendTo(page);
-  var container = tabris.create("Composite", {
+  var container = new tabris.Composite({
     left: sizes.MARGIN_LARGE, top: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE
   }).appendTo(scrollView);
-  var title = tabris.create("TextView", {
+  var title = new tabris.TextView({
     left: 0, top: 0, right: 0,
     font: fontToString({size: sizes.FONT_XXLARGE, weight: "bold"}),
     text: "Usage of Icon8 iOS icons"
   }).appendTo(container);
-  tabris.create("TextView", {
+  new tabris.TextView({
     left: 0, top: [title, sizes.MARGIN_LARGE], right: 0,
     // jscs:disable maximumLineLength
     text: "Icon8 icons may only be used for projects derived from the tabris-con open-source template:"
@@ -27,7 +27,7 @@ exports.create = function() {
     url: "https://github.com/eclipsesource/tabris-con",
     left: 0, top: ["prev()", sizes.MARGIN], right: 0
   }).appendTo(container);
-  tabris.create("TextView", {
+  new tabris.TextView({
     left: 0, top: [tabrisConLink, sizes.MARGIN],
     text: "For licensing details, contact "
   }).appendTo(container);

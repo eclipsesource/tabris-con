@@ -5,18 +5,18 @@ var applyPlatformStyle = require("../helpers/applyPlatformStyle");
 var colors = require("../resources/colors");
 
 exports.create = function(text, image) {
-  var listItem = tabris.create("Composite", {
+  var listItem = new tabris.Composite({
     left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
     highlightOnTouch: true,
     progress: false
   });
   addProgressTo(listItem);
-  var drawerIconImageView = tabris.create("ImageView", {
+  var drawerIconImageView = new tabris.ImageView({
     class: "drawerIconImageView", image: image,
     centerY: 0
   }).appendTo(listItem);
   applyPlatformStyle(drawerIconImageView);
-  var drawerTitleTextView = tabris.create("TextView", {
+  var drawerTitleTextView = new tabris.TextView({
     class: "drawerTitleTextView",
     text: text,
     font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),

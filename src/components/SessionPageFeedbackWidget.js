@@ -17,7 +17,7 @@ exports.create = function(parent, adaptedSession) {
 };
 
 function create(parent, adaptedSession) {
-  var feedbackWidget = tabris.create("Composite", {
+  var feedbackWidget = new tabris.Composite({
     id: "sessionPageFeedbackWidget",
     top: sizes.MARGIN, right: sizes.MARGIN, height: 36
   }).appendTo(parent);
@@ -76,7 +76,7 @@ function createNoticeTextView(text) {
 }
 
 function createInfoTextView(text, color) {
-  var infoTextView = tabris.create("TextView", {
+  var infoTextView = new tabris.TextView({
     left: 0, centerY: 0, right: sizes.MARGIN,
     maxLines: 2,
     textColor: color,

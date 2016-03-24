@@ -20,5 +20,5 @@ module.exports = function(widget) {
 };
 
 function createLoadingIndicator(widget) {
-  return tabris.create("ActivityIndicator", {layoutData: widget.get("bounds")}).appendTo(widget.parent());
+  return new tabris.ActivityIndicator({layoutData: widget.get("bounds")}).appendTo(widget.parent());
 }

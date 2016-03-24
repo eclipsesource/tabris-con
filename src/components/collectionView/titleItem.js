@@ -9,7 +9,7 @@ module.exports = {
   itemHeight: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,
   initializeCell: function(cell) {
     var title = SessionTitle.create().appendTo(cell);
-    tabris.create("TextView", {
+    new tabris.TextView({
       id: "moreTextView",
       alignment: "right",
       width: 50, right: sizes.MARGIN_LARGE, centerY: 0,

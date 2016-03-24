@@ -1,10 +1,9 @@
 var _ = require("lodash");
 var getImage = require("../helpers/getImage");
-var Promise = require("promise");
 var colors = require("../resources/colors");
 
 exports.create = function(configuration) {
-  var navigatable = tabris.create("Composite", _.extend({
+  var navigatable = new tabris.Composite(_.extend({
     class: "navigatable",
     left: 0, top: 0, right: 0, bottom: 0,
     active: true
@@ -17,7 +16,7 @@ exports.create = function(configuration) {
   };
 
   navigatable.asTab = function() {
-    var tab = tabris.create("Tab", {
+    var tab = new tabris.Tab({
       title: navigatable.get("title"),
       id: navigatable.get("id") + "Tab",
       textColor: colors.TINT_COLOR,
@@ -30,7 +29,7 @@ exports.create = function(configuration) {
   };
 
   navigatable.asPage = function() {
-    var page = tabris.create("Page", {
+    var page = new tabris.Page({
       topLevel: true,
       title: navigatable.get("title"),
       navigatable: navigatable,

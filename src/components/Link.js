@@ -2,7 +2,7 @@ var colors = require("../resources/colors");
 var _ = require("lodash");
 
 exports.create = function(configuration) {
-  var link = tabris.create("Composite", _.extend({highlightOnTouch: true}, configuration));
+  var link = new tabris.Composite(_.extend({highlightOnTouch: true}, configuration));
   var textViewConfiguration = {
     left: 0, top: 0, right: 0,
     textColor: colors.LINK_COLOR
@@ -11,7 +11,7 @@ exports.create = function(configuration) {
   maybeSetTextViewProperty(textViewConfiguration, configuration, "text");
   maybeSetTextViewProperty(textViewConfiguration, configuration, "alignment");
   maybeSetTextViewProperty(textViewConfiguration, configuration, "height");
-  tabris.create("TextView", textViewConfiguration).appendTo(link);
+  new tabris.TextView(textViewConfiguration).appendTo(link);
   link.on("tap", function() {
     if (link.get("url")) {
       if (!window.open) {

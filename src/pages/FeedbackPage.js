@@ -6,17 +6,17 @@ var codFeedbackService = require("../helpers/codFeedbackService");
 var addProgressTo = require("../helpers/addProgressTo");
 
 exports.create = function(adaptedSession) {
-  var page = tabris.create("Page", {title: "Feedback", topLevel: false});
-  var container = tabris.create("Composite", {
+  var page = new tabris.Page({title: "Feedback", topLevel: false});
+  var container = new tabris.Composite({
     centerX: 0, centerY: 0, width: sizes.PAGE_CONTAINER_WIDTH
   }).appendTo(page);
-  tabris.create("TextView", {
+  new tabris.TextView({
     alignment: "center",
     text: "Did you enjoy this session?",
     font: fontToString({size: sizes.FONT_XXLARGE})
   }).appendTo(container);
   var feedbackThumbs = FeedbackThumbs.create().appendTo(container);
-  var commentTextInput = tabris.create("TextInput", {
+  var commentTextInput = new tabris.TextInput({
     message: "Comment...",
     left: 0, right: 0, top: ["prev()", sizes.MARGIN_LARGE]
   }).appendTo(container);

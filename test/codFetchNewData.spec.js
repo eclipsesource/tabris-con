@@ -6,7 +6,6 @@ var sinon = require("sinon");
 var sinonChai = require("sinon-chai");
 fetch = require("node-fetch");
 var fetchMock = require("fetch-mock");
-Promise = require("promise");
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

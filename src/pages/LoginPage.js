@@ -6,18 +6,18 @@ var Input = require("../components/Input");
 var ProgressButton = require("../components/ProgressButton");
 
 exports.create = function() {
-  var page = tabris.create("Page", {topLevel: false, id: "loginPage"});
+  var page = new tabris.Page({topLevel: false, id: "loginPage"});
 
-  var scrollView = tabris.create("ScrollView", {left: 0, top: 0, right: 0, bottom: 0}).appendTo(page);
+  var scrollView = new tabris.ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(page);
 
-  var header = tabris.create("Composite", {
+  var header = new tabris.Composite({
     id: "pageHeader",
     left: 0, top: 0, right: 0, height: sizes.PROFILE_AREA_TOP_OFFSET
   }).appendTo(scrollView);
 
   applyPlatformStyle(header);
 
-  var loginTextView = tabris.create("TextView", {
+  var loginTextView = new tabris.TextView({
     id: "loginTextView",
     text: "EclipseCon Login",
     font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
@@ -26,7 +26,7 @@ exports.create = function() {
 
   applyPlatformStyle(loginTextView);
 
-  var inputContainer = tabris.create("Composite", {
+  var inputContainer = new tabris.Composite({
     id: "inputContainer",
     width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: [header, sizes.MARGIN_LARGE]
   }).appendTo(scrollView);

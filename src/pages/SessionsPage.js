@@ -2,7 +2,7 @@ var LoadingIndicator = require("../components/LoadingIndicator");
 var CollectionView = require("../components/collectionView/CollectionView");
 
 exports.create = function() {
-  var page = tabris.create("Page", {
+  var page = new tabris.Page({
     id: "sessionsPage",
     title: "Loading..."
   });

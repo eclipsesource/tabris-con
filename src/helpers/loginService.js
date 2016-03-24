@@ -1,4 +1,3 @@
-var Promise = require("promise");
 var codRemoteService = require("../codRemoteService");
 
 exports.login = function(username, password) {

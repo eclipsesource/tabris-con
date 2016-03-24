@@ -24,7 +24,7 @@ function showWebView(webView) {
 }
 
 function createWebViewMapContainer(map) {
-  return tabris.create("WebView", {
+  return new tabris.WebView({
     left: 0, top: 0, right: 0, bottom: 0,
     visible: false,
     background: "#cdcbcc",

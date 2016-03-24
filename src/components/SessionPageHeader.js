@@ -4,13 +4,13 @@ var SessionPageHeaderTrackIndicator = require("./SessionPageHeaderTrackIndicator
 var applyPlatformStyle = require("../helpers/applyPlatformStyle");
 
 exports.create = function() {
-  var sessionPageHeader = tabris.create("Composite", {
+  var sessionPageHeader = new tabris.Composite({
     left: 0, right: 0,
     id: "sessionPageHeader"
   });
   applyPlatformStyle(sessionPageHeader);
 
-  var navigationControls = tabris.create("Composite", {
+  var navigationControls = new tabris.Composite({
     id: "sessionPageNavigationControls",
     left: 0, top: 0, right: 0
   }).appendTo(sessionPageHeader);
@@ -18,7 +18,7 @@ exports.create = function() {
 
   var trackIndicator = SessionPageHeaderTrackIndicator.create().appendTo(sessionPageHeader);
 
-  var backButton = tabris.create("ImageView", {
+  var backButton = new tabris.ImageView({
     id: "sessionPageNavigationControlsBackButton",
     left: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
     image: getImage.forDevicePlatform("back_arrow"),
@@ -28,7 +28,7 @@ exports.create = function() {
   }).appendTo(navigationControls);
   applyPlatformStyle(backButton);
 
-  var attendanceButton = tabris.create("ImageView", {
+  var attendanceButton = new tabris.ImageView({
     id: "sessionPageNavigationControlsAttendanceButton",
     right: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
     image: getImage.common("plus"),
@@ -40,12 +40,12 @@ exports.create = function() {
   }).appendTo(navigationControls);
   applyPlatformStyle(attendanceButton);
 
-  var titleTextView = tabris.create("TextView", {
+  var titleTextView = new tabris.TextView({
     id: "sessionPageTitleTextView", right: sizes.MARGIN_LARGE
   }).appendTo(sessionPageHeader);
   applyPlatformStyle(titleTextView);
 
-  var summaryTextView = tabris.create("TextView", {
+  var summaryTextView = new tabris.TextView({
     id: "sessionPageSummaryTextView",
     right: sizes.MARGIN_LARGE, top: "prev()",
     textColor: "white"

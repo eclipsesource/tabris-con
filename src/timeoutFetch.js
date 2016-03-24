@@ -1,6 +1,5 @@
 /* globals fetch: false, Promise: true*/
 
-require("whatwg-fetch");
 var TIMEOUT = 8000;
 
 module.exports = function() {

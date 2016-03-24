@@ -4,7 +4,7 @@ var loginService = require("../helpers/loginService");
 var getImage = require("../helpers/getImage");
 
 exports.create = function() {
-  var action = tabris.create("Action", {
+  var action = new tabris.Action({
     id: "loginAction",
     title: "Login",
     placementPriority: "high"
