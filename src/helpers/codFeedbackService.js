@@ -1,22 +1,20 @@
-var config = require("../../config");
-var codRemoteService = require("../codRemoteService");
+import config from "../config";
+import * as codRemoteService from "../codRemoteService";
 
-exports.canGiveFeedbackForSession = function(session) {
+export function canGiveFeedbackForSession(session) {
   return validFeedbackWindow(session);
-};
+}
 
-exports.createEvaluation = function(sessionId) {
-  var argumentsArray = Array.prototype.slice.call(arguments);
+export function createEvaluation(sessionId) {
+  let argumentsArray = Array.prototype.slice.call(arguments);
   argumentsArray.shift();
   return codRemoteService.createEvaluation.apply(this, argumentsArray)
-    .then(function() {
-      tabris.ui.find("#schedule").set("evaluatedSessionId", sessionId);
-    });
-};
+    .then(() => tabris.ui.find("#schedule").set("evaluatedSessionId", sessionId));
+}
 
-exports.getSessionsIndicatorState = function(sessions, evaluations) {
-  var evaluatedNids = evaluations.map(function(evaluation) {return evaluation.nid;});
-  return sessions.map(function(session) {
+export function getSessionsIndicatorState(sessions, evaluations) {
+  let evaluatedNids = evaluations.map(evaluation => evaluation.nid);
+  return sessions.map(session => {
     if (validFeedbackWindow(session) && evaluatedNids.indexOf(session.sessionNid) > -1) {
       return {id: session.sessionId, state: "sent"};
     }
@@ -25,9 +23,9 @@ exports.getSessionsIndicatorState = function(sessions, evaluations) {
     }
     return {id: session.sessionId, state: null};
   });
-};
+}
 
 function validFeedbackWindow(session) {
-  var currentDate = new Date();
+  let currentDate = new Date();
   return currentDate > new Date(session.endTimestamp) && currentDate < new Date(config.FEEDBACK_DEADLINE);
 }

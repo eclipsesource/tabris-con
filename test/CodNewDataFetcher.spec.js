@@ -1,20 +1,24 @@
 /*jshint expr: true*/
-/* globals fetch: true, Promise: true*/
-var chai = require("chai");
-var expect = chai.expect;
-var sinon = require("sinon");
-var sinonChai = require("sinon-chai");
-fetch = require("node-fetch");
-var fetchMock = require("fetch-mock");
-var chaiAsPromised = require("chai-as-promised");
+import chai from "chai";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
+import "node-fetch";
+import fetchMock from "fetch-mock";
+import chaiAsPromised from "chai-as-promised";
+import CodNewDataFetcher from "../src/CodNewDataFetcher";
+
+let expect = chai.expect;
+
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
-var codFetchNewData = require("../src/codFetchNewData");
 
-var SCHEDULED_SESSIONS_SERVICE = "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions";
+let SCHEDULED_SESSIONS_SERVICE = "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions";
 
-describe("codFetchNewData", function() {
-  beforeEach(function() {
+describe("CodNewDataFetcher", () => {
+  let CONFIG = {SERVICE_URL: "https://www.eclipsecon.org/na2016"};
+  let codNewDataFetcher = new CodNewDataFetcher(CONFIG);
+
+  beforeEach(() => {
     global.window = sinon.stub();
     global.localStorage = sinon.stub();
     global.localStorage.getItem = sinon.stub();
@@ -23,25 +27,25 @@ describe("codFetchNewData", function() {
     global.localStorage.getItem.withArgs("codScheduledSessionsETag").returns("etag");
   });
 
-  afterEach(function() {
+  afterEach(() => {
     fetchMock.restore();
   });
 
-  it("returns response body when status 200", function() {
+  it("returns response body when status 200", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
 
-    return codFetchNewData()
-      .then(function(data) {
+    return codNewDataFetcher.fetch()
+      .then(data => {
         expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
         expect(data).to.deep.equal({scheduledSessions: {}});
       });
   });
 
-  it("calls service with cache control headers", function() {
+  it("calls service with cache control headers", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
 
-    return codFetchNewData()
-      .then(function() {
+    return codNewDataFetcher.fetch()
+      .then(() => {
         expect(fetchMock.lastOptions(SCHEDULED_SESSIONS_SERVICE).headers).to.deep.equal({
           "If-None-Match": "etag",
           "If-Modified-Since": "lastmodified"
@@ -49,11 +53,11 @@ describe("codFetchNewData", function() {
       });
   });
 
-  it("saves response etag and last-modified when status 200", function() {
+  it("saves response etag and last-modified when status 200", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {headers: {etag: "foo", "last-modified": "bar"}, body: {}});
 
-    return codFetchNewData()
-      .then(function(data) {
+    return codNewDataFetcher.fetch()
+      .then(data => {
         expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
         expect(data).to.deep.equal({scheduledSessions: {}});
         expect(localStorage.setItem).to.have.been.calledWith("codScheduledSessionsLastModified", "bar");
@@ -61,20 +65,20 @@ describe("codFetchNewData", function() {
       });
   });
 
-  it("returns 'null' when status === 304", function() {
+  it("returns 'null' when status === 304", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {status: 304, body: {}});
 
-    return codFetchNewData()
-      .then(function(data) {
+    return codNewDataFetcher.fetch()
+      .then(data => {
         expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
         expect(data).to.deep.equal(null);
       });
   });
 
-  it("rejects if status unexpected", function() {
+  it("rejects if status unexpected", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {status: 500, body: {}});
 
-    return expect(codFetchNewData()).to.eventually.be.rejected;
+    return expect(codNewDataFetcher.fetch()).to.eventually.be.rejected;
   });
 
 });

@@ -1,86 +1,89 @@
-var _ = require("lodash");
-var getImage = require("../helpers/getImage");
-var colors = require("../resources/colors");
+import _ from "lodash";
+import getImage from "../helpers/getImage";
+import colors from "../resources/colors";
+import {Composite, Tab, Page} from "tabris";
 
-exports.create = function(configuration) {
-  var navigatable = new tabris.Composite(_.extend({
-    class: "navigatable",
-    left: 0, top: 0, right: 0, bottom: 0,
-    active: true
-  }, configuration));
+export default class extends Composite {
+  constructor({configuration, viewDataProvider}) {
+    super(_.extend({
+      class: "navigatable",
+      left: 0, top: 0, right: 0, bottom: 0,
+      active: true
+    }, configuration));
+    this._viewDataProvider = viewDataProvider;
+    this.updateImage();
+    this.on("change:active", (widget, active) => {
+      this.updateImage();
+      this.trigger(active ? "appear" : "disappear", this);
+    });
+    this.once("appear", () => {
+      if (!this.get("data")) {
+        this.initializeItems();
+      }
+    });
+  }
 
-  navigatable.initializeItems = function() {return Promise.resolve();}; // stub
+  getViewDataProvider() {
+    return this._viewDataProvider;
+  }
 
-  navigatable.updateImage = function() {
-    this.set("image", getImageVariant(this, this.get("active")));
-  };
+  initializeItems() {
+    return Promise.resolve();
+  }
 
-  navigatable.asTab = function() {
-    var tab = new tabris.Tab({
-      title: navigatable.get("title"),
-      id: navigatable.get("id") + "Tab",
+  updateImage() {
+    this.set("image", getImageletiant(this, this.get("active")));
+  }
+
+  asTab() {
+    let tab = new Tab({
+      title: this.get("title"),
+      id: this.get("id") + "Tab",
       textColor: colors.TINT_COLOR,
-      navigatable: navigatable,
-      image: navigatable.get("image"),
+      navigatable: this,
+      image: this.get("image"),
       left: 0, top: 0, right: 0, bottom: 0
-    }).on("change:data", function(widget, data) {navigatable.set("data", data);});
-    navigatable.appendTo(tab);
-    return navigatable;
-  };
+    }).on("change:data",(widget, data) => this.set("data", data));
+    this.appendTo(tab);
+    return this;
+  }
 
-  navigatable.asPage = function() {
-    var page = new tabris.Page({
+  asPage() {
+    let page = new Page({
       topLevel: true,
-      title: navigatable.get("title"),
-      navigatable: navigatable,
-      id: navigatable.get("id") + "Page"
-    }).on("change:data", function(widget, data) {navigatable.set("data", data);})
-      .on("appear", function() {
-        navigatable.activate();
-      });
-    navigatable.appendTo(page);
-    return navigatable;
-  };
+      title: this.get("title"),
+      navigatable: this,
+      id: this.get("id") + "Page"
+    }).on("change:data", (widget, data) => this.set("data", data))
+      .on("appear", () => this.activate());
+    this.appendTo(page);
+    return this;
+  }
 
-  navigatable.open = function() {
-    var parent = navigatable.parent();
+  open() {
+    let parent = this.parent();
     if (parent instanceof tabris.Tab) {
       parent.parent().set("selection", parent);
       tabris.ui.find("#mainPage").first().open();
     } else if (parent instanceof tabris.Page) {
       parent.open();
     }
-    return navigatable;
-  };
+    return this;
+  }
 
-  navigatable.activate = function() {
+  activate() {
     tabris.ui
       .find(".navigatable")
-      .forEach(function(navigatableWidget) {
+      .forEach(navigatableWidget => {
         if (navigatableWidget.get("active")) {
           navigatableWidget.set("active", false);
         }
       });
-    navigatable.set("active", true);
-  };
+    this.set("active", true);
+  }
+}
 
-  navigatable.updateImage();
-
-  navigatable.on("change:active", function(widget, active) {
-    navigatable.updateImage();
-    this.trigger(active ? "appear" : "disappear", this);
-  });
-
-  navigatable.once("appear", function() {
-    if (!navigatable.get("data")) {
-      navigatable.initializeItems();
-    }
-  });
-
-  return navigatable;
-};
-
-function getImageVariant(navigatable, active) {
-  var imageName = navigatable.get("id");
+function getImageletiant(navigatable, active) {
+  let imageName = navigatable.get("id");
   return getImage.forDevicePlatform(active ? imageName + "_selected" : imageName);
 }

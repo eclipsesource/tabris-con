@@ -1,6 +1,6 @@
-var config = require("../config");
+import config from "./config";
 
-module.exports = function() {
-  var currentTime = new Date();
+export default function() {
+  let currentTime = new Date();
   return new Date(config.FEEDBACK_START) <= currentTime && currentTime <= new Date(config.FEEDBACK_DEADLINE);
-};
+}

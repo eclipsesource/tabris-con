@@ -1,30 +1,32 @@
-var colors = require("../resources/colors");
-var _ = require("lodash");
+/*jshint nonew: false*/
+import colors from "../resources/colors";
+import {Composite, TextView} from "tabris";
 
-exports.create = function(configuration) {
-  var link = new tabris.Composite(_.extend({highlightOnTouch: true}, configuration));
-  var textViewConfiguration = {
-    left: 0, top: 0, right: 0,
-    textColor: colors.LINK_COLOR
-  };
-  maybeSetTextViewProperty(textViewConfiguration, configuration, "font");
-  maybeSetTextViewProperty(textViewConfiguration, configuration, "text");
-  maybeSetTextViewProperty(textViewConfiguration, configuration, "alignment");
-  maybeSetTextViewProperty(textViewConfiguration, configuration, "height");
-  new tabris.TextView(textViewConfiguration).appendTo(link);
-  link.on("tap", function() {
-    if (link.get("url")) {
-      if (!window.open) {
-        console.error("cordova-plugin-inappbrowser is not available in this Tabris.js client.");
-        return;
+export default class extends Composite {
+  constructor(configuration) {
+    super(Object.assign({}, {highlightOnTouch: true}, configuration));
+    let textViewConfiguration = {
+      left: 0, top: 0, right: 0,
+      textColor: colors.LINK_COLOR
+    };
+    maybeSetTextViewProperty(textViewConfiguration, configuration, "font");
+    maybeSetTextViewProperty(textViewConfiguration, configuration, "text");
+    maybeSetTextViewProperty(textViewConfiguration, configuration, "alignment");
+    maybeSetTextViewProperty(textViewConfiguration, configuration, "height");
+    new TextView(textViewConfiguration).appendTo(this);
+    this.on("tap", () => {
+      if (this.get("url")) {
+        if (!window.open) {
+          console.error("cordova-plugin-inappbrowser is not available in this Tabris.js client.");
+          return;
+        }
+        window.open(this.get("url"), "_system");
+      } else if (this.get("page")) {
+        new (this.get("page"))().open();
       }
-      window.open(link.get("url"), "_system");
-    } else if (link.get("page")) {
-      require("../pages/"  + link.get("page")).create().open();
-    }
-  });
-  return link;
-};
+    });
+  }
+}
 
 function maybeSetTextViewProperty(textViewConfiguration, configuration, property) {
   if (configuration[property]) {

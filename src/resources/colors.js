@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   TINT_COLOR: "#443684",
   BACKGROUND_COLOR: "#443684",
   INFO_TOAST_BACKGROUND_COLOR: "#323232",

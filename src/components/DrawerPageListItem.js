@@ -1,15 +1,17 @@
-var DrawerListItem = require("./DrawerListItem");
-var colors = require("../resources/colors");
+import DrawerListItem from "./DrawerListItem";
+import colors from "../resources/colors";
 
-exports.create = function(id) {
-  var page = tabris.ui.find("#" + id).first();
-  var pageListItem = DrawerListItem.create(page.get("title"), page.get("image"));
-  pageListItem.updateSelection = function() {
-    pageListItem.find(".drawerIconImageView").set("image", page.find(".navigatable").get("image"));
-    pageListItem.set("background", page.find(".navigatable").get("active") ?
+export default class extends DrawerListItem {
+  constructor(id) {
+    let page = tabris.ui.find("#" + id).first();
+    super(page.get("title"), page.get("image"));
+    this.set("page", page);
+    this.on("tap", () => page.open());
+  }
+
+  updateSelection() {
+    this.find(".drawerIconImageView").set("image", this.get("page").find(".navigatable").get("image"));
+    this.set("background", this.get("page").find(".navigatable").get("active") ?
       colors.DRAWER_LIST_ITEM_BACKGROUND[device.platform] : "transparent");
-  };
-  pageListItem.set("page", page);
-  pageListItem.on("tap", function() {page.open();});
-  return pageListItem;
-};
+  }
+}

@@ -1,25 +1,26 @@
-var LoadingIndicator = require("../components/LoadingIndicator");
-var CollectionView = require("../components/collectionView/CollectionView");
+import LoadingIndicator from "../components/LoadingIndicator";
+import CollectionView from "../components/collectionView/TabrisConCollectionView";
+import {Page} from "tabris";
 
-exports.create = function() {
-  var page = new tabris.Page({
-    id: "sessionsPage",
-    title: "Loading..."
-  });
+export default class extends Page {
+  constructor(viewDataProvider) {
+    super({
+      id: "sessionsPage",
+      title: "Loading..."
+    });
 
-  var loadingIndicator = LoadingIndicator.create().appendTo(page);
+    let loadingIndicator = new LoadingIndicator().appendTo(this);
 
-  var collectionView = CollectionView.create({
-    id: "sessionsCollectionView",
-    left: 0, top: 0, right: 0, bottom: 0, opacity: 0
-  }).appendTo(page);
+    let collectionView = new CollectionView({
+      id: "sessionsCollectionView",
+      left: 0, top: 0, right: 0, bottom: 0, opacity: 0
+    }, viewDataProvider).appendTo(this);
 
-  page.on("change:data", function(page, data) {
-    page.set("title", data.title);
-    collectionView.set("items", data.items);
-    collectionView.animate({opacity: 1}, {duration: 250});
-    loadingIndicator.dispose();
-  });
-
-  return page;
-};
+    this.on("change:data", (page, data) => {
+      page.set("title", data.title);
+      collectionView.set("items", data.items);
+      collectionView.animate({opacity: 1}, {duration: 250});
+      loadingIndicator.dispose();
+    });
+  }
+}

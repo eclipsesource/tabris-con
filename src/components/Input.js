@@ -1,11 +1,10 @@
-var applyPlatformStyle = require("../helpers/applyPlatformStyle");
-var _ = require("lodash");
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import {TextInput} from "tabris";
 
-exports.create = function(configuration) {
-  var input = new tabris.TextInput(_.extend({
-    class: "input"
-  }, configuration));
-  applyPlatformStyle(input);
-  applyPlatformStyle(input);
-  return input;
-};
+export default class extends TextInput {
+  constructor(configuration) {
+    super(Object.assign({}, configuration, {class: "input"}));
+    applyPlatformStyle(this);
+    applyPlatformStyle(this);
+  }
+}

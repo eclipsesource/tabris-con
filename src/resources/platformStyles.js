@@ -1,8 +1,8 @@
-var colors = require("./colors");
-var sizes = require("./sizes");
-var fontToString = require("../helpers/fontToString");
+import colors from "./colors";
+import sizes from "./sizes";
+import fontToString from "../helpers/fontToString";
 
-module.exports = {
+export default {
   _UI: {
     Android: {
       background: colors.BACKGROUND_COLOR,

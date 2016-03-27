@@ -1,40 +1,46 @@
-var LoginPage = require("../pages/LoginPage");
-var IOSProfilePage = require("../pages/IOSProfilePage");
-var loginService = require("../helpers/loginService");
-var getImage = require("../helpers/getImage");
+import LoginPage from "../pages/LoginPage";
+import IOSProfilePage from "../pages/IOSProfilePage";
+import * as loginService from "../helpers/loginService";
+import getImage from "../helpers/getImage";
+import {Action} from "tabris";
 
-exports.create = function() {
-  var action = new tabris.Action({
-    id: "loginAction",
-    title: "Login",
-    placementPriority: "high"
-  }).on("select", function() {
-    var modeAction = {login: showLoginPage, loggedIn: showProfilePage};
-    modeAction[this.get("mode")](this);
-  }).on("change:mode", function(widget, mode) {
-    action.set("title", {login: "Login", loggedIn: "Profile"}[mode]);
-    var actionImage = getImage.forDevicePlatform("action_profile");
-    action.set("image", {login: null, loggedIn: actionImage}[mode]);
-  });
-
-  action.on("logoutSuccess", function() {action.set("mode", "login");});
-  action.on("logoutFailure", function() {action.set("mode", "loggedIn");});
-  action.set("mode", loginService.isLoggedIn() ? "loggedIn" : "login");
-  tabris.ui.on("change:activePage", maybeShowAction(action));
-};
+export default class extends Action {
+  constructor() {
+    super({
+      id: "loginAction",
+      title: "Login",
+      placementPriority: "high"
+    });
+    this.on("select", () => {
+      let modeAction = {login: showLoginPage, loggedIn: showProfilePage};
+      modeAction[this.get("mode")](this);
+    });
+    this.on("change:mode", (widget, mode) => {
+      this.set("title", {login: "Login", loggedIn: "Profile"}[mode]);
+      let actionImage = getImage.forDevicePlatform("action_profile");
+      this.set("image", {login: null, loggedIn: actionImage}[mode]);
+    });
+    this.on("logoutSuccess", () => this.set("mode", "login"));
+    this.on("logoutFailure", () => this.set("mode", "loggedIn"));
+    this.set("mode", loginService.isLoggedIn() ? "loggedIn" : "login");
+    tabris.ui.on("change:activePage", maybeShowAction(this));
+  }
+}
 
 function showLoginPage(action) {
-  return LoginPage.create()
+  return new LoginPage()
     .open()
-    .on("loginSuccess", function() {action.set("mode", "loggedIn");});
+    .on("loginSuccess", () => action.set("mode", "loggedIn"));
 }
 
 function showProfilePage() {
-  IOSProfilePage.create()
+  new IOSProfilePage()
     .open()
     .set("data", loginService.getUserData());
 }
 
 function maybeShowAction(action) {
-  return function(widget, page) {action.set("visible", page.get("topLevel"));};
+  return function(widget, page) {
+    action.set("visible", page.get("topLevel"));
+  };
 }

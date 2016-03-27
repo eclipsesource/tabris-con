@@ -1,0 +1,66 @@
+import chai from "chai";
+import moment from "moment-timezone";
+import FreeBlockInsertor from "../src/FreeBlockInsertor";
+
+let expect = chai.expect;
+
+describe("freeBlockInsertor", () => {
+  let insertor;
+  let FREE_BLOCKS = {cod: [[date("07.03.2016 09:00"), date("07.03.2016 12:00")]]};
+
+  before(() => {
+    insertor = new FreeBlockInsertor("cod");
+  });
+
+  it("returns input when FREE_BLOCKS not configured",() => {
+    let inserted = insertor.insert(null, "foo");
+
+    expect(inserted).to.equal("foo");
+  });
+
+  it("returns free blocks on empty array", () => {
+    let blocks = insertor.insert(FREE_BLOCKS, []);
+
+    expect(blocks).to.deep.equal([{
+      title: "BROWSE SESSIONS",
+      sessionType: "free",
+      startTimestamp: date("07.03.2016 09:00"),
+      endTimestamp: date("07.03.2016 12:00")
+    }]);
+  });
+
+  it("inserts blocks and returns a chronologically sorted list",() => {
+    let blocks = insertor.insert(FREE_BLOCKS, [{startTimestamp: date("07.03.2016 08:00")}]);
+
+    expect(blocks).to.deep.equal([
+      {"startTimestamp": date("07.03.2016 08:00")},
+      {
+        title: "BROWSE SESSIONS",
+        sessionType: "free",
+        startTimestamp: date("07.03.2016 09:00"),
+        endTimestamp: date("07.03.2016 12:00")
+      }
+    ]);
+  });
+
+  it("removes free blocks overlapping startTimestamp of an attended block", () => {
+    let blocks = insertor.insert(FREE_BLOCKS, [{startTimestamp: date("07.03.2016 09:00")}]);
+
+    expect(blocks).to.deep.equal([{"startTimestamp": date("07.03.2016 09:00")}]);
+  });
+
+  it("doesn't remove overlapping attended blocks", () => {
+    let blocks = insertor.insert(FREE_BLOCKS, [
+      {startTimestamp: date("07.03.2016 09:00")}, {startTimestamp: date("07.03.2016 09:00")}
+    ]);
+
+    expect(blocks).to.deep.equal([
+      {startTimestamp: date("07.03.2016 09:00")}, {startTimestamp: date("07.03.2016 09:00")}
+    ]);
+  });
+
+});
+
+function date(simpleDate) {
+  return moment.tz(simpleDate, "DD.MM.YYYY HH:mm", "America/New_York").toJSON();
+}

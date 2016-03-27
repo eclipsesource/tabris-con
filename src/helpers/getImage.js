@@ -1,21 +1,17 @@
-var sizes = require("../resources/sizes");
-var FALLBACK_PLATFORM = "Android";
+import sizes from "../resources/sizes";
+let FALLBACK_PLATFORM = "Android";
 
-module.exports = {
-  forDevicePlatform: function(image, width, height) {
-    return getImage(image, width, height, device.platform);
-  },
-  common: function(image, width, height) {
-    return getImage(image, width, height);
-  }
+export default {
+  forDevicePlatform: (image, width, height) => getImage(image, width, height, device.platform),
+  common: (image, width, height) => getImage(image, width, height)
 };
 
 function getImage(image, width, height, platform) {
   if (!image) {
     return "";
   }
-  var closestSupportedRatio = closest(sizes.SUPPORTED_DEVICE_PIXEL_RATIOS, window.devicePixelRatio);
-  var imageObject = {src: getImageSource(image, closestSupportedRatio, platform)};
+  let closestSupportedRatio = closest(sizes.SUPPORTED_DEVICE_PIXEL_RATIOS, window.devicePixelRatio);
+  let imageObject = {src: getImageSource(image, closestSupportedRatio, platform)};
   if (width && height) {
     imageObject.width = width;
     imageObject.height = height;
@@ -26,13 +22,11 @@ function getImage(image, width, height, platform) {
 }
 
 function closest(array, goal) {
-  return array.reduce(function(prev, curr) {
-    return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
-  });
+  return array.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 }
 
 function getImageSource(image, closestSupportedRatio, platform) {
-  var path = ["images"];
+  let path = ["images"];
   if (platform) {
     path.push(getPathPlatform(platform));
   }
@@ -41,7 +35,7 @@ function getImageSource(image, closestSupportedRatio, platform) {
 }
 
 function getPathPlatform(platform) {
-  var supportedPlatforms = ["Android", "iOS", "UWP"];
+  let supportedPlatforms = ["Android", "iOS", "UWP"];
   if (supportedPlatforms.indexOf(platform) < 0) {
     return FALLBACK_PLATFORM;
   }

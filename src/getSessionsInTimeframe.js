@@ -1,14 +1,16 @@
-var conferenceDataProvider = require("./conferenceDataProvider");
-var TimezonedDate = require("./TimezonedDate");
-var _ = require("lodash");
+import TimezonedDate from "./TimezonedDate";
+import _ from "lodash";
+import config from "./config";
 
-module.exports = function(timestamp1, timestamp2) {
+export default function(conferenceDataProvider, timestamp1, timestamp2) {
   return conferenceDataProvider.get().then(function(data) {
     return _(data.sessions)
       .sortBy("startTimestamp")
-      .filter(function(session) {
-        return new TimezonedDate(timestamp1).toJSON() <= new TimezonedDate(session.startTimestamp).toJSON() &&
-               new TimezonedDate(timestamp2).toJSON() > new TimezonedDate(session.startTimestamp).toJSON();
+      .filter(session => {
+        return new TimezonedDate(config.CONFERENCE_TIMEZONE, timestamp1).toJSON() <=
+                  new TimezonedDate(config.CONFERENCE_TIMEZONE, session.startTimestamp).toJSON() &&
+               new TimezonedDate(config.CONFERENCE_TIMEZONE, timestamp2).toJSON() >
+                  new TimezonedDate(config.CONFERENCE_TIMEZONE, session.startTimestamp).toJSON();
       }).value();
   });
-};
+}

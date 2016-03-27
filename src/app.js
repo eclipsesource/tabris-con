@@ -1,17 +1,17 @@
-require("tabris-js-node");
-require("./w10exts");
-require("promise.prototype.finally");
-var config = require("../config");
-var moment = require("moment-timezone");
+/*jshint nonew: false*/
+import "tabris-js-node";
+import "./w10exts";
+import "promise.prototype.finally";
+import config from "./config";
+import moment from "moment-timezone";
+import * as NavigationFactory from "./components/NavigationFactory";
+import applyPlatformStyle from "./helpers/applyPlatformStyle";
+import LoginAction from "./actions/LoginAction";
+
 moment.locale(config.DATE_LOCALE);
-
-var Navigation = require("./components/Navigation");
-var applyPlatformStyle = require("./helpers/applyPlatformStyle");
-var LoginAction = require("./actions/LoginAction");
-
 applyPlatformStyle(tabris.ui);
 
-Navigation.create();
+NavigationFactory.create(config);
 if (device.platform === "iOS") {
-  LoginAction.create();
+  new LoginAction();
 }

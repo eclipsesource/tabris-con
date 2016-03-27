@@ -1,8 +1,9 @@
-var Button = require("./Button");
-var addProgressTo = require("../helpers/addProgressTo");
+import Button from "./TabrisConButton";
+import addProgressTo from "../helpers/addProgressTo";
 
-exports.create = function(configuration) {
-  var button = Button.create(configuration);
-  addProgressTo(button);
-  return button;
-};
+export default class extends Button {
+  constructor(...args) {
+    super(...args);
+    addProgressTo(this);
+  }
+}

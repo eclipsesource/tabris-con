@@ -1,10 +1,10 @@
-var sizes = require("../../resources/sizes");
-var colors = require("../../resources/colors");
+import sizes from "../../resources/sizes";
+import colors from "../../resources/colors";
 
-module.exports = {
-  itemHeight: sizes.CELL_TYPE_SMALL_SEPARATOR_HEIGHT,
-  initializeCell: function(cell) {
-    cell.set("background", colors.LIGHT_BACKGROUND_COLOR);
-  },
-  select: function() {}
-};
+export function get() {
+  return {
+    itemHeight: sizes.CELL_TYPE_SMALL_SEPARATOR_HEIGHT,
+    initializeCell: cell => cell.set("background", colors.LIGHT_BACKGROUND_COLOR),
+    select: () => {}
+  };
+}

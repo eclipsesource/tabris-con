@@ -1,19 +1,20 @@
-var _ = require("lodash");
-var sizes = require("../resources/sizes");
-var colors = require("../resources/colors");
-var fontToString = require("../helpers/fontToString");
+import sizes from "../resources/sizes";
+import colors from "../resources/colors";
+import fontToString from "../helpers/fontToString";
+import {TextView} from "tabris";
 
-exports.create = function(configuration) {
-  var button = new tabris.TextView(_.extend({
-    textColor: colors.ACTION_COLOR,
-    highlightOnTouch: true,
-    font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
-  }, configuration));
-  if (device.platform === "Android" && button.get("text")) {
-    button.set("text", button.get("text").toUpperCase());
+export default class extends TextView {
+  constructor(configuration) {
+    super(
+      Object.assign({}, configuration, {
+        textColor: colors.ACTION_COLOR,
+        highlightOnTouch: true,
+        font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
+      })
+    );
+    if (device.platform === "Android" && this.get("text")) {
+      this.set("text", this.get("text").toUpperCase());
+    }
+    this.on("tap", (widget) => this.trigger("select", widget));
   }
-  button.on("tap", function(widget) {
-    button.trigger("select", widget);
-  });
-  return button;
-};
+}

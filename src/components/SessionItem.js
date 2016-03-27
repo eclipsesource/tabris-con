@@ -1,51 +1,53 @@
-var fontToString = require("../helpers/fontToString");
-var colors = require("../resources/colors");
-var sizes = require("../resources/sizes");
-var config = require("../../config");
-var getImage = require("../helpers/getImage");
-var applyPlatformStyle = require("../helpers/applyPlatformStyle");
-var _ = require("lodash");
+import fontToString from "../helpers/fontToString";
+import colors from "../resources/colors";
+import sizes from "../resources/sizes";
+import config from "../config";
+import getImage from "../helpers/getImage";
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import _ from "lodash";
+import {Composite, TextView, ImageView} from "tabris";
 
-exports.create = function(configuration) {
-  var sessionItem = new tabris.Composite(_.extend({class: "sessionItem"}, configuration));
-  applyPlatformStyle(sessionItem);
-  if (config.SESSIONS_HAVE_IMAGES) {
-    var imageView = createSessionImage().appendTo(sessionItem);
-  }
-  var trackIndicator = new tabris.Composite({
-    left: 0, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
-  }).appendTo(sessionItem);
-  var textContainer = new tabris.Composite(_.extend({
-      left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
-    }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
-  ).appendTo(sessionItem);
-  applyPlatformStyle(textContainer);
-  var titleTextView = createSessionTitleTextView().appendTo(textContainer);
-  applyPlatformStyle(titleTextView);
-  var summaryTextView = new tabris.TextView({
-    left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
-    font: fontToString({size: sizes.FONT_MEDIUM}),
-    maxLines: 2,
-    textColor: colors.DARK_SECONDARY_TEXT_COLOR
-  }).appendTo(textContainer);
-  sessionItem.on("change:data", function(widget, data) {
+export default class extends Composite {
+  constructor(configuration) {
+    super(Object.assign({}, configuration, {class: "sessionItem"}));
+    applyPlatformStyle(this);
     if (config.SESSIONS_HAVE_IMAGES) {
-      var image = getImage.forDevicePlatform(
-        data.image,
-        sizes.SESSION_CELL_IMAGE_WIDTH,
-        sizes.SESSION_CELL_IMAGE_HEIGHT
-      );
-      imageView.set("image", image);
+      var imageView = createSessionImage().appendTo(this);
     }
-    trackIndicator.set("background", config.TRACK_COLOR[data.categoryName] || "initial");
-    titleTextView.set("text", data.title);
-    summaryTextView.set("text", data.summary);
-  });
-  return sessionItem;
-};
+    let trackIndicator = new Composite({
+      left: 0, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
+    }).appendTo(this);
+    let textContainer = new Composite(_.extend({
+        left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
+      }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
+    ).appendTo(this);
+    applyPlatformStyle(textContainer);
+    let titleTextView = createSessionTitleTextView().appendTo(textContainer);
+    applyPlatformStyle(titleTextView);
+    let summaryTextView = new TextView({
+      left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
+      font: fontToString({size: sizes.FONT_MEDIUM}),
+      maxLines: 2,
+      textColor: colors.DARK_SECONDARY_TEXT_COLOR
+    }).appendTo(textContainer);
+    this.on("change:data", (widget, data) => {
+      if (config.SESSIONS_HAVE_IMAGES) {
+        let image = getImage.forDevicePlatform(
+          data.image,
+          sizes.SESSION_CELL_IMAGE_WIDTH,
+          sizes.SESSION_CELL_IMAGE_HEIGHT
+        );
+        imageView.set("image", image);
+      }
+      trackIndicator.set("background", config.TRACK_COLOR[data.categoryName] || "initial");
+      titleTextView.set("text", data.title);
+      summaryTextView.set("text", data.summary);
+    });
+  }
+}
 
 function createSessionImage() {
-  return new tabris.ImageView({
+  return new ImageView({
     id: "imageView",
     centerY: 0, width: sizes.SESSION_CELL_IMAGE_WIDTH, height: sizes.SESSION_CELL_IMAGE_HEIGHT,
     scaleMode: "fill"
@@ -53,7 +55,7 @@ function createSessionImage() {
 }
 
 function createSessionTitleTextView() {
-  return new tabris.TextView({
+  return new TextView({
     id: "sessionTitleTextView",
     left: 0, top: 0, right: 0,
     maxLines: 1

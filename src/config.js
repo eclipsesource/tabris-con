@@ -1,7 +1,7 @@
-var moment = require("moment-timezone");
-var timezone = "America/New_York";
+let moment = require("moment-timezone");
+let timezone = "America/New_York";
 
-module.exports = {
+const config = Object.freeze({
   DATA_FORMAT: "cod",
   VENDOR: "EclipseSource",
   VENDOR_WEBSITE: "http://eclipsesource.com/",
@@ -73,8 +73,10 @@ module.exports = {
       [date("10.03.2016 14:30"), date("10.03.2016 15:05")]
     ]
   }
-};
+});
 
 function date(simpleDate) {
   return moment.tz(simpleDate, "DD.MM.YYYY HH:mm", timezone).toJSON();
 }
+
+export default config;

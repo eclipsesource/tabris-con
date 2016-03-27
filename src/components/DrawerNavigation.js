@@ -1,15 +1,13 @@
-var Drawer = require("./Drawer");
+import Drawer from "./TabrisConDrawer";
 
-exports.createWith = function(navigatables) {
-  navigatables.forEach(function(Navigatable) {
-    Navigatable.create().asPage();
-  });
-  var navigation = Drawer.create();
+export function createWith(navigatables, viewDataProvider) {
+  navigatables.forEach(Navigatable => new Navigatable({viewDataProvider: viewDataProvider}).asPage());
+  let navigation = new Drawer();
   navigation.open = function(id) {
-    var page = tabris.ui.find(id + "Page").first();
+    let page = tabris.ui.find(id + "Page").first();
     if (page) {
       page.open();
     }
   };
   return navigation;
-};
+}

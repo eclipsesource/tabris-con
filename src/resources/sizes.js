@@ -1,6 +1,6 @@
-var config = require("../../config");
+import config from "../config";
 
-module.exports = {
+export default {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],
 
   MARGIN_XXSMALL: 1,

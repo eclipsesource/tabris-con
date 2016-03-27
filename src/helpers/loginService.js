@@ -1,50 +1,44 @@
-var codRemoteService = require("../codRemoteService");
+import * as codRemoteService from "../codRemoteService";
 
-exports.login = function(username, password) {
+export function login(username, password) {
   return codRemoteService
     .login(username, password)
-    .then(function(response) {
+    .then(response => {
       persistUserData(response);
       reloadScheduleItems();
       return Promise.resolve();
     })
-    .then(function() {
-      maybeTrigger("#loginPage", "loginSuccess");
-    })
-    .catch(function(e) {
+    .then(() => maybeTrigger("#loginPage", "loginSuccess"))
+    .catch(e => {
       resetUserData();
       return Promise.reject(e);
     })
-    .catch(function() {
-      maybeTrigger("#loginPage", "loginFailure");
-    });
-};
+    .catch(() => maybeTrigger("#loginPage", "loginFailure"));
+}
 
-exports.logout = function() {
+export function logout() {
   return codRemoteService.logout()
-    .then(exports.destroySession)
-    .catch(function() {
-      triggerLogoutFailureEvents();
-    });
-};
+    .then(destroySession)
+    .catch(() => triggerLogoutFailureEvents());
+}
 
-exports.destroySession = function() {
+export function destroySession() {
   resetUserData();
   reloadScheduleItems();
   triggerLogoutSuccessEvents();
-};
+}
 
-exports.isLoggedIn = function() {
+export function isLoggedIn() {
   return !!localStorage.getItem("username");
-};
+}
 
-exports.getUserData = function() {
+export function getUserData() {
   return {
     username: localStorage.getItem("username"),
     fullName: localStorage.getItem("fullName"),
     mail: localStorage.getItem("mail")
   };
-};
+}
 
 function triggerLogoutSuccessEvents() {
   if (device.platform === "iOS") {
@@ -81,14 +75,14 @@ function resetUserData() {
 }
 
 function maybeTrigger(selector, event) {
-  var widget = tabris.ui.find(selector).first();
+  let widget = tabris.ui.find(selector).first();
   if (widget) {
     widget.trigger(event, widget);
   }
 }
 
 function reloadScheduleItems() {
-  var schedule = tabris.ui.find("#schedule").first();
+  let schedule = tabris.ui.find("#schedule").first();
   if (schedule) {
     schedule.initializeItems();
   }

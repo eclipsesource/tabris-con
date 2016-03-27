@@ -26,14 +26,14 @@ if (device.platform === "UWP") {
 }
 
 function addProperties(widgetType, properties) {
-  var normalized = tabris.registerType.normalizePropertiesMap(properties);
-  for (var prop in normalized) {
+  let normalized = tabris.registerType.normalizePropertiesMap(properties);
+  for (let prop in normalized) {
     widgetType._properties[prop] = normalized[prop];
   }
 }
 
 function forEachWidgetType(fn) {
-  for (var type in tabris) {
+  for (let type in tabris) {
     if (tabris[type].prototype &&
         tabris[type].prototype.append === tabris.Widget.prototype.append &&
         tabris[type] !== tabris.Widget) {

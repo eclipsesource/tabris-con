@@ -1,24 +1,16 @@
-var moment = require("moment-timezone");
-var config = require("../config");
+import moment from "moment-timezone";
 
-module.exports = function(date, format) {
-  var args = [date];
-  if (format) {
-    args.push(format);
+export default class {
+  constructor(timezone, date) {
+    let args = [date, timezone];
+    this._momentDate = moment.tz.apply(this, args);
   }
-  args.push(config.CONFERENCE_TIMEZONE || "America/Los_Angeles");
-  var momentDate = moment.tz.apply(this, args);
 
-  this.format = function(format) {
-    return momentDate.format(format);
-  };
+  format(format) {
+    return this._momentDate.format(format);
+  }
 
-  this.setTimezone = function(timezone) {
-    momentDate = moment.tz(date, format, timezone);
-    return this;
-  };
-
-  this.toJSON = function() {
-    return momentDate.toJSON();
-  };
-};
+  toJSON() {
+    return this._momentDate.toJSON();
+  }
+}

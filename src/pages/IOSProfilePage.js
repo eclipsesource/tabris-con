@@ -1,47 +1,41 @@
-var sizes = require("../resources/sizes");
-var fontToString = require("../helpers/fontToString");
-var ProgressButton = require("../components/ProgressButton");
-var loginService = require("../helpers/loginService");
+import sizes from "../resources/sizes";
+import fontToString from "../helpers/fontToString";
+import ProgressButton from "../components/ProgressButton";
+import * as loginService from "../helpers/loginService";
+import {Page, Composite, TextView} from "tabris";
 
-exports.create = function() {
-  var page = new tabris.Page({id: "iOSProfilePage", title: "Profile", topLevel: false});
+export default class extends Page {
+  constructor() {
+    super({id: "iOSProfilePage", title: "Profile", topLevel: false});
+    let container = new Composite({
+      width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
+    }).appendTo(this);
 
-  var container = new tabris.Composite({
-    width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
-  }).appendTo(page);
+    let fullNameTextView = new TextView({
+      left: 0, top: "prev()", right: 0,
+      font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
+    }).appendTo(container);
 
-  var fullNameTextView = new tabris.TextView({
-    left: 0, top: "prev()", right: 0,
-    font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
-  }).appendTo(container);
+    let mailTextView = new TextView({
+      left: 0, top: ["prev()", sizes.MARGIN_SMALL], right: 0,
+      font: fontToString({size: sizes.FONT_LARGE})
+    }).appendTo(container);
 
-  var mailTextView = new tabris.TextView({
-    left: 0, top: ["prev()", sizes.MARGIN_SMALL], right: 0,
-    font: fontToString({size: sizes.FONT_LARGE})
-  }).appendTo(container);
-
-  var progressButton = ProgressButton.create({
-    id: "logoutButton", text: "Logout",
-    top: ["prev()", sizes.MARGIN], centerX: 0,
-    font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
-  }).on("select", function(progressButton) {
+    let progressButton = new ProgressButton({
+      id: "logoutButton", text: "Logout",
+      top: ["prev()", sizes.MARGIN], centerX: 0,
+      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
+    }).on("select", progressButton => {
       progressButton.set("progress", true);
       loginService.logout();
-    })
-    .appendTo(container);
+    }).appendTo(container);
 
-  page.on("change:data", function(page, data) {
-    fullNameTextView.set("text", data.fullName);
-    mailTextView.set("text", data.mail);
-  });
+    this.on("change:data", (page, data) => {
+      fullNameTextView.set("text", data.fullName);
+      mailTextView.set("text", data.mail);
+    });
 
-  page.on("logoutSuccess", function() {
-    page.close();
-  });
-
-  page.on("logoutFailure", function() {
-    progressButton.set("progress", false);
-  });
-
-  return page;
-};
+    this.on("logoutSuccess", () => this.close());
+    this.on("logoutFailure", () => progressButton.set("progress", false));
+  }
+}

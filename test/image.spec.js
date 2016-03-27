@@ -1,30 +1,28 @@
 /*jshint expr: true*/
+import sinon from "sinon";
+import fs from "fs";
+import mockfs from "mock-fs";
+import sizes from "../src/resources/sizes";
+import getImage from "../src/helpers/getImage";
+import _ from "lodash";
 
-var expect = require("chai").expect;
-var sinon = require("sinon");
-var fs = require("fs");
-var mockfs = require("mock-fs");
-var sizes = require("../src/resources/sizes");
-var getImage = require("../src/helpers/getImage");
-var _ = require("lodash");
+let expect = require("chai").expect;
 
-var IMAGES_PATH = "../images";
-var PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
+let IMAGES_PATH = "../images";
+let PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
 
-describe("image", function() {
+describe("image", () => {
 
-  beforeEach(function() {
-    global.window = sinon.stub();
-  });
+  beforeEach(() => global.window = sinon.stub());
 
-  describe("getImage", function() {
+  describe("getImage", () => {
 
-    describe("forDevicePlatform", function() {
+    describe("forDevicePlatform", () => {
 
-      before(function() {
-        var mockObject = {};
-        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(function(devicePixelRatio) {
-          PLATFORMS_WITH_ICONSETS.forEach(function(platform) {
+      before(() => {
+        let mockObject = {};
+        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
+          PLATFORMS_WITH_ICONSETS.forEach(platform => {
             mockObject[getMockedPath(platform, devicePixelRatio)] = new Buffer([]);
           });
         });
@@ -32,28 +30,24 @@ describe("image", function() {
         mockfs(mockObject);
       });
 
-      beforeEach(function() {
-        global.device = sinon.stub();
-      });
+      beforeEach(() => global.device = sinon.stub());
 
-      after(function() {
-        mockfs.restore();
-      });
+      after(() => mockfs.restore());
 
-      it("returns empty string for undefined images", function() {
-        var image = getImage.forDevicePlatform(undefined);
+      it("returns empty string for undefined images", () => {
+        let image = getImage.forDevicePlatform(undefined);
 
         expect(image).to.equal("");
       });
 
-      describe("returns scaled image for supported devicePixelRatio", function() {
-        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(function(devicePixelRatio) {
-          PLATFORMS_WITH_ICONSETS.forEach(function(platform) {
-            it("returns scaled image for devicePixelRatio " + devicePixelRatio, function() {
+      describe("returns scaled image for supported devicePixelRatio", () => {
+        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
+          PLATFORMS_WITH_ICONSETS.forEach(platform => {
+            it("returns scaled image for devicePixelRatio " + devicePixelRatio, () => {
               device.platform = platform;
               window.devicePixelRatio = devicePixelRatio;
 
-              var image = getImage.forDevicePlatform("foobar");
+              let image = getImage.forDevicePlatform("foobar");
 
               expect(image).to.deep.equal({
                 src: ["images", platform, "foobar@" + devicePixelRatio + "x.png"].join("/"),
@@ -64,39 +58,37 @@ describe("image", function() {
         });
       });
 
-      describe("returns scaled image for unsupported devicePixelRatio with closest supported scale", function() {
-        beforeEach(function() {
-          device.platform = "Android";
-        });
+      describe("returns scaled image for unsupported devicePixelRatio with closest supported scale", () => {
+        beforeEach(() => device.platform = "Android");
 
-        it("returns image with scale 3 for devicePixelRatio 4", function() {
+        it("returns image with scale 3 for devicePixelRatio 4", () => {
           window.devicePixelRatio = 4;
 
-          var image = getImage.forDevicePlatform("foobar");
+          let image = getImage.forDevicePlatform("foobar");
 
           expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
         });
 
-        it("returns image with scale 3 for devicePixelRatio 2.6", function() {
+        it("returns image with scale 3 for devicePixelRatio 2.6", () => {
           window.devicePixelRatio = 2.6;
 
-          var image = getImage.forDevicePlatform("foobar");
+          let image = getImage.forDevicePlatform("foobar");
 
           expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
         });
 
-        it("returns image with scale 2 for devicePixelRatio 2.46", function() {
+        it("returns image with scale 2 for devicePixelRatio 2.46", () => {
           window.devicePixelRatio = 2.46;
 
-          var image = getImage.forDevicePlatform("foobar");
+          let image = getImage.forDevicePlatform("foobar");
 
           expect(image).to.deep.equal({src: "images/Android/foobar@2x.png", scale: 2});
         });
 
-        it("returns image with explicit image size", function() {
+        it("returns image with explicit image size", () => {
           window.devicePixelRatio = 3;
 
-          var remoteImage = getImage.forDevicePlatform("http://location", 200, 300);
+          let remoteImage = getImage.forDevicePlatform("http://location", 200, 300);
 
           expect(remoteImage).to.deep.equal({src: "http://location", width: 200, height: 300});
         });
@@ -105,12 +97,12 @@ describe("image", function() {
 
     });
 
-    describe("common", function() {
+    describe("common", () => {
 
-      it("returns non-platform specific images", function() {
+      it("returns non-platform specific images", () => {
         window.devicePixelRatio = 2.46;
 
-        var image = getImage.common("foobar");
+        let image = getImage.common("foobar");
 
         expect(image).to.deep.equal({src: "images/foobar@2x.png", scale: 2});
       });
@@ -119,37 +111,37 @@ describe("image", function() {
 
   });
 
-  describe("resource", function() {
-    var iOSImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "iOS"].join("/")))
+  describe("resource", () => {
+    let iOSImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "iOS"].join("/")))
       .map(extractFilenames)
       .compact()
       .value();
-    var androidImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "Android"].join("/")))
+    let androidImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "Android"].join("/")))
       .map(extractFilenames)
       .compact()
       .value();
-    var commonImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
+    let commonImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
       .map(extractFilenames)
-      .filter(function(filename) {return ["iOS", "Android", "UWP"].indexOf(filename) < 0;})
+      .filter(filename => ["iOS", "Android", "UWP"].indexOf(filename) < 0)
       .compact()
       .value();
-    _.uniq(iOSImageNames).forEach(assertVariantsExist("iOS"));
-    _.uniq(androidImageNames).forEach(assertVariantsExist("Android"));
-    _.uniq(commonImageNames).forEach(assertVariantsExist());
+    _.uniq(iOSImageNames).forEach(assertletiantsExist("iOS"));
+    _.uniq(androidImageNames).forEach(assertletiantsExist("Android"));
+    _.uniq(commonImageNames).forEach(assertletiantsExist());
   });
 
 });
 
-function assertVariantsExist(platform) {
-  return function(imageName) {
-    it(imageName + " has variants for all supported densities for " + (platform || "both platforms"), function() {
-      sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(function(density) {
-        var filePath = [__dirname, IMAGES_PATH];
+function assertletiantsExist(platform) {
+  return imageName => {
+    it(imageName + " has letiants for all supported densities for " + (platform || "both platforms"), () => {
+      sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(density => {
+        let filePath = [__dirname, IMAGES_PATH];
         if (platform) {
           filePath.push(platform);
         }
         filePath.push(imageName + "@" + density + "x.png");
-        var fileExists = fs.statSync(filePath.join("/")).isFile();
+        let fileExists = fs.statSync(filePath.join("/")).isFile();
 
         expect(fileExists).to.be.true;
       });

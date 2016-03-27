@@ -1,70 +1,65 @@
-var codRemoteService = require("../codRemoteService");
-var _ = require("lodash");
-var FeedbackButton = require("./FeedbackButton");
-var FeedbackPage = require("../pages/FeedbackPage");
-var addProgressTo = require("../helpers/addProgressTo");
-var sizes = require("../resources/sizes");
-var colors = require("../resources/colors");
-var fontToString = require("../helpers/fontToString");
-var applyPlatformStyle = require("../helpers/applyPlatformStyle");
-var loginService = require("../helpers/loginService");
-var codFeedbackService = require("../helpers/codFeedbackService");
+import * as codRemoteService from "../codRemoteService";
+import _ from "lodash";
+import FeedbackButton from "./FeedbackButton";
+import FeedbackPage from "../pages/FeedbackPage";
+import addProgressTo from "../helpers/addProgressTo";
+import sizes from "../resources/sizes";
+import colors from "../resources/colors";
+import fontToString from "../helpers/fontToString";
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import * as loginService from "../helpers/loginService";
+import {Composite, TextView} from "tabris";
 
-exports.create = function(parent, adaptedSession) {
-  if (codFeedbackService.canGiveFeedbackForSession(adaptedSession)) {
-    create(parent, adaptedSession);
+export default class extends Composite {
+  constructor(adaptedSession) {
+    super({
+      id: "sessionPageFeedbackWidget",
+      top: sizes.MARGIN, right: sizes.MARGIN, height: 36
+    });
+    addProgressTo(this);
+    applyPlatformStyle(this);
+    this._showState(this, adaptedSession);
+    this.refresh = function() {
+      this.children().dispose();
+      this._showState(this, adaptedSession);
+    };
   }
-};
-
-function create(parent, adaptedSession) {
-  var feedbackWidget = new tabris.Composite({
-    id: "sessionPageFeedbackWidget",
-    top: sizes.MARGIN, right: sizes.MARGIN, height: 36
-  }).appendTo(parent);
-  addProgressTo(feedbackWidget);
-  applyPlatformStyle(feedbackWidget);
-  showState(feedbackWidget, adaptedSession);
-  feedbackWidget.refresh = function() {
-    feedbackWidget.children().dispose();
-    showState(feedbackWidget, adaptedSession);
-  };
-}
-
-function showState(feedbackWidget, adaptedSession) {
-  if (loginService.isLoggedIn()) {
-    feedbackWidget.set("progress", true);
-    showFeedbackState(feedbackWidget, adaptedSession);
-  } else {
-    createNoticeTextView("Please login to give feedback.").appendTo(feedbackWidget);
-  }
-}
-
-function showFeedbackState(feedbackWidget, adaptedSession) {
-  codRemoteService.evaluations()
-    .then(handleSessionValid(feedbackWidget, adaptedSession))
-    .catch(handleErrors(feedbackWidget))
-    .finally(function() {feedbackWidget.set("progress", false);});
-}
-
-function handleSessionValid(feedbackWidget, adaptedSession) {
-  return function(evaluations) {
-    var evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
-    var widget = evaluationAlreadySubmitted ?
-      createNoticeTextView("Feedback for this session was submitted.") : createFeedbackButton(adaptedSession);
-    widget.appendTo(feedbackWidget);
-  };
-}
-
-function handleErrors(feedbackWidget) {
-  return function(e) {
-    if (e.match && e.match(/Session expired/)) {
-      createErrorTextView("Please login again to give feedback.").appendTo(feedbackWidget);
-    } else if (e.match && e.match(/Network request failed/)) {
-      createErrorTextView("Connect to the Internet to give feedback.").appendTo(feedbackWidget);
+  _showState(feedbackWidget, adaptedSession) {
+    if (loginService.isLoggedIn()) {
+      feedbackWidget.set("progress", true);
+      this._showFeedbackState(feedbackWidget, adaptedSession);
     } else {
-      createErrorTextView("Something went wrong. Try giving feedback later.").appendTo(feedbackWidget);
+      createNoticeTextView("Please login to give feedback.").appendTo(feedbackWidget);
     }
-  };
+  }
+
+  _showFeedbackState(feedbackWidget, adaptedSession) {
+    codRemoteService.evaluations()
+      .then(this._handleSessionValid(feedbackWidget, adaptedSession))
+      .catch(this._handleErrors(feedbackWidget))
+      .finally(() => feedbackWidget.set("progress", false));
+  }
+
+  _handleSessionValid(feedbackWidget, adaptedSession) {
+    return function(evaluations) {
+      let evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
+      let widget = evaluationAlreadySubmitted ?
+        createNoticeTextView("Feedback for this session was submitted.") : createFeedbackButton(adaptedSession);
+      widget.appendTo(feedbackWidget);
+    };
+  }
+
+  _handleErrors(feedbackWidget) {
+    return function(e) {
+      if (e.match && e.match(/Session expired/)) {
+        createErrorTextView("Please login again to give feedback.").appendTo(feedbackWidget);
+      } else if (e.match && e.match(/Network request failed/)) {
+        createErrorTextView("Connect to the Internet to give feedback.").appendTo(feedbackWidget);
+      } else {
+        createErrorTextView("Something went wrong. Try giving feedback later.").appendTo(feedbackWidget);
+      }
+    };
+  }
 }
 
 function createErrorTextView(text) {
@@ -76,7 +71,7 @@ function createNoticeTextView(text) {
 }
 
 function createInfoTextView(text, color) {
-  var infoTextView = new tabris.TextView({
+  let infoTextView = new TextView({
     left: 0, centerY: 0, right: sizes.MARGIN,
     maxLines: 2,
     textColor: color,
@@ -88,12 +83,12 @@ function createInfoTextView(text, color) {
 }
 
 function createFeedbackButton(adaptedSession) {
-  var feedbackButton = FeedbackButton.create({
+  let feedbackButton = new FeedbackButton({
     left: 0, centerY: 0,
     text: "Give feedback"
-  }).on("select", function() {
-    FeedbackPage.create(adaptedSession).open();
-  });
+  }).on("select", () => new FeedbackPage(adaptedSession).open());
+
   applyPlatformStyle(feedbackButton);
+
   return feedbackButton;
 }

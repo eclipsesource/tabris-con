@@ -1,28 +1,35 @@
-var addProgressTo = require("../helpers/addProgressTo");
-var fontToString = require("../helpers/fontToString");
-var sizes = require("../resources/sizes");
-var applyPlatformStyle = require("../helpers/applyPlatformStyle");
-var colors = require("../resources/colors");
+import addProgressTo from "../helpers/addProgressTo";
+import fontToString from "../helpers/fontToString";
+import sizes from "../resources/sizes";
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import colors from "../resources/colors";
+import {Composite, ImageView, TextView} from "tabris";
 
-exports.create = function(text, image) {
-  var listItem = new tabris.Composite({
-    left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
-    highlightOnTouch: true,
-    progress: false
-  });
-  addProgressTo(listItem);
-  var drawerIconImageView = new tabris.ImageView({
-    class: "drawerIconImageView", image: image,
-    centerY: 0
-  }).appendTo(listItem);
-  applyPlatformStyle(drawerIconImageView);
-  var drawerTitleTextView = new tabris.TextView({
-    class: "drawerTitleTextView",
-    text: text,
-    font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-    left: sizes.LEFT_CONTENT_MARGIN, centerY: 0,
-    textColor: colors.DRAWER_TEXT_COLOR
-  }).appendTo(listItem);
-  applyPlatformStyle(drawerTitleTextView);
-  return listItem;
-};
+export default class extends Composite {
+  constructor(text, image) {
+    super({
+      left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
+      highlightOnTouch: true,
+      progress: false
+    });
+
+    addProgressTo(this);
+
+    let drawerIconImageView = new ImageView({
+      class: "drawerIconImageView", image: image,
+      centerY: 0
+    }).appendTo(this);
+
+    applyPlatformStyle(drawerIconImageView);
+
+    let drawerTitleTextView = new TextView({
+      class: "drawerTitleTextView",
+      text: text,
+      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
+      left: sizes.LEFT_CONTENT_MARGIN, centerY: 0,
+      textColor: colors.DRAWER_TEXT_COLOR
+    }).appendTo(this);
+
+    applyPlatformStyle(drawerTitleTextView);
+  }
+}

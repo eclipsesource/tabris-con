@@ -1,21 +1,21 @@
-var persistedStorage = require("../persistedStorage");
+import * as persistedStorage from "../persistedStorage";
 
-exports.addAttendedSessionId = function(sessionId) {
+export function addAttendedSessionId(sessionId) {
   persistedStorage.addAttendedSessionId(sessionId);
   updateScheduleNavigatable(sessionId);
-};
+}
 
-exports.removeAttendedSessionId = function(sessionId) {
+export function removeAttendedSessionId(sessionId) {
   persistedStorage.removeAttendedSessionId(sessionId);
   updateScheduleNavigatable();
-};
+}
 
-exports.isAttending = function(sessionId) {
+export function isAttending(sessionId) {
   return persistedStorage.getAttendedSessions().indexOf(sessionId) > -1;
-};
+}
 
 function updateScheduleNavigatable(sessionId) {
-  var scheduleNavigatable = tabris.ui.find("#schedule").first();
+  let scheduleNavigatable = tabris.ui.find("#schedule").first();
   scheduleNavigatable.set("focus", sessionId);
   scheduleNavigatable.initializeItems();
 }

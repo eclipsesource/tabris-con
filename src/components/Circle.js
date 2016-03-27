@@ -1,22 +1,21 @@
-var _ = require("lodash");
+import {Canvas} from "tabris";
 
-exports.create = function(configuration) {
-  var circleCanvas = new tabris.Canvas(_.extend({
-    width: configuration.radius * 2, height: configuration.radius * 2
-  }, configuration));
-  if (configuration.color) {
-    drawCircle(circleCanvas);
+export default class extends Canvas {
+  constructor(configuration) {
+    super(
+      Object.assign({}, configuration, {width: configuration.radius * 2, height: configuration.radius * 2})
+    );
+    if (configuration.color) {
+      drawCircle(this);
+    }
+    this.on("change:color", () => drawCircle(this));
   }
-  circleCanvas.on("change:color", function() {
-    drawCircle(circleCanvas);
-  });
-  return circleCanvas;
-};
+}
 
 function drawCircle(canvas) {
-  var radius = canvas.get("radius");
-  var diameter = radius * 2;
-  var ctx = canvas.getContext("2d", diameter, diameter);
+  let radius = canvas.get("radius");
+  let diameter = radius * 2;
+  let ctx = canvas.getContext("2d", diameter, diameter);
   ctx.clearRect(0, 0, diameter, diameter);
   ctx.arc(radius, radius, radius, 0, 2 * Math.PI);
   ctx.fillStyle = canvas.get("color");

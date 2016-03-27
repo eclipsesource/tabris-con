@@ -1,47 +1,67 @@
-var fontToString = require("../helpers/fontToString");
-var sizes = require("../resources/sizes");
-var applyPlatformStyle = require("../helpers/applyPlatformStyle");
-var getImage = require("../helpers/getImage");
-var addProgressTo = require("../helpers/addProgressTo");
-var loginService = require("../helpers/loginService");
-var LoginPage = require("../pages/LoginPage");
+import fontToString from "../helpers/fontToString";
+import sizes from "../resources/sizes";
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import getImage from "../helpers/getImage";
+import addProgressTo from "../helpers/addProgressTo";
+import * as loginService from "../helpers/loginService";
+import LoginPage from "../pages/LoginPage";
+import {Composite, ImageView, TextView} from "tabris";
 
-exports.create = function() {
-  var pageListItem = createAccountListItem("Login", getImage.forDevicePlatform("account"));
-  var textViewContainer = new tabris.Composite({
-    left: [".drawerIconImageView", sizes.MARGIN_XLARGE], top: 0, right: 0, bottom: 0
-  }).appendTo(pageListItem);
-  addProgressTo(pageListItem);
-  var emailTextView = new tabris.TextView({
-    font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
-    textColor: "white",
-    left: 0, top: sizes.MARGIN_SMALL
-  }).appendTo(textViewContainer);
-  var logoutTextView = new tabris.TextView({
-    font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-    textColor: "white",
-    text: "Logout",
-    left: 0, bottom: sizes.MARGIN_SMALL
-  }).appendTo(textViewContainer);
-  var loginTextView = new tabris.TextView({
-    font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
-    text: "Login",
-    textColor: "white",
-    left: 0, centerY: 0
-  }).appendTo(textViewContainer);
-  pageListItem.on("tap", function() {
-    if (this.get("loggedIn")) {
-      pageListItem.set("progress", true);
-      loginService.logout().then(function() {
-        pageListItem.set("progress", false);
-        pageListItem.set("loggedIn", false);
-      });
-    } else {
-      var loginPage = LoginPage.create().open();
-      loginPage.on("loginSuccess", function() {pageListItem.set("loggedIn", true);});
-    }
-  });
-  pageListItem.on("change:loggedIn", function(widget, loggedIn) {
+export default class extends Composite {
+  constructor() {
+    super({
+      left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
+      highlightOnTouch: true,
+      progress: false
+    });
+
+    let drawerIconImageView = new ImageView({
+      class: "drawerIconImageView", image: getImage.forDevicePlatform("account"),
+      centerY: 0
+    }).appendTo(this);
+
+    applyPlatformStyle(drawerIconImageView);
+
+    let textViewContainer = new Composite({
+      left: [".drawerIconImageView", sizes.MARGIN_XLARGE], top: 0, right: 0, bottom: 0
+    }).appendTo(this);
+
+    addProgressTo(this);
+
+    let emailTextView = new TextView({
+      font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
+      textColor: "white",
+      left: 0, top: sizes.MARGIN_SMALL
+    }).appendTo(textViewContainer);
+
+    let logoutTextView = new TextView({
+      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
+      textColor: "white",
+      text: "Logout",
+      left: 0, bottom: sizes.MARGIN_SMALL
+    }).appendTo(textViewContainer);
+
+    let loginTextView = new TextView({
+      font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
+      text: "Login",
+      textColor: "white",
+      left: 0, centerY: 0
+    }).appendTo(textViewContainer);
+
+    this.on("tap", () => {
+      if (this.get("loggedIn")) {
+        this.set("progress", true);
+        loginService.logout().then(() => {
+          this.set("progress", false);
+          this.set("loggedIn", false);
+        });
+      } else {
+        let loginPage = new LoginPage().open();
+        loginPage.on("loginSuccess", () => this.set("loggedIn", true));
+      }
+    });
+
+    this.on("change:loggedIn", (widget, loggedIn) => {
       if (loggedIn) {
         emailTextView.set({text: loginService.getUserData().mail});
       }
@@ -50,19 +70,5 @@ exports.create = function() {
       loginTextView.set("visible", !loggedIn);
     })
     .set("loggedIn", loginService.isLoggedIn());
-  return pageListItem;
-};
-
-function createAccountListItem(text, image) {
-  var listItem = new tabris.Composite({
-    left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
-    highlightOnTouch: true,
-    progress: false
-  });
-  var drawerIconImageView = new tabris.ImageView({
-    class: "drawerIconImageView", image: image,
-    centerY: 0
-  }).appendTo(listItem);
-  applyPlatformStyle(drawerIconImageView);
-  return listItem;
+  }
 }

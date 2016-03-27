@@ -1,24 +1,24 @@
-var sanitizeHtml = require("sanitize-html");
-var config = require("../config");
-var _ = require("lodash");
-var loginService = require("./helpers/loginService");
-var alertDialog = require("./components/alert");
-var isFeedbackTime = require("./isFeedbackTime");
-var timeoutFetch = require("./timeoutFetch");
+import sanitizeHtml from "sanitize-html";
+import config from "./config";
+import _ from "lodash";
+import * as loginService from "./helpers/loginService";
+import * as alertDialog from "./components/alert";
+import isFeedbackTime from "./isFeedbackTime";
+import timeoutFetch from "./timeoutFetch";
 
-var URI = require("urijs");
+import URI from "urijs";
 
-var API_URL = URI(config.SERVICE_URL).segment("api").segment("1.0").toString();
+let API_URL = URI(config.SERVICE_URL).segment("api").segment("1.0").toString();
 
-exports.login = function(username, password) {
-  var serviceUrl = URI(API_URL).segment("user").segment("login").toString();
-  return exports.csrfToken()
+export function login(username, password) {
+  let serviceUrl = URI(API_URL).segment("user").segment("login").toString();
+  return csrfToken()
     .then(login)
     .then(jsonify)
     .catch(log)
-    .then(function(response) {
+    .then(response => {
       if (response instanceof Array) {
-        var error = sanitizeHtml(response[0], {allowedTags: [], allowedAttributes: []});
+        let error = sanitizeHtml(response[0], {allowedTags: [], allowedAttributes: []});
         return Promise.reject(error);
       }
       return response;
@@ -36,12 +36,12 @@ exports.login = function(username, password) {
       })
     });
   }
-};
+}
 
-exports.logout = function() {
-  var serviceUrl = URI(API_URL).segment("user").segment("logout").toString();
-  return exports.csrfToken()
-    .then(function(csrfToken) {
+export function logout() {
+  let serviceUrl = URI(API_URL).segment("user").segment("logout").toString();
+  return csrfToken()
+    .then(csrfToken => {
       return timeoutFetch(serviceUrl, {
         method: "post",
         headers: {
@@ -52,7 +52,7 @@ exports.logout = function() {
     })
     .then(jsonify)
     .catch(log)
-    .then(function(response) {
+    .then(response => {
       if (response instanceof Array && response[0] !== true) {
         return Promise.reject(response[0]);
       }
@@ -60,67 +60,63 @@ exports.logout = function() {
     })
     .catch(resolveExpiredSession)
     .catch(alert);
-};
+}
 
-exports.csrfToken = function() {
-  var serviceUrl = URI(config.SERVICE_URL).segment("services").segment("session").segment("token").toString();
-  return timeoutFetch(serviceUrl).then(function(response) {
-    return response.text();
-  });
-};
+export function csrfToken() {
+  let serviceUrl = URI(config.SERVICE_URL).segment("services").segment("session").segment("token").toString();
+  return timeoutFetch(serviceUrl).then(response => response.text());
+}
 
-exports.evaluations = function() {
-  var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
+export function evaluations() {
+  let serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
   return timeoutFetch(serviceUrl)
     .then(jsonify)
-    .then(function(response) {
+    .then(response => {
       if (responseIsAnErrorArray(response)) {
         return Promise.reject(response[0]);
       }
       return Promise.resolve(response);
     })
-    .catch(function(e) {
+    .catch(e => {
       if (e.match && e.match(/Access denied/) && isFeedbackTime()) {
         loginService.destroySession();
-        var error = "Session expired or evaluations service unavailable. Please log in again.";
+        let error = "Session expired or evaluations service unavailable. Please log in again.";
         alert(error);
         return Promise.reject(error);
       }
       return Promise.reject(e);
     })
-    .catch(function(e) {
+    .catch(e => {
       if (e.message && e.message.match(/request failed/)) {
         return Promise.reject(e.message);
       }
       return Promise.reject(e);
     });
-};
+}
 
-exports.createEvaluation = function(sessionNid, comment, rating) {
-  return exports.evaluations()
+export function createEvaluation(sessionNid, comment, rating) {
+  return evaluations()
     .then(verifyNotAlreadyExisting(sessionNid))
-    .then(exports.csrfToken)
-    .then(createEvaluation(sessionNid, comment, rating))
+    .then(csrfToken)
+    .then(sendCreateEvaluationRequest(sessionNid, comment, rating))
     .then(jsonify)
     .then(verifyCreateEvaluationResponse)
     .catch(log)
     .catch(alert);
-};
+}
 
 function logoutIfAlreadyLoggedIn(username, password) {
-  return function(e) {
+  return e => {
     if (e && e.match && e.match(/Already logged in/)) {
-      return exports.logout().then(function() {
-        return exports.login(username, password);
-      });
+      return logout().then(() => login(username, password));
     }
     return Promise.reject(e);
   };
 }
 
-function createEvaluation(sessionNid, comment, rating) {
-  return function(csrfToken) {
-    var serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
+function sendCreateEvaluationRequest(sessionNid, comment, rating) {
+  return csrfToken => {
+    let serviceUrl = URI(API_URL).segment("eclipsecon_evaluations").toString();
     return timeoutFetch(serviceUrl, {
       method: "POST",
       headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
@@ -134,10 +130,8 @@ function responseIsAnErrorArray(response) {
 }
 
 function verifyNotAlreadyExisting(sessionNid) {
-  return function(evaluations) {
-    var alreadySubmitted = _.some(evaluations, function(evaluation) {
-      return sessionNid === evaluation.nid;
-    });
+  return evaluations => {
+    let alreadySubmitted = _.some(evaluations, evaluation => sessionNid === evaluation.nid);
     if (alreadySubmitted) {
       return Promise.reject("Evaluation already submitted for this talk.");
     }

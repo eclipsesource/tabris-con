@@ -1,14 +1,14 @@
 /* globals fetch: false, Promise: true*/
 
-var TIMEOUT = 8000;
+let TIMEOUT = 8000;
 
-module.exports = function() {
+export default function() {
   return timeout(TIMEOUT, fetch.apply(this, arguments));
-};
+}
 
 function timeout(ms, promise) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(function() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
       reject(new Error("Server timeout. Please try again later."));
     }, ms);
     promise.then(resolve, reject);

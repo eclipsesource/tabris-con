@@ -1,45 +1,35 @@
-var mockery = require("mockery");
-var chai = require("chai");
-var expect = chai.expect;
-var moment = require("moment-timezone");
+import chai from "chai";
+import moment from "moment-timezone";
+import getSessionFreeBlock from "../src/getSessionFreeBlock";
 
-describe("getSessionFreeBlock", function() {
-  var block1 = [date("07.03.2016 09:00"), date("07.03.2016 12:00")];
-  var block2 = [date("07.03.2016 13:00"), date("07.03.2016 15:00")];
-  var FAKE_CONFIG = {
-    DATA_FORMAT: "cod",
-    FREE_BLOCKS: {
-      cod: [block1, block2]
-    }
-  };
+let expect = chai.expect;
 
-  var getSessionFreeBlock;
+describe("getSessionFreeBlock", () => {
+  let block1 = [date("07.03.2016 09:00"), date("07.03.2016 12:00")];
+  let block2 = [date("07.03.2016 13:00"), date("07.03.2016 15:00")];
 
-  before(function() {
-    mockery.enable({useCleanCache: true, warnOnUnregistered: false});
-    mockery.registerMock("../config", FAKE_CONFIG);
-    getSessionFreeBlock = require("../src/getSessionFreeBlock");
-  });
+  let config = {DATA_FORMAT: "cod", FREE_BLOCKS: {cod: [block1, block2]}};
 
-  after(function() {
-    mockery.deregisterMock("../config");
-    mockery.disable();
-  });
-
-  it("returns block of session later than/starting at block start time", function() {
-    var block = getSessionFreeBlock({startTimestamp: date("07.03.2016 09:00"), endTimestamp: date("07.03.2016 11:00")});
+  it("returns block of session later than/starting at block start time", () => {
+    let block = getSessionFreeBlock(
+      {startTimestamp: date("07.03.2016 09:00"), endTimestamp: date("07.03.2016 11:00")}, config
+    );
 
     expect(block).to.deep.equal(block1);
   });
 
-  it("returns block of session earlier than/starting before block end time", function() {
-    var block = getSessionFreeBlock({startTimestamp: date("07.03.2016 14:00"), endTimestamp: date("07.03.2016 15:00")});
+  it("returns block of session earlier than/starting before block end time", () => {
+    let block = getSessionFreeBlock(
+      {startTimestamp: date("07.03.2016 14:00"), endTimestamp: date("07.03.2016 15:00")}, config
+    );
 
     expect(block).to.deep.equal(block2);
   });
 
-  it("returns 'null' if block not found", function() {
-    var block = getSessionFreeBlock({startTimestamp: date("07.03.2016 09:00"), endTimestamp: date("07.03.2016 13:00")});
+  it("returns 'null' if block not found", () => {
+    let block = getSessionFreeBlock(
+      {startTimestamp: date("07.03.2016 09:00"), endTimestamp: date("07.03.2016 13:00")}, config
+    );
 
     expect(block).to.equal(null);
   });
