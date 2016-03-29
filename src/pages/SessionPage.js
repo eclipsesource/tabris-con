@@ -86,7 +86,7 @@ export default class extends Page {
         this._setWidgetData(data);
         this._otherSessionsLink.set("data", data);
         scrollView.on("resize", this._layoutParallax);
-        this._layoutParallax();
+        this._layoutParallax(scrollView);
         let attendanceControl = device.platform === "iOS" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
         attendanceControl.set("attending", attendedSessionService.isAttending(data.id));
         loadingIndicator.dispose();
@@ -100,7 +100,7 @@ export default class extends Page {
       });
     }
 
-    scrollView.once("resize", () => this._layoutParallax({initialLayout: true}));
+    scrollView.once("resize", () => this._layoutParallax(scrollView, {initialLayout: true}));
   }
 
   _createSpeakers(speakers) {
@@ -173,7 +173,7 @@ export default class extends Page {
     sessionPageHeader.set({
       titleText: data.title,
       summaryText: data.summary,
-      trackIndicatorColor: config.TRACK_COLOR[data.categoryName]
+      trackIndicatorColor: config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial"
     });
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
@@ -183,14 +183,13 @@ export default class extends Page {
     this._createSpeakers(data.speakers);
   }
 
-  _layoutParallax(options) {
+  _layoutParallax(scrollView, options) {
     let imageView = this.find("#sessionPageImageView").first();
-    let scrollView = this.find("ScrollView").first();
     let pageHeader = this.find("#sessionPageHeader").first();
-    let showImageView = imageView.get("image") || options && options.initialLayout;
+    let showImageView = imageView.get("image") || options && options.initialLayout && config.SESSIONS_HAVE_IMAGES;
     let imageHeight = showImageView ? scrollView.get("bounds").height / 3 : 0;
     imageView.set("height", imageHeight);
-    this._titleCompY = Math.min(imageHeight, imageHeight) - 1; // -1 to make up for rounding errors
+    this._titleCompY = imageHeight;
     pageHeader.set("top", this._titleCompY);
   }
 
