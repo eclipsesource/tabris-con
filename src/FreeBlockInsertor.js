@@ -1,31 +1,31 @@
 import _ from "lodash";
+import ConfigurationDate from "./ConfigurationDate";
 
 export default class {
-  constructor(dataFormat) {
-    this._dataFormat = dataFormat;
+  constructor(config) {
+    this._config = config;
   }
 
-  insert(freeBlocks, blocks) {
+  insert(blocks) {
     // TODO: insert "free" blocks for googleIO data
-    if (!freeBlocks || this._dataFormat === "googleIO") {
+    if (!this._config.FREE_BLOCKS || this._config.DATA_SOURCE === "googleIOService") {
       return blocks;
     }
-    return _(freeBlocks[this._dataFormat])
+    return _(this._config.FREE_BLOCKS)
       .map(freeBlock => ({
         title: "BROWSE SESSIONS",
         sessionType: "free",
-        startTimestamp: freeBlock[0],
-        endTimestamp: freeBlock[1]
+        startTimestamp: new ConfigurationDate(this._config, freeBlock[0]).toJSON(),
+        endTimestamp: new ConfigurationDate(this._config, freeBlock[1]).toJSON()
       }))
       .concat(blocks)
       .sortBy("sessionType")
       .reverse()
       .uniqWith(
         (block1, block2) =>
-          block1.startTimestamp === block2.startTimestamp && block1.sessionType !== block2.sessionType
+        block1.startTimestamp === block2.startTimestamp && block1.sessionType !== block2.sessionType
       )
       .sortBy("startTimestamp")
       .value();
   }
 }
-

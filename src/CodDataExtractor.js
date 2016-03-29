@@ -123,7 +123,7 @@ export default class {
   _removeIgnoredBlocks(conferenceData) {
     conferenceData.scheduledSessions = _.reject(
       conferenceData.scheduledSessions,
-      session => session.type === "schedule_item" && !!session.title.match(this._config.IGNORED_COD_BLOCKS)
+      session => session.type === "schedule_item" && !!session.title.match(this._config.IGNORED_BLOCK_PATTERN)
     );
   }
 
@@ -148,4 +148,3 @@ export default class {
 function stripHtml(hypertext) {
   return sanitizeHtml(hypertext, {allowedTags: [], allowedAttributes: []});
 }
-

@@ -10,9 +10,9 @@ import CodDataExtractor from "../src/CodDataExtractor";
 describe("CodDataExtractor", () => {
   let codDataExtractor;
   let CONFIG = {
-    DATA_FORMAT: "cod",
+    DATA_SOURCE: "codService",
     CONFERENCE_TIMEZONE: "Europe/Berlin",
-    IGNORED_COD_BLOCKS: "^Dedicated"
+    IGNORED_BLOCK_PATTERN: "^Dedicated"
   };
 
   before(() => {

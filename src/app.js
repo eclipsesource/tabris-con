@@ -12,6 +12,6 @@ moment.locale(config.DATE_LOCALE);
 applyPlatformStyle(tabris.ui);
 
 NavigationFactory.create(config);
-if (device.platform === "iOS") {
+if (device.platform === "iOS" && config.SUPPORTS_FEEDBACK) {
   new LoginAction();
 }

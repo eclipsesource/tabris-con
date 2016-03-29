@@ -7,10 +7,11 @@ import * as loginService from "./helpers/loginService";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
 
 export default class {
-  constructor(conferenceDataProvider, attendedBlockProvider, viewDataAdapter) {
+  constructor({config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter}) {
     this._conferenceDataProvider = conferenceDataProvider;
     this._attendedBlockProvider = attendedBlockProvider;
     this._viewDataAdapter = viewDataAdapter;
+    this._config = config;
   }
 
   getKeynote(keynoteId) {
@@ -61,7 +62,7 @@ export default class {
   }
 
   getSessionIdIndicatorStates() {
-    if (!loginService.isLoggedIn()) {
+    if (!this._config.SUPPORTS_FEEDBACK || !loginService.isLoggedIn()) {
       return Promise.resolve([]);
     }
     return Promise.all([this._attendedBlockProvider.getBlocks(), codRemoteService.evaluations()])

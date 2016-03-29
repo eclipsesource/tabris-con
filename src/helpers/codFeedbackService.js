@@ -2,7 +2,7 @@ import config from "../config";
 import * as codRemoteService from "../codRemoteService";
 
 export function canGiveFeedbackForSession(session) {
-  return validFeedbackWindow(session);
+  return config.SUPPORTS_FEEDBACK && validFeedbackWindow(session);
 }
 
 export function createEvaluation(sessionId) {

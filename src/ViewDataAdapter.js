@@ -73,8 +73,8 @@ export default class {
   }
 
   adaptBlocks(blocks) {
-    let freeBlockInsertor = new FreeBlockInsertor(this._config.DATA_FORMAT);
-    let blocksAndFreeBlocks = freeBlockInsertor.insert(this._config.FREE_BLOCKS, blocks);
+    let freeBlockInsertor = new FreeBlockInsertor(this._config);
+    let blocksAndFreeBlocks = freeBlockInsertor.insert(blocks);
     return _(blocksAndFreeBlocks)
       .sortBy("startTimestamp")
       .groupBy(block => new TimezonedDate(this._timezone, block.startTimestamp).format("DD MMM"))
@@ -194,7 +194,7 @@ export default class {
   }
 
   _getImageForBlockTitle(title) {
-    let patternIconMap = this._config.SCHEDULE_PATTERN_ICON_MAP[this._config.DATA_FORMAT];
+    let patternIconMap = this._config.SCHEDULE_PATTERN_ICON_MAP;
     return _.find(patternIconMap,(icon, pattern) => {
       if (title.match(pattern)) {
         return icon;

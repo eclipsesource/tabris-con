@@ -11,5 +11,5 @@ export function create(config) {
   let viewDataAdapter = new ViewDataAdapter(config);
   let conferenceDataProvider = new ConferenceDataProvider(dataFetcher, initialData);
   let attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);
-  return new ViewDataProvider(conferenceDataProvider, attendedBlockProvider, viewDataAdapter);
+  return new ViewDataProvider({config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter});
 }

@@ -45,24 +45,24 @@ export function removeConferenceData() {
 
 /* set functions */
 
-export function setPreviewCategories(value, dataFormat = config.DATA_FORMAT) {
-  setValue(PREVIEW_CATEGORIES, value, dataFormat);
+export function setPreviewCategories(value, dataSource = config.DATA_SOURCE) {
+  setValue(PREVIEW_CATEGORIES, value, dataSource);
 }
 
-export function setCategories(value, dataFormat = config.DATA_FORMAT) {
-  setValue(CATEGORIES, value, dataFormat);
+export function setCategories(value, dataSource = config.DATA_SOURCE) {
+  setValue(CATEGORIES, value, dataSource);
 }
 
-export function setSessions(value, dataFormat = config.DATA_FORMAT) {
-  setValue(SESSIONS, value, dataFormat);
+export function setSessions(value, dataSource = config.DATA_SOURCE) {
+  setValue(SESSIONS, value, dataSource);
 }
 
-export function setKeynotes(value, dataFormat = config.DATA_FORMAT) {
-  setValue(KEYNOTES, value, dataFormat);
+export function setKeynotes(value, dataSource = config.DATA_SOURCE) {
+  setValue(KEYNOTES, value, dataSource);
 }
 
-export function setBlocks(value, dataFormat = config.DATA_FORMAT) {
-  setValue(BLOCKS, value, dataFormat);
+export function setBlocks(value, dataSource = config.DATA_SOURCE) {
+  setValue(BLOCKS, value, dataSource);
 }
 
 /* get functions */
@@ -71,24 +71,24 @@ export function getAttendedSessions() {
   return JSON.parse(attendedSessions);
 }
 
-export function getPreviewCategories(dataFormat = config.DATA_FORMAT) {
-  return getValue(PREVIEW_CATEGORIES, dataFormat);
+export function getPreviewCategories(dataSource = config.DATA_SOURCE) {
+  return getValue(PREVIEW_CATEGORIES, dataSource);
 }
 
-export function getCategories(dataFormat = config.DATA_FORMAT) {
-  return getValue(CATEGORIES, dataFormat);
+export function getCategories(dataSource = config.DATA_SOURCE) {
+  return getValue(CATEGORIES, dataSource);
 }
 
-export function getSessions(dataFormat = config.DATA_FORMAT) {
-  return getValue(SESSIONS, dataFormat);
+export function getSessions(dataSource = config.DATA_SOURCE) {
+  return getValue(SESSIONS, dataSource);
 }
 
-export function getKeynotes(dataFormat = config.DATA_FORMAT) {
-  return getValue(KEYNOTES, dataFormat);
+export function getKeynotes(dataSource = config.DATA_SOURCE) {
+  return getValue(KEYNOTES, dataSource);
 }
 
-export function getBlocks(dataFormat = config.DATA_FORMAT) {
-  return getValue(BLOCKS, dataFormat);
+export function getBlocks(dataSource = config.DATA_SOURCE) {
+  return getValue(BLOCKS, dataSource);
 }
 
 /* remove functions */
@@ -117,15 +117,15 @@ export function removeBlocks() {
   remove(BLOCKS);
 }
 
-function setValue(property, value, dataFormat) {
+function setValue(property, value, dataSource) {
   let itemObject = {};
-  itemObject[dataFormat] = value;
+  itemObject[dataSource] = value;
   localStorage.setItem(property, JSON.stringify(itemObject));
 }
 
-function getValue(property, dataFormat) {
+function getValue(property, dataSource) {
   let itemString = localStorage.getItem(property);
-  return itemString && itemString !== "undefined" ? JSON.parse(itemString)[dataFormat] : null;
+  return itemString && itemString !== "undefined" ? JSON.parse(itemString)[dataSource] : null;
 }
 
 function remove(property) {

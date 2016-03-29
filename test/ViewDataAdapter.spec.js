@@ -16,18 +16,16 @@ import ViewDataAdapter from "../src/ViewDataAdapter";
 let expect = chai.expect;
 
 let FAKE_CONFIG = {
-  DATA_FORMAT: "googleIO",
+  DATA_FORMAT: "googleIOService",
   SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SESSIONS_HAVE_IMAGES: true,
   CONFERENCE_TIMEZONE: "America/Los_Angeles",
   CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],
   SCHEDULE_PATTERN_ICON_MAP: {
-    googleIO: {
-      "^After": "schedule_icon_fun",
-      "^Badge": "schedule_icon_badge",
-      "^Pre-Keynote": "schedule_icon_session",
-      ".*": "schedule_icon_food"
-    }
+    "^After": "schedule_icon_fun",
+    "^Badge": "schedule_icon_badge",
+    "^Pre-Keynote": "schedule_icon_session",
+    ".*": "schedule_icon_food"
   }
 };
 

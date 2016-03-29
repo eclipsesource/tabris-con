@@ -6,20 +6,24 @@ let expect = chai.expect;
 
 describe("freeBlockInsertor", () => {
   let insertor;
-  let FREE_BLOCKS = {cod: [[date("07.03.2016 09:00"), date("07.03.2016 12:00")]]};
+  let config = {
+    CONFERENCE_TIMEZONE: "America/New_York",
+    DATA_SOURCE: "codService",
+    FREE_BLOCKS: [["07.03.2016 09:00", "07.03.2016 12:00"]]
+  };
 
   before(() => {
-    insertor = new FreeBlockInsertor("cod");
+    insertor = new FreeBlockInsertor(config);
   });
 
   it("returns input when FREE_BLOCKS not configured",() => {
-    let inserted = insertor.insert(null, "foo");
+    let inserted = new FreeBlockInsertor({CONFERENCE_TIMEZONE: "America/New_York"}).insert("foo");
 
     expect(inserted).to.equal("foo");
   });
 
   it("returns free blocks on empty array", () => {
-    let blocks = insertor.insert(FREE_BLOCKS, []);
+    let blocks = insertor.insert([]);
 
     expect(blocks).to.deep.equal([{
       title: "BROWSE SESSIONS",
@@ -30,7 +34,7 @@ describe("freeBlockInsertor", () => {
   });
 
   it("inserts blocks and returns a chronologically sorted list",() => {
-    let blocks = insertor.insert(FREE_BLOCKS, [{startTimestamp: date("07.03.2016 08:00")}]);
+    let blocks = insertor.insert([{startTimestamp: date("07.03.2016 08:00")}]);
 
     expect(blocks).to.deep.equal([
       {"startTimestamp": date("07.03.2016 08:00")},
@@ -44,13 +48,13 @@ describe("freeBlockInsertor", () => {
   });
 
   it("removes free blocks overlapping startTimestamp of an attended block", () => {
-    let blocks = insertor.insert(FREE_BLOCKS, [{startTimestamp: date("07.03.2016 09:00")}]);
+    let blocks = insertor.insert([{startTimestamp: date("07.03.2016 09:00")}]);
 
     expect(blocks).to.deep.equal([{"startTimestamp": date("07.03.2016 09:00")}]);
   });
 
   it("doesn't remove overlapping attended blocks", () => {
-    let blocks = insertor.insert(FREE_BLOCKS, [
+    let blocks = insertor.insert([
       {startTimestamp: date("07.03.2016 09:00")}, {startTimestamp: date("07.03.2016 09:00")}
     ]);
 

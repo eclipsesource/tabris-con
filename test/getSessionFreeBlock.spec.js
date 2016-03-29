@@ -5,10 +5,12 @@ import getSessionFreeBlock from "../src/getSessionFreeBlock";
 let expect = chai.expect;
 
 describe("getSessionFreeBlock", () => {
-  let block1 = [date("07.03.2016 09:00"), date("07.03.2016 12:00")];
-  let block2 = [date("07.03.2016 13:00"), date("07.03.2016 15:00")];
+  let block1 = ["07.03.2016 09:00", "07.03.2016 12:00"];
+  let block2 = ["07.03.2016 13:00", "07.03.2016 15:00"];
 
-  let config = {DATA_FORMAT: "cod", FREE_BLOCKS: {cod: [block1, block2]}};
+  let config = {
+    CONFERENCE_TIMEZONE: "America/New_York", DATA_SOURCE: "codService", FREE_BLOCKS: [block1, block2]
+  };
 
   it("returns block of session later than/starting at block start time", () => {
     let block = getSessionFreeBlock(

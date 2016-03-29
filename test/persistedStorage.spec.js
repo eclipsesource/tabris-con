@@ -84,10 +84,10 @@ describe("persisted storage", () => {
     properties.forEach(property => {
       let capitalizedProperty = capitalizeFirstLetter(property);
       it("set" + capitalizedProperty + " stores " + property + " with data format in localStorage", () => {
-        persistedStorage["set" + capitalizedProperty](value, "cod");
+        persistedStorage["set" + capitalizedProperty](value, "codService");
 
         expect(localStorage.setItem).to.have.been.calledWith(property, JSON.stringify({
-          cod: value
+          codService: value
         }));
       });
     });
@@ -106,11 +106,11 @@ describe("persisted storage", () => {
       let capitalizedProperty = capitalizeFirstLetter(property);
       it("get" + capitalizedProperty + " retrieves " + property + " with data format from localStorage", () => {
         global.localStorage.getItem.withArgs(property).returns(JSON.stringify({
-          cod: {foo: "bar"},
-          googleIO: {baz: "bak"}
+          codService: {foo: "bar"},
+          googleIOService: {baz: "bak"}
         }));
 
-        let value = persistedStorage["get" + capitalizedProperty]("cod");
+        let value = persistedStorage["get" + capitalizedProperty]("codService");
 
         expect(value).to.deep.equal({foo: "bar"});
       });

@@ -1,8 +1,13 @@
 import moment from "moment-timezone";
 
 export default class {
-  constructor(timezone, date) {
-    let args = [date, timezone];
+  constructor(timezone, date, format) {
+    let args = [];
+    args.push(date);
+    if (format) {
+      args.push(format);
+    }
+    args.push(timezone);
     this._momentDate = moment.tz.apply(this, args);
   }
 

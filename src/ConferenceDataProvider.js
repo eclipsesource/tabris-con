@@ -70,7 +70,7 @@ export default class {
       alert.show(this._dataMayBeOutdatedMessage(), "Warning", "OK");
     }
     if (!dataStored) {
-      this._persistData(InitialData.createFor(config.DATA_FORMAT));
+      this._persistData(InitialData.createFor(config.DATA_SOURCE));
     }
   }
 

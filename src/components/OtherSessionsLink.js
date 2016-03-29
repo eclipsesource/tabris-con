@@ -1,4 +1,4 @@
-import TimezonedDate from "../TimezonedDate";
+import ConfigurationDate from "../ConfigurationDate";
 import getSessionFreeBlock from "../getSessionFreeBlock";
 import config from "../config";
 import Link from "./Link";
@@ -12,8 +12,8 @@ export default class extends Composite {
     this.on("change:data", (widget, session) => {
       let freeBlock = getSessionFreeBlock(session, config);
       if (freeBlock) {
-        let date1 = new TimezonedDate(config.CONFERENCE_TIMEZONE, freeBlock[0]);
-        let date2 = new TimezonedDate(config.CONFERENCE_TIMEZONE, freeBlock[1]);
+        let date1 = new ConfigurationDate(config, freeBlock[0]);
+        let date2 = new ConfigurationDate(config, freeBlock[1]);
         viewDataProvider.getOtherSessionsInTimeframe(date1, date2, session.id)
           .then(otherSessions => {
             if (otherSessions.length > 0) {

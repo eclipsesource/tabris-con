@@ -39,7 +39,7 @@ export default class extends Composite {
         );
         imageView.set("image", image);
       }
-      trackIndicator.set("background", config.TRACK_COLOR[data.categoryName] || "initial");
+      trackIndicator.set("background", config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial");
       titleTextView.set("text", data.title);
       summaryTextView.set("text", data.summary);
     });
