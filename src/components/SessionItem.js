@@ -15,7 +15,7 @@ export default class extends Composite {
       var imageView = createSessionImage().appendTo(this);
     }
     let trackIndicator = new Composite({
-      left: 0, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
+      left: "prev()", top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
     }).appendTo(this);
     let textContainer = new Composite(_.extend({
         left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
