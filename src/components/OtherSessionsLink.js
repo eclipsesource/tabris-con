@@ -1,6 +1,6 @@
 import ConfigurationDate from "../ConfigurationDate";
 import getSessionFreeBlock from "../getSessionFreeBlock";
-import config from "../config";
+import config from "../configs/config";
 import Link from "./Link";
 import sizes from "../resources/sizes";
 import SessionsPage from "../pages/SessionsPage";

@@ -3,7 +3,7 @@ import Navigatable from "./Navigatable";
 import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
 import colors from "../resources/colors";
-import config from "../config";
+import config from "../configs/config";
 import Link from "../components/Link";
 import {ImageView, TextView, Composite, ScrollView} from "tabris";
 import IconNoticePage from "./IconNoticePage";

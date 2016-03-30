@@ -1,5 +1,5 @@
 import sanitizeHtml from "sanitize-html";
-import config from "./config";
+import config from "./configs/config";
 import _ from "lodash";
 import * as loginService from "./helpers/loginService";
 import * as alertDialog from "./components/alert";

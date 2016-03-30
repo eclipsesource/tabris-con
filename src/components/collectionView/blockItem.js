@@ -8,7 +8,7 @@ import Circle from "../../components/Circle";
 import applyPlatformStyle from "../../helpers/applyPlatformStyle";
 import * as SessionPageFactory from "../../pages/SessionPageFactory";
 import addProgressTo from "../../helpers/addProgressTo";
-import config from "../../config";
+import config from "../../configs/config";
 import {Composite, ImageView, TextView} from "tabris";
 
 export function get(viewDataProvider) {

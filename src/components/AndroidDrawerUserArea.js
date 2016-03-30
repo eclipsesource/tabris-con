@@ -5,7 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import getImage from "../helpers/getImage";
 import * as loginService from "../helpers/loginService";
 import {Composite, ImageView, TextView} from "tabris";
-import config from "../config";
+import config from "../configs/config";
 
 export default class extends Composite {
   constructor() {

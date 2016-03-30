@@ -3,7 +3,7 @@ import * as persistedStorage from "./persistedStorage";
 import * as DataExtractorFactory from "./DataExtractorFactory";
 import InitialData from "./InitialData";
 import * as alert from "./components/alert";
-import config from "./config";
+import config from "./configs/config";
 
 export default class {
   constructor(newDataFetcher, initialData) {

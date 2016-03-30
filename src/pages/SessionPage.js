@@ -10,7 +10,7 @@ import * as attendedSessionService from "../helpers/attendedSessionService";
 import AttendanceAction from "../actions/AttendanceAction";
 import SessionPageFeedbackWidget from "../components/SessionPageFeedbackWidget";
 import * as codFeedbackService from "../helpers/codFeedbackService";
-import config from "../config";
+import config from "../configs/config";
 import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
 
 export default class extends Page {

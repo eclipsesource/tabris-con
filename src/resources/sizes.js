@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "../configs/config";
 
 export default {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],

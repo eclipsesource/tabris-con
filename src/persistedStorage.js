@@ -1,5 +1,5 @@
 import _ from "lodash";
-import config from "./config";
+import config from "./configs/config";
 
 export const ATTENDED_SESSIONS = "attendedSessions";
 export const PREVIEW_CATEGORIES = "previewCategories";

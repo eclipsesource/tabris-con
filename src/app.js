@@ -2,7 +2,7 @@
 import "tabris-js-node";
 import "./w10exts";
 import "promise.prototype.finally";
-import config from "./config";
+import config from "./configs/config";
 import moment from "moment-timezone";
 import * as NavigationFactory from "./components/NavigationFactory";
 import applyPlatformStyle from "./helpers/applyPlatformStyle";

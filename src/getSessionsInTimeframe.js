@@ -1,6 +1,6 @@
 import TimezonedDate from "./TimezonedDate";
 import _ from "lodash";
-import config from "./config";
+import config from "./configs/config";
 
 export default function(conferenceDataProvider, timestamp1, timestamp2) {
   return conferenceDataProvider.get().then(function(data) {

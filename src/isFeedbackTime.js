@@ -1,4 +1,4 @@
-import config from "./config";
+import config from "./configs/config";
 
 export default function() {
   let currentTime = new Date();

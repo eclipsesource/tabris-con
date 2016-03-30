@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "../configs/config";
 import * as codRemoteService from "../codRemoteService";
 
 export function canGiveFeedbackForSession(session) {
