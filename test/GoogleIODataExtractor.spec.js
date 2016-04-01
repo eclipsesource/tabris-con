@@ -2,7 +2,6 @@ import chai from "chai";
 import GoogleIODataExtractor from "../src/GoogleIODataExtractor";
 import IO_CONFERENCE_DATA from "./json/googleIO/ioConferenceData.json";
 import PREVIEW_CATEGORIES from "./json/googleIO/previewCategories.json";
-import CATEGORIES from "./json/googleIO/categories.json";
 import SESSIONS from "./json/googleIO/sessions.json";
 import BLOCKS from "./json/googleIO/blocks.json";
 import KEYNOTES from "./json/googleIO/keynotes.json";
@@ -22,14 +21,6 @@ describe("googleIODataExtractor", () => {
       let previewCategories = googleIODataExtractor.extractPreviewCategories();
 
       expect(previewCategories).to.deep.equal(PREVIEW_CATEGORIES);
-    });
-  });
-
-  describe("extractCategory", () => {
-    it("extracts category for a given tag", () => {
-      let categories = googleIODataExtractor.extractCategories();
-
-      expect(categories).to.deep.equal(CATEGORIES);
     });
   });
 

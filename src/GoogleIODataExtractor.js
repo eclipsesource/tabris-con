@@ -19,17 +19,12 @@ export default class {
         text: keynote.description,
         startTimestamp: keynote.startTimestamp,
         endTimestamp: keynote.endTimestamp,
+        categoryId: keynote.mainTag || null,
         categoryName: this._getTagName(keynote.mainTag)
       }))
     };
     previewCategories.push(keynotes);
     return previewCategories;
-  }
-
-  extractCategories() {
-    let allCategories = _.map(this._conferenceData.sessionData.tags, "category");
-    return this._getTagsForCategories(allCategories)
-      .map(tagToPreview => this._createCategory(tagToPreview));
   }
 
   extractKeynotes() {
@@ -61,6 +56,7 @@ export default class {
       startTimestamp: googleIOSession.startTimestamp,
       endTimestamp: googleIOSession.endTimestamp,
       speakers: this._findSpeakers(googleIOSession.speakers),
+      categoryId: googleIOSession.mainTag || null,
       categoryName: this._getTagName(googleIOSession.mainTag)
     });
   }

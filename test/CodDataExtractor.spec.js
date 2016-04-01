@@ -1,7 +1,6 @@
 import {expect} from "chai";
 import COD_CONFERENCE_DATA from "./json/cod/codConferenceData.json";
 import PREVIEW_CATEGORIES from "./json/cod/previewCategories.json";
-import CATEGORIES from "./json/cod/categories.json";
 import KEYNOTES from "./json/cod/keynotes.json";
 import SESSIONS from "./json/cod/sessions.json";
 import BLOCKS from "./json/cod/blocks.json";
@@ -24,14 +23,6 @@ describe("CodDataExtractor", () => {
       let previewCategories = codDataExtractor.extractPreviewCategories();
 
       expect(previewCategories).to.deep.equal(PREVIEW_CATEGORIES);
-    });
-  });
-
-  describe("extractCategories", () => {
-    it("extracts all categories", () => {
-      let categories = codDataExtractor.extractCategories();
-
-      expect(categories).to.deep.equal(CATEGORIES);
     });
   });
 

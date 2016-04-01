@@ -23,6 +23,7 @@ export default class {
         id: keynote.id,
         title: keynote.title,
         text: stripHtml(keynote.description),
+        categoryId: keynote.categoryId || null,
         categoryName: keynote.categoryName || null,
         startTimestamp: new TimezonedDate(this._timezone, keynote.startTimestamp).toJSON(),
         endTimestamp: new TimezonedDate(this._timezone, keynote.endTimestamp).toJSON()
@@ -32,13 +33,6 @@ export default class {
       .map(category => this._createCategory(category.id, {limit: 2}));
     previewCategories.push(keynoteCategory);
     return previewCategories;
-  }
-
-  extractCategories() {
-    return _(this._getCategoriesList())
-      .filter(category => category.id !== "SCHEDULE_ITEM")
-      .map(category => this._createCategory(category.id))
-      .value();
   }
 
   extractKeynotes() {
@@ -71,6 +65,7 @@ export default class {
         title: session.title,
         description: stripHtml(session.abstract),
         room: session.room,
+        categoryId: session.categoryId || null,
         categoryName: session.categoryName || null,
         startTimestamp: new TimezonedDate(this._timezone, session.start).toJSON(),
         endTimestamp: new TimezonedDate(this._timezone, session.end).toJSON(),
@@ -113,6 +108,7 @@ export default class {
         id: session.id,
         title: session.title,
         text: stripHtml(session.abstract),
+        categoryId: session.categoryId || null,
         categoryName: session.categoryName || null,
         startTimestamp: new TimezonedDate(this._timezone, session.start).toJSON(),
         endTimestamp: new TimezonedDate(this._timezone, session.end).toJSON()

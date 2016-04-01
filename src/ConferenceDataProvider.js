@@ -4,6 +4,7 @@ import * as DataExtractorFactory from "./DataExtractorFactory";
 import InitialData from "./InitialData";
 import * as alert from "./components/alert";
 import config from "./configs/config";
+import FilterTabrisConCategories from "./FilterTabrisConCategories";
 
 export default class {
   constructor(newDataFetcher, initialData) {
@@ -44,12 +45,17 @@ export default class {
     if (device.platform === "UWP") {
       if (!this._conferenceData) {
         let dataExtractor = DataExtractorFactory.create(config, this._initialData);
-        this._conferenceData = {
+        let extractedData = {
           sessions: dataExtractor.extractSessions(),
-          previewCategories: dataExtractor.extractPreviewCategories(),
-          categories: dataExtractor.extractCategories(),
-          keynotes: dataExtractor.extractKeynotes(),
-          blocks: dataExtractor.extractBlocks()
+          blocks: dataExtractor.extractBlocks(),
+          keynotes: dataExtractor.extractKeynotes()
+        };
+        this._conferenceData = {
+          sessions: extractedData.sessions,
+          blocks: extractedData.blocks,
+          keynotes: extractedData.keynotes,
+          previewCategories: dataExtractor.extractPreviewCategories(), // TODO: derive from extracted data instead
+          categories: FilterTabrisConCategories.fromSessions(extractedData.sessions)
         };
       }
     }
@@ -76,11 +82,16 @@ export default class {
 
   _persistData(data) {
     let dataExtractor = DataExtractorFactory.create(config, data);
-    persistedStorage.setSessions(dataExtractor.extractSessions());
-    persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories());
-    persistedStorage.setCategories(dataExtractor.extractCategories());
-    persistedStorage.setKeynotes(dataExtractor.extractKeynotes());
-    persistedStorage.setBlocks(dataExtractor.extractBlocks());
+    let extractedData = {
+      sessions: dataExtractor.extractSessions(),
+      blocks: dataExtractor.extractBlocks(),
+      keynotes: dataExtractor.extractKeynotes()
+    };
+    persistedStorage.setSessions(extractedData.sessions);
+    persistedStorage.setKeynotes(extractedData.keynotes);
+    persistedStorage.setBlocks(extractedData.blocks);
+    persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories()); // TODO: derive from extracted data instead
+    persistedStorage.setCategories(FilterTabrisConCategories.fromSessions(extractedData.sessions));
   }
 
   _getDataFromStorage() {
