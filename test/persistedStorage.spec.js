@@ -86,9 +86,25 @@ describe("persisted storage", () => {
       it("set" + capitalizedProperty + " stores " + property + " with data format in localStorage", () => {
         persistedStorage["set" + capitalizedProperty](value, "codService");
 
-        expect(localStorage.setItem).to.have.been.calledWith(property, JSON.stringify({
-          codService: value
-        }));
+        verifyConferenceDataSet(property, value);
+      });
+    });
+
+    describe("setConferenceData", () => {
+      it("persists conference data", () => {
+        persistedStorage.setConferenceData({
+          [persistedStorage.PREVIEW_CATEGORIES]: "preview categories",
+          [persistedStorage.CATEGORIES]: "categories",
+          [persistedStorage.SESSIONS]: "sessions",
+          [persistedStorage.KEYNOTES]: "keynotes",
+          [persistedStorage.BLOCKS]: "blocks"
+        }, "codService");
+
+        verifyConferenceDataSet(persistedStorage.PREVIEW_CATEGORIES, "preview categories");
+        verifyConferenceDataSet(persistedStorage.CATEGORIES, "categories");
+        verifyConferenceDataSet(persistedStorage.SESSIONS, "sessions");
+        verifyConferenceDataSet(persistedStorage.KEYNOTES, "keynotes");
+        verifyConferenceDataSet(persistedStorage.BLOCKS, "blocks");
       });
     });
   });
@@ -120,6 +136,27 @@ describe("persisted storage", () => {
         expect(value).to.equal(null);
       });
     });
+
+    describe("getConferenceData", () => {
+      it("returns stored conference data", () => {
+        global.localStorage.getItem.withArgs(persistedStorage.PREVIEW_CATEGORIES)
+          .returns("{\"codService\": \"preview categories\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.CATEGORIES).returns("{\"codService\": \"categories\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.SESSIONS).returns("{\"codService\": \"sessions\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.KEYNOTES).returns("{\"codService\": \"keynotes\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.BLOCKS).returns("{\"codService\": \"blocks\"}");
+
+        let conferenceData = persistedStorage.getConferenceData("codService");
+
+        expect(conferenceData).to.deep.equal({
+          [persistedStorage.PREVIEW_CATEGORIES]: "preview categories",
+          [persistedStorage.CATEGORIES]: "categories",
+          [persistedStorage.SESSIONS]: "sessions",
+          [persistedStorage.KEYNOTES]: "keynotes",
+          [persistedStorage.BLOCKS]: "blocks"
+        });
+      });
+    });
   });
 
   describe("deleteConferenceData", () => {
@@ -139,5 +176,10 @@ describe("persisted storage", () => {
       });
     });
   });
-
 });
+
+function verifyConferenceDataSet(key, value) {
+  expect(localStorage.setItem).to.have.been.calledWith(key, JSON.stringify({
+    "codService": value
+  }));
+}

@@ -1,15 +1,13 @@
 /*globals Promise: true*/
 import * as persistedStorage from "./persistedStorage";
-import * as DataExtractorFactory from "./DataExtractorFactory";
-import InitialData from "./InitialData";
 import * as alert from "./components/alert";
 import config from "./configs/config";
-import FilterTabrisConCategories from "./FilterTabrisConCategories";
+import * as ConferenceDataFactory from "./ConferenceDataFactory";
 
 export default class {
-  constructor(newDataFetcher, initialData) {
+  constructor(newDataFetcher, bundledConferenceData) {
     this._newDataFetcher = newDataFetcher;
-    this._initialData = initialData;
+    this._bundledConferenceData = bundledConferenceData;
   }
 
   get() {
@@ -19,9 +17,10 @@ export default class {
     }
     this._handleAppUpgrade();
     return this._newDataFetcher.fetch()
-      .then(data => {
-        if (data) {
-          this._persistData(data);
+      .then(rawData => {
+        if (rawData) {
+          let conferenceData = ConferenceDataFactory.createFromRawData(config, rawData);
+          this._persistData(conferenceData);
         } else {
           this._handleFallingBackToOldData({fetchFailed: false});
         }
@@ -32,7 +31,7 @@ export default class {
         this._handleFallingBackToOldData({fetchFailed: true});
       })
       .then(() => {
-        this._conferenceData = this._getDataFromStorage();
+        this._conferenceData = persistedStorage.getConferenceData();
         return this._conferenceData;
       });
   }
@@ -44,19 +43,7 @@ export default class {
   _handleUWP() {
     if (device.platform === "UWP") {
       if (!this._conferenceData) {
-        let dataExtractor = DataExtractorFactory.create(config, this._initialData);
-        let extractedData = {
-          sessions: dataExtractor.extractSessions(),
-          blocks: dataExtractor.extractBlocks(),
-          keynotes: dataExtractor.extractKeynotes()
-        };
-        this._conferenceData = {
-          sessions: extractedData.sessions,
-          blocks: extractedData.blocks,
-          keynotes: extractedData.keynotes,
-          previewCategories: dataExtractor.extractPreviewCategories(), // TODO: derive from extracted data instead
-          categories: FilterTabrisConCategories.fromSessions(extractedData.sessions)
-        };
+        this._conferenceData = this._bundledConferenceData;
       }
     }
   }
@@ -76,32 +63,8 @@ export default class {
       alert.show(this._dataMayBeOutdatedMessage(), "Warning", "OK");
     }
     if (!dataStored) {
-      this._persistData(InitialData.createFor(config.DATA_SOURCE));
+      persistedStorage.setConferenceData(this._bundledConferenceData);
     }
-  }
-
-  _persistData(data) {
-    let dataExtractor = DataExtractorFactory.create(config, data);
-    let extractedData = {
-      sessions: dataExtractor.extractSessions(),
-      blocks: dataExtractor.extractBlocks(),
-      keynotes: dataExtractor.extractKeynotes()
-    };
-    persistedStorage.setSessions(extractedData.sessions);
-    persistedStorage.setKeynotes(extractedData.keynotes);
-    persistedStorage.setBlocks(extractedData.blocks);
-    persistedStorage.setPreviewCategories(dataExtractor.extractPreviewCategories()); // TODO: derive from extracted data instead
-    persistedStorage.setCategories(FilterTabrisConCategories.fromSessions(extractedData.sessions));
-  }
-
-  _getDataFromStorage() {
-    return {
-      sessions: persistedStorage.getSessions(),
-      previewCategories: persistedStorage.getPreviewCategories(),
-      categories: persistedStorage.getCategories(),
-      keynotes: persistedStorage.getKeynotes(),
-      blocks: persistedStorage.getBlocks()
-    };
   }
 
   _dataMayBeOutdatedMessage() {

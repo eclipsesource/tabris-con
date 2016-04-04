@@ -6,7 +6,7 @@
     "title": "Office Hours with the Play team",
     "categoryName": null,
     "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/4d63c164-cbf8-e411-b87f-00155d5066d7.jpg",
-    "text": "Visit our Google Play office hours space to learn more about all the different ways you can grow your business with Google Play.",
+    "description": "Visit our Google Play office hours space to learn more about all the different ways you can grow your business with Google Play.",
     "startTimestamp": "2016-05-29T16:00:00Z",
     "endTimestamp": "2016-05-30T00:00:00Z"
   }, {
@@ -14,7 +14,7 @@
     "title": "Office Hours with the Google Play services engineering team",
     "categoryName": null,
     "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/f7ad2c3d-08ea-e411-b87f-00155d5066d7.jpg",
-    "text": "Google Play services 7.5 was just released with lots of new features. Come and meet the engineering team for a chat and an opportunity to ask technical questions.",
+    "description": "Google Play services 7.5 was just released with lots of new features. Come and meet the engineering team for a chat and an opportunity to ask technical questions.",
     "startTimestamp": "2016-05-29T23:00:00Z",
     "endTimestamp": "2016-05-30T00:00:00Z"
   }]

@@ -180,7 +180,7 @@ export default class {
       timeframe: [
         new TimezonedDate(this._timezone, session.startTimestamp).format("D MMM"), this._getTimeframeTimePart(session)
       ].join(" - "),
-      previewText: session.text,
+      previewText: session.description,
       category: session.categoryName
     };
     return typeData[summaryType];

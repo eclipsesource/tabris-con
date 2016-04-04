@@ -1,30 +1,8 @@
-let PREVIEW_CATEGORIES = ["TOPIC", "THEME"];
 import _ from "lodash";
 
 export default class {
   constructor(conferenceData) {
     this._conferenceData = conferenceData;
-  }
-
-  extractPreviewCategories() {
-    let previewCategories = this._getTagsForCategories(PREVIEW_CATEGORIES)
-      .map(tagToPreview => this._createCategory(tagToPreview, {sessionsLimit: 2}));
-    let keynotes = {
-      id: "KEYNOTES",
-      title: "Keynotes",
-      sessions: this.extractKeynotes().map(keynote => ({
-        id: keynote.id,
-        title: keynote.title,
-        image: keynote.image,
-        text: keynote.description,
-        startTimestamp: keynote.startTimestamp,
-        endTimestamp: keynote.endTimestamp,
-        categoryId: keynote.mainTag || null,
-        categoryName: this._getTagName(keynote.mainTag)
-      }))
-    };
-    previewCategories.push(keynotes);
-    return previewCategories;
   }
 
   extractKeynotes() {
@@ -72,24 +50,9 @@ export default class {
       }));
   }
 
-  _getTagsForCategories(categories) {
-    return _(this._conferenceData.sessionData.tags)
-      .filter(tag => categories.indexOf(tag.category) > -1)
-      .map("tag").value();
-  }
-
   _getGoogleIOSessionRoom(googleIOSession) {
     return _(this._conferenceData.sessionData.rooms)
       .find(room => room.id === googleIOSession.room).name;
-  }
-
-  _createCategory(tag, filter) {
-    let self = this;
-    return {
-      id: tag,
-      title: self._getTagName(tag),
-      sessions: self._getSessions(tag, filter ? filter.sessionsLimit : undefined)
-    };
   }
 
   _getTagName(tag) {
@@ -97,19 +60,4 @@ export default class {
     return tagObject && tagObject.name || null;
   }
 
-  _getSessions(tag, limit) {
-    return this._conferenceData.sessionData.sessions
-      .filter(session => session.tags.indexOf(tag) > -1)
-      .slice(0, limit)
-      .map(session => ({
-        id: session.id,
-        title: session.title,
-        image: session.photoUrl,
-        text: session.description,
-        startTimestamp: session.startTimestamp,
-        endTimestamp: session.endTimestamp,
-        categoryName: this._getTagName(session.mainTag)
-      }));
-  }
 }
-

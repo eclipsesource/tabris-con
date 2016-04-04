@@ -15,26 +15,6 @@ export default class {
     this._assignCategoryTypes(this._conferenceData);
   }
 
-  extractPreviewCategories() {
-    let keynoteCategory = {
-      id: "KEYNOTES",
-      title: "Keynotes",
-      sessions: this.extractKeynotes().map(keynote => ({
-        id: keynote.id,
-        title: keynote.title,
-        text: stripHtml(keynote.description),
-        categoryId: keynote.categoryId || null,
-        categoryName: keynote.categoryName || null,
-        startTimestamp: new TimezonedDate(this._timezone, keynote.startTimestamp).toJSON(),
-        endTimestamp: new TimezonedDate(this._timezone, keynote.endTimestamp).toJSON()
-      }))
-    };
-    let previewCategories = this._getCategoriesList({exclude: "SCHEDULE_ITEM"})
-      .map(category => this._createCategory(category.id, {limit: 2}));
-    previewCategories.push(keynoteCategory);
-    return previewCategories;
-  }
-
   extractKeynotes() {
     return this._getMappedSessions(session => session.session_type === "Keynote");
   }
@@ -76,44 +56,6 @@ export default class {
           image: speaker.picture
         }))
       }));
-  }
-
-  _createCategory(categoryId, options) {
-    return {
-      id: categoryId,
-      title: this._getCategoryName(categoryId),
-      sessions: this._getSessions(categoryId, options ? options.limit : undefined)
-    };
-  }
-
-  _getCategoryName(categoryId) {
-    let session = _.find(this._conferenceData.scheduledSessions, session => session.categoryId === categoryId);
-    return session && session.categoryName ? session.categoryName : null;
-  }
-
-  _getCategoriesList(options) {
-    let catList = _(this._conferenceData.scheduledSessions)
-      .filter(session => options && options.exclude ? options.exclude !== session.categoryId : true)
-      .map(session => ({id: session.categoryId, name: session.categoryName}))
-      .uniqWith(_.isEqual)
-      .value();
-    return catList;
-  }
-
-  _getSessions(value, limit) {
-    return _(this._conferenceData.scheduledSessions)
-      .filter(session => session.categoryId === value)
-      .slice(0, limit)
-      .map(session => ({
-        id: session.id,
-        title: session.title,
-        text: stripHtml(session.abstract),
-        categoryId: session.categoryId || null,
-        categoryName: session.categoryName || null,
-        startTimestamp: new TimezonedDate(this._timezone, session.start).toJSON(),
-        endTimestamp: new TimezonedDate(this._timezone, session.end).toJSON()
-      }))
-      .value();
   }
 
   _removeIgnoredBlocks(conferenceData) {

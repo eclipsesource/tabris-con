@@ -1,7 +1,6 @@
 import chai from "chai";
 import GoogleIODataExtractor from "../src/GoogleIODataExtractor";
 import IO_CONFERENCE_DATA from "./json/googleIO/ioConferenceData.json";
-import PREVIEW_CATEGORIES from "./json/googleIO/previewCategories.json";
 import SESSIONS from "./json/googleIO/sessions.json";
 import BLOCKS from "./json/googleIO/blocks.json";
 import KEYNOTES from "./json/googleIO/keynotes.json";
@@ -14,14 +13,6 @@ describe("googleIODataExtractor", () => {
 
   before(() => {
     googleIODataExtractor = new GoogleIODataExtractor(IO_CONFERENCE_DATA);
-  });
-
-  describe("extractPreviewCategories", () => {
-    it("extracts categories preview list from conference data", () => {
-      let previewCategories = googleIODataExtractor.extractPreviewCategories();
-
-      expect(previewCategories).to.deep.equal(PREVIEW_CATEGORIES);
-    });
   });
 
   describe("extractKeynotes", () => {

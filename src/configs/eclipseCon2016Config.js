@@ -80,5 +80,8 @@ export default {
     LINK_COLOR: "#48a8f4",
     KEYNOTE_TITLE_COLOR: "#FFC107",
     ANDROID_BUTTON_DISABLED_BACKGROUND: "#aba1d5"
+  },
+  BUNDLED_CONFERENCE_DATA: {
+    scheduledSessions: "../json/cod/scheduled_sessions.json"
   }
 };

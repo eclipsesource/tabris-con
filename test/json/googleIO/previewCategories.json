@@ -1,23 +1,16 @@
 [
   {
-    "id": "TOPIC_PLAY",
-    "title": "Play",
+    "id": "KEYNOTES",
+    "title": "Keynotes",
     "sessions": [{
-      "id": "4d63c164-cbf8-e411-b87f-00155d5066d7",
-      "title": "Office Hours with the Play team",
-      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/4d63c164-cbf8-e411-b87f-00155d5066d7.jpg",
-      "text": "Visit our Google Play office hours space to learn more about all the different ways you can grow your business with Google Play.",
-      "categoryName": "Play",
-      "startTimestamp": "2016-05-29T16:00:00Z",
-      "endTimestamp": "2016-05-30T00:00:00Z"
-    }, {
-      "id": "f7ad2c3d-08ea-e411-b87f-00155d5066d7",
-      "title": "Office Hours with the Google Play services engineering team",
-      "categoryName": "Play",
-      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/f7ad2c3d-08ea-e411-b87f-00155d5066d7.jpg",
-      "text": "Google Play services 7.5 was just released with lots of new features. Come and meet the engineering team for a chat and an opportunity to ask technical questions.",
-      "startTimestamp": "2016-05-29T23:00:00Z",
-      "endTimestamp": "2016-05-30T00:00:00Z"
+      "id": "__keynote__",
+      "title": "Keynote",
+      "categoryName": null,
+      "categoryId": "FLAG_KEYNOTE",
+      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg",
+      "description": "Join us to learn about product and platform innovations at Google, starting with a live kickoff from our Senior Vice-President of Products, Sundar Pichai.",
+      "startTimestamp": "2015-05-28T16:30:00Z",
+      "endTimestamp": "2015-05-28T18:30:00Z"
     }]
   },
   {
@@ -26,25 +19,35 @@
     "sessions": [{
       "id": "ee58a197-b6d4-e411-b87f-00155d5066d7",
       "title": "Material design icons made easy",
+      "categoryId": "TOPIC_DESIGN",
       "categoryName": "Design",
       "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/ee58a197-b6d4-e411-b87f-00155d5066d7.jpg",
-      "text": "Simple and clear iconography is vital to well designed and usable user interfaces. Google is making available an icon set based on material design principles that you can use in your web, Android and iOS apps. Learn about the design of the icons, how to use them in your apps, and best practices for vector assets, icon fonts, and animated icons. (Note: This Sandbox talk will be offered twice throughout the event. Check the schedule to confirm timings.)",
+      "description": "Simple and clear iconography is vital to well designed and usable user interfaces. Google is making available an icon set based on material design principles that you can use in your web, Android and iOS apps. Learn about the design of the icons, how to use them in your apps, and best practices for vector assets, icon fonts, and animated icons. (Note: This Sandbox talk will be offered twice throughout the event. Check the schedule to confirm timings.)",
       "startTimestamp": "2016-05-28T22:30:00Z",
       "endTimestamp": "2016-05-28T23:00:00Z"
     }]
   },
   {
-    "id": "KEYNOTES",
-    "title": "Keynotes",
+    "id": "TOPIC_PLAY",
+    "title": "Play",
     "sessions": [{
-      "id": "__keynote__",
-      "title": "Keynote",
-      "categoryName": null,
-      "categoryId": null,
-      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg",
-      "text": "Join us to learn about product and platform innovations at Google, starting with a live kickoff from our Senior Vice-President of Products, Sundar Pichai.",
-      "startTimestamp": "2015-05-28T16:30:00Z",
-      "endTimestamp": "2015-05-28T18:30:00Z"
+      "id": "4d63c164-cbf8-e411-b87f-00155d5066d7",
+      "title": "Office Hours with the Play team",
+      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/4d63c164-cbf8-e411-b87f-00155d5066d7.jpg",
+      "description": "Visit our Google Play office hours space to learn more about all the different ways you can grow your business with Google Play.",
+      "categoryId": "TOPIC_PLAY",
+      "categoryName": "Play",
+      "startTimestamp": "2016-05-29T16:00:00Z",
+      "endTimestamp": "2016-05-30T00:00:00Z"
+    }, {
+      "id": "f7ad2c3d-08ea-e411-b87f-00155d5066d7",
+      "title": "Office Hours with the Google Play services engineering team",
+      "categoryId": "TOPIC_PLAY",
+      "categoryName": "Play",
+      "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/f7ad2c3d-08ea-e411-b87f-00155d5066d7.jpg",
+      "description": "Google Play services 7.5 was just released with lots of new features. Come and meet the engineering team for a chat and an opportunity to ask technical questions.",
+      "startTimestamp": "2016-05-29T23:00:00Z",
+      "endTimestamp": "2016-05-30T00:00:00Z"
     }]
   }
 ]

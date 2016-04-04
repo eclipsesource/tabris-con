@@ -65,6 +65,14 @@ export function setBlocks(value, dataSource = config.DATA_SOURCE) {
   setValue(BLOCKS, value, dataSource);
 }
 
+export function setConferenceData(conferenceData, dataSource = config.DATA_SOURCE) {
+  setSessions(conferenceData.sessions, dataSource);
+  setKeynotes(conferenceData.keynotes, dataSource);
+  setBlocks(conferenceData.blocks, dataSource);
+  setPreviewCategories(conferenceData.previewCategories, dataSource);
+  setCategories(conferenceData.categories, dataSource);
+}
+
 /* get functions */
 export function getAttendedSessions() {
   let attendedSessions = localStorage.getItem(ATTENDED_SESSIONS) || "[]";
@@ -89,6 +97,16 @@ export function getKeynotes(dataSource = config.DATA_SOURCE) {
 
 export function getBlocks(dataSource = config.DATA_SOURCE) {
   return getValue(BLOCKS, dataSource);
+}
+
+export function getConferenceData(dataSource = config.DATA_SOURCE) {
+  return {
+    sessions: getSessions(dataSource),
+    previewCategories: getPreviewCategories(dataSource),
+    categories: getCategories(dataSource),
+    keynotes: getKeynotes(dataSource),
+    blocks: getBlocks(dataSource)
+  };
 }
 
 /* remove functions */
