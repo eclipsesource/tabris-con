@@ -182,7 +182,7 @@ export default class extends Page {
     });
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
-    if (this._feedbackService.canGiveFeedbackForSession(data)) {
+    if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
       new SessionPageFeedbackWidget(data, this._viewDataProvider, this._loginService, this._feedbackService)
         .appendTo(contentComposite);
     }

@@ -5,35 +5,51 @@ import config from "./configs/config";
 import * as ConferenceDataFactory from "./ConferenceDataFactory";
 
 export default class {
-  constructor(newDataFetcher, bundledConferenceData) {
-    this._newDataFetcher = newDataFetcher;
+  constructor(bundledConferenceData) {
     this._bundledConferenceData = bundledConferenceData;
+  }
+
+  setNewDataFetcher(newDataFetcher) {
+    this._newDataFetcher = newDataFetcher;
   }
 
   get() {
     this._handleUWP();
+
     if (this._conferenceData) {
       return Promise.resolve(this._conferenceData);
     }
+
     this._handleAppUpgrade();
+
+    if (!config.SERVICE_URL) {
+      return this._useBundledData();
+    }
+
     return this._newDataFetcher.fetch()
       .then(rawData => {
         if (rawData) {
           let conferenceData = ConferenceDataFactory.createFromRawData(config, rawData);
-          this._persistData(conferenceData);
+          persistedStorage.setConferenceData(conferenceData);
         } else {
-          this._handleFallingBackToOldData({fetchFailed: false});
+          this._fallBackToPresentData({fetchFailed: false});
         }
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         console.log(e.stack);
-        this._handleFallingBackToOldData({fetchFailed: true});
+        this._fallBackToPresentData({fetchFailed: true});
       })
       .then(() => {
         this._conferenceData = persistedStorage.getConferenceData();
         return this._conferenceData;
       });
+  }
+
+  _useBundledData() {
+    persistedStorage.setConferenceData(this._bundledConferenceData);
+    this._conferenceData = persistedStorage.getConferenceData();
+    return Promise.resolve(this._conferenceData);
   }
 
   invalidateCache() {
@@ -57,7 +73,7 @@ export default class {
     localStorage.setItem("appVersion", currentVersion);
   }
 
-  _handleFallingBackToOldData(options) {
+  _fallBackToPresentData(options) {
     let dataStored = persistedStorage.conferenceDataStored();
     if (options.fetchFailed || !dataStored) {
       alert.show(this._dataMayBeOutdatedMessage(), "Warning", "OK");
