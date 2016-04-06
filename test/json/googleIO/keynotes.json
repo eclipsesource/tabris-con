@@ -3,6 +3,7 @@
   "title": "Keynote",
   "categoryName": null,
   "categoryId": "FLAG_KEYNOTE",
+  "keynote": true,
   "description": "Join us to learn about product and platform innovations at Google, starting with a live kickoff from our Senior Vice-President of Products, Sundar Pichai.",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg",
   "startTimestamp": "2015-05-28T16:30:00Z",

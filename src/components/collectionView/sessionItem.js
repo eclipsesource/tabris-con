@@ -11,7 +11,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
     },
     select: (widget, item) => {
       let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).open();
-      viewDataProvider.getSession(item.id)
+      viewDataProvider["get" + (item.keynote ? "Keynote" : "Session")](item.id)
         .then(session => sessionPage.set("data", session));
     }
   };

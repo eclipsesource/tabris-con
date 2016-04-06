@@ -94,7 +94,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
     select: (widget, item) => {
       if (item.sessionId) {
         let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).open();
-        viewDataProvider.getSession(item.sessionId)
+        viewDataProvider["get" + (item.keynote ? "Keynote" : "Session")](item.sessionId)
           .then(session => sessionPage.set("data", session));
         tabris.ui.find("#schedule").set("lastSelectedSessionId", item.sessionId);
       } else if (item.sessionType === "free") {

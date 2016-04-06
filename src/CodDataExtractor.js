@@ -16,7 +16,7 @@ export default class {
   }
 
   extractKeynotes() {
-    return this._getMappedSessions(session => session.session_type === "Keynote");
+    return this._getMappedSessions(session => session.session_type === "Keynote", {keynote: true});
   }
 
   extractSessions() {
@@ -36,13 +36,14 @@ export default class {
       .value();
   }
 
-  _getMappedSessions(predicate) {
+  _getMappedSessions(predicate, options) {
     return this._conferenceData.scheduledSessions
       .filter(predicate)
       .map(session => ({
         id: session.id,
         nid: session.nid,
         title: session.title,
+        keynote: options && options.keynote || false,
         description: stripHtml(session.abstract),
         room: session.room,
         categoryId: session.categoryId || null,

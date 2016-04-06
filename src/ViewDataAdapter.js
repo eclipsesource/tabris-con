@@ -137,6 +137,9 @@ export default class {
         title: datedBlock.title,
         type: "block"
       };
+      if (typeof datedBlock.keynote !== "undefined") {
+        block.keynote = datedBlock.keynote;
+      }
       if (datedBlock.sessionId) {
         block.sessionId = datedBlock.sessionId;
       }
@@ -168,6 +171,7 @@ export default class {
     return {
       startTimestamp: session.startTimestamp,
       summary: self._getSummary(session, options.summaryType),
+      keynote: session.keynote,
       type: type,
       id: session.id,
       image: session.image,

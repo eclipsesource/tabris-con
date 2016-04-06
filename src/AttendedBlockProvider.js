@@ -8,12 +8,13 @@ export default class {
   getBlocks() {
     return this._conferenceDataProvider.get().then(data => {
       let attendedBlockIds = persistedStorage.getAttendedSessions();
-      return data.sessions
+      return [...data.sessions, ...data.keynotes]
         .filter(session => attendedBlockIds.indexOf(session.id) > -1)
         .map(session => {
           let attendedBlock = {
             sessionId: session.id,
             sessionNid: session.nid,
+            keynote: session.keynote,
             title: session.title,
             room: session.room,
             startTimestamp: session.startTimestamp,

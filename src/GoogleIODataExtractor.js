@@ -6,7 +6,7 @@ export default class {
   }
 
   extractKeynotes() {
-    return this._conferenceData.keynote.sessions.map(this._getSessionMapper());
+    return this._conferenceData.keynote.sessions.map(this._getSessionMapper({keynote: true}));
   }
 
   extractSessions() {
@@ -24,12 +24,13 @@ export default class {
       }));
   }
 
-  _getSessionMapper() {
+  _getSessionMapper(options) {
     return googleIOSession => ({
       id: googleIOSession.id,
       title: googleIOSession.title,
       description: googleIOSession.description,
       room: this._getGoogleIOSessionRoom(googleIOSession),
+      keynote: options && options.keynote || false,
       image: googleIOSession.photoUrl,
       startTimestamp: googleIOSession.startTimestamp,
       endTimestamp: googleIOSession.endTimestamp,
