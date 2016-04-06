@@ -3,18 +3,19 @@ import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import collectionViewItemConfiguration from "./collectionViewItemConfiguration";
 
 export default class extends CollectionView {
-  constructor(configuration, viewDataProvider) {
+  constructor(configuration, viewDataProvider, loginService, feedbackService) {
     super(
       Object.assign({}, configuration, {
         left: 0, top: 0, right: 0, bottom: 0,
         cellType: item => item.type,
-        itemHeight: (item, type) => getItemType(type, viewDataProvider).itemHeight,
-        initializeCell: (cell, type) => getItemType(type, viewDataProvider).initializeCell(cell)
+        itemHeight: (item, type) => getItemType(type, viewDataProvider, loginService, feedbackService).itemHeight,
+        initializeCell: (cell, type) => getItemType(type, viewDataProvider, loginService, feedbackService)
+          .initializeCell(cell)
       })
     );
     this.on("select", (widget, item) => {
       if (item) {
-        getItemType(item.type, viewDataProvider).select(widget, item);
+        getItemType(item.type, viewDataProvider, loginService, feedbackService).select(widget, item);
       }
     });
     let refreshCallback = collectionView => {
@@ -34,6 +35,6 @@ export default class extends CollectionView {
   }
 }
 
-function getItemType(type, viewDataProvider) {
-  return collectionViewItemConfiguration[type + "Item"].get(viewDataProvider);
+function getItemType(type, viewDataProvider, loginService, feedbackService) {
+  return collectionViewItemConfiguration[type + "Item"].get({viewDataProvider, loginService, feedbackService});
 }

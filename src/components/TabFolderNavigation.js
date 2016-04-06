@@ -1,7 +1,7 @@
 import colors from "../resources/colors";
 import {Page, TabFolder} from "tabris";
 
-export function createWith(navigatables, viewDataProvider) {
+export function createWith(navigatables, viewDataProvider, loginService, feedbackService) {
   let page = new Page({id: "mainPage", topLevel: true}).open();
   let navigation = new TabFolder({
     left: 0, top: 0, right: 0, bottom: 0,
@@ -16,7 +16,7 @@ export function createWith(navigatables, viewDataProvider) {
       }
     }, 100);
   };
-  createTabs(navigation, navigatables, viewDataProvider);
+  createTabs(navigation, navigatables, viewDataProvider, loginService, feedbackService);
   updateTabFocusOnTabFolderSelectionChange(navigation, page);
   page.on("appear", triggerNavigatableAppear);
   navigation.appendTo(page);
@@ -31,9 +31,9 @@ function updateTabFocusOnTabFolderSelectionChange(navigation, page) {
   });
 }
 
-function createTabs(tabFolder, navigatables, viewDataProvider) {
+function createTabs(tabFolder, navigatables, viewDataProvider, loginService, feedbackService) {
   navigatables.forEach(Navigatable => {
-    let navigatable = new Navigatable({viewDataProvider: viewDataProvider}).asTab();
+    let navigatable = new Navigatable({viewDataProvider, loginService, feedbackService}).asTab();
     navigatable.parent().appendTo(tabFolder);
   });
 }

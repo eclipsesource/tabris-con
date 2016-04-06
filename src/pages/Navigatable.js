@@ -4,13 +4,14 @@ import colors from "../resources/colors";
 import {Composite, Tab, Page} from "tabris";
 
 export default class extends Composite {
-  constructor({configuration, viewDataProvider}) {
+  constructor({configuration, viewDataProvider, remoteService}) {
     super(_.extend({
       class: "navigatable",
       left: 0, top: 0, right: 0, bottom: 0,
       active: true
     }, configuration));
     this._viewDataProvider = viewDataProvider;
+    this._remoteService = remoteService;
     this.updateImage();
     this.on("change:active", (widget, active) => {
       this.updateImage();
@@ -25,6 +26,10 @@ export default class extends Composite {
 
   getViewDataProvider() {
     return this._viewDataProvider;
+  }
+
+  getRemoteService() {
+    return this._remoteService;
   }
 
   initializeItems() {

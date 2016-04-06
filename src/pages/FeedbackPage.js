@@ -2,12 +2,11 @@ import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
 import Button from "../components/TabrisConButton";
 import FeedbackThumbs from "../components/FeedbackThumbs";
-import * as codFeedbackService from "../helpers/codFeedbackService";
 import addProgressTo from "../helpers/addProgressTo";
 import {Page, Composite, TextView, TextInput} from "tabris";
 
 export default class extends Page {
-  constructor(adaptedSession) {
+  constructor(adaptedSession, feedbackService) {
     super({title: "Feedback", topLevel: false});
 
     let container = new Composite({
@@ -36,7 +35,7 @@ export default class extends Page {
 
     button.on("select", () => {
       button.set("progress", true);
-      codFeedbackService.createEvaluation(
+      feedbackService.createEvaluation(
         adaptedSession.id, adaptedSession.nid, commentTextInput.get("text"), feedbackThumbs.get("feedback")
       ).then(() => this.close())
        .catch(() => button.set("progress", false));

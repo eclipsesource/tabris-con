@@ -3,12 +3,11 @@ import sizes from "../resources/sizes";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import getImage from "../helpers/getImage";
 import addProgressTo from "../helpers/addProgressTo";
-import * as loginService from "../helpers/loginService";
 import LoginPage from "../pages/LoginPage";
 import {Composite, ImageView, TextView} from "tabris";
 
 export default class extends Composite {
-  constructor() {
+  constructor(loginService) {
     super({
       left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
       highlightOnTouch: true,
@@ -56,7 +55,7 @@ export default class extends Composite {
           this.set("loggedIn", false);
         });
       } else {
-        let loginPage = new LoginPage().open();
+        let loginPage = new LoginPage(loginService).open();
         loginPage.on("loginSuccess", () => this.set("loggedIn", true));
       }
     });

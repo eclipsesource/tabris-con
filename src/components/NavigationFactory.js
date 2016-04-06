@@ -12,8 +12,13 @@ let navigation = {
   iOS: TabFolderNavigation
 };
 
-export function create(config) {
+export function create(config, remoteService, loginService, feedbackService) {
   navigation[device.platform]
-    .createWith([Schedule, Tracks, Map, About], ViewDataProviderFactory.create(config))
+    .createWith(
+      [Schedule, Tracks, Map, About],
+      ViewDataProviderFactory.create(config, remoteService, loginService, feedbackService),
+      loginService,
+      feedbackService
+    )
     .open("#tracks");
 }

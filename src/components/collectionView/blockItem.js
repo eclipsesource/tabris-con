@@ -6,12 +6,12 @@ import SessionsPage from "../../pages/SessionsPage";
 import TimezonedDate from "../../TimezonedDate";
 import Circle from "../../components/Circle";
 import applyPlatformStyle from "../../helpers/applyPlatformStyle";
-import * as SessionPageFactory from "../../pages/SessionPageFactory";
+import SessionPage from "../../pages/SessionPage";
 import addProgressTo from "../../helpers/addProgressTo";
 import config from "../../configs/config";
 import {Composite, ImageView, TextView} from "tabris";
 
-export function get(viewDataProvider) {
+export function get({viewDataProvider, loginService, feedbackService}) {
   return {
     itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
     initializeCell: cell => {
@@ -93,12 +93,12 @@ export function get(viewDataProvider) {
     },
     select: (widget, item) => {
       if (item.sessionId) {
-        let sessionPage = SessionPageFactory.create(viewDataProvider).open();
+        let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).open();
         viewDataProvider.getSession(item.sessionId)
           .then(session => sessionPage.set("data", session));
         tabris.ui.find("#schedule").set("lastSelectedSessionId", item.sessionId);
       } else if (item.sessionType === "free") {
-        let page = new SessionsPage(viewDataProvider).open();
+        let page = new SessionsPage(viewDataProvider, loginService).open();
         let date1 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.startTimestamp);
         let date2 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.endTimestamp);
         viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())

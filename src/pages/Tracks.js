@@ -4,7 +4,7 @@ import getImage from "../helpers/getImage";
 import Navigatable from "./Navigatable";
 
 export default class extends Navigatable {
-  constructor({viewDataProvider}) {
+  constructor({viewDataProvider, loginService, feedbackService}) {
     super({
       configuration: {
         id: "tracks",
@@ -17,7 +17,7 @@ export default class extends Navigatable {
     let collectionView = new CollectionView({
       left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
       updatable: true
-    }, viewDataProvider).appendTo(this);
+    }, viewDataProvider, loginService, feedbackService).appendTo(this);
     this.on("change:data",(widget, data) => {
       if (collectionView.get("items").length > 0) {
         return;

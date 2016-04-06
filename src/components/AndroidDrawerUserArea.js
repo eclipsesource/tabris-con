@@ -3,17 +3,17 @@ import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import LoginPage from "../pages/LoginPage";
 import getImage from "../helpers/getImage";
-import * as loginService from "../helpers/loginService";
 import {Composite, ImageView, TextView} from "tabris";
 import config from "../configs/config";
 
 export default class extends Composite {
-  constructor() {
+  constructor(loginService) {
     super({
       id: "androidDrawerUserArea",
       layoutData: {left: 0, top: 0, right: 0, height: sizes.DRAWER_USER_AREA_DEFAULT_HEIGHT},
       background: colors.BACKGROUND_COLOR
     });
+    this._loginService = loginService;
 
     let mainContainer = new Composite({
       left: 0, top: 0, right: 0, bottom: 0
@@ -33,7 +33,7 @@ export default class extends Composite {
         right: sizes.MARGIN_LARGE,
         height: sizes.DRAWER_USER_AREA_LOGGED_OUT_HEIGHT
       }).on("tap", () => {
-        let loginPage = new LoginPage().open();
+        let loginPage = new LoginPage(this._loginService).open();
         loginPage.on("loginSuccess", () => this.set("loggedIn", true));
       }).appendTo(this);
 
@@ -81,12 +81,12 @@ export default class extends Composite {
         .on("change:loggedIn", (widget, loggedIn) => {
           this.set("height",
             loggedIn ? sizes.DRAWER_USER_AREA_DEFAULT_HEIGHT : sizes.DRAWER_USER_AREA_LOGGED_OUT_HEIGHT);
-          fullNameTextView.set("text", loginService.getUserData().fullName);
-          mailTextView.set("text", loginService.getUserData().mail);
+          fullNameTextView.set("text", this._loginService.getUserData().fullName);
+          mailTextView.set("text", this._loginService.getUserData().mail);
           mainContainer.set("visible", loggedIn);
           loggedOutContainer.set("visible", !loggedIn);
         })
-        .set("loggedIn", loginService.isLoggedIn());
+        .set("loggedIn", this._loginService.isLoggedIn());
     }
 
   }

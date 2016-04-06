@@ -1,43 +1,48 @@
-import * as codRemoteService from "../codRemoteService";
+export default class {
+  constructor(codRemoteService) {
+    this._codRemoteService = codRemoteService;
+    this._codRemoteService.setLoginService(this);
+  }
 
-export function login(username, password) {
-  return codRemoteService
-    .login(username, password)
-    .then(response => {
-      persistUserData(response);
-      reloadScheduleItems();
-      return Promise.resolve();
-    })
-    .then(() => maybeTrigger("#loginPage", "loginSuccess"))
-    .catch(e => {
-      resetUserData();
-      return Promise.reject(e);
-    })
-    .catch(() => maybeTrigger("#loginPage", "loginFailure"));
-}
+  login(username, password) {
+    return this._codRemoteService
+      .login(username, password)
+      .then(response => {
+        persistUserData(response);
+        reloadScheduleItems();
+        return Promise.resolve();
+      })
+      .then(() => maybeTrigger("#loginPage", "loginSuccess"))
+      .catch(e => {
+        resetUserData();
+        return Promise.reject(e);
+      })
+      .catch(() => maybeTrigger("#loginPage", "loginFailure"));
+  }
 
-export function logout() {
-  return codRemoteService.logout()
-    .then(destroySession)
-    .catch(() => triggerLogoutFailureEvents());
-}
+  logout() {
+    return this._codRemoteService.logout()
+      .then(this.destroySession)
+      .catch(() => triggerLogoutFailureEvents());
+  }
 
-export function destroySession() {
-  resetUserData();
-  reloadScheduleItems();
-  triggerLogoutSuccessEvents();
-}
+  destroySession() {
+    resetUserData();
+    reloadScheduleItems();
+    triggerLogoutSuccessEvents();
+  }
 
-export function isLoggedIn() {
-  return !!localStorage.getItem("username");
-}
+  isLoggedIn() {
+    return !!localStorage.getItem("username");
+  }
 
-export function getUserData() {
-  return {
-    username: localStorage.getItem("username"),
-    fullName: localStorage.getItem("fullName"),
-    mail: localStorage.getItem("mail")
-  };
+  getUserData() {
+    return {
+      username: localStorage.getItem("username"),
+      fullName: localStorage.getItem("fullName"),
+      mail: localStorage.getItem("mail")
+    };
+  }
 }
 
 function triggerLogoutSuccessEvents() {

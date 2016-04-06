@@ -5,7 +5,7 @@ import SessionsPage from "../../pages/SessionsPage";
 import SessionTitle from "../../components/SessionTitle";
 import {TextView} from "tabris";
 
-export function get(viewDataProvider) {
+export function get({viewDataProvider, loginService}) {
   return {
     itemHeight: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,
     initializeCell: cell => {
@@ -21,7 +21,7 @@ export function get(viewDataProvider) {
       cell.on("change:item", (cell, item) => title.set("text", item.title));
     },
     select: (widget, item) => {
-      let page = new SessionsPage(viewDataProvider).open();
+      let page = new SessionsPage(viewDataProvider, loginService).open();
       viewDataProvider.getCategory(item.id)
         .then(category => page.set("data", {title: item.title, items: category}));
     }

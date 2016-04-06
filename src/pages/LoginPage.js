@@ -1,13 +1,12 @@
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
-import * as loginService from "../helpers/loginService";
 import Input from "../components/Input";
 import ProgressButton from "../components/ProgressButton";
 import {Page, ScrollView, Composite, TextView} from "tabris";
 
 export default class extends Page {
-  constructor() {
+  constructor(loginService) {
     super({topLevel: false, id: "loginPage"});
 
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);

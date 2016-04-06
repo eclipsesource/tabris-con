@@ -1,4 +1,3 @@
-import * as codRemoteService from "../codRemoteService";
 import _ from "lodash";
 import FeedbackButton from "./FeedbackButton";
 import FeedbackPage from "../pages/FeedbackPage";
@@ -7,15 +6,17 @@ import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import fontToString from "../helpers/fontToString";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
-import * as loginService from "../helpers/loginService";
 import {Composite, TextView} from "tabris";
 
 export default class extends Composite {
-  constructor(adaptedSession) {
+  constructor(adaptedSession, viewDataProvider, loginService, feedbackService) {
     super({
       id: "sessionPageFeedbackWidget",
       top: sizes.MARGIN, right: sizes.MARGIN, height: 36
     });
+    this._viewDataProvider = viewDataProvider;
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
     addProgressTo(this);
     applyPlatformStyle(this);
     this._showState(this, adaptedSession);
@@ -25,7 +26,7 @@ export default class extends Composite {
     };
   }
   _showState(feedbackWidget, adaptedSession) {
-    if (loginService.isLoggedIn()) {
+    if (this._loginService.isLoggedIn()) {
       feedbackWidget.set("progress", true);
       this._showFeedbackState(feedbackWidget, adaptedSession);
     } else {
@@ -34,7 +35,7 @@ export default class extends Composite {
   }
 
   _showFeedbackState(feedbackWidget, adaptedSession) {
-    codRemoteService.evaluations()
+    this._viewDataProvider.getRemoteService().evaluations()
       .then(this._handleSessionValid(feedbackWidget, adaptedSession))
       .catch(this._handleErrors(feedbackWidget))
       .finally(() => feedbackWidget.set("progress", false));
@@ -44,7 +45,7 @@ export default class extends Composite {
     return function(evaluations) {
       let evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
       let widget = evaluationAlreadySubmitted ?
-        createNoticeTextView("Feedback for this session was submitted.") : createFeedbackButton(adaptedSession);
+        createNoticeTextView("Feedback for this session was submitted.") : this._createFeedbackButton(adaptedSession);
       widget.appendTo(feedbackWidget);
     };
   }
@@ -59,6 +60,17 @@ export default class extends Composite {
         createErrorTextView("Something went wrong. Try giving feedback later.").appendTo(feedbackWidget);
       }
     };
+  }
+
+  _createFeedbackButton(adaptedSession) {
+    let feedbackButton = new FeedbackButton({
+      left: 0, centerY: 0,
+      text: "Give feedback"
+    }).on("select", () => new FeedbackPage(adaptedSession, this._feedbackService).open());
+
+    applyPlatformStyle(feedbackButton);
+
+    return feedbackButton;
   }
 }
 
@@ -82,13 +94,3 @@ function createInfoTextView(text, color) {
   return infoTextView;
 }
 
-function createFeedbackButton(adaptedSession) {
-  let feedbackButton = new FeedbackButton({
-    left: 0, centerY: 0,
-    text: "Give feedback"
-  }).on("select", () => new FeedbackPage(adaptedSession).open());
-
-  applyPlatformStyle(feedbackButton);
-
-  return feedbackButton;
-}

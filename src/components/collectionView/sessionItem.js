@@ -1,8 +1,8 @@
 import sizes from "../../resources/sizes";
-import * as SessionPageFactory from "../../pages/SessionPageFactory";
+import SessionPage from "../../pages/SessionPage";
 import SessionItem from "../SessionItem";
 
-export function get(viewDataProvider) {
+export function get({viewDataProvider, loginService, feedbackService}) {
   return {
     itemHeight: getCellHeight(),
     initializeCell: cell => {
@@ -10,7 +10,7 @@ export function get(viewDataProvider) {
       cell.on("change:item", (cell, item) => session.set("data", item));
     },
     select: (widget, item) => {
-      let sessionPage = SessionPageFactory.create(viewDataProvider).open();
+      let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).open();
       viewDataProvider.getSession(item.id)
         .then(session => sessionPage.set("data", session));
     }

@@ -1,11 +1,10 @@
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import ProgressButton from "../components/ProgressButton";
-import * as loginService from "../helpers/loginService";
 import {Page, Composite, TextView} from "tabris";
 
 export default class extends Page {
-  constructor() {
+  constructor(loginService) {
     super({id: "iOSProfilePage", title: "Profile", topLevel: false});
     let container = new Composite({
       width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET

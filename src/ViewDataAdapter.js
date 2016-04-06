@@ -1,12 +1,12 @@
 import _ from "lodash";
 import TimezonedDate from "./TimezonedDate";
 import FreeBlockInsertor from "./FreeBlockInsertor";
-import * as codFeedbackService from "./helpers/codFeedbackService";
-import * as loginService from "./helpers/loginService";
 
 export default class {
-  constructor(config) {
+  constructor(config, loginService, feedbackService) {
     this._config = config;
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
     this._timezone = this._config.CONFERENCE_TIMEZONE;
   }
 
@@ -149,7 +149,8 @@ export default class {
 
   _getFeedbackIndicatorState(session) {
     if (session.sessionNid) {
-      return codFeedbackService.canGiveFeedbackForSession(session) && loginService.isLoggedIn() ? "loading" : null;
+      return this._feedbackService.canGiveFeedbackForSession(session) &&
+        this._loginService.isLoggedIn() ? "loading" : null;
     }
     return null;
   }

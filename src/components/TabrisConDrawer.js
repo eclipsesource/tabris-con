@@ -1,7 +1,6 @@
 import sizes from "../resources/sizes";
 import AndroidDrawerUserArea from "./AndroidDrawerUserArea";
 import getImage from "../helpers/getImage";
-import * as loginService from "../helpers/loginService";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import DrawerListItem from "./DrawerListItem";
 import DrawerPageListItem from "./DrawerPageListItem";
@@ -9,7 +8,7 @@ import DrawerAccountListItem from "./DrawerAccountListItem";
 import {Drawer, Composite} from "tabris";
 
 export default class extends Drawer {
-  constructor() {
+  constructor(loginService) {
     super({
       accountMode: false,
       uwp_displayMode: "compactOverlay",
@@ -17,18 +16,20 @@ export default class extends Drawer {
       uwp_buttonBackground: "rgb(103,86,186)"
     });
 
+    this._loginService = loginService;
+
     let drawerContainer = new tabris[device.platform === "UWP" ? "Composite" : "ScrollView"]({
       left: 0, top: 0, right: 0, bottom: 0
     }).appendTo(this);
 
     if (device.platform === "Android") {
-      new AndroidDrawerUserArea()
+      new AndroidDrawerUserArea(this._loginService)
         .on("loggedInTap", () => this.set("accountMode", !this.get("accountMode")))
         .appendTo(drawerContainer);
     }
 
-    let drawerList = createDrawerList().appendTo(drawerContainer);
-    let accountList = createAccountList().appendTo(drawerContainer);
+    let drawerList = this._createDrawerList().appendTo(drawerContainer);
+    let accountList = this._createAccountList().appendTo(drawerContainer);
 
     tabris.ui.on("change:activePage", () => {
       drawerList.updateSelection();
@@ -47,55 +48,56 @@ export default class extends Drawer {
       this.set("accountMode", false);
     });
   }
-}
 
-function createDrawerList() {
-  let drawerList = new Composite({id: "drawerList", left: 0, right: 0, bottom: 0});
-  drawerList.updateSelection = () => {
-    drawerList.find()
-      .filter(child => child.get("page") instanceof tabris.Page && child.get("page").get("topLevel"))
-      .forEach(pageItem => pageItem.updateSelection());
-  };
-  applyPlatformStyle(drawerList);
-  createPrimaryPageItems().appendTo(drawerList);
-  createSecondaryPageItems().appendTo(drawerList);
-  return drawerList;
-}
-
-function createPrimaryPageItems() {
-  let pageItems = new Composite({left: 0, top: 0, right: 0});
-  new DrawerPageListItem("schedulePage").appendTo(pageItems);
-  new DrawerPageListItem("tracksPage").appendTo(pageItems);
-  new DrawerPageListItem("mapPage").appendTo(pageItems);
-  return pageItems;
-}
-
-function createSecondaryPageItems() {
-  let pageItems = new Composite({
-    id: "drawerSecondaryPageItems",
-    left: 0, right: 0
-  });
-  applyPlatformStyle(pageItems);
-  createSeparator().appendTo(pageItems);
-  if (device.platform === "UWP") {
-    new DrawerAccountListItem().appendTo(pageItems);
+  _createSecondaryPageItems() {
+    let pageItems = new Composite({
+      id: "drawerSecondaryPageItems",
+      left: 0, right: 0
+    });
+    applyPlatformStyle(pageItems);
+    createSeparator().appendTo(pageItems);
+    if (device.platform === "UWP") {
+      new DrawerAccountListItem(this._loginService).appendTo(pageItems);
+    }
+    new DrawerPageListItem("aboutPage").appendTo(pageItems);
+    return pageItems;
   }
-  new DrawerPageListItem("aboutPage").appendTo(pageItems);
-  return pageItems;
-}
 
-function createAccountList() {
-  let accountList = new Composite({
-    left: 0, top: ["#androidDrawerUserArea", 8], right: 0,
-    visible: false
-  });
-  new DrawerListItem("Logout", getImage.forDevicePlatform("logout"))
-    .on("tap", widget => {
-      widget.set("progress", true);
-      loginService.logout().then(() => widget.set("progress", false));
-    })
-    .appendTo(accountList);
-  return accountList;
+  _createDrawerList() {
+    let drawerList = new Composite({id: "drawerList", left: 0, right: 0, bottom: 0});
+    drawerList.updateSelection = () => {
+      drawerList.find()
+        .filter(child => child.get("page") instanceof tabris.Page && child.get("page").get("topLevel"))
+        .forEach(pageItem => pageItem.updateSelection());
+    };
+    applyPlatformStyle(drawerList);
+    this._createPrimaryPageItems().appendTo(drawerList);
+    this._createSecondaryPageItems().appendTo(drawerList);
+    return drawerList;
+  }
+
+  _createPrimaryPageItems() {
+    let pageItems = new Composite({left: 0, top: 0, right: 0});
+    new DrawerPageListItem("schedulePage").appendTo(pageItems);
+    new DrawerPageListItem("tracksPage").appendTo(pageItems);
+    new DrawerPageListItem("mapPage").appendTo(pageItems);
+    return pageItems;
+  }
+
+  _createAccountList() {
+    let accountList = new Composite({
+      left: 0, top: ["#androidDrawerUserArea", 8], right: 0,
+      visible: false
+    });
+    new DrawerListItem("Logout", getImage.forDevicePlatform("logout"))
+      .on("tap", widget => {
+        widget.set("progress", true);
+        this._loginService.logout().then(() => widget.set("progress", false));
+      })
+      .appendTo(accountList);
+    return accountList;
+  }
+
 }
 
 function createSeparator() {

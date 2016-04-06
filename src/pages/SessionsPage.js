@@ -3,7 +3,7 @@ import CollectionView from "../components/collectionView/TabrisConCollectionView
 import {Page} from "tabris";
 
 export default class extends Page {
-  constructor(viewDataProvider) {
+  constructor(viewDataProvider, loginService) {
     super({
       id: "sessionsPage",
       title: "Loading..."
@@ -14,7 +14,7 @@ export default class extends Page {
     let collectionView = new CollectionView({
       id: "sessionsCollectionView",
       left: 0, top: 0, right: 0, bottom: 0, opacity: 0
-    }, viewDataProvider).appendTo(this);
+    }, viewDataProvider, loginService).appendTo(this);
 
     this.on("change:data", (page, data) => {
       page.set("title", data.title);

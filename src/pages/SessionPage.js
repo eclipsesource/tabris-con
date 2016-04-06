@@ -9,15 +9,17 @@ import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import * as attendedSessionService from "../helpers/attendedSessionService";
 import AttendanceAction from "../actions/AttendanceAction";
 import SessionPageFeedbackWidget from "../components/SessionPageFeedbackWidget";
-import * as codFeedbackService from "../helpers/codFeedbackService";
+import OtherSessionsLink from "../components/OtherSessionsLink";
 import config from "../configs/config";
 import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
 
 export default class extends Page {
-  constructor(otherSessionsLink) {
+  constructor(viewDataProvider, loginService, feedbackService) {
     super({topLevel: false, id: "sessionPage", title: "Session"});
+    this._viewDataProvider = viewDataProvider;
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
     this._titleCompY = 0;
-    this._otherSessionsLink = otherSessionsLink;
 
     if (device.platform !== "iOS") {
       this
@@ -64,7 +66,10 @@ export default class extends Page {
       left: 0, top: "prev()", right: 0
     }).appendTo(contentComposite);
 
-    this._otherSessionsLink.set("top", "prev()").appendTo(contentComposite);
+    let otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService);
+
+    otherSessionsLink.set("top", "prev()").appendTo(contentComposite);
+
     this._createSpacer().appendTo(contentComposite);
 
     let loadingIndicator = new LoadingIndicator({shade: true}).appendTo(this);
@@ -84,7 +89,7 @@ export default class extends Page {
       })
       .on("change:data", (widget, data) => {
         this._setWidgetData(data);
-        this._otherSessionsLink.set("data", data);
+        otherSessionsLink.set("data", data);
         scrollView.on("resize", this._layoutParallax);
         this._layoutParallax(scrollView);
         let attendanceControl = device.platform === "iOS" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
@@ -177,8 +182,9 @@ export default class extends Page {
     });
     descriptionTextView.set("text", data.description);
     imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
-    if (codFeedbackService.canGiveFeedbackForSession(data)) {
-      new SessionPageFeedbackWidget(data).appendTo(contentComposite);
+    if (this._feedbackService.canGiveFeedbackForSession(data)) {
+      new SessionPageFeedbackWidget(data, this._viewDataProvider, this._loginService, this._feedbackService)
+        .appendTo(contentComposite);
     }
     this._createSpeakers(data.speakers);
   }

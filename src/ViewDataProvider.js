@@ -1,16 +1,18 @@
 /*globals Promise:true*/
 
 import _ from "lodash";
-import * as codRemoteService from "./codRemoteService";
-import * as codFeedbackService from "./helpers/codFeedbackService";
-import * as loginService from "./helpers/loginService";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
 
 export default class {
-  constructor({config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter}) {
+  constructor({
+    config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter, remoteService, loginService, feedbackService
+  }) {
     this._conferenceDataProvider = conferenceDataProvider;
     this._attendedBlockProvider = attendedBlockProvider;
     this._viewDataAdapter = viewDataAdapter;
+    this._remoteService = remoteService;
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
     this._config = config;
   }
 
@@ -62,17 +64,21 @@ export default class {
   }
 
   getSessionIdIndicatorStates() {
-    if (!this._config.SUPPORTS_FEEDBACK || !loginService.isLoggedIn()) {
+    if (!this._config.SUPPORTS_FEEDBACK || !this._loginService.isLoggedIn()) {
       return Promise.resolve([]);
     }
-    return Promise.all([this._attendedBlockProvider.getBlocks(), codRemoteService.evaluations()])
-      .then(values => codFeedbackService.getSessionsIndicatorState(values[0], values[1]))
+    return Promise.all([this._attendedBlockProvider.getBlocks(), this._remoteService.evaluations()])
+      .then(values => this._feedbackService.getSessionsIndicatorState(values[0], values[1]))
       .catch(() => []);
   }
 
   getSessionsInTimeframe(timestamp1, timestamp2) {
     return getSessionsInTimeframe(this._conferenceDataProvider, timestamp1, timestamp2)
       .then(sessions => this._viewDataAdapter.adaptCategory({sessions: sessions}));
+  }
+
+  getRemoteService() {
+    return this._remoteService;
   }
 
   invalidateCache() {

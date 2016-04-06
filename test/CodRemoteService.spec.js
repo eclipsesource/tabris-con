@@ -3,13 +3,16 @@ import chai from "chai";
 import sinonChai from "sinon-chai";
 import fetchMock from "fetch-mock";
 import chaiAsPromised from "chai-as-promised";
-import * as codRemoteService from "../src/codRemoteService";
+import CodRemoteService from "../src/CodRemoteService";
 
 let expect = chai.expect;
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 describe("codRemoteService", () => {
+  let codRemoteService;
+  let loginService = {destroySession: () => {}};
+  beforeEach(() => codRemoteService = new CodRemoteService("https://www.eclipsecon.org/na2016", loginService));
   afterEach(() => fetchMock.restore());
 
   describe("login", () => {
