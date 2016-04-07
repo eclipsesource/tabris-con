@@ -127,8 +127,7 @@ export default class {
     return (datedBlock) => {
       let block = {
         image: this._getImageForBlockTitle(datedBlock.title),
-        summary: new TimezonedDate(this._timezone, datedBlock.startTimestamp).format("LT") + " - " +
-        new TimezonedDate(this._timezone, datedBlock.endTimestamp).format("LT") + " / " + datedBlock.room,
+        summary: this._getBlockSummary(datedBlock),
         startTime: new TimezonedDate(this._timezone, datedBlock.startTimestamp).format("LT"),
         startTimestamp: datedBlock.startTimestamp,
         endTimestamp: datedBlock.endTimestamp,
@@ -148,6 +147,19 @@ export default class {
       }
       return block;
     };
+  }
+
+  _getBlockSummary(datedBlock) {
+    let summaryArray = [
+      [
+        new TimezonedDate(this._timezone, datedBlock.startTimestamp).format("LT"),
+        new TimezonedDate(this._timezone, datedBlock.endTimestamp).format("LT")
+      ].join(" - ")
+    ];
+    if (datedBlock.room) {
+      summaryArray.push(datedBlock.room);
+    }
+    return summaryArray.join(" / ");
   }
 
   _getFeedbackIndicatorState(session) {
