@@ -5,12 +5,12 @@ import {Action} from "tabris";
 
 export default class extends Action {
   constructor(loginService) {
-    this._loginService = loginService;
     super({
       id: "loginAction",
       title: "Login",
       placementPriority: "high"
     });
+    this._loginService = loginService;
     this.on("select", () => {
       let self = this;
       let modeAction = {login: self._showLoginPage, loggedIn: self._showProfilePage};
