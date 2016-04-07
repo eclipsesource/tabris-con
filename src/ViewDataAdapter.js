@@ -150,12 +150,15 @@ export default class {
   }
 
   _getBlockSummary(datedBlock) {
-    let summaryArray = [
-      [
-        new TimezonedDate(this._timezone, datedBlock.startTimestamp).format("LT"),
-        new TimezonedDate(this._timezone, datedBlock.endTimestamp).format("LT")
-      ].join(" - ")
-    ];
+    let summaryArray = [];
+    if (datedBlock.endTimestamp) {
+      summaryArray.push(
+        [
+          new TimezonedDate(this._timezone, datedBlock.startTimestamp).format("LT"),
+          new TimezonedDate(this._timezone, datedBlock.endTimestamp).format("LT")
+        ].join(" - ")
+      );
+    }
     if (datedBlock.room) {
       summaryArray.push(datedBlock.room);
     }
