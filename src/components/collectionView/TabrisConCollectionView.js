@@ -1,6 +1,7 @@
 import {CollectionView} from "tabris";
 import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import collectionViewItemConfiguration from "./collectionViewItemConfiguration";
+import config from "../../configs/config";
 
 export default class extends CollectionView {
   constructor(configuration, viewDataProvider, loginService, feedbackService) {
@@ -24,6 +25,9 @@ export default class extends CollectionView {
         .then(() => collectionView.set("refreshIndicator", false));
     };
     let handleUpdatableChange = (collectionView, updatable) => {
+      if (!config.SERVICE_URL) {
+        return;
+      }
       collectionView.set("refreshEnabled", updatable);
       if (updatable) {
         return collectionView.on("refresh", refreshCallback);
