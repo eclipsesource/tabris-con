@@ -4,7 +4,7 @@ import config from "./configs/config";
 
 export default function(conferenceDataProvider, timestamp1, timestamp2) {
   return conferenceDataProvider.get().then(function(data) {
-    return _(data.sessions)
+    return _([...data.sessions, ...data.keynotes])
       .sortBy("startTimestamp")
       .filter(session => {
         return new TimezonedDate(config.CONFERENCE_TIMEZONE, timestamp1).toJSON() <=
