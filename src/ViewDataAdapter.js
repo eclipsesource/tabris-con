@@ -47,7 +47,7 @@ export default class {
     let endTimeString = new TimezonedDate(this._timezone, session.endTimestamp).format("LT");
     let adaptedSession = {
       id: session.id,
-      summary: startDateString + " - " + endTimeString + " in " + session.room,
+      summary: startDateString + " - " + endTimeString + (session.room ? " in " + session.room : ""),
       startTimestamp: session.startTimestamp,
       endTimestamp: session.endTimestamp,
       description: session.description,
