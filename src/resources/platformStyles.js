@@ -5,23 +5,23 @@ import fontToString from "../helpers/fontToString";
 export default {
   _UI: {
     Android: {
-      background: colors.BACKGROUND_COLOR,
-      textColor: colors.LIGHT_PRIMARY_TEXT_COLOR
+      background: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+      textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
     },
-    iOS: {textColor: colors.ACCENTED_TEXT_COLOR},
+    iOS: {textColor: colors.IOS_ACTION_AREA_FOREGROUND_COLOR},
     UWP: {
-      background: colors.BACKGROUND_COLOR,
-      textColor: colors.LIGHT_PRIMARY_TEXT_COLOR,
+      background: colors.UWP_ACTION_AREA_BACKGROUND_COLOR,
+      textColor: colors.UWP_ACTION_AREA_FOREGROUND_COLOR,
       uwp_toolbarTheme: "dark",
       uwp_theme: "light"
     }
   },
   "#scheduleTabFolder": {
     Android: {
-      background: colors.BACKGROUND_COLOR,
-      textColor: "white"
+      background: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+      textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
     },
-    iOS: {textColor: colors.ACCENTED_TEXT_COLOR},
+    iOS: {textColor: colors.IOS_ACTION_AREA_FOREGROUND_COLOR},
     UWP: {}
   },
   "#sessionTitleTextView": {
@@ -72,7 +72,7 @@ export default {
   },
   "#sessionPageTitleTextView": {
     Android: {
-      textColor: "white",
+      textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
       left: sizes.LEFT_CONTENT_MARGIN,
       top: ["#sessionPageNavigationControls", sizes.MARGIN],
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
@@ -89,7 +89,7 @@ export default {
       left: sizes.LEFT_CONTENT_MARGIN,
       bottom: sizes.MARGIN_LARGE,
       font: fontToString({size: sizes.FONT_LARGE}),
-      textColor: "white"
+      textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
     },
     iOS: {
       left: sizes.MARGIN_XLARGE,

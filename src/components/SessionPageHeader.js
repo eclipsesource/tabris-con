@@ -51,8 +51,7 @@ export default class extends Composite {
 
     let summaryTextView = new TextView({
       id: "sessionPageSummaryTextView",
-      right: sizes.MARGIN_LARGE, top: "prev()",
-      textColor: "white"
+      right: sizes.MARGIN_LARGE, top: "prev()"
     }).appendTo(this);
 
     applyPlatformStyle(summaryTextView);
