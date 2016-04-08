@@ -26,7 +26,7 @@ export default class extends Navigatable {
         id: "scheduleTabFolder",
         layoutData: {left: 0, top: 0, right: 0, bottom: 0},
         elevation: 4,
-        tabBarLocation: "top",
+        tabBarLocation: blocks.length <= 1 ? "hidden" : "top",
         paging: true
       }).appendTo(this);
       applyPlatformStyle(tabFolder);
