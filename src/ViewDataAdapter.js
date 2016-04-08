@@ -17,15 +17,14 @@ export default class {
     let result = [];
     result.push({type: "groupSeparator"});
     previewCategories.forEach(categoryPreview => {
-      result.push({
-        type: categoryPreview.id === "KEYNOTES" ? "keynoteTitle" : "title",
-        id: categoryPreview.id,
-        title: categoryPreview.title
-      });
+      this._maybePushTitle(result, categoryPreview);
       result = _.union(result, categoryPreview.sessions.map(
         session => this._adaptSessionListItem(session, "previewSession", {summaryType: "previewText"}))
       );
-      result.push({type: "previewCategoriesSpacer"});
+      if (categoryPreview.id !== "KEYNOTES" ||
+          categoryPreview.id === "KEYNOTES" && categoryPreview.sessions.length > 1) {
+        result.push({type: "previewCategoriesSpacer"});
+      }
       result.push({type: "groupSeparator"});
     });
     return result;
@@ -88,6 +87,17 @@ export default class {
       previewCategories.splice(previewCategories.indexOf(keynote), 1);
       previewCategories.unshift(keynote);
     }
+  }
+
+  _maybePushTitle(result, categoryPreview) {
+    if (categoryPreview.id === "KEYNOTES" && categoryPreview.sessions.length <= 1) {
+      return;
+    }
+    result.push({
+      type: categoryPreview.id === "KEYNOTES" ? "keynoteTitle" : "title",
+      id: categoryPreview.id,
+      title: categoryPreview.title
+    });
   }
 
   _adaptList(itemType, dataList, options) {
