@@ -35,12 +35,6 @@ export default {
     }
   },
   "#loginTextView": {
-    Android: {textColor: "white"},
-    iOS: {
-      alignment: "center",
-      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE}),
-      textColor: colors.DARK_PRIMARY_TEXT_COLOR
-    }
   },
   "#sessionPageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
@@ -53,10 +47,6 @@ export default {
   "#drawerSecondaryPageItems": {
     UWP: {bottom: 0},
     Android: {top: "prev()"}
-  },
-  "#pageHeader": {
-    Android: {background: colors.BACKGROUND_COLOR},
-    iOS: {background: "white"}
   },
   "#sessionPageNavigationControls": {
     Android: {height: sizes.SESSION_HEADER_ICON},
