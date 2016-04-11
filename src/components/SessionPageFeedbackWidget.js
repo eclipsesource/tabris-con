@@ -6,6 +6,7 @@ import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import fontToString from "../helpers/fontToString";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import texts from "../resources/texts";
 import {Composite, TextView} from "tabris";
 
 export default class extends Composite {
@@ -25,12 +26,13 @@ export default class extends Composite {
       this._showState(this, adaptedSession);
     };
   }
+
   _showState(feedbackWidget, adaptedSession) {
     if (this._loginService.isLoggedIn()) {
       feedbackWidget.set("progress", true);
       this._showFeedbackState(feedbackWidget, adaptedSession);
     } else {
-      createNoticeTextView("Please login to give feedback.").appendTo(feedbackWidget);
+      createNoticeTextView(texts.FEEDBACK_NOT_LOGGED_IN_ERROR).appendTo(feedbackWidget);
     }
   }
 
@@ -45,7 +47,7 @@ export default class extends Composite {
     return function(evaluations) {
       let evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
       let widget = evaluationAlreadySubmitted ?
-        createNoticeTextView("Feedback for this session was submitted.") : this._createFeedbackButton(adaptedSession);
+        createNoticeTextView(texts.FEEDBACK_SUBMITTED_MESSAGE) : this._createFeedbackButton(adaptedSession);
       widget.appendTo(feedbackWidget);
     };
   }
@@ -53,11 +55,11 @@ export default class extends Composite {
   _handleErrors(feedbackWidget) {
     return function(e) {
       if (e.match && e.match(/Session expired/)) {
-        createErrorTextView("Please login again to give feedback.").appendTo(feedbackWidget);
+        createErrorTextView(texts.FEEDBACK_LOGIN_AGAIN_MESSAGE).appendTo(feedbackWidget);
       } else if (e.match && e.match(/Network request failed/)) {
-        createErrorTextView("Connect to the Internet to give feedback.").appendTo(feedbackWidget);
+        createErrorTextView(texts.FEEDBACK_CONNECT_TO_THE_INTERNET_MESSAGE).appendTo(feedbackWidget);
       } else {
-        createErrorTextView("Something went wrong. Try giving feedback later.").appendTo(feedbackWidget);
+        createErrorTextView(texts.FEEDBACK_SOMETHING_WENT_WRONG).appendTo(feedbackWidget);
       }
     };
   }
@@ -65,7 +67,7 @@ export default class extends Composite {
   _createFeedbackButton(adaptedSession) {
     let feedbackButton = new FeedbackButton({
       left: 0, centerY: 0,
-      text: "Give feedback"
+      text: texts.SESSION_PAGE_FEEDBACK_BUTTON
     }).on("select", () => new FeedbackPage(adaptedSession, this._feedbackService).open());
 
     applyPlatformStyle(feedbackButton);

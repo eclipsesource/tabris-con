@@ -2,12 +2,13 @@ import LoginPage from "../pages/LoginPage";
 import IOSProfilePage from "../pages/IOSProfilePage";
 import getImage from "../helpers/getImage";
 import {Action} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Action {
   constructor(loginService) {
     super({
       id: "loginAction",
-      title: "Login",
+      title: texts.LOGIN_ACTION_TITLE,
       placementPriority: "high"
     });
     this._loginService = loginService;
@@ -17,7 +18,7 @@ export default class extends Action {
       modeAction[this.get("mode")].call(this);
     });
     this.on("change:mode", (widget, mode) => {
-      this.set("title", {login: "Login", loggedIn: "Profile"}[mode]);
+      this.set("title", {login: texts.LOGIN_ACTION_TITLE, loggedIn: texts.PROFILE_ACTION_TITLE}[mode]);
       let actionImage = getImage.forDevicePlatform("action_profile");
       this.set("image", {login: null, loggedIn: actionImage}[mode]);
     });

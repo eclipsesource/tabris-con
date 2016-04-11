@@ -1,6 +1,8 @@
+import texts from "./resources/texts";
+
 export let CouldNotFetchDataError = function(message) {
   this.name = "CouldNotFetchDataError";
-  this.message = message || "Could not fetch data.";
+  this.message = message || texts.COULD_NOT_FETCH_DATA_ERROR;
   this.stack = (new Error()).stack;
 };
 

@@ -1,5 +1,6 @@
 /* globals Promise: true */
 import chai from "chai";
+import "./tabrisMock";
 import * as persistedStorage from "../src/persistedStorage";
 import sinon from "sinon";
 import AttendedBlockProvider from "../src/AttendedBlockProvider";

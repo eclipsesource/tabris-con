@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import getImage from "../helpers/getImage";
 import {Composite, ImageView, TextView} from "tabris";
 import config from "../configs/config";
+import texts from "../resources/texts";
 
 export default class extends Composite {
   constructor(loginService) {
@@ -43,7 +44,7 @@ export default class extends Composite {
       }).appendTo(loggedOutContainer);
 
       new TextView({
-        text: "LOGIN",
+        text: texts.LOGIN_BUTTON.toUpperCase(),
         textColor: "white",
         font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
         left: [accountImage, sizes.MARGIN_LARGE], centerY: 0

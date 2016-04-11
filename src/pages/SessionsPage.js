@@ -1,12 +1,13 @@
 import LoadingIndicator from "../components/LoadingIndicator";
 import CollectionView from "../components/collectionView/TabrisConCollectionView";
 import {Page} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(viewDataProvider, loginService) {
     super({
       id: "sessionsPage",
-      title: "Loading..."
+      title: texts.SESSIONS_PAGE_TITLE_LOADING
     });
 
     let loadingIndicator = new LoadingIndicator().appendTo(this);

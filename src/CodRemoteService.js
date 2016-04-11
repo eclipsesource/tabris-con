@@ -3,6 +3,7 @@ import _ from "lodash";
 import * as alertDialog from "./components/alert";
 import isFeedbackTime from "./isFeedbackTime";
 import timeoutFetch from "./timeoutFetch";
+import texts from "./resources/texts";
 
 import URI from "urijs";
 
@@ -82,7 +83,7 @@ export default class {
       .catch(e => {
         if (e.match && e.match(/Access denied/) && isFeedbackTime()) {
           this._loginService.destroySession();
-          let error = "Session expired or evaluations service unavailable. Please log in again.";
+          let error = texts.REMOTE_SERVICE_SESSION_EXPIRED_OR_SERVICE_UNAVAILABLE;
           alert(error);
           return Promise.reject(error);
         }
@@ -140,7 +141,7 @@ function verifyNotAlreadyExisting(sessionNid) {
   return evaluations => {
     let alreadySubmitted = _.some(evaluations, evaluation => sessionNid === evaluation.nid);
     if (alreadySubmitted) {
-      return Promise.reject("Evaluation already submitted for this talk.");
+      return Promise.reject(texts.REMOTE_SERVICE_FEEDBACK_ALREADY_SUBMITTED);
     }
     return Promise.resolve();
   };
@@ -151,7 +152,7 @@ function verifyCreateEvaluationResponse(response) {
     return Promise.reject(response[0]);
   }
   if (!response.nid) {
-    return Promise.reject("Could not submit evaluation.");
+    return Promise.reject(texts.REMOTE_SERVICE_COULD_NOT_SUBMIT_EVALUATION);
   }
   return Promise.resolve(response);
 }
@@ -173,6 +174,6 @@ function log(error) {
 }
 
 function alert(error) {
-  alertDialog.show(error.message || error, "Error", "OK");
+  alertDialog.show(error.message || error, texts.DIALOG_ERROR, texts.DIALOG_OK);
   return Promise.reject(error);
 }

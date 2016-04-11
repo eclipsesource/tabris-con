@@ -1,4 +1,5 @@
 /* globals fetch: false, Promise: true*/
+import texts from "./resources/texts";
 
 let TIMEOUT = 8000;
 
@@ -9,7 +10,7 @@ export default function() {
 function timeout(ms, promise) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject(new Error("Server timeout. Please try again later."));
+      reject(new Error(texts.SERVER_TIMEOUT_ERROR));
     }, ms);
     promise.then(resolve, reject);
   });

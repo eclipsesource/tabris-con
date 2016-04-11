@@ -7,13 +7,14 @@ import config from "../configs/config";
 import Link from "../components/Link";
 import {ImageView, TextView, Composite, ScrollView} from "tabris";
 import IconNoticePage from "./IconNoticePage";
+import texts from "../resources/texts";
 
 export default class extends Navigatable {
   constructor({viewDataProvider}) {
     super({
       configuration: {
         id: "about",
-        title: "About",
+        title: texts.ABOUT_PAGE_TITLE,
         image: getImage.forDevicePlatform("about_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
         left: 0, top: 0, right: 0, bottom: 0
       },
@@ -34,13 +35,16 @@ export default class extends Navigatable {
     }).appendTo(container);
     createAttributionsList([
       {
-        subject: "iOS icons",
+        subject: texts.ABOUT_PAGE_IOS_ICONS_ATTRIBUTION_SUBJECT,
         author: {name: "Icons8", url: "https://icons8.com/"},
-        information: {label: "NOTICE", page: IconNoticePage}
+        information: {label: texts.ABOUT_PAGE_ATTRIBUTION_NOTICE_LINK, page: IconNoticePage}
       }, {
-        subject: "Android icons",
+        subject: texts.ABOUT_PAGE_ANDROID_ICONS_ATTRIBUTION_SUBJECT,
         author: {name: "Material Design Icons", url: "https://materialdesignicons.com/"},
-        information: {label: "LICENSE", url: "https://github.com/Templarian/MaterialDesign/blob/master/license.txt"}
+        information: {
+          label: texts.ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK,
+          url: "https://github.com/Templarian/MaterialDesign/blob/master/license.txt"
+        }
       }
     ]).appendTo(container);
     createProjectAttribution().appendTo(container);
@@ -68,7 +72,7 @@ function createTabrisJsAttribution() {
   new TextView({
     left: "prev()", centerY: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-    text: "Built with "
+    text: texts.ABOUT_PAGE_BUILT_WITH
   }).appendTo(container);
   new Link({left: "prev()", centerY: 0, url: "http://www.tabrisjs.com", text: "Tabris.js"}).appendTo(container);
   return tabrisJsAttribution;
@@ -83,7 +87,7 @@ function createVendorAttribution() {
     centerX: 0, top: 0,
     font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
     alignment: "center",
-    text: config.CONFERENCE_NAME + " app\nis brought to you by"
+    text: config.CONFERENCE_NAME + texts.ABOUT_PAGE_BROUGHT_TO_YOU_BY
   }).appendTo(vendorAttribution);
   new Link({
     centerX: 0, top: firstLine,
@@ -103,13 +107,13 @@ function createProjectAttribution() {
     left: 0, top: 0, right: 0,
     alignment: "center",
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-    text: "This app is open source."
+    text: texts.ABOUT_PAGE_OPEN_SOURCE
   }).appendTo(projectAttribution);
   let secondLine = new Composite({centerX: 0, top: firstLine}).appendTo(projectAttribution);
   let seeSourceText = new TextView({
     left: 0, top: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-    text: "View it on "
+    text: texts.ABOUT_PAGE_VIEW_IT_ON
   }).appendTo(secondLine);
   new Link({text: "GitHub", url: config.PROJECT_URL, left: seeSourceText, top: 0}).appendTo(secondLine);
   return projectAttribution;
@@ -135,7 +139,7 @@ function createAttributionRow(attribution) {
     left: 0, centerY: 0,
     textColor: colors.DARK_SECONDARY_TEXT_COLOR,
     font: fontToString({size: sizes.FONT_SMALL}),
-    text: attribution.subject + " by "
+    text: attribution.subject + texts.ABOUT_PAGE_ATTRIBUTION_BY
   }).appendTo(row);
   new Link({
     left: "prev()", centerY: 0, text: attribution.author.name, url: attribution.author.url,

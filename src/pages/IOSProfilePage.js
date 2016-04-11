@@ -2,10 +2,11 @@ import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import ProgressButton from "../components/ProgressButton";
 import {Page, Composite, TextView} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(loginService) {
-    super({id: "iOSProfilePage", title: "Profile", topLevel: false});
+    super({id: "iOSProfilePage", title: texts.PROFILE_PAGE_TITLE, topLevel: false});
     let container = new Composite({
       width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
     }).appendTo(this);
@@ -21,7 +22,7 @@ export default class extends Page {
     }).appendTo(container);
 
     let progressButton = new ProgressButton({
-      id: "logoutButton", text: "Logout",
+      id: "logoutButton", text: texts.LOGOUT_BUTTON,
       top: ["prev()", sizes.MARGIN], centerX: 0,
       font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
     }).on("select", progressButton => {

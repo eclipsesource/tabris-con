@@ -3,6 +3,7 @@ import * as persistedStorage from "./persistedStorage";
 import * as alert from "./components/alert";
 import config from "./configs/config";
 import * as ConferenceDataFactory from "./ConferenceDataFactory";
+import texts from "./resources/texts";
 
 export default class {
   constructor(bundledConferenceData) {
@@ -76,7 +77,7 @@ export default class {
   _fallBackToPresentData(options) {
     let dataStored = persistedStorage.conferenceDataStored();
     if (options.fetchFailed || !dataStored) {
-      alert.show(this._dataMayBeOutdatedMessage(), "Warning", "OK");
+      alert.show(this._dataMayBeOutdatedMessage(), texts.DIALOG_WARNING, texts.DIALOG_OK);
     }
     if (!dataStored) {
       persistedStorage.setConferenceData(this._bundledConferenceData);
@@ -84,7 +85,7 @@ export default class {
   }
 
   _dataMayBeOutdatedMessage() {
-    return "We could not determine whether newer conference data is available. Shown data may be outdated.";
+    return texts.DATA_MAY_BE_OUTDATED_MESSAGE;
   }
 
 }

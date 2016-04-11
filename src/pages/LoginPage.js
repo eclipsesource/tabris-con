@@ -4,6 +4,7 @@ import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import Input from "../components/Input";
 import ProgressButton from "../components/ProgressButton";
 import {Page, ScrollView, Composite, TextView} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(loginService) {
@@ -20,7 +21,7 @@ export default class extends Page {
 
     let loginTextView = new TextView({
       id: "loginTextView",
-      text: "EclipseCon Login",
+      text: texts.LOGIN_PAGE_TITLE,
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
       left: sizes.MARGIN_LARGE, bottom: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE
     }).appendTo(header);
@@ -46,7 +47,7 @@ export default class extends Page {
       message: "password"
     }).on("change:text", () => this._updateLoginButtonState()).appendTo(inputContainer);
 
-    let button = new ProgressButton({id: "loginButton", text: "Login", enabled: false})
+    let button = new ProgressButton({id: "loginButton", text: texts.LOGIN_BUTTON, enabled: false})
       .on("select", widget => {
         widget.set("progress", true);
         loginService.login(usernameInput.get("text"), passwordInput.get("text"));

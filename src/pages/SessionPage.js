@@ -12,6 +12,7 @@ import SessionPageFeedbackWidget from "../components/SessionPageFeedbackWidget";
 import OtherSessionsLink from "../components/OtherSessionsLink";
 import config from "../configs/config";
 import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(viewDataProvider, loginService, feedbackService) {
@@ -117,7 +118,7 @@ export default class extends Page {
     let speakersTextView = new TextView({
       id: "sessionPageSpeakersTextView",
       right: sizes.MARGIN_LARGE, top: ["prev()", sizes.MARGIN_LARGE * 2],
-      text: "Speakers",
+      text: texts.SESSION_PAGE_SPEAKERS,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.ACCENTED_TEXT_COLOR
     }).appendTo(speakersComposite);
@@ -212,8 +213,8 @@ export default class extends Page {
       widget.set("attending", checked);
       infoToast.show({
         type: "myScheduleOperation",
-        messageText: checked ? "Session added." : "Session removed.",
-        actionText: "SHOW \"MY SCHEDULE\""
+        messageText: checked ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
+        actionText: texts.INFO_TOAST_ACTION
       });
       infoToast.on("actionTap", () => {
         if (!infoToast.isDisposed()) {

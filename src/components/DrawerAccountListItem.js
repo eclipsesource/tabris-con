@@ -5,6 +5,7 @@ import getImage from "../helpers/getImage";
 import addProgressTo from "../helpers/addProgressTo";
 import LoginPage from "../pages/LoginPage";
 import {Composite, ImageView, TextView} from "tabris";
+import texts from "../resources/texts";
 
 export default class extends Composite {
   constructor(loginService) {
@@ -42,7 +43,7 @@ export default class extends Composite {
 
     let loginTextView = new TextView({
       font: fontToString({weight: "bold", size: sizes.FONT_LARGE}),
-      text: "Login",
+      text: texts.LOGIN_BUTTON,
       textColor: "white",
       left: 0, centerY: 0
     }).appendTo(textViewContainer);

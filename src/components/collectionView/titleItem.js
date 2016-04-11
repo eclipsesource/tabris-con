@@ -4,6 +4,7 @@ import colors from "../../resources/colors";
 import SessionsPage from "../../pages/SessionsPage";
 import SessionTitle from "../../components/SessionTitle";
 import {TextView} from "tabris";
+import texts from "../../resources/texts";
 
 export function get({viewDataProvider, loginService}) {
   return {
@@ -16,7 +17,7 @@ export function get({viewDataProvider, loginService}) {
         width: 50, right: sizes.MARGIN_LARGE, centerY: 0,
         textColor: colors.ACCENTED_TEXT_COLOR,
         font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-        text: "MORE"
+        text: texts.TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON
       }).appendTo(title);
       cell.on("change:item", (cell, item) => title.set("text", item.title));
     },

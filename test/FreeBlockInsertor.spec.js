@@ -1,3 +1,4 @@
+import "./tabrisMock";
 import chai from "chai";
 import moment from "moment-timezone";
 import FreeBlockInsertor from "../src/FreeBlockInsertor";
@@ -16,7 +17,7 @@ describe("freeBlockInsertor", () => {
     insertor = new FreeBlockInsertor(config);
   });
 
-  it("returns input when FREE_BLOCKS not configured",() => {
+  it("returns input when FREE_BLOCKS not configured", () => {
     let inserted = new FreeBlockInsertor({CONFERENCE_TIMEZONE: "America/New_York"}).insert("foo");
 
     expect(inserted).to.equal("foo");
@@ -33,7 +34,7 @@ describe("freeBlockInsertor", () => {
     }]);
   });
 
-  it("inserts blocks and returns a chronologically sorted list",() => {
+  it("inserts blocks and returns a chronologically sorted list", () => {
     let blocks = insertor.insert([{startTimestamp: date("07.03.2016 08:00")}]);
 
     expect(blocks).to.deep.equal([

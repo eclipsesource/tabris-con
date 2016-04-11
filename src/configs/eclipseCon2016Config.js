@@ -13,7 +13,7 @@ export default {
     "Break$": "schedule_icon_break",
     "Late Night$": "schedule_icon_fun",
     "^(Happy Hour|Exhibitors)": "schedule_icon_dialog",
-    "^BROWSE SESSIONS": "schedule_icon_plus",
+    "^(BROWSE SESSIONS|VORTRÄGE DURCHSUCHEN)": "schedule_icon_plus",
     ".*": "schedule_icon_session"
   },
   TRACK_COLOR: {

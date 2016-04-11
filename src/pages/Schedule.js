@@ -5,13 +5,14 @@ import getImage from "../helpers/getImage";
 import Navigatable from "./Navigatable";
 import {TabFolder, Tab} from "tabris";
 import _ from "lodash";
+import texts from "../resources/texts";
 
 export default class extends Navigatable {
   constructor({viewDataProvider}) {
     super({
       configuration: {
         id: "schedule",
-        title: "My Schedule",
+        title: texts.MY_SCHEDULE_PAGE_TITLE,
         image: getImage.forDevicePlatform("schedule_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
         left: 0, top: 0, right: 0, bottom: 0
       },
