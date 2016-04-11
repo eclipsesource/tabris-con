@@ -14,7 +14,7 @@ export default class extends Action {
     this.on("select", () => {
       let self = this;
       let modeAction = {login: self._showLoginPage, loggedIn: self._showProfilePage};
-      modeAction[this.get("mode")]();
+      modeAction[this.get("mode")].call(this);
     });
     this.on("change:mode", (widget, mode) => {
       this.set("title", {login: "Login", loggedIn: "Profile"}[mode]);
@@ -24,7 +24,7 @@ export default class extends Action {
     this.on("logoutSuccess", () => this.set("mode", "login"));
     this.on("logoutFailure", () => this.set("mode", "loggedIn"));
     this.set("mode", this._loginService.isLoggedIn() ? "loggedIn" : "login");
-    tabris.ui.on("change:activePage", this._maybeShow);
+    tabris.ui.on("change:activePage", (widget, page) => this._maybeShow(widget, page));
   }
 
   _showProfilePage() {

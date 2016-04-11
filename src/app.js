@@ -19,6 +19,6 @@ let feedbackService = FeedbackServiceFactory.create(remoteService);
 let loginService = LoginServiceFactory.create(remoteService);
 
 NavigationFactory.create(config, remoteService, loginService, feedbackService);
-if (device.platform === "iOS" && config.SUPPORTS_FEEDBACK) {
+if (device.get("platform") === "iOS" && config.SUPPORTS_FEEDBACK) {
   new LoginAction(loginService);
 }
