@@ -16,7 +16,7 @@ import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(viewDataProvider, loginService, feedbackService) {
-    super({topLevel: false, id: "sessionPage", title: "Session"});
+    super({topLevel: false, id: "sessionPage"});
     this._viewDataProvider = viewDataProvider;
     this._loginService = loginService;
     this._feedbackService = feedbackService;
