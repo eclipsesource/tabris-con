@@ -10,7 +10,7 @@ let de = {
   ABOUT_PAGE_BROUGHT_TO_YOU_BY: " \nwurde entwickelt von",
   ABOUT_PAGE_BUILT_WITH: "Erstellt mit ",
   ABOUT_PAGE_OPEN_SOURCE: "Diese App ist Open Source.",
-  ABOUT_PAGE_VIEW_IT_ON: "Schau dir den Code an auf ",
+  ABOUT_PAGE_VIEW_IT_ON: "Code anzeigen auf ",
   NOTICE_PAGE_TITLE: "Benutzung von Icons8 iOS Icons",
   NOTICE_PAGE_NOTICE:
     "Icons8 Icons können nur für Projekte abgeleitet von dem tabris-con Open Source-Projekt verwendet werden:",
