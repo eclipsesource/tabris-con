@@ -81,7 +81,7 @@ let en = {
   LOGOUT_BUTTON: "Logout",
   LOGIN_PAGE_TITLE: "Login",
   INFO_TOAST_SESSION_ADDED: "Session added.",
-  INFO_TOAST_SESSION_REMOVED: "Session added.",
+  INFO_TOAST_SESSION_REMOVED: "Session removed.",
   INFO_TOAST_ACTION: "SHOW \"MY SCHEDULE\"",
   REMOTE_SERVICE_SESSION_EXPIRED_OR_SERVICE_UNAVAILABLE:
     "Session expired or evaluations service unavailable. Please log in again.",
