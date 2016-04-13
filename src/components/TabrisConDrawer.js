@@ -6,6 +6,7 @@ import DrawerListItem from "./DrawerListItem";
 import DrawerPageListItem from "./DrawerPageListItem";
 import DrawerAccountListItem from "./DrawerAccountListItem";
 import {Drawer, Composite} from "tabris";
+import config from "../configs/config";
 
 export default class extends Drawer {
   constructor(loginService) {
@@ -56,7 +57,7 @@ export default class extends Drawer {
     });
     applyPlatformStyle(pageItems);
     createSeparator().appendTo(pageItems);
-    if (device.platform === "windows") {
+    if (config.SUPPORTS_FEEDBACK && device.platform === "windows") {
       new DrawerAccountListItem(this._loginService).appendTo(pageItems);
     }
     new DrawerPageListItem("aboutPage").appendTo(pageItems);
