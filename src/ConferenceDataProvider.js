@@ -15,7 +15,7 @@ export default class {
   }
 
   get() {
-    this._handleUWP();
+    this._handleWindows();
 
     if (this._conferenceData) {
       return Promise.resolve(this._conferenceData);
@@ -57,8 +57,8 @@ export default class {
     this._conferenceData = null;
   }
 
-  _handleUWP() {
-    if (device.platform === "UWP") {
+  _handleWindows() {
+    if (device.platform === "windows") {
       if (!this._conferenceData) {
         this._conferenceData = this._bundledConferenceData;
       }
@@ -68,7 +68,7 @@ export default class {
   _handleAppUpgrade() {
     let currentVersion = tabris._client.get("tabris.App", "version");
     let appVersion = localStorage.getItem("appVersion");
-    if (currentVersion !== appVersion && device.platform !== "UWP") { // TODO: also handle on Windows when client supports app version
+    if (currentVersion !== appVersion && device.platform !== "windows") { // TODO: also handle on Windows when client supports app version
       persistedStorage.removeConferenceData();
     }
     localStorage.setItem("appVersion", currentVersion);

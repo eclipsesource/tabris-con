@@ -18,8 +18,8 @@ export default {
     ANDROID_ACTION_AREA_FOREGROUND_COLOR: "#ffffff",
     ANDROID_ACTION_AREA_BACKGROUND_COLOR: "#25c6da",
     IOS_ACTION_AREA_FOREGROUND_COLOR: "#2d5a5f",
-    UWP_ACTION_AREA_FOREGROUND_COLOR: "#ffffff",
-    UWP_ACTION_AREA_BACKGROUND_COLOR: "#25c6da",
+    WINDOWS_ACTION_AREA_FOREGROUND_COLOR: "#ffffff",
+    WINDOWS_ACTION_AREA_BACKGROUND_COLOR: "#25c6da",
     BACKGROUND_COLOR: "#25c6da",
     INFO_TOAST_BACKGROUND_COLOR: "#323232",
     ACTION_COLOR: "#FFC107",
@@ -35,7 +35,7 @@ export default {
     DRAWER_LIST_ITEM_BACKGROUND: {
       iOS: "#efefef",
       Android: "#efefef",
-      UWP: "#25c6da"
+      windows: "#25c6da"
     },
     LINE_SEPARATOR_COLOR: "#d9d9d9",
     MAP_BACKGROUND_COLOR: "#cdcbcc",

@@ -8,7 +8,7 @@ import * as ViewDataProviderFactory from "../ViewDataProviderFactory";
 
 let navigation = {
   Android: DrawerNavigation,
-  UWP: DrawerNavigation,
+  windows: DrawerNavigation,
   iOS: TabFolderNavigation
 };
 

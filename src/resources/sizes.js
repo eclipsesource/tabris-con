@@ -27,7 +27,7 @@ export default {
   SESSION_CELL_HEIGHT: {
     iOS: config.SESSIONS_HAVE_IMAGES ? 98 : 56,
     Android: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
-    UWP: config.SESSIONS_HAVE_IMAGES ? 98 : 72
+    windows: config.SESSIONS_HAVE_IMAGES ? 98 : 72
   },
   PREVIEW_SESSION_CELL_HEIGHT: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
   SESSION_CELL_IMAGE_HEIGHT: 84,
@@ -36,12 +36,12 @@ export default {
   CELL_TYPE_PREVIEW_CATEGORIES_SPACER_HEIGHT: 8,
   CELL_TYPE_SESSIONS_SPACER_HEIGHT: {
     Android: 8,
-    UWP: 8,
+    windows: 8,
     iOS: 0
   },
   CELL_TYPE_SEPARATOR_HEIGHT: {
     Android: 8,
-    UWP: 8,
+    windows: 8,
     iOS: 1
   },
   CELL_TYPE_SMALL_SEPARATOR_HEIGHT: 1,
@@ -52,7 +52,7 @@ export default {
   DRAWER_LIST_ITEM_HEIGHT: 48,
   DRAWER_SEPARATOR_HEIGHT: {
     Android: 16,
-    UWP: 1
+    windows: 1
   },
   DRAWER_USER_TEXT_CONTAINER_HEIGHT: 56,
   DRAWER_USER_AREA_DEFAULT_HEIGHT: 160,

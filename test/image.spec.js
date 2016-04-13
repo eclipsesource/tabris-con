@@ -122,7 +122,7 @@ describe("image", () => {
       .value();
     let commonImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
       .map(extractFilenames)
-      .filter(filename => ["iOS", "Android", "UWP"].indexOf(filename) < 0)
+      .filter(filename => ["iOS", "Android", "windows"].indexOf(filename) < 0)
       .compact()
       .value();
     _.uniq(iOSImageNames).forEach(assertletiantsExist("iOS"));

@@ -1,24 +1,24 @@
-if (device.platform === "UWP") {
+if (device.platform === "windows") {
   forEachWidgetType(function(widgetType) {
     addProperties(widgetType, {
-      "uwp_theme": {
+      "windows_theme": {
         type: ["choice", ["default", "light", "dark"]],
         default: "default"
       }
     });
   });
   addProperties(tabris._UI, {
-    "uwp_toolbarTheme": {
+    "windows_toolbarTheme": {
       type: ["choice", ["default", "light", "dark"]],
       default: "default"
     }
   });
   addProperties(tabris.Drawer, {
-    "uwp_displayMode": {
+    "windows_displayMode": {
       type: ["choice", ["overlay", "compactOverlay"]],
       default: "overlay"
     },
-    "uwp_buttonBackground": {
+    "windows_buttonBackground": {
       type: "color",
       default: null
     }

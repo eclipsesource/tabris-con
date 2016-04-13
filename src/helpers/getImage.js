@@ -35,7 +35,7 @@ function getImageSource(image, closestSupportedRatio, platform) {
 }
 
 function getPathPlatform(platform) {
-  let supportedPlatforms = ["Android", "iOS", "UWP"];
+  let supportedPlatforms = ["Android", "iOS", "windows"];
   if (supportedPlatforms.indexOf(platform) < 0) {
     return FALLBACK_PLATFORM;
   }

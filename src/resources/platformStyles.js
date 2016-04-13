@@ -9,11 +9,11 @@ export default {
       textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
     },
     iOS: {textColor: colors.IOS_ACTION_AREA_FOREGROUND_COLOR},
-    UWP: {
-      background: colors.UWP_ACTION_AREA_BACKGROUND_COLOR,
-      textColor: colors.UWP_ACTION_AREA_FOREGROUND_COLOR,
-      uwp_toolbarTheme: "dark",
-      uwp_theme: "light"
+    windows: {
+      background: colors.WINDOWS_ACTION_AREA_BACKGROUND_COLOR,
+      textColor: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
+      windows_toolbarTheme: "dark",
+      windows_theme: "light"
     }
   },
   "#scheduleTabFolder": {
@@ -22,7 +22,7 @@ export default {
       textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
     },
     iOS: {textColor: colors.IOS_ACTION_AREA_FOREGROUND_COLOR},
-    UWP: {}
+    windows: {}
   },
   "#sessionTitleTextView": {
     Android: {
@@ -48,10 +48,10 @@ export default {
   },
   "#drawerList": {
     Android: {top: ["#androidDrawerUserArea", sizes.MARGIN]},
-    UWP: {top: 0}
+    windows: {top: 0}
   },
   "#drawerSecondaryPageItems": {
-    UWP: {bottom: 0},
+    windows: {bottom: 0},
     Android: {top: "prev()"}
   },
   "#pageHeader": {
@@ -168,10 +168,10 @@ export default {
   },
   ".drawerIconImageView": {
     Android: {left: sizes.MARGIN_LARGE},
-    UWP: {left: 1.5 * sizes.MARGIN}
+    windows: {left: 1.5 * sizes.MARGIN}
   },
   ".drawerTitleTextView": {
-    UWP: {
+    windows: {
       textColor: "white",
       left: [".drawerIconImageView", sizes.MARGIN_XLARGE]
     }

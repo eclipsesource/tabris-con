@@ -11,14 +11,14 @@ export default class extends Drawer {
   constructor(loginService) {
     super({
       accountMode: false,
-      uwp_displayMode: "compactOverlay",
-      uwp_theme: "dark",
-      uwp_buttonBackground: "rgb(103,86,186)"
+      windows_displayMode: "compactOverlay",
+      windows_theme: "dark",
+      windows_buttonBackground: "rgb(103,86,186)"
     });
 
     this._loginService = loginService;
 
-    let drawerContainer = new tabris[device.platform === "UWP" ? "Composite" : "ScrollView"]({
+    let drawerContainer = new tabris[device.platform === "windows" ? "Composite" : "ScrollView"]({
       left: 0, top: 0, right: 0, bottom: 0
     }).appendTo(this);
 
@@ -56,7 +56,7 @@ export default class extends Drawer {
     });
     applyPlatformStyle(pageItems);
     createSeparator().appendTo(pageItems);
-    if (device.platform === "UWP") {
+    if (device.platform === "windows") {
       new DrawerAccountListItem(this._loginService).appendTo(pageItems);
     }
     new DrawerPageListItem("aboutPage").appendTo(pageItems);
