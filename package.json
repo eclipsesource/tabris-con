@@ -9,6 +9,7 @@
     "test": "cp babel-ios.json .babelrc && mocha --require babel-core/register",
     "build:ios": "cp babel-ios.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
     "build:android": "cp babel-android.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
+    "build:win": "cp babel-win.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
     "start": "hs -c-1"
   },
   "dependencies": {
