@@ -1,7 +1,7 @@
 export default {
   DATA_TYPE: "cod",
   CONFERENCE_NAME: "EclipseCon NA 2016",
-  SERVICE_URL: "https://www.eclipsecon.org/na2016",
+  SERVICE_URL: "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions",
   SUPPORTS_FEEDBACK: true,
   SESSIONS_HAVE_IMAGES: false,
   CONFERENCE_TIMEZONE: "America/New_York",
