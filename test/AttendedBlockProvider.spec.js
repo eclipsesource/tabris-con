@@ -23,7 +23,7 @@ describe("attendedBlockProvider", () => {
   });
 
   it("provides blocks referenced in localStorage", () => {
-    let config = {DATA_SOURCE: "codService", CONFERENCE_TIMEZONE: "Europe/Berlin"};
+    let config = {DATA_TYPE: "cod", CONFERENCE_TIMEZONE: "Europe/Berlin"};
     global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSIONS).returns("[\"20301046\"]");
     conferenceDataProvider.get.returns(Promise.resolve({sessions: SESSIONS}));
 

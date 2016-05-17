@@ -5,7 +5,7 @@ import FilterTabrisConCategories from "./FilterTabrisConCategories";
 export function createFromRawData(config, rawData) {
   let data;
 
-  if (config.DATA_SOURCE !== "tabrisCon") {
+  if (config.DATA_TYPE !== "tabrisCon") {
     let dataExtractor = DataExtractorFactory.create(config, rawData);
     data = {
       sessions: dataExtractor.extractSessions(),

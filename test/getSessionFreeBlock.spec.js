@@ -9,7 +9,7 @@ describe("getSessionFreeBlock", () => {
   let block2 = ["07.03.2016 13:00", "07.03.2016 15:00"];
 
   let config = {
-    CONFERENCE_TIMEZONE: "America/New_York", DATA_SOURCE: "codService", FREE_BLOCKS: [block1, block2]
+    CONFERENCE_TIMEZONE: "America/New_York", DATA_TYPE: "cod", FREE_BLOCKS: [block1, block2]
   };
 
   it("returns block of session later than/starting at block start time", () => {

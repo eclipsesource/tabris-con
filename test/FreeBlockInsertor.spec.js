@@ -9,7 +9,7 @@ describe("freeBlockInsertor", () => {
   let insertor;
   let config = {
     CONFERENCE_TIMEZONE: "America/New_York",
-    DATA_SOURCE: "codService",
+    DATA_TYPE: "cod",
     FREE_BLOCKS: [["07.03.2016 09:00", "07.03.2016 12:00"]]
   };
 

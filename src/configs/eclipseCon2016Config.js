@@ -1,5 +1,5 @@
 export default {
-  DATA_SOURCE: "codService",
+  DATA_TYPE: "cod",
   CONFERENCE_NAME: "EclipseCon NA 2016",
   SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SUPPORTS_FEEDBACK: true,

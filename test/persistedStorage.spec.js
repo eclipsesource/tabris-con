@@ -84,7 +84,7 @@ describe("persisted storage", () => {
     properties.forEach(property => {
       let capitalizedProperty = capitalizeFirstLetter(property);
       it("set" + capitalizedProperty + " stores " + property + " with data format in localStorage", () => {
-        persistedStorage["set" + capitalizedProperty](value, "codService");
+        persistedStorage["set" + capitalizedProperty](value, "cod");
 
         verifyConferenceDataSet(property, value);
       });
@@ -98,7 +98,7 @@ describe("persisted storage", () => {
           [persistedStorage.SESSIONS]: "sessions",
           [persistedStorage.KEYNOTES]: "keynotes",
           [persistedStorage.BLOCKS]: "blocks"
-        }, "codService");
+        }, "cod");
 
         verifyConferenceDataSet(persistedStorage.PREVIEW_CATEGORIES, "preview categories");
         verifyConferenceDataSet(persistedStorage.CATEGORIES, "categories");
@@ -122,11 +122,11 @@ describe("persisted storage", () => {
       let capitalizedProperty = capitalizeFirstLetter(property);
       it("get" + capitalizedProperty + " retrieves " + property + " with data format from localStorage", () => {
         global.localStorage.getItem.withArgs(property).returns(JSON.stringify({
-          codService: {foo: "bar"},
-          googleIOService: {baz: "bak"}
+          cod: {foo: "bar"},
+          googleIO: {baz: "bak"}
         }));
 
-        let value = persistedStorage["get" + capitalizedProperty]("codService");
+        let value = persistedStorage["get" + capitalizedProperty]("cod");
 
         expect(value).to.deep.equal({foo: "bar"});
       });
@@ -140,13 +140,13 @@ describe("persisted storage", () => {
     describe("getConferenceData", () => {
       it("returns stored conference data", () => {
         global.localStorage.getItem.withArgs(persistedStorage.PREVIEW_CATEGORIES)
-          .returns("{\"codService\": \"preview categories\"}");
-        global.localStorage.getItem.withArgs(persistedStorage.CATEGORIES).returns("{\"codService\": \"categories\"}");
-        global.localStorage.getItem.withArgs(persistedStorage.SESSIONS).returns("{\"codService\": \"sessions\"}");
-        global.localStorage.getItem.withArgs(persistedStorage.KEYNOTES).returns("{\"codService\": \"keynotes\"}");
-        global.localStorage.getItem.withArgs(persistedStorage.BLOCKS).returns("{\"codService\": \"blocks\"}");
+          .returns("{\"cod\": \"preview categories\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.CATEGORIES).returns("{\"cod\": \"categories\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.SESSIONS).returns("{\"cod\": \"sessions\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.KEYNOTES).returns("{\"cod\": \"keynotes\"}");
+        global.localStorage.getItem.withArgs(persistedStorage.BLOCKS).returns("{\"cod\": \"blocks\"}");
 
-        let conferenceData = persistedStorage.getConferenceData("codService");
+        let conferenceData = persistedStorage.getConferenceData("cod");
 
         expect(conferenceData).to.deep.equal({
           [persistedStorage.PREVIEW_CATEGORIES]: "preview categories",
@@ -180,6 +180,6 @@ describe("persisted storage", () => {
 
 function verifyConferenceDataSet(key, value) {
   expect(localStorage.setItem).to.have.been.calledWith(key, JSON.stringify({
-    "codService": value
+    "cod": value
   }));
 }

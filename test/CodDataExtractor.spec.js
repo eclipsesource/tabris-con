@@ -8,7 +8,7 @@ import CodDataExtractor from "../src/CodDataExtractor";
 describe("CodDataExtractor", () => {
   let codDataExtractor;
   let CONFIG = {
-    DATA_SOURCE: "codService",
+    DATA_TYPE: "cod",
     CONFERENCE_TIMEZONE: "Europe/Berlin",
     IGNORED_BLOCK_PATTERN: "^Dedicated"
   };

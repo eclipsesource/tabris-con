@@ -1,5 +1,5 @@
 export default {
-  DATA_SOURCE: "googleIOService",
+  DATA_TYPE: "googleIO",
   CONFERENCE_NAME: "Google I/O 2015",
   SERVICE_URL: "http://storage.googleapis.com/io2015-data.appspot.com/manifest_v1.json", // TODO: not implemented
   SESSIONS_HAVE_IMAGES: true,

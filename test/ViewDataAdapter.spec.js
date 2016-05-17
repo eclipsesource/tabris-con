@@ -16,7 +16,7 @@ import ViewDataAdapter from "../src/ViewDataAdapter";
 let expect = chai.expect;
 
 let FAKE_CONFIG = {
-  DATA_FORMAT: "googleIOService",
+  DATA_TYPE: "googleIO",
   SERVICE_URL: "https://www.eclipsecon.org/na2016",
   SESSIONS_HAVE_IMAGES: true,
   CONFERENCE_TIMEZONE: "America/Los_Angeles",

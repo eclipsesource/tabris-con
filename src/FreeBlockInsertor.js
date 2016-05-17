@@ -9,7 +9,7 @@ export default class {
 
   insert(blocks) {
     // TODO: insert "free" blocks for googleIO data
-    if (!this._config.FREE_BLOCKS || this._config.DATA_SOURCE === "googleIOService") {
+    if (!this._config.FREE_BLOCKS || this._config.DATA_TYPE === "googleIO") {
       return blocks;
     }
     return _(this._config.FREE_BLOCKS)
