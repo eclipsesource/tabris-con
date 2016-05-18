@@ -20,10 +20,9 @@ export default class extends Navigatable {
       updatable: true
     }, viewDataProvider, loginService, feedbackService).appendTo(this);
     this.on("change:data", (widget, data) => {
-      if (collectionView.get("items").length > 0) {
-        return;
-      }
       collectionView.set("items", data);
+    });
+    this.once("change:data", () => {
       collectionView.animate({opacity: 1}, {duration: 250});
       loadingIndicator.dispose();
     });
