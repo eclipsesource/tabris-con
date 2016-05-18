@@ -18,5 +18,5 @@ export function get({viewDataProvider, loginService, feedbackService}) {
 }
 
 function getCellHeight() {
-  return sizes.SESSION_CELL_HEIGHT[device.platform];
+  return sizes.SESSION_CELL_HEIGHT;
 }

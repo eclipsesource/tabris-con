@@ -1,4 +1,5 @@
 import config from "../configs/config";
+import select from "../helpers/select";
 
 export default {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],
@@ -18,17 +19,20 @@ export default {
   FONT_XXLARGE: 22,
   FONT_XXXLARGE: 24,
 
-  SESSION_HEADER_ICON: 56,
+  SESSION_HEADER_ICON: select({
+    default: 56,
+    windows: 48
+  }),
   SESSION_SPEAKER_IMAGE: 38,
   SESSION_PAGE_SPACER_HEIGHT: 16,
   SESSION_PAGE_OTHER_SESSIONS_LINK_HEIGHT: 16,
 
   SESSION_CATEGORY_TITLE_CELL_HEIGHT: 48,
-  SESSION_CELL_HEIGHT: {
+  SESSION_CELL_HEIGHT: select({
     iOS: config.SESSIONS_HAVE_IMAGES ? 98 : 56,
     Android: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
     windows: config.SESSIONS_HAVE_IMAGES ? 98 : 72
-  },
+  }),
   PREVIEW_SESSION_CELL_HEIGHT: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
   SESSION_CELL_IMAGE_HEIGHT: 84,
   SESSION_CELL_IMAGE_WIDTH: 112,
