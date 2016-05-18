@@ -24,7 +24,10 @@ export default class {
     if (this._serviceNotImplemented) {
       return Promise.resolve(null);
     }
-    return timeoutFetch(
+    if (this._fetchPromise) {
+      return this._fetchPromise;
+    }
+    this._fetchPromise = timeoutFetch(
       this._apiUrl,
       {method: "GET", headers: this._getFetchHeaders()}
     )
@@ -39,7 +42,9 @@ export default class {
         throw new CouldNotFetchDataError();
       })
       .then(formatDataMappers[this._dataType])
-      .catch(() => {throw new CouldNotFetchDataError();});
+      .catch(() => {throw new CouldNotFetchDataError();})
+      .finally(() => this._fetchPromise = null);
+    return this._fetchPromise ;
   }
 
   _storeCacheData(response) {

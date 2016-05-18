@@ -1,5 +1,6 @@
 /*jshint expr: true*/
 import chai from "chai";
+import "promise.prototype.finally";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import "node-fetch";
@@ -79,6 +80,14 @@ describe("NewDataFetcher", () => {
     fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {status: 500, body: {}});
 
     return expect(fetcher.fetch()).to.eventually.be.rejected;
+  });
+
+  it("doesn't call service more than once if fetch is already taking place", () => {
+    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
+
+    Promise.all([fetcher.fetch(), fetcher.fetch()]).then(() => {
+      expect(fetchMock.calls().length).to.equal(1);
+    });
   });
 
 });
