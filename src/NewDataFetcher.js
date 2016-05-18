@@ -2,7 +2,7 @@ import timeoutFetch from "./timeoutFetch";
 import maybeSet from "./helpers/maybeSet";
 import {CouldNotFetchDataError} from "./errors";
 
-let SUPPORTED_SERVICES = ["cod"];
+let SUPPORTED_SERVICES = ["cod", "tabrisCon"];
 
 let formatDataMappers = {
   cod: json => json ? {scheduledSessions: json} : null
