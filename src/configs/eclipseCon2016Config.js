@@ -84,8 +84,13 @@ export default {
     MAP_BACKGROUND_COLOR: "#cdcbcc",
     LINK_COLOR: "#48a8f4",
     KEYNOTE_TITLE_COLOR: "#FFC107",
-    ANDROID_BUTTON_DISABLED_BACKGROUND: "#aba1d5"
+    ANDROID_BUTTON_DISABLED_BACKGROUND: "#aba1d5",
+    WINDOWS_DRAWER_BUTTON_BACKGROUND: "rgb(103,86,186)"
   },
+  WINDOWS_DRAWER_THEME: "dark",
+  WINDOWS_DRAWER_BUTTON_THEME: "dark",
+  WINDOWS_UI_TOOLBAR_THEME: "light",
+  WINDOWS_UI_THEME: "light",
   BUNDLED_CONFERENCE_DATA: {
     scheduledSessions: "../json/cod/scheduled_sessions.json"
   }

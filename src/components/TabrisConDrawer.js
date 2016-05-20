@@ -12,11 +12,11 @@ export default class extends Drawer {
   constructor(loginService) {
     super({
       accountMode: false,
-      win_theme: "dark",
-      win_buttonBackground: "rgb(103,86,186)"
+      win_theme: config.WINDOWS_DRAWER_THEME,
+      win_buttonBackground: config.COLOR_SCHEME.WINDOWS_DRAWER_BUTTON_BACKGROUND
     });
 
-    this._nativeSet("win_buttonTheme", "dark");
+    this._nativeSet("win_buttonTheme", config.WINDOWS_DRAWER_BUTTON_THEME);
 
     if (device.platform === "windows") {
       tabris.device.on("change:orientation", this._updateDisplayMode, this);
