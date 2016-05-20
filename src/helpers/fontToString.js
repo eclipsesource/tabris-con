@@ -1,14 +1,8 @@
 export default function(options) {
-  let font = [];
-  maybePush(font, options.style);
-  maybePush(font, options.weight);
-  maybePush(font, options.size, "px");
-  maybePush(font, options.family);
-  return font.join(" ");
-}
-
-function maybePush(array, element, unit) {
-  if (element) {
-    array.push(element + (unit ? unit : ""));
-  }
+  return [
+    options.style,
+    options.weight,
+    options.size && options.size + "px",
+    options.family || (options.weight ? "sans-serif" : null) // TODO: workaround for eclipsesource/tabris-js#845
+  ].filter(val => !!val).join(" ");
 }
