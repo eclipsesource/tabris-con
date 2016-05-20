@@ -15,7 +15,7 @@ let de = {
   NOTICE_PAGE_NOTICE:
     "Icons8 Icons können nur für Projekte abgeleitet von dem tabris-con Open Source-Projekt verwendet werden:",
   NOTICE_PAGE_LICENSING_DETAILS: "Für Lizenzierungsdetails kontaktieren Sie ",
-  MAP_PAGE_TITLE: "Karte",
+  MAP_PAGE_TITLE: "Lageplan",
   TRACKS_PAGE_TITLE: "Tracks",
   TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON: "MEHR",
   MY_SCHEDULE_PAGE_TITLE: "Mein Zeitplan",
