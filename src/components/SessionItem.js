@@ -29,6 +29,7 @@ export default class extends Composite {
       font: fontToString({size: sizes.FONT_MEDIUM}),
       maxLines: 2,
       markupEnabled: true,
+      lineSpacing: sizes.LINE_SPACING,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     }).appendTo(textContainer);
     this.on("change:data", (widget, data) => {

@@ -83,5 +83,7 @@ export default {
     Android: ["#sessionPageNavigationControls", 10],
     iOS: 8,
     windows: 20
-  })
+  }),
+
+  LINE_SPACING: 1.2
 };
