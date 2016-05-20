@@ -4,7 +4,12 @@ export default function(configuration) {
   if (!platformConfiguration) {
     return configuration.default;
   }
-  if (typeof platformConfiguration === "object") {
+  if (Object.getPrototypeOf(platformConfiguration) === Object.prototype) {
+    if (configuration.default && Object.getPrototypeOf(configuration.default) !== Object.prototype) {
+      throw new Error(
+        "Default configuration must be an object literal when platform configuration is an object literal."
+      );
+    }
     return Object.assign({}, configuration.default, platformConfiguration);
   }
   return platformConfiguration;

@@ -4,7 +4,7 @@ import {Composite} from "tabris";
 
 export function get() {
   return {
-    itemHeight: sizes.CELL_TYPE_SEPARATOR_HEIGHT[device.platform],
+    itemHeight: sizes.CELL_TYPE_SEPARATOR_HEIGHT,
     initializeCell: cell => {
       let separator = new Composite({
         class: "groupSeparator",

@@ -1,16 +1,11 @@
 import sizes from "../resources/sizes";
+import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import {Composite} from "tabris";
 
 export default class extends Composite {
   constructor() {
-    let iOSConfig = {left: sizes.MARGIN_LARGE, top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2};
-    let config = {
-      left: 0,
-      right: "#sessionPageTitleTextView",
-      top: ["#sessionPageNavigationControls", sizes.MARGIN + 2]
-    };
-
-    super(device.platform === "iOS" ? iOSConfig : config);
+    super({class: "sessionPageHeaderTrackIndicator"});
+    applyPlatformStyle(this);
 
     if (device.platform !== "iOS") {
       var square = new Composite({

@@ -12,7 +12,7 @@ export default {
     windows: {
       background: colors.WINDOWS_ACTION_AREA_BACKGROUND_COLOR,
       textColor: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
-      win_toolbarTheme: "dark",
+      win_toolbarTheme: "light",
       win_theme: "light"
     }
   },
@@ -44,7 +44,8 @@ export default {
   },
   "#sessionPageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
-    iOS: {background: "white"}
+    iOS: {background: "white"},
+    windows: {background: "white"}
   },
   "#drawerList": {
     Android: {top: ["#androidDrawerUserArea", sizes.MARGIN]},
@@ -56,19 +57,23 @@ export default {
   },
   "#pageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
-    iOS: {background: "white"}
+    iOS: {background: "white"},
+    windows: {background: "white"}
   },
   "#sessionPageNavigationControls": {
     Android: {height: sizes.SESSION_HEADER_ICON},
-    iOS: {height: 0}
+    iOS: {height: 0},
+    windows: {height: 0}
   },
   "#sessionPageNavigationControlsBackButton": {
     Android: {height: sizes.SESSION_HEADER_ICON},
-    iOS: {height: 0}
+    iOS: {height: 0},
+    windows: {height: 0}
   },
   "#sessionPageNavigationControlsAttendanceButton": {
     Android: {height: sizes.SESSION_HEADER_ICON},
-    iOS: {height: 0}
+    iOS: {height: 0},
+    windows: {height: 0}
   },
   "#sessionPageTitleTextView": {
     Android: {
@@ -82,6 +87,12 @@ export default {
       left: sizes.MARGIN_XLARGE,
       top: ["#sessionPageNavigationControls", sizes.MARGIN_LARGE],
       font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
+    },
+    windows: {
+      textColor: colors.DARK_PRIMARY_TEXT_COLOR,
+      left: sizes.LEFT_CONTENT_MARGIN,
+      top: ["#sessionPageNavigationControls", sizes.MARGIN_LARGE],
+      font: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
     }
   },
   "#sessionPageSummaryTextView": {
@@ -93,6 +104,12 @@ export default {
     },
     iOS: {
       left: sizes.MARGIN_XLARGE,
+      bottom: sizes.MARGIN_LARGE,
+      textColor: colors.DARK_SECONDARY_TEXT_COLOR,
+      font: fontToString({size: sizes.FONT_MEDIUM})
+    },
+    windows: {
+      left: sizes.LEFT_CONTENT_MARGIN,
       bottom: sizes.MARGIN_LARGE,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR,
       font: fontToString({size: sizes.FONT_MEDIUM})
@@ -114,6 +131,19 @@ export default {
     iOS: {
       top: ["#sessionPageFeedbackWidget", sizes.MARGIN], left: sizes.MARGIN_LARGE,
       textColor: colors.DARK_PRIMARY_TEXT_COLOR
+    }
+  },
+  ".sessionPageHeaderTrackIndicator": {
+    Android: {
+      left: 0,
+      right: "#sessionPageTitleTextView",
+      top: sizes.SESSION_PAGE_TRACK_INDICATOR_TOP
+    },
+    iOS: {left: sizes.MARGIN_LARGE, top: sizes.SESSION_PAGE_TRACK_INDICATOR_TOP, bottom: sizes.MARGIN, width: 2},
+    windows: {
+      left: 0,
+      right: "#sessionPageTitleTextView",
+      top: ["#sessionPageNavigationControls", sizes.SESSION_PAGE_TRACK_INDICATOR_TOP]
     }
   },
   "#sessionPageSpeakerSummary": {

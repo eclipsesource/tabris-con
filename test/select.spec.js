@@ -5,6 +5,7 @@ import chai from "chai";
 let expect = chai.expect;
 
 describe("select", () => {
+
   beforeEach(() => {
     global.device = sinon.stub();
     device.platform = "iOS";
@@ -41,9 +42,11 @@ describe("select", () => {
   });
 
   it("can select non-objects", () => {
-    let selected = select({iOS: 24});
+    let selected1 = select({iOS: 24});
+    let selected2 = select({iOS: [24]});
 
-    expect(selected).to.deep.equal(24);
+    expect(selected1).to.deep.equal(24);
+    expect(selected2).to.deep.equal([24]);
   });
 
   it("platform non-objects have precedence over default non-objects", () => {
@@ -51,4 +54,11 @@ describe("select", () => {
 
     expect(selected).to.deep.equal(24);
   });
+
+  it("fails to merge with default if default is not an object", () => {
+    let selectFn = () => select({iOS: {foo: "bar"}, default: 24});
+
+    expect(selectFn).to.throw(Error);
+  });
+
 });

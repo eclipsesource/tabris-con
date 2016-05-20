@@ -22,7 +22,7 @@ export default class extends Page {
     this._feedbackService = feedbackService;
     this._titleCompY = 0;
 
-    if (device.platform !== "iOS") {
+    if (device.platform === "Android") {
       this
         .on("appear", () => {
           tabris.ui.set("toolbarVisible", false);
@@ -77,7 +77,7 @@ export default class extends Page {
 
     this
       .on("appear", () => {
-        if (device.platform === "iOS") {
+        if (device.platform !== "Android") {
           new AttendanceAction().on("select", widget => this._updateAttendance(widget, widget.get("attending")));
         }
       })
@@ -93,7 +93,7 @@ export default class extends Page {
         otherSessionsLink.set("data", data);
         scrollView.on("resize", this._layoutParallax);
         this._layoutParallax(scrollView);
-        let attendanceControl = device.platform === "iOS" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
+        let attendanceControl = device.platform !== "Android" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
         attendanceControl.set("attending", attendedSessionService.isAttending(data.id));
         loadingIndicator.dispose();
       });

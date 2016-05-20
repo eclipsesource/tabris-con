@@ -16,6 +16,8 @@ export default class extends Drawer {
       win_buttonBackground: "rgb(103,86,186)"
     });
 
+    this._nativeSet("win_buttonTheme", "dark");
+
     if (device.platform === "windows") {
       tabris.device.on("change:orientation", this._updateDisplayMode, this);
       this._updateDisplayMode();
@@ -114,7 +116,7 @@ function createSeparator() {
     left: 0,
     top: "prev()",
     right: 0,
-    height: sizes.DRAWER_SEPARATOR_HEIGHT[device.platform]
+    height: sizes.DRAWER_SEPARATOR_HEIGHT
   });
   new Composite({
     left: 0, right: 0, centerY: 0, height: 1,
