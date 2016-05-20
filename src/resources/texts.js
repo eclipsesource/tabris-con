@@ -26,7 +26,7 @@ let de = {
   LOGIN_PAGE_TITLE: "Anmelden",
   INFO_TOAST_SESSION_ADDED: "Vortrag hinzugefügt.",
   INFO_TOAST_SESSION_REMOVED: "Vortrag entfernt.",
-  INFO_TOAST_ACTION: "ZEIGE MEINEN ZEITPLAN",
+  INFO_TOAST_ACTION: "MEIN ZEITPLAN",
   REMOTE_SERVICE_SESSION_EXPIRED_OR_SERVICE_UNAVAILABLE:
     "Sitzung abgelaufen oder Dienst unerreichbar. Melden Sie sich bitte nochmal an.",
   REMOTE_SERVICE_FEEDBACK_ALREADY_SUBMITTED: "Feedback für diesen Vortrag wurde bereits gesendet.",
