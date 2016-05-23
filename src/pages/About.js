@@ -25,7 +25,7 @@ export default class extends Navigatable {
     new ImageView({
       centerX: 0, top: "8%",
       id: "logo",
-      image: getImage.common("about_logo")
+      image: getImage.common("conference_logo")
     }).appendTo(container);
     createVendorAttribution().appendTo(container);
     new TextView({

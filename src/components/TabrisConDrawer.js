@@ -66,6 +66,9 @@ export default class extends Drawer {
     if (config.SUPPORTS_FEEDBACK && device.platform === "windows") {
       new DrawerAccountListItem(this._loginService).appendTo(pageItems);
     }
+    if (config.CONFERENCE_PAGE) {
+      new DrawerPageListItem("conferencePage").appendTo(pageItems);
+    }
     new DrawerPageListItem("aboutPage").appendTo(pageItems);
     return pageItems;
   }
