@@ -12,8 +12,8 @@ export default {
     windows: {
       background: colors.WINDOWS_ACTION_AREA_BACKGROUND_COLOR,
       textColor: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
-      windows_toolbarTheme: "dark",
-      windows_theme: "light"
+      win_toolbarTheme: "dark",
+      win_theme: "light"
     }
   },
   "#scheduleTabFolder": {

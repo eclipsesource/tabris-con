@@ -12,9 +12,9 @@ export default class extends Drawer {
   constructor(loginService) {
     super({
       accountMode: false,
-      windows_displayMode: "compactOverlay",
-      windows_theme: "dark",
-      windows_buttonBackground: "rgb(103,86,186)"
+      win_displayMode: "compactOverlay",
+      win_theme: "dark",
+      win_buttonBackground: "rgb(103,86,186)"
     });
 
     this._loginService = loginService;
