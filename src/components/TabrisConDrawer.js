@@ -12,10 +12,14 @@ export default class extends Drawer {
   constructor(loginService) {
     super({
       accountMode: false,
-      win_displayMode: "compactOverlay",
       win_theme: "dark",
       win_buttonBackground: "rgb(103,86,186)"
     });
+
+    if (device.platform === "windows") {
+      tabris.device.on("change:orientation", this._updateDisplayMode, this);
+      this._updateDisplayMode();
+    }
 
     this._loginService = loginService;
 
@@ -97,6 +101,10 @@ export default class extends Drawer {
       })
       .appendTo(accountList);
     return accountList;
+  }
+
+  _updateDisplayMode(device, orientation = tabris.device.get("orientation")) {
+    this.set("win_displayMode", orientation.startsWith("portrait") ? "overlay" : "compactOverlay");
   }
 
 }
