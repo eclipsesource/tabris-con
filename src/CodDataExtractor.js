@@ -20,7 +20,7 @@ export default class {
   }
 
   extractSessions() {
-    return this._getMappedSessions(session => session.type !== "schedule_item");
+    return this._getMappedSessions(session => session.type !== "schedule_item" && session.session_type !== "Keynote");
   }
 
   extractBlocks() {
