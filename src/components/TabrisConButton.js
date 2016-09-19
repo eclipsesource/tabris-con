@@ -23,6 +23,6 @@ export default class extends Button {
 
 function updateAndroidButtonBackground(button, enabled) {
   if (device.platform === "Android") {
-    button.set("background", enabled ? colors.BACKGROUND_COLOR : colors.ANDROID_BUTTON_DISABLED_BACKGROUND);
+    button.set("background", enabled ? colors.BUTTON_COLOR : colors.ANDROID_BUTTON_DISABLED_BACKGROUND);
   }
 }
