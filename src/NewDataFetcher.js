@@ -1,5 +1,6 @@
 import timeoutFetch from "./timeoutFetch";
 import maybeSet from "./helpers/maybeSet";
+import ConfigurationDate from "./ConfigurationDate";
 import {CouldNotFetchDataError} from "./errors";
 
 let SUPPORTED_SERVICES = ["cod", "tabrisCon"];
@@ -18,6 +19,10 @@ export default class {
     // Done to reflect non-standard caching implementation of Drupal.
     // For more information, see http://www.drupalcontrib.org/api/drupal/drupal!core!includes!bootstrap.inc/function/drupal_serve_page_from_cache/8
     this._drupalCacheWorkaround = this._dataType === "cod";
+    if (!localStorage.getItem("lastUpdated")) {
+      let date = new ConfigurationDate(config, config.BUNDLED_DATA_TIME).toJSON();
+      localStorage.setItem("lastUpdated", date);
+    }
   }
 
   fetch() {
@@ -48,6 +53,7 @@ export default class {
   }
 
   _storeCacheData(response) {
+    localStorage.setItem("lastUpdated", new Date().toJSON());
     localStorage.setItem(this.ETAG_LOCAL_STORAGE_KEY, response.headers.get("ETag"));
     if (this._drupalCacheWorkaround) {
       localStorage.setItem(this.LAST_MODIFIED_LOCAL_STORAGE_KEY, response.headers.get("Last-Modified"));

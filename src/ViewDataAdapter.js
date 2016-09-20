@@ -14,8 +14,7 @@ export default class {
     let previewCategories = _.cloneDeep(categories);
     previewCategories = _.sortBy(previewCategories, "title");
     this._moveKeynotesToFirstPosition(previewCategories);
-    let result = [];
-    result.push({type: "groupSeparator"});
+    let result = [this._createLastUpdatedItem()];
     previewCategories.forEach(categoryPreview => {
       this._maybePushTitle(result, categoryPreview);
       result = _.union(result, categoryPreview.sessions.map(
@@ -129,6 +128,7 @@ export default class {
         .map((block, i) => [block, separators[i]])
         .flatten()
         .pull(undefined)
+        .unshift(this._createLastUpdatedItem())
         .value()
     };
   }
@@ -235,5 +235,9 @@ export default class {
   _createSpeakerSummary(speaker) {
     let companyPart = ", " + speaker.company;
     return speaker.name + (speaker.company ? companyPart : "");
+  }
+
+  _createLastUpdatedItem() {
+    return {type: "lastUpdated", value: localStorage.getItem("lastUpdated")};
   }
 }

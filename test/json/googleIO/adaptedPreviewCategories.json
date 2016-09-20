@@ -1,5 +1,6 @@
 [{
-  "type": "groupSeparator"
+  "type": "lastUpdated",
+  "value": "jsonDate"
 }, {
   "id": "__keynote__",
   "image": "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg",

@@ -8,12 +8,14 @@ import * as sessionItem from "./sessionItem";
 import * as sessionsSpacerItem from "./sessionsSpacerItem";
 import * as smallSeparatorItem from "./smallSeparatorItem";
 import * as titleItem from "./titleItem";
+import * as lastUpdatedItem from "./lastUpdatedItem";
 
 export default {
   blockItem,
   groupSeparatorItem,
   iOSLineSeparatorItem,
   keynoteTitleItem,
+  lastUpdatedItem,
   previewCategoriesSpacerItem,
   previewSessionItem,
   sessionItem,

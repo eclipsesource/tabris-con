@@ -3,6 +3,10 @@
     "day": "28 May",
     "blocks": [
       {
+        "type": "lastUpdated",
+        "value": "jsonDate"
+      },
+      {
         "image": "schedule_icon_badge",
         "type": "block",
         "title": "Badge Pick-Up",

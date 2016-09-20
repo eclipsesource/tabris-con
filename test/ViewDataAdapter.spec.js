@@ -41,6 +41,7 @@ describe("viewDataAdapter", () => {
   describe("adaptPreviewCategories", () => {
 
     it("adapts preview categories for collection view", () => {
+      localStorage.getItem = sinon.stub().returns("jsonDate");
       let adaptedPreviewCategories = viewDataAdapter
         .adaptPreviewCategories(PREVIEW_CATEGORIES);
 
