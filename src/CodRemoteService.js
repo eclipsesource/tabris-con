@@ -30,10 +30,7 @@ export default class {
     return timeoutFetch(this._services.LOGIN, {
       method: "post",
       headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": token},
-      body: JSON.stringify({
-        name: username,
-        pass: password
-      })
+      body: JSON.stringify({username, password})
     });
   }
 

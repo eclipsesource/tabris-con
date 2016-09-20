@@ -35,7 +35,7 @@ describe("codRemoteService", () => {
           expect(fetchMock.lastCall()[1].headers).to.deep.equal({
             Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": "token"
           });
-          expect(fetchMock.lastCall()[1].body).to.deep.equal(JSON.stringify({name: "foo", pass: "bar"}));
+          expect(fetchMock.lastCall()[1].body).to.deep.equal(JSON.stringify({username: "foo", password: "bar"}));
           expect(response).to.deep.equal({});
         });
     });

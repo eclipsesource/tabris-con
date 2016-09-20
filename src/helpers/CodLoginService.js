@@ -66,9 +66,9 @@ function triggerLogoutFailureEvents() {
 function persistUserData(response) {
   localStorage.setItem("username", response.user.name);
   localStorage.setItem("fullName",
-    response.user.field_profile_first.und[0].value +
+    response.user.first_name +
     " " +
-    response.user.field_profile_last.und[0].value
+    response.user.last_name
   );
   localStorage.setItem("mail", response.user.mail);
 }
