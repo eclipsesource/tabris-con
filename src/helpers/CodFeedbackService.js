@@ -9,10 +9,8 @@ export default class {
     return config.SERVICE_URL && config.SUPPORTS_FEEDBACK && this.validFeedbackWindow(session);
   }
 
-  createEvaluation(sessionId) {
-    let argumentsArray = Array.prototype.slice.call(arguments);
-    argumentsArray.shift();
-    return this._codRemoteService.createEvaluation.apply(this, argumentsArray)
+  createEvaluation(sessionId, sessionNid, comment, rating) {
+    return this._codRemoteService.createEvaluation(sessionNid, comment, rating)
       .then(() => tabris.ui.find("#schedule").set("evaluatedSessionId", sessionId));
   }
 
