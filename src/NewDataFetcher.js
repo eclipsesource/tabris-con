@@ -11,7 +11,7 @@ let formatDataMappers = {
 export default class {
   constructor(config) {
     this._dataType = config.DATA_TYPE;
-    this._apiUrl = config.SERVICE_URL;
+    this._sessionsService = config.SERVICES.SESSIONS;
     this._serviceNotImplemented = SUPPORTED_SERVICES.indexOf(config.DATA_TYPE) < 0;
     this.ETAG_LOCAL_STORAGE_KEY = this._dataType + "DataETag";
     this.LAST_MODIFIED_LOCAL_STORAGE_KEY = this._dataType + "DataLastModified";
@@ -28,7 +28,7 @@ export default class {
       return this._fetchPromise;
     }
     this._fetchPromise = timeoutFetch(
-      this._apiUrl,
+      this._sessionsService,
       {method: "GET", headers: this._getFetchHeaders()}
     )
       .then(response => {

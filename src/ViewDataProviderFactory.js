@@ -9,7 +9,7 @@ export function create(config, remoteService, loginService, feedbackService) {
   let bundledConferenceData = BundledConferenceData.create(config);
   let viewDataAdapter = new ViewDataAdapter(config, loginService, feedbackService);
   let conferenceDataProvider = new ConferenceDataProvider(bundledConferenceData);
-  if (config.SERVICE_URL) {
+  if (config.SERVICES && config.SERVICES.SESSIONS) {
     conferenceDataProvider.setNewDataFetcher(new NewDataFetcher(config));
   }
   let attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);

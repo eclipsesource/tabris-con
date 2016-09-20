@@ -23,7 +23,7 @@ export default class {
 
     this._handleAppUpgrade();
 
-    if (!config.SERVICE_URL) {
+    if (!(config.SERVICES && config.SERVICES.SESSIONS)) {
       return this._useBundledData();
     }
 

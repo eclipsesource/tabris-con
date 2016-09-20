@@ -25,7 +25,7 @@ export default class extends CollectionView {
         .then(() => collectionView.set("refreshIndicator", false));
     };
     let handleUpdatableChange = (collectionView, updatable) => {
-      if (!config.SERVICE_URL) {
+      if (!(config.SERVICES && config.SERVICES.SESSIONS)) {
         return;
       }
       collectionView.set("refreshEnabled", updatable);

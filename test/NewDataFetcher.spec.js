@@ -13,10 +13,10 @@ let expect = chai.expect;
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
-let SCHEDULED_SESSIONS_SERVICE = "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions";
+let SESSIONS = "https://www.eclipsecon.org/na2016/api/1.0/eclipsecon_scheduled_sessions";
 
 describe("NewDataFetcher", () => {
-  let CONFIG = {SERVICE_URL: SCHEDULED_SESSIONS_SERVICE, DATA_TYPE: "cod"};
+  let CONFIG = {SERVICES: {SESSIONS}, DATA_TYPE: "cod"};
   let fetcher = new NewDataFetcher(CONFIG);
 
   beforeEach(() => {
@@ -33,21 +33,21 @@ describe("NewDataFetcher", () => {
   });
 
   it("returns response body when status 200", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
+    fetchMock.mock(SESSIONS, {});
 
     return fetcher.fetch()
       .then(data => {
-        expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
+        expect(fetchMock.called(SESSIONS)).to.be.true;
         expect(data).to.deep.equal({scheduledSessions: {}});
       });
   });
 
   it("calls service with cache control headers", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
+    fetchMock.mock(SESSIONS, {});
 
     return fetcher.fetch()
       .then(() => {
-        expect(fetchMock.lastOptions(SCHEDULED_SESSIONS_SERVICE).headers).to.deep.equal({
+        expect(fetchMock.lastOptions(SESSIONS).headers).to.deep.equal({
           "If-None-Match": "etag",
           "If-Modified-Since": "lastmodified"
         });
@@ -55,11 +55,11 @@ describe("NewDataFetcher", () => {
   });
 
   it("saves response etag and last-modified when status 200", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {headers: {etag: "foo", "last-modified": "bar"}, body: {}});
+    fetchMock.mock(SESSIONS, {headers: {etag: "foo", "last-modified": "bar"}, body: {}});
 
     return fetcher.fetch()
       .then(data => {
-        expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
+        expect(fetchMock.called(SESSIONS)).to.be.true;
         expect(data).to.deep.equal({scheduledSessions: {}});
         expect(localStorage.setItem).to.have.been.calledWith(fetcher.ETAG_LOCAL_STORAGE_KEY, "foo");
         expect(localStorage.setItem).to.have.been.calledWith(fetcher.LAST_MODIFIED_LOCAL_STORAGE_KEY, "bar");
@@ -67,23 +67,23 @@ describe("NewDataFetcher", () => {
   });
 
   it("returns 'null' when status === 304", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {status: 304, body: {}});
+    fetchMock.mock(SESSIONS, {status: 304, body: {}});
 
     return fetcher.fetch()
       .then(data => {
-        expect(fetchMock.called(SCHEDULED_SESSIONS_SERVICE)).to.be.true;
+        expect(fetchMock.called(SESSIONS)).to.be.true;
         expect(data).to.deep.equal(null);
       });
   });
 
   it("rejects if status unexpected", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {status: 500, body: {}});
+    fetchMock.mock(SESSIONS, {status: 500, body: {}});
 
     return expect(fetcher.fetch()).to.eventually.be.rejected;
   });
 
   it("doesn't call service more than once if fetch is already taking place", () => {
-    fetchMock.mock(SCHEDULED_SESSIONS_SERVICE, {});
+    fetchMock.mock(SESSIONS, {});
 
     Promise.all([fetcher.fetch(), fetcher.fetch()]).then(() => {
       expect(fetchMock.calls().length).to.equal(1);

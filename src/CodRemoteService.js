@@ -5,18 +5,14 @@ import isFeedbackTime from "./isFeedbackTime";
 import timeoutFetch from "./timeoutFetch";
 import texts from "./resources/texts";
 
-import URI from "urijs";
-
 export default class {
-  constructor(serviceUrl) {
-    this._serviceUrl = serviceUrl;
-    this._apiUrl = URI(serviceUrl).segment("api").segment("1.0").toString();
+  constructor(services) {
+    this._services = services;
   }
 
   login(username, password) {
-    let serviceUrl = URI(this._apiUrl).segment("user").segment("login").toString();
     return this.csrfToken()
-      .then(login)
+      .then(token => this._login(token, username, password))
       .then(jsonify)
       .catch(log)
       .then(response => {
@@ -28,24 +24,23 @@ export default class {
       })
       .catch(this._logoutIfAlreadyLoggedIn(username, password))
       .catch(alert);
+  }
 
-    function login(csrfToken) {
-      return timeoutFetch(serviceUrl, {
-        method: "post",
-        headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},
-        body: JSON.stringify({
-          name: username,
-          pass: password
-        })
-      });
-    }
+  _login(token, username, password) {
+    return timeoutFetch(this._services.LOGIN, {
+      method: "post",
+      headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": token},
+      body: JSON.stringify({
+        name: username,
+        pass: password
+      })
+    });
   }
 
   logout() {
-    let serviceUrl = URI(this._apiUrl).segment("user").segment("logout").toString();
     return this.csrfToken()
       .then(csrfToken => {
-        return timeoutFetch(serviceUrl, {
+        return timeoutFetch(this._services.LOGOUT, {
           method: "post",
           headers: {
             Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken
@@ -66,13 +61,11 @@ export default class {
   }
 
   csrfToken() {
-    let serviceUrl = URI(this._serviceUrl).segment("services").segment("session").segment("token").toString();
-    return timeoutFetch(serviceUrl).then(response => response.text());
+    return timeoutFetch(this._services.CSRF_TOKEN).then(response => response.text());
   }
 
   evaluations() {
-    let serviceUrl = URI(this._apiUrl).segment("eclipsecon_evaluations").toString();
-    return timeoutFetch(serviceUrl)
+    return timeoutFetch(this._services.EVALUATIONS)
       .then(jsonify)
       .then(response => {
         if (responseIsAnErrorArray(response)) {
@@ -123,7 +116,7 @@ export default class {
 
   _sendCreateEvaluationRequest(sessionNid, comment, rating) {
     return csrfToken => {
-      let serviceUrl = URI(this._apiUrl).segment("eclipsecon_evaluations").toString();
+      let serviceUrl = this._services.EVALUATIONS;
       return timeoutFetch(serviceUrl, {
         method: "POST",
         headers: {Accept: "application/json", "Content-Type": "application/json", "X-CSRF-Token": csrfToken},

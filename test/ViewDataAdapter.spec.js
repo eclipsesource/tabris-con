@@ -17,7 +17,7 @@ let expect = chai.expect;
 
 let FAKE_CONFIG = {
   DATA_TYPE: "googleIO",
-  SERVICE_URL: "https://www.eclipsecon.org/na2016",
+  SERVICES: {EVALUATION: "https://www.eclipsecon.org/na2016"},
   SESSIONS_HAVE_IMAGES: true,
   CONFERENCE_TIMEZONE: "America/Los_Angeles",
   CONFERENCE_SCHEDULE_HOUR_RANGE: [7, 8],

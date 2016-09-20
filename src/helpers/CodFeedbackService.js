@@ -6,7 +6,7 @@ export default class {
   }
 
   canGiveFeedbackForSession(session) {
-    return config.SERVICE_URL && config.SUPPORTS_FEEDBACK && this.validFeedbackWindow(session);
+    return config.SUPPORTS_FEEDBACK && this.validFeedbackWindow(session);
   }
 
   createEvaluation(sessionId, sessionNid, comment, rating) {

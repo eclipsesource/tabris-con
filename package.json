@@ -18,8 +18,7 @@
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
     "tabris": "https://tabrisjs.com/downloads/nightly/tabris.tgz",
-    "tabris-js-node": "^0.1.0",
-    "urijs": "^1.17.0"
+    "tabris-js-node": "^0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",

@@ -3,6 +3,6 @@ import CodRemoteService from "./CodRemoteService";
 
 export function create() {
   if (config.DATA_TYPE === "cod") {
-    return new CodRemoteService(config.SERVICE_URL);
+    return new CodRemoteService(config.SERVICES);
   }
 }
