@@ -1,9 +1,9 @@
 import colors from "../resources/colors";
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
-import {Composite, TextView} from "tabris";
+import {ui, Composite, TextView} from "tabris";
 
-export default class extends Composite {
+export default class InfoToast extends Composite {
   constructor() {
     super({
       background: colors.INFO_TOAST_BACKGROUND_COLOR,
@@ -33,19 +33,33 @@ export default class extends Composite {
       .appendTo(this);
   }
 
-  show(toastObject) {
-    let textView = this.children("#infoToastTextView");
-    let actionTextView = this.children("#infoToastActionTextView");
-    this.set({toastType: toastObject.type});
+  static show(toastObject) {
+    let toast = this._create();
+    let textView = toast.children("#infoToastTextView");
+    let actionTextView = toast.children("#infoToastActionTextView");
+    toast.set({toastType: toastObject.type});
     textView.set("text", toastObject.messageText);
-    actionTextView.set("text", toastObject.actionText);
-    if (this.get("transform").translationY > 0) {
-      this.animate({transform: {translationY: 0}}, {duration: this.POP_ANIMATION_DURATION, easing: "ease-out"});
+    actionTextView.set({
+      visible: !!toastObject.actionText,
+      text: toastObject.actionText
+    });
+    if (toast.get("transform").translationY > 0) {
+      toast.animate({transform: {translationY: 0}}, {duration: toast.POP_ANIMATION_DURATION, easing: "ease-out"});
     }
-    if (this._timeout) {
-      clearTimeout(this._timeout);
+    if (toast._timeout) {
+      clearTimeout(toast._timeout);
     }
-    this._timeout = setTimeout(() => this._hideInfoToast(), this.POP_HIDE_DELAY);
+    toast._timeout = setTimeout(() => toast._hideInfoToast(), toast.POP_HIDE_DELAY);
+    return toast;
+  }
+
+  static _create() {
+    let activePage = ui.get("activePage");
+    if (!activePage.children("#infoToast").length) {
+      return new InfoToast().appendTo(activePage);
+    } else {
+      return activePage.children("#infoToast").first();
+    }
   }
 
   _hideInfoToast() {

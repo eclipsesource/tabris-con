@@ -33,7 +33,6 @@ let de = {
   REMOTE_SERVICE_COULD_NOT_SUBMIT_EVALUATION: "Feedback konnte nicht gesendet werden.",
   DIALOG_ERROR: "Fehler",
   DIALOG_OK: "OK",
-  DIALOG_WARNING: "Warnung",
   DATA_MAY_BE_OUTDATED_MESSAGE:
     "Wir konnten nicht ermitteln, ob aktuellere Konferenzdaten zur Verfügung stehen. Angezeigte Daten können " +
     "veraltet sein.",
@@ -95,7 +94,6 @@ let en = {
   REMOTE_SERVICE_COULD_NOT_SUBMIT_EVALUATION: "Could not submit evaluation.",
   DIALOG_ERROR: "Error",
   DIALOG_OK: "OK",
-  DIALOG_WARNING: "Warning",
   DATA_MAY_BE_OUTDATED_MESSAGE:
     "We could not determine whether newer conference data is available. Shown data may be outdated.",
   TRACKS_PAGE_KEYNOTES_TITLE: "Keynotes",

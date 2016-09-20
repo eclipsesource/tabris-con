@@ -1,6 +1,6 @@
 /*globals Promise: true*/
 import * as persistedStorage from "./persistedStorage";
-import * as alert from "./components/alert";
+import InfoToast from "./components/InfoToast";
 import config from "./configs/config";
 import * as ConferenceDataFactory from "./ConferenceDataFactory";
 import texts from "./resources/texts";
@@ -77,15 +77,11 @@ export default class {
   _fallBackToPresentData(options) {
     let dataStored = persistedStorage.conferenceDataStored();
     if (options.fetchFailed || !dataStored) {
-      alert.show(this._dataMayBeOutdatedMessage(), texts.DIALOG_WARNING, texts.DIALOG_OK);
+      InfoToast.show({messageText: texts.DATA_MAY_BE_OUTDATED_MESSAGE});
     }
     if (!dataStored) {
       persistedStorage.setConferenceData(this._bundledConferenceData);
     }
-  }
-
-  _dataMayBeOutdatedMessage() {
-    return texts.DATA_MAY_BE_OUTDATED_MESSAGE;
   }
 
 }

@@ -34,8 +34,6 @@ export default class extends Page {
 
     let scrollView = new ScrollView({left: 0, right: 0, top: 0, bottom: 0}).appendTo(this);
 
-    new InfoToast().appendTo(this);
-
     let imageView = new ImageView({
       id: "sessionPageImageView",
       left: 0, top: 0, right: 0,
@@ -205,7 +203,6 @@ export default class extends Page {
   }
 
   _updateAttendance(widget, wasChecked) {
-    let infoToast = this.find("#infoToast").first();
     let checked = !wasChecked;
     let session = this.get("data");
     if (session) {
@@ -215,18 +212,19 @@ export default class extends Page {
         attendedSessionService.removeAttendedSessionId(session.id);
       }
       widget.set("attending", checked);
-      infoToast.show({
-        type: "myScheduleOperation",
-        messageText: checked ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
-        actionText: texts.INFO_TOAST_ACTION
-      });
-      infoToast.on("actionTap", () => {
-        if (!infoToast.isDisposed()) {
-          if (infoToast.get("toastType") === "myScheduleOperation") {
-            tabris.ui.find("#schedule").last().open();
+      InfoToast
+        .show({
+          type: "myScheduleOperation",
+          messageText: checked ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
+          actionText: texts.INFO_TOAST_ACTION
+        })
+        .on("actionTap", toast => {
+          if (!toast.isDisposed()) {
+            if (toast.get("toastType") === "myScheduleOperation") {
+              tabris.ui.find("#schedule").last().open();
+            }
           }
-        }
-      });
+        });
     }
   }
 
