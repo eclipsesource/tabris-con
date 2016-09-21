@@ -28,6 +28,7 @@ export default class extends Composite {
       left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
       font: fontToString({size: sizes.FONT_MEDIUM}),
       maxLines: 2,
+      markupEnabled: true,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     }).appendTo(textContainer);
     this.on("change:data", (widget, data) => {

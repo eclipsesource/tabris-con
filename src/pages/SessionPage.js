@@ -57,7 +57,8 @@ export default class extends Page {
 
     let descriptionTextView = new TextView({
       id: "sessionPageDescriptionTextView",
-      right: sizes.MARGIN_LARGE
+      right: sizes.MARGIN_LARGE,
+      markupEnabled: true
     }).appendTo(contentComposite);
 
     applyPlatformStyle(descriptionTextView);
