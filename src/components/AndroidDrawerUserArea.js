@@ -59,21 +59,20 @@ export default class extends Composite {
 
       let fullNameTextView = new TextView({
         top: sizes.MARGIN,
-        textColor: "white",
+        textColor: config.DRAWER_HEADER_THEME === "dark" ? "white" : colors.DARK_PRIMARY_TEXT_COLOR,
         font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
       }).appendTo(userTextContainer);
 
       let mailTextView = new TextView({
         bottom: sizes.MARGIN,
-        text: "jsmith@me.com",
-        textColor: "white",
+        textColor: config.DRAWER_HEADER_THEME === "dark" ? "white" : colors.DARK_PRIMARY_TEXT_COLOR,
         font: fontToString({size: sizes.FONT_MEDIUM})
       }).appendTo(userTextContainer);
 
       new ImageView({
         centerY: 0, right: 0,
         id: "menuArrowImageView",
-        image: getImage.forDevicePlatform("menu_down")
+        image: getImage.forDevicePlatform(`menu_down_${config.DRAWER_HEADER_THEME || "light"}_theme`)
       }).appendTo(userTextContainer);
 
       mainContainer.on("tap", () => this.trigger("loggedInTap", this));
