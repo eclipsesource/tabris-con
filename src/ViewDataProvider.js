@@ -30,14 +30,14 @@ export default class {
   }
 
   getOtherSessionsInTimeframe(date1, date2, sessionId) {
-    return getSessionsInTimeframe(this._conferenceDataProvider, date1.toJSON(), date2.toJSON())
-      .then(sessions => _.filter(sessions, value => value.id !== sessionId))
-      .then(sessions => {
-        if (sessions.length > 0) {
-          return this._viewDataAdapter.adaptCategory({sessions});
-        }
-        return [];
-      });
+    return this._conferenceDataProvider.get().then(data => {
+      let sessions = getSessionsInTimeframe(data, date1.toJSON(), date2.toJSON())
+        .filter(value => value.id !== sessionId);
+      if (sessions.length > 0) {
+        return this._viewDataAdapter.adaptCategory({sessions});
+      }
+      return [];
+    });
   }
 
   getCategory(categoryId) {
@@ -73,8 +73,10 @@ export default class {
   }
 
   getSessionsInTimeframe(timestamp1, timestamp2) {
-    return getSessionsInTimeframe(this._conferenceDataProvider, timestamp1, timestamp2)
-      .then(sessions => this._viewDataAdapter.adaptCategory({sessions: sessions}));
+    return this._conferenceDataProvider.get().then(data => {
+      let sessions = getSessionsInTimeframe(data, timestamp1, timestamp2);
+      return this._viewDataAdapter.adaptCategory({sessions});
+    });
   }
 
   getRemoteService() {

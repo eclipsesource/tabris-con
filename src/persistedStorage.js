@@ -7,6 +7,7 @@ export const CATEGORIES = "categories";
 export const SESSIONS = "sessions";
 export const KEYNOTES = "keynotes";
 export const BLOCKS = "blocks";
+export const SINGLE_SESSIONS_PRESELECTED = "singleSessionsPreselected";
 
 export function addAttendedSessionId(sessionId) {
   let attendedSessions = getAttendedSessions();
@@ -73,6 +74,10 @@ export function setConferenceData(conferenceData, dataType = config.DATA_TYPE) {
   setCategories(conferenceData.categories, dataType);
 }
 
+export function setSingleSessionsPreselected(value, dataType = config.DATA_TYPE) {
+  setValue(SINGLE_SESSIONS_PRESELECTED, value, dataType);
+}
+
 /* get functions */
 export function getAttendedSessions() {
   let attendedSessions = localStorage.getItem(ATTENDED_SESSIONS) || "[]";
@@ -107,6 +112,10 @@ export function getConferenceData(dataType = config.DATA_TYPE) {
     keynotes: getKeynotes(dataType),
     blocks: getBlocks(dataType)
   };
+}
+
+export function getSingleSessionsPreselected(dataType = config.DATA_TYPE) {
+  return getValue(SINGLE_SESSIONS_PRESELECTED, dataType);
 }
 
 /* remove functions */

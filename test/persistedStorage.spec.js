@@ -77,7 +77,8 @@ describe("persisted storage", () => {
       persistedStorage.CATEGORIES,
       persistedStorage.SESSIONS,
       persistedStorage.KEYNOTES,
-      persistedStorage.BLOCKS
+      persistedStorage.BLOCKS,
+      persistedStorage.SINGLE_SESSIONS_PRESELECTED
     ];
     let value = {bak: "baz"};
 
@@ -115,7 +116,8 @@ describe("persisted storage", () => {
       persistedStorage.CATEGORIES,
       persistedStorage.SESSIONS,
       persistedStorage.KEYNOTES,
-      persistedStorage.BLOCKS
+      persistedStorage.BLOCKS,
+      persistedStorage.SINGLE_SESSIONS_PRESELECTED
     ];
 
     properties.forEach(property => {

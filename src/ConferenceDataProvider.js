@@ -4,6 +4,9 @@ import InfoToast from "./components/InfoToast";
 import config from "./configs/config";
 import * as ConferenceDataFactory from "./ConferenceDataFactory";
 import texts from "./resources/texts";
+import ConfigurationDate from "./ConfigurationDate";
+import getSessionsInTimeframe from "./getSessionsInTimeframe";
+import {addAttendedSessionId} from "./helpers/attendedSessionService";
 
 export default class {
   constructor(bundledConferenceData) {
@@ -42,25 +45,47 @@ export default class {
         this._fallBackToPresentData({fetchFailed: true});
       })
       .then(() => {
-        this._conferenceData = persistedStorage.getConferenceData();
+        this._setConferenceData(persistedStorage.getConferenceData());
         return this._conferenceData;
       });
   }
 
+  _setConferenceData(data) {
+    this._conferenceData = data;
+    this._preselectSingleBlockSessions(data);
+  }
+
+  _preselectSingleBlockSessions(data) {
+    if (data) {
+      if (persistedStorage.getSingleSessionsPreselected()) {
+        return;
+      }
+      config.FREE_BLOCKS.forEach(block => {
+        let date1 = new ConfigurationDate(config, block[0]);
+        let date2 = new ConfigurationDate(config, block[1]);
+        let sessions = getSessionsInTimeframe(data, date1.toJSON(), date2.toJSON());
+        if (sessions.length === 1) {
+          addAttendedSessionId(sessions[0].id, {focus: false});
+        }
+      });
+      persistedStorage.setSingleSessionsPreselected(true);
+    }
+  }
+
   _useBundledData() {
     persistedStorage.setConferenceData(this._bundledConferenceData);
-    this._conferenceData = persistedStorage.getConferenceData();
+    this._setConferenceData(persistedStorage.getConferenceData());
     return Promise.resolve(this._conferenceData);
   }
 
   invalidateCache() {
-    this._conferenceData = null;
+    this._setConferenceData(null);
   }
 
   _handleWindows() {
     if (device.platform === "windows") {
       if (!this._conferenceData) {
-        this._conferenceData = this._bundledConferenceData;
+        this._setConferenceData(this._bundledConferenceData);
       }
     }
   }
