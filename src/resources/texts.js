@@ -33,9 +33,7 @@ let de = {
   REMOTE_SERVICE_COULD_NOT_SUBMIT_EVALUATION: "Feedback konnte nicht gesendet werden.",
   DIALOG_ERROR: "Fehler",
   DIALOG_OK: "OK",
-  DATA_MAY_BE_OUTDATED_MESSAGE:
-    "Wir konnten nicht ermitteln, ob aktuellere Konferenzdaten zur Verfügung stehen. Angezeigte Daten können " +
-    "veraltet sein.",
+  DATA_UPDATE_FAILED_MESSAGE: "Aktualisierung fehlgeschlagen.",
   TRACKS_PAGE_KEYNOTES_TITLE: "Keynotes",
   FEEDBACK_NOT_LOGGED_IN_ERROR: "Bitte melden Sie sich an um Feedback zu senden.",
   FEEDBACK_SUBMITTED_MESSAGE: "Feedback für diesen Vortrag abgeschickt.",
@@ -94,8 +92,7 @@ let en = {
   REMOTE_SERVICE_COULD_NOT_SUBMIT_EVALUATION: "Could not submit evaluation.",
   DIALOG_ERROR: "Error",
   DIALOG_OK: "OK",
-  DATA_MAY_BE_OUTDATED_MESSAGE:
-    "We could not determine whether newer conference data is available. Shown data may be outdated.",
+  DATA_UPDATE_FAILED_MESSAGE: "Update failed.",
   TRACKS_PAGE_KEYNOTES_TITLE: "Keynotes",
   COULD_NOT_FETCH_DATA_ERROR: "Could not fetch data.",
   FEEDBACK_NOT_LOGGED_IN_ERROR: "Please login to give feedback.",

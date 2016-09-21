@@ -77,7 +77,7 @@ export default class {
   _fallBackToPresentData(options) {
     let dataStored = persistedStorage.conferenceDataStored();
     if (options.fetchFailed || !dataStored) {
-      InfoToast.show({messageText: texts.DATA_MAY_BE_OUTDATED_MESSAGE});
+      InfoToast.show({messageText: texts.DATA_UPDATE_FAILED_MESSAGE});
     }
     if (!dataStored) {
       persistedStorage.setConferenceData(this._bundledConferenceData);
