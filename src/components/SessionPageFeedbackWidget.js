@@ -38,30 +38,22 @@ export default class extends Composite {
 
   _showFeedbackState(feedbackWidget, adaptedSession) {
     this._viewDataProvider.getRemoteService().evaluations()
-      .then(this._handleSessionValid(feedbackWidget, adaptedSession))
-      .catch(this._handleErrors(feedbackWidget))
+      .then(evaluations => {
+        let evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
+        let widget = evaluationAlreadySubmitted ?
+          createNoticeTextView(texts.FEEDBACK_SUBMITTED_MESSAGE) : this._createFeedbackButton(adaptedSession);
+        widget.appendTo(feedbackWidget);
+      })
+      .catch(err => {
+        if (err.match && err.match(/Session expired/)) {
+          createErrorTextView(texts.FEEDBACK_LOGIN_AGAIN_MESSAGE).appendTo(feedbackWidget);
+        } else if (err.match && err.match(/Network request failed/)) {
+          createErrorTextView(texts.FEEDBACK_CONNECT_TO_THE_INTERNET_MESSAGE).appendTo(feedbackWidget);
+        } else {
+          createErrorTextView(texts.FEEDBACK_SOMETHING_WENT_WRONG).appendTo(feedbackWidget);
+        }
+      })
       .finally(() => feedbackWidget.set("progress", false));
-  }
-
-  _handleSessionValid(feedbackWidget, adaptedSession) {
-    return function(evaluations) {
-      let evaluationAlreadySubmitted = !!_.find(evaluations, {nid: adaptedSession.nid});
-      let widget = evaluationAlreadySubmitted ?
-        createNoticeTextView(texts.FEEDBACK_SUBMITTED_MESSAGE) : this._createFeedbackButton(adaptedSession);
-      widget.appendTo(feedbackWidget);
-    };
-  }
-
-  _handleErrors(feedbackWidget) {
-    return function(e) {
-      if (e.match && e.match(/Session expired/)) {
-        createErrorTextView(texts.FEEDBACK_LOGIN_AGAIN_MESSAGE).appendTo(feedbackWidget);
-      } else if (e.match && e.match(/Network request failed/)) {
-        createErrorTextView(texts.FEEDBACK_CONNECT_TO_THE_INTERNET_MESSAGE).appendTo(feedbackWidget);
-      } else {
-        createErrorTextView(texts.FEEDBACK_SOMETHING_WENT_WRONG).appendTo(feedbackWidget);
-      }
-    };
   }
 
   _createFeedbackButton(adaptedSession) {
