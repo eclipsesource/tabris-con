@@ -46,9 +46,8 @@ export default class extends Composite {
       id: this.get("id") + "Tab",
       textColor: colors.TINT_COLOR,
       navigatable: this,
-      image: this.get("image"),
-      left: 0, top: 0, right: 0, bottom: 0
-    }).on("change:data",(widget, data) => this.set("data", data));
+      image: this.get("image")
+    }).on("change:data", (widget, data) => this.set("data", data));
     this.appendTo(tab);
     return this;
   }
