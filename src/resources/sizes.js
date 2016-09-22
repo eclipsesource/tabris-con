@@ -38,8 +38,8 @@ export default {
   SESSION_CELL_IMAGE_WIDTH: 112,
 
   LAST_UPDATED_ITEM_CELL_HEIGHT: select({
-    ios: 32,
-    default: 48
+    android: 48,
+    default: 32
   }),
 
   CELL_TYPE_PREVIEW_CATEGORIES_SPACER_HEIGHT: 8,
