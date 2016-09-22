@@ -58,7 +58,8 @@ export default class extends Page {
     let descriptionTextView = new TextView({
       id: "sessionPageDescriptionTextView",
       right: sizes.MARGIN_LARGE,
-      markupEnabled: true
+      markupEnabled: true,
+      lineSpacing: sizes.LINE_SPACING
     }).appendTo(contentComposite);
 
     applyPlatformStyle(descriptionTextView);
@@ -144,6 +145,7 @@ export default class extends Page {
       id: "sessionPageSpeakerSummary",
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE,
       text: speaker.summary,
+      lineSpacing: sizes.LINE_SPACING,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerSummary);
@@ -151,6 +153,7 @@ export default class extends Page {
       id: "sessionPageSpeakerBio",
       left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
       text: speaker.bio,
+      lineSpacing: sizes.LINE_SPACING,
       font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerBio);
