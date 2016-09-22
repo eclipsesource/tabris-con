@@ -51,8 +51,7 @@ function createSocialLinks(linksContainer, socialServices) {
     let title = config[`${service.toUpperCase()}_TITLE`];
     let url = config[`${service.toUpperCase()}_URL`];
     if (title && url) {
-      let tag = config[`${service.toUpperCase()}_TAG`];
-      createSocialLink({service, title, url, tag}).appendTo(linksContainer);
+      createSocialLink({service, title, url, tag: config[`${service.toUpperCase()}_TAG`]}).appendTo(linksContainer);
     }
   });
 }
