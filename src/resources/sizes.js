@@ -1,5 +1,5 @@
 import config from "../configs/config";
-import select from "../helpers/select";
+import {select} from "../helpers/platform";
 
 export default {
   SUPPORTED_DEVICE_PIXEL_RATIOS: [1, 1.5, 2, 3],
@@ -29,26 +29,29 @@ export default {
 
   SESSION_CATEGORY_TITLE_CELL_HEIGHT: 48,
   SESSION_CELL_HEIGHT: select({
-    iOS: config.SESSIONS_HAVE_IMAGES ? 98 : 56,
-    Android: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
+    ios: config.SESSIONS_HAVE_IMAGES ? 98 : 56,
+    android: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
     windows: config.SESSIONS_HAVE_IMAGES ? 98 : 72
   }),
   PREVIEW_SESSION_CELL_HEIGHT: config.SESSIONS_HAVE_IMAGES ? 98 : 72,
   SESSION_CELL_IMAGE_HEIGHT: 84,
   SESSION_CELL_IMAGE_WIDTH: 112,
 
-  LAST_UPDATED_ITEM_CELL_HEIGHT: 48,
+  LAST_UPDATED_ITEM_CELL_HEIGHT: select({
+    ios: 32,
+    default: 48
+  }),
 
   CELL_TYPE_PREVIEW_CATEGORIES_SPACER_HEIGHT: 8,
   CELL_TYPE_SESSIONS_SPACER_HEIGHT: select({
-    Android: 8,
+    android: 8,
     windows: 8,
-    iOS: 0
+    ios: 0
   }),
   CELL_TYPE_SEPARATOR_HEIGHT: select({
-    Android: 8,
+    android: 8,
     windows: 8,
-    iOS: 1
+    ios: 1
   }),
   CELL_TYPE_SMALL_SEPARATOR_HEIGHT: 1,
 
@@ -82,8 +85,8 @@ export default {
   FEEDBACK_THUMB_SIZE: 36,
 
   SESSION_PAGE_TRACK_INDICATOR_TOP: select({
-    Android: ["#sessionPageNavigationControls", 10],
-    iOS: 8,
+    android: ["#sessionPageNavigationControls", 10],
+    ios: 8,
     windows: 20
   }),
 
