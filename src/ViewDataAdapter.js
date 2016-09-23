@@ -128,7 +128,6 @@ export default class {
         .map((block, i) => [block, separators[i]])
         .flatten()
         .pull(undefined)
-        .unshift(this._createLastUpdatedItem())
         .value()
     };
   }

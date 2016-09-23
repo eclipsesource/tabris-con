@@ -2,10 +2,14 @@ import CollectionView from "../components/collectionView/TabrisConCollectionView
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import LoadingIndicator from "../components/LoadingIndicator";
 import getImage from "../helpers/getImage";
+import {select} from "../helpers/platform";
 import Navigatable from "./Navigatable";
-import {TabFolder, Tab} from "tabris";
+import {TabFolder, Tab, TextView, Composite} from "tabris";
 import _ from "lodash";
 import texts from "../resources/texts";
+import sizes from "../resources/sizes";
+import colors from "../resources/colors";
+import moment from "moment-timezone";
 
 export default class extends Navigatable {
   constructor({viewDataProvider}) {
@@ -23,9 +27,45 @@ export default class extends Navigatable {
 
     this.once("change:data", (widget, blocks) => {
       loadingIndicator.dispose();
+      let lastUpdatedBox = new Composite({
+        left: 0, top: 0, right: 0, height: 32,
+        background: select({
+          android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+          default: "initial"
+        }),
+        textColor: select({
+          android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+          default: colors.IOS_ACTION_AREA_FOREGROUND_COLOR
+        })
+      }).appendTo(this);
+      new TextView({
+        id: "lastUpdated",
+        font: select({
+          android: "italic bold 14px",
+          default: "italic 12px sans-serif"
+        }),
+        opacity: select({android: 0.6, default: 1}),
+        textColor: select({
+          android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+          default: colors.DARK_SECONDARY_TEXT_COLOR
+        }),
+        centerX: select({
+          ios: 0,
+          default: null
+        }),
+        left: select({
+          android: sizes.LEFT_CONTENT_MARGIN,
+          windows: sizes.MARGIN + sizes.MARGIN_SMALL,
+          ios: null
+        }),
+        top: select({
+          android: 0,
+          default: sizes.MARGIN + sizes.MARGIN_SMALL
+        })
+      }).appendTo(lastUpdatedBox);
       let tabFolder = new TabFolder({
         id: "scheduleTabFolder",
-        layoutData: {left: 0, top: 0, right: 0, bottom: 0},
+        layoutData: {left: 0, top: lastUpdatedBox, right: 0, bottom: 0},
         elevation: 4,
         tabBarLocation: blocks.length <= 1 ? "hidden" : "top",
         paging: true
@@ -35,6 +75,8 @@ export default class extends Navigatable {
     });
 
     this.on("change:data", (widget, blocks) => {
+      let lastUpdated = localStorage.getItem("lastUpdated");
+      this.find("#lastUpdated").set("text", `${texts.LAST_UPDATED} ${moment(lastUpdated).format("ll LT")}`);
       blocks.forEach(blockObject => {
         let collectionView = this.find("#" + blockObject.day);
         collectionView.set("items", blockObject.blocks);
