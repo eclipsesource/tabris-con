@@ -3,11 +3,11 @@
     "day": "28 May",
     "blocks": [
       {
+        "blockType": "block",
         "image": "schedule_icon_badge",
         "type": "block",
         "title": "Badge Pick-Up",
         "feedbackIndicatorState": null,
-        "sessionType": "session",
         "startTime": "07:00",
         "startTimestamp": "2015-05-28T14:00:00.000Z",
         "endTimestamp": "2015-05-29T00:00:00.000Z",
@@ -15,11 +15,11 @@
       }, {
         "type": "smallSeparator"
       }, {
+        "blockType": "block",
         "image": "schedule_icon_food",
         "type": "block",
         "title": "Breakfast",
         "feedbackIndicatorState": null,
-        "sessionType": "session",
         "startTime": "07:00",
         "startTimestamp": "2015-05-28T14:00:00.000Z",
         "endTimestamp": "2015-05-28T16:00:00.000Z",

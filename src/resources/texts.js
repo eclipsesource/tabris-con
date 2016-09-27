@@ -54,8 +54,9 @@ let de = {
   FEEDBACK_PAGE_SUBMIT_BUTTON: "Abschicken",
   PROFILE_PAGE_TITLE: "Konto",
   SESSION_PAGE_SPEAKERS: "Referenten",
-  SESSION_PAGE_OTHER_SESSIONS_LINK: "Andere Vorträge zur selben Zeit",
-  SESSIONS_PAGE_TITLE_LOADING: "Lädt..."
+  SESSION_PAGE_OTHER_SESSIONS_LINK: "Andere Vorträge zur gleichen Zeit",
+  SESSIONS_PAGE_TITLE_LOADING: "Lädt...",
+  CONCURRENT_SESSIONS: "Vorträge zur gleichen Zeit"
 };
 
 let en = {
@@ -113,7 +114,8 @@ let en = {
   PROFILE_PAGE_TITLE: "Profile",
   SESSION_PAGE_SPEAKERS: "Speakers",
   SESSION_PAGE_OTHER_SESSIONS_LINK: "Other sessions at the same time",
-  SESSIONS_PAGE_TITLE_LOADING: "Loading..."
+  SESSIONS_PAGE_TITLE_LOADING: "Loading...",
+  CONCURRENT_SESSIONS: "sessions at the same time"
 };
 
 export default isGerman() ? de : en;

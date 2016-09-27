@@ -5,11 +5,10 @@ import * as persistedStorage from "../src/persistedStorage";
 import sinon from "sinon";
 import AttendedBlockProvider from "../src/AttendedBlockProvider";
 import conferenceDataProvider from "../src/ConferenceDataProvider";
-import chaiAsPromised from "chai-as-promised";
-import SESSIONS from "./json/cod/sessions.json";
+import chaiThings from "chai-things";
 
 let expect = chai.expect;
-chai.use(chaiAsPromised);
+chai.use(chaiThings);
 
 describe("attendedBlockProvider", () => {
   let attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);
@@ -20,23 +19,59 @@ describe("attendedBlockProvider", () => {
     global.localStorage.getItem = sinon.stub();
     global.localStorage.setItem = sinon.spy();
     conferenceDataProvider.get = sinon.stub();
+    global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSIONS).returns("[\"id\"]");
   });
 
-  it("provides blocks referenced in localStorage", () => {
-    let config = {DATA_TYPE: "cod", CONFERENCE_TIMEZONE: "Europe/Berlin"};
-    global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSIONS).returns("[\"20301046\"]");
-    conferenceDataProvider.get.returns(Promise.resolve({sessions: SESSIONS}));
+  it("provides blocks referenced in localStorage", function() {
+    conferenceDataProvider.get.returns(Promise.resolve({
+      sessions: [{id: "id"}, {id: "id2"}],
+      keynotes: []
+    }));
 
-    let blocks = attendedBlockProvider.getBlocks(config);
+    return attendedBlockProvider.getBlocks().then(
+      blocks => {
+        expect(blocks).to.include.something.that.has.property("sessionId", "id");
+        expect(blocks).not.to.include.something.that.has.property("sessionId", "id2");
+      }
+    );
+  });
 
-    expect(blocks).to.eventually.deep.equal([{
-      sessionId: "20301046",
-      title: "10 Java Idioms Stomped with Xtend",
-      sessionNid: "2030",
-      room: "Theater Stage",
-      startTimestamp: "2015-11-05T09:30:00.000Z",
-      endTimestamp: "2015-11-05T10:05:00.000Z"
-    }]);
+  it("provides preselected blocks", function() {
+    conferenceDataProvider.get.returns(Promise.resolve({
+      sessions: [{id: "id", concurrentSessions: 0}], keynotes: []
+    }));
+
+    return attendedBlockProvider.getBlocks().then(
+      blocks => expect(blocks).to.include.something.that.has.property("sessionId", "id")
+    );
+  });
+
+  it("maps properties", function() {
+    conferenceDataProvider.get.returns(Promise.resolve({
+      sessions: [{
+        id: "id",
+        nid: "nid",
+        keynote: "keynote",
+        concurrentSessions: 0,
+        title: "title",
+        room: "room",
+        startTimestamp: "startTimestamp",
+        endTimestamp: "endTimestamp"
+      }], keynotes: []
+    }));
+
+    return attendedBlockProvider.getBlocks().then(
+      blocks => {
+        expect(blocks).to.include.something.that.has.property("sessionId", "id");
+        expect(blocks).to.include.something.that.has.property("sessionNid", "nid");
+        expect(blocks).to.include.something.that.has.property("keynote", "keynote");
+        expect(blocks).to.include.something.that.has.property("concurrentSessions", 0);
+        expect(blocks).to.include.something.that.has.property("title", "title");
+        expect(blocks).to.include.something.that.has.property("room", "room");
+        expect(blocks).to.include.something.that.has.property("startTimestamp", "startTimestamp");
+        expect(blocks).to.include.something.that.has.property("endTimestamp", "endTimestamp");
+      }
+    );
   });
 
 });

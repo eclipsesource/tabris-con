@@ -63,6 +63,9 @@ export default class {
     if (session.nid) {
       adaptedSession.nid = session.nid;
     }
+    if ("concurrentSessions" in session) {
+      adaptedSession.concurrentSessions = session.concurrentSessions;
+    }
     return adaptedSession;
   }
 
@@ -71,8 +74,8 @@ export default class {
   }
 
   adaptBlocks(blocks) {
-    let freeBlockInsertor = new FreeBlockInsertor(this._config);
-    let blocksAndFreeBlocks = freeBlockInsertor.insert(blocks);
+    let typedBlocks = blocks.map(block => Object.assign({}, block, {blockType: block.sessionId ? "session" : "block"}));
+    let blocksAndFreeBlocks = new FreeBlockInsertor(this._config).insert(typedBlocks);
     return _(blocksAndFreeBlocks)
       .sortBy("startTimestamp")
       .groupBy(block => new TimezonedDate(this._timezone, block.startTimestamp).format("DD MMM"))
@@ -141,12 +144,15 @@ export default class {
         startTimestamp: datedBlock.startTimestamp,
         endTimestamp: datedBlock.endTimestamp,
         feedbackIndicatorState: this._getFeedbackIndicatorState(datedBlock),
-        sessionType: datedBlock.sessionType || "session",
+        blockType: datedBlock.blockType || "session",
         title: datedBlock.title,
         type: "block"
       };
       if (typeof datedBlock.keynote !== "undefined") {
         block.keynote = datedBlock.keynote;
+      }
+      if ("concurrentSessions" in datedBlock) {
+        block.concurrentSessions = datedBlock.concurrentSessions;
       }
       if (datedBlock.sessionId) {
         block.sessionId = datedBlock.sessionId;

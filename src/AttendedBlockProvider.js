@@ -15,6 +15,7 @@ export default class {
             sessionId: session.id,
             sessionNid: session.nid,
             keynote: session.keynote,
+            concurrentSessions: session.concurrentSessions,
             title: session.title,
             room: session.room,
             startTimestamp: session.startTimestamp,

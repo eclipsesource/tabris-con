@@ -57,15 +57,15 @@ export default class {
 
   _preselectSingleBlockSessions(data) {
     if (data) {
-      if (persistedStorage.getSingleSessionsPreselected()) {
-        return;
-      }
       config.FREE_BLOCKS.forEach(block => {
         let date1 = new ConfigurationDate(config, block[0]);
         let date2 = new ConfigurationDate(config, block[1]);
         let sessions = getSessionsInTimeframe(data, date1.toJSON(), date2.toJSON());
-        if (sessions.length === 1) {
+        if (sessions.length === 1 && !persistedStorage.getSingleSessionsPreselected()) {
           addAttendedSessionId(sessions[0].id, {focus: false});
+        }
+        if (sessions.length > 0) {
+          sessions.forEach(session => session.concurrentSessions = sessions.length - 1);
         }
       });
       persistedStorage.setSingleSessionsPreselected(true);

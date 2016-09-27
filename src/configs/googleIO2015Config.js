@@ -29,6 +29,7 @@ export default {
     DRAWER_TEXT_COLOR: "rgba(0, 0, 0, 0.78)",
     DARK_PRIMARY_TEXT_COLOR: "rgba(0, 0, 0, 0.87)",
     DARK_SECONDARY_TEXT_COLOR: "rgba(0, 0, 0, 0.54)",
+    DARK_HINT_TEXT_COLOR: "rgba(0, 0, 0, 0.38)",
     LIGHT_PRIMARY_TEXT_COLOR: "rgba(255, 255, 255, 1)",
     LIGHT_SECONDARY_TEXT_COLOR: "rgba(255, 255, 255, 0.7)",
     LIGHT_TEXT_COLOR: "#ffffff",

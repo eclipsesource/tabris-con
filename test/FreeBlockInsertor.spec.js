@@ -28,7 +28,7 @@ describe("freeBlockInsertor", () => {
 
     expect(blocks).to.deep.equal([{
       title: "BROWSE SESSIONS",
-      sessionType: "free",
+      blockType: "free",
       startTimestamp: date("07.03.2016 09:00"),
       endTimestamp: date("07.03.2016 12:00")
     }]);
@@ -41,7 +41,7 @@ describe("freeBlockInsertor", () => {
       {"startTimestamp": date("07.03.2016 08:00")},
       {
         title: "BROWSE SESSIONS",
-        sessionType: "free",
+        blockType: "free",
         startTimestamp: date("07.03.2016 09:00"),
         endTimestamp: date("07.03.2016 12:00")
       }
