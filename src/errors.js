@@ -8,3 +8,5 @@ export let CouldNotFetchDataError = function(message) {
 
 CouldNotFetchDataError.prototype = Object.create(Error.prototype);
 CouldNotFetchDataError.prototype.constructor = CouldNotFetchDataError;
+
+export let logError = e => console.error(e.message || e, e.stack || "");

@@ -11,11 +11,15 @@ export default class extends Page {
   constructor(loginService) {
     super({topLevel: false, id: "loginPage", class: "navigatable"});
 
+    let lastActiveNavigatable;
+
     this.on("appear", () => {
       if (tabris.device.get("platform") === "iOS") {
         return;
       }
-      tabris.ui.find(".navigatable").set("active", false);
+      let navigatables = tabris.ui.find(".navigatable");
+      lastActiveNavigatable = navigatables.last();
+      navigatables.set("active", false);
     });
 
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
@@ -55,7 +59,7 @@ export default class extends Page {
       message: "password"
     }).on("change:text", () => this._updateLoginButtonState()).appendTo(inputContainer);
 
-    let button = new ProgressButton({id: "loginButton", text: texts.LOGIN_BUTTON, enabled: false})
+    new ProgressButton({id: "loginButton", text: texts.LOGIN_BUTTON, enabled: false})
       .on("select", widget => {
         widget.set("progress", true);
         loginService.login(usernameInput.get("text"), passwordInput.get("text"));
@@ -64,9 +68,24 @@ export default class extends Page {
 
     this
       .on("appear", () => tabris.ui.find("#loginAction").set("visible", false))
-      .on("disappear", () => tabris.ui.find("#loginAction").set("visible", true))
-      .on("loginSuccess", () => this.close())
-      .on("loginFailure", () => button.set("progress", false));
+      .on("disappear", () => tabris.ui.find("#loginAction").set("visible", true));
+
+    let loginSuccessHandler = () => {
+      this.trigger("loginSuccess");
+      this.close();
+    };
+    let loginErrorHandler = () => this.find("#loginButton").set("progress", false);
+
+    loginService
+      .on("loginSuccess", loginSuccessHandler)
+      .on("loginError", loginErrorHandler);
+
+    this.on("dispose", () => {
+      loginService
+        .off("loginSuccess", loginSuccessHandler)
+        .off("loginError", loginErrorHandler);
+      lastActiveNavigatable.activate();
+    });
   }
 
   _updateLoginButtonState() {

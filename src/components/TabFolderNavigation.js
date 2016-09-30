@@ -18,7 +18,7 @@ export function createWith(navigatables, viewDataProvider, loginService, feedbac
   };
   createTabs(navigation, navigatables, viewDataProvider, loginService, feedbackService);
   updateTabFocusOnTabFolderSelectionChange(navigation, page);
-  page.on("appear", triggerNavigatableAppear);
+  page.on("appear", () => triggerNavigatableAppear());
   navigation.appendTo(page);
   return navigation;
 }
@@ -39,7 +39,7 @@ function createTabs(tabFolder, navigatables, viewDataProvider, loginService, fee
 }
 
 function triggerNavigatableAppear() {
-  this.find(".navigatable")
+  tabris.ui.find(".navigatable")
     .filter(navigatable => navigatable.get("active"))
     .forEach(navigatable => navigatable.trigger("appear"));
 }

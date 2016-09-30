@@ -8,7 +8,7 @@ import {Composite} from "tabris";
 import texts from "../resources/texts";
 
 export default class extends Composite {
-  constructor(viewDataProvider, loginService) {
+  constructor(viewDataProvider, loginService, feedbackService) {
     super();
     this.on("change:data", (widget, session) => {
       let freeBlock = getSessionFreeBlock(session, config);
@@ -20,7 +20,7 @@ export default class extends Composite {
             if (otherSessions.length > 0) {
               this._createOtherSessionsLink()
                 .on("tap", () => {
-                  let sessionsPage = new SessionsPage(viewDataProvider, loginService).open();
+                  let sessionsPage = new SessionsPage(viewDataProvider, loginService, feedbackService).open();
                   let from = date1.format("LT");
                   let to = date2.format("LT");
                   sessionsPage.set("data", {title: from + " - " + to, items: otherSessions});

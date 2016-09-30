@@ -1,7 +1,14 @@
-export default class {
+import {logError} from "../errors";
+
+export default class LoginService {
   constructor(codRemoteService) {
     this._codRemoteService = codRemoteService;
     this._codRemoteService.setLoginService(this);
+    this.on("logoutSuccess", () => {
+      resetUserData();
+      reloadScheduleItems();
+    });
+    this.on("loginError", () => resetUserData());
   }
 
   login(username, password) {
@@ -12,24 +19,27 @@ export default class {
         reloadScheduleItems();
         return Promise.resolve();
       })
-      .then(() => maybeTrigger("#loginPage", "loginSuccess"))
+      .then(() => this.trigger("loginSuccess"))
       .catch(e => {
         resetUserData();
+        this.trigger("loginError");
+        logError(e);
         return Promise.reject(e);
-      })
-      .catch(() => maybeTrigger("#loginPage", "loginFailure"));
+      });
   }
 
   logout() {
     return this._codRemoteService.logout()
-      .then(this.destroySession)
-      .catch(() => triggerLogoutFailureEvents());
+      .then(() => this.trigger("logoutSuccess"))
+      .catch(e => {
+        this.trigger("logoutError");
+        logError(e);
+        return Promise.reject(e);
+      });
   }
 
   destroySession() {
-    resetUserData();
-    reloadScheduleItems();
-    triggerLogoutSuccessEvents();
+    this.trigger("logoutSuccess");
   }
 
   isLoggedIn() {
@@ -45,23 +55,7 @@ export default class {
   }
 }
 
-function triggerLogoutSuccessEvents() {
-  if (device.platform === "iOS") {
-    maybeTrigger("#iOSProfilePage", "logoutSuccess");
-    maybeTrigger("#loginAction", "logoutSuccess");
-  } else {
-    maybeTrigger("Drawer", "logoutSuccess");
-  }
-}
-
-function triggerLogoutFailureEvents() {
-  if (device.platform === "iOS") {
-    maybeTrigger("#iOSProfilePage", "logoutFailure");
-    maybeTrigger("#loginAction", "logoutFailure");
-  } else {
-    maybeTrigger("Drawer", "logoutFailure");
-  }
-}
+Object.assign(LoginService.prototype, tabris.Events);
 
 function persistUserData(response) {
   localStorage.setItem("username", response.user.name);
@@ -77,13 +71,6 @@ function resetUserData() {
   localStorage.setItem("username", "");
   localStorage.setItem("fullName", "");
   localStorage.setItem("mail", "");
-}
-
-function maybeTrigger(selector, event) {
-  let widget = tabris.ui.find(selector).first();
-  if (widget) {
-    widget.trigger(event, widget);
-  }
 }
 
 function reloadScheduleItems() {

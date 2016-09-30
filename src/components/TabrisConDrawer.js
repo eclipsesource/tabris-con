@@ -9,19 +9,18 @@ import config from "../configs/config";
 export default class extends Drawer {
   constructor(loginService) {
     super({
-      accountMode: false,
+      id: "navigationDrawer",
       win_theme: config.WINDOWS_DRAWER_THEME,
       win_buttonBackground: config.COLOR_SCHEME.WINDOWS_DRAWER_BUTTON_BACKGROUND
     });
 
+    this._loginService = loginService;
     this._nativeSet("win_buttonTheme", config.WINDOWS_DRAWER_BUTTON_THEME);
 
     if (device.platform === "windows") {
       tabris.device.on("change:orientation", this._updateDisplayMode, this);
       this._updateDisplayMode();
     }
-
-    this._loginService = loginService;
 
     let drawerContainer = new tabris[device.platform === "windows" ? "Composite" : "ScrollView"]({
       left: 0, top: 0, right: 0, bottom: 0
@@ -39,9 +38,24 @@ export default class extends Drawer {
       this.close();
     });
 
-    this.on("logoutSuccess", () => {
-      drawerContainer.children("#androidDrawerUserArea").set("loggedIn", false);
-      this.set("Mode", false);
+    let logoutHandler = () => {
+      this.find("#androidDrawerUserArea").set("loggedIn", false);
+      this.find("#drawerLoginListItem").set("loggedIn", false);
+    };
+
+    let loginHandler = () => {
+      this.find("#androidDrawerUserArea").set("loggedIn", true);
+      this.find("#drawerLoginListItem").set("loggedIn", true);
+    };
+
+    loginService
+      .on("logoutSuccess", logoutHandler)
+      .on("loginSuccess", loginHandler);
+
+    this.on("dispose", () => {
+      loginService
+        .off("logoutSuccess", logoutHandler)
+        .off("loginSuccess", loginHandler);
     });
   }
 
@@ -60,12 +74,10 @@ export default class extends Drawer {
       if (device.platform === "Android") {
         createSeparator().appendTo(pageItems);
       }
-      let loginListItem = new DrawerLoginListItem({
-        id: "loginPage",
+      new DrawerLoginListItem({
+        id: "drawerLoginListItem",
         loginService: this._loginService
       }).appendTo(pageItems);
-      loginListItem.on("change:loggedIn", (widget, loggedIn) =>
-        this.find("#androidDrawerUserArea").set("loggedIn", loggedIn));
     }
     return pageItems;
   }

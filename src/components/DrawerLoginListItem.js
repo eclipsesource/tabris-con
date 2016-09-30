@@ -24,8 +24,7 @@ export default class extends DrawerListItem {
         });
       } else {
         if (!ui.find("#loginPage").length) {
-          let loginPage = new LoginPage(loginService).open();
-          loginPage.on("loginSuccess", () => this.set("loggedIn", true));
+          new LoginPage(loginService).open();
         }
       }
     });

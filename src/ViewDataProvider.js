@@ -2,6 +2,7 @@
 
 import _ from "lodash";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
+import {logError} from "./errors";
 
 export default class {
   constructor({
@@ -69,7 +70,10 @@ export default class {
     }
     return Promise.all([this._attendedBlockProvider.getBlocks(), this._remoteService.evaluations()])
       .then(values => this._feedbackService.getSessionsIndicatorState(values[0], values[1]))
-      .catch(() => []);
+      .catch(e => {
+        logError(e);
+        return [];
+      });
   }
 
   getSessionsInTimeframe(timestamp1, timestamp2) {

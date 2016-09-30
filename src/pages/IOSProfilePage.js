@@ -21,7 +21,7 @@ export default class extends Page {
       font: fontToString({size: sizes.FONT_LARGE})
     }).appendTo(container);
 
-    let progressButton = new ProgressButton({
+    new ProgressButton({
       id: "logoutButton", text: texts.LOGOUT_BUTTON,
       top: ["prev()", sizes.MARGIN], centerX: 0,
       font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
@@ -35,7 +35,18 @@ export default class extends Page {
       mailTextView.set("text", data.mail);
     });
 
-    this.on("logoutSuccess", () => this.close());
-    this.on("logoutFailure", () => progressButton.set("progress", false));
+    let logoutSuccessHandler = () => this.close();
+    let logoutErrorHandler = () => this.find("#logoutButton").set("progress", false);
+
+    loginService
+      .on("logoutSuccess", logoutSuccessHandler)
+      .on("logoutError", logoutErrorHandler);
+
+    this.on("dispose", () => {
+      loginService
+        .off("logoutSuccess", logoutSuccessHandler)
+        .off("logoutError", logoutErrorHandler);
+    });
   }
+
 }

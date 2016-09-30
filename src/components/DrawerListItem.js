@@ -6,8 +6,9 @@ import {select} from "../helpers/platform";
 import {Composite, ImageView, TextView} from "tabris";
 
 export default class extends Composite {
-  constructor(text, image) {
+  constructor({id, text, image}) {
     super({
+      id,
       left: 0, top: "prev()", right: 0, height: sizes.DRAWER_LIST_ITEM_HEIGHT,
       highlightOnTouch: true,
       progress: false

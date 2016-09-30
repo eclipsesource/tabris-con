@@ -5,7 +5,7 @@ import {select} from "../helpers/platform";
 export default class extends DrawerListItem {
   constructor(id) {
     let page = tabris.ui.find("#" + id).first();
-    super(page.get("title"), page.get("image"));
+    super({id, text: page.get("title"), image: page.get("image")});
     this.set("page", page);
     this.on("tap", () => page.open());
   }

@@ -67,7 +67,7 @@ export default class extends Page {
       left: 0, top: "prev()", right: 0
     }).appendTo(contentComposite);
 
-    let otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService);
+    let otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService, feedbackService);
 
     otherSessionsLink.set("top", "prev()").appendTo(contentComposite);
 

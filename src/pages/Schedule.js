@@ -3,6 +3,7 @@ import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import LoadingIndicator from "../components/LoadingIndicator";
 import getImage from "../helpers/getImage";
 import {select} from "../helpers/platform";
+import {logError} from "../errors";
 import Navigatable from "./Navigatable";
 import {TabFolder, Tab, TextView, Composite} from "tabris";
 import _ from "lodash";
@@ -12,7 +13,7 @@ import colors from "../resources/colors";
 import moment from "moment-timezone";
 
 export default class extends Navigatable {
-  constructor({viewDataProvider}) {
+  constructor({viewDataProvider, loginService, feedbackService}) {
     super({
       configuration: {
         id: "schedule",
@@ -22,6 +23,9 @@ export default class extends Navigatable {
       },
       viewDataProvider
     });
+
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
 
     let loadingIndicator = new LoadingIndicator().appendTo(this);
 
@@ -112,10 +116,7 @@ export default class extends Navigatable {
           this.set("data", data);
           this._initializeIndicators();
         })
-        .catch(e => {
-          console.log(e);
-          console.log(e.stack);
-        })
+        .catch(logError)
         .finally(() => {
           this.find("CollectionView").set("refreshIndicator", false);
           this.children("#loadingIndicator").dispose();
@@ -177,7 +178,8 @@ export default class extends Navigatable {
         } else {
           this._applyIdStates(idStates);
         }
-      });
+      })
+      .catch(logError);
   }
 
   _applyIdStates(idStates) {
@@ -192,7 +194,7 @@ export default class extends Navigatable {
         id: blockObject.day,
         items: blockObject.blocks,
         updatable: true
-      }, this.getViewDataProvider()).appendTo(tab);
+      }, this.getViewDataProvider(), this._loginService, this._feedbackService).appendTo(tab);
       collectionView.animate({opacity: 1}, {duration: 250});
     });
   }

@@ -22,9 +22,18 @@ export default class extends Action {
       let actionImage = getImage.forDevicePlatform("action_profile");
       this.set("image", {login: null, loggedIn: actionImage}[mode]);
     });
-    this.on("logoutSuccess", () => this.set("mode", "login"));
-    this.on("logoutFailure", () => this.set("mode", "loggedIn"));
     this.set("mode", this._loginService.isLoggedIn() ? "loggedIn" : "login");
+    let logoutHandler = () => this.set("mode", "login");
+    let loggedInHandler = () => this.set("mode", "loggedIn");
+    loginService
+      .on("logoutSuccess", logoutHandler)
+      .on("logoutError", loggedInHandler)
+      .on("loginSuccess", loggedInHandler);
+    this.on("dispose", () => {
+      loginService.off("logoutSuccess", logoutHandler);
+      loginService.off("logoutError", loggedInHandler);
+      loginService.off("loginSuccess", loggedInHandler);
+    });
     tabris.ui.on("change:activePage", (widget, page) => this._maybeShow(widget, page));
   }
 
@@ -36,8 +45,7 @@ export default class extends Action {
 
   _showLoginPage() {
     return new LoginPage(this._loginService)
-      .open()
-      .on("loginSuccess", () => this.set("mode", "loggedIn"));
+      .open();
   }
 
   _maybeShow(widget, page) {

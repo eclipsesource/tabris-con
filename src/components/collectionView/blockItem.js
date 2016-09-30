@@ -88,7 +88,6 @@ export function get({viewDataProvider, loginService, feedbackService}) {
           feedbackIndicator.set("image", null);
         }
         feedbackIndicator.set("progress", item.feedbackIndicatorState === "loading");
-
         if (item.shouldPop) {
           setTimeout(() => {
             backgroundShade
@@ -109,7 +108,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
           .then(session => sessionPage.set("data", session));
         tabris.ui.find("#schedule").set("lastSelectedSessionId", item.sessionId);
       } else if (item.blockType === "free") {
-        let page = new SessionsPage(viewDataProvider, loginService).open();
+        let page = new SessionsPage(viewDataProvider, loginService, feedbackService).open();
         let date1 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.startTimestamp);
         let date2 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.endTimestamp);
         viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
