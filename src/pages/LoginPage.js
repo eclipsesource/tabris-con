@@ -8,7 +8,14 @@ import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(loginService) {
-    super({topLevel: false, id: "loginPage"});
+    super({topLevel: false, id: "loginPage", class: "navigatable"});
+
+    this.on("appear", () => {
+      if (tabris.device.get("platform") === "iOS") {
+        return;
+      }
+      tabris.ui.find(".navigatable").set("active", false);
+    });
 
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
 

@@ -1,5 +1,6 @@
 import DrawerListItem from "./DrawerListItem";
 import colors from "../resources/colors";
+import {select} from "../helpers/platform";
 
 export default class extends DrawerListItem {
   constructor(id) {
@@ -10,8 +11,15 @@ export default class extends DrawerListItem {
   }
 
   updateSelection() {
-    this.find(".drawerIconImageView").set("image", this.get("page").find(".navigatable").get("image"));
-    this.set("background", this.get("page").find(".navigatable").get("active") ?
-      colors.DRAWER_LIST_ITEM_BACKGROUND[device.platform] : "transparent");
+    let navigatable = this.get("page").find(".navigatable");
+    let active = navigatable.get("active");
+    this.find(".icon").set({
+      image: navigatable.get("image"),
+      tintColor: select({
+        windows: colors.WINDOWS_DRAWER_ICON_TINT,
+        default: active ? colors.ANDROID_DRAWER_ICON_SELECTED_TINT : colors.ANDROID_DRAWER_ICON_TINT
+      })
+    });
+    this.set("background", active ? colors.DRAWER_LIST_ITEM_BACKGROUND[device.platform] : "transparent");
   }
 }

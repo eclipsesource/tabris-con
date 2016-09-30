@@ -1,10 +1,8 @@
 import sizes from "../resources/sizes";
 import AndroidDrawerUserArea from "./AndroidDrawerUserArea";
-import getImage from "../helpers/getImage";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
-import DrawerListItem from "./DrawerListItem";
 import DrawerPageListItem from "./DrawerPageListItem";
-import DrawerAccountListItem from "./DrawerAccountListItem";
+import DrawerLoginListItem from "./DrawerLoginListItem";
 import {Drawer, Composite} from "tabris";
 import config from "../configs/config";
 
@@ -31,28 +29,19 @@ export default class extends Drawer {
 
     if (device.platform === "Android") {
       new AndroidDrawerUserArea(this._loginService)
-        .on("loggedInTap", () => this.set("accountMode", !this.get("accountMode")))
         .appendTo(drawerContainer);
     }
 
     let drawerList = this._createDrawerList().appendTo(drawerContainer);
-    let accountList = this._createAccountList().appendTo(drawerContainer);
 
     tabris.ui.on("change:activePage", () => {
       drawerList.updateSelection();
       this.close();
     });
 
-    this.on("change:accountMode", (widget, value) => {
-      accountList.set("visible", value);
-      drawerList.set("visible", !value);
-      drawerContainer.children("#androidDrawerUserArea")
-        .find("#menuArrowImageView").set("transform", value ? {rotation: Math.PI} : null);
-    });
-
     this.on("logoutSuccess", () => {
       drawerContainer.children("#androidDrawerUserArea").set("loggedIn", false);
-      this.set("accountMode", false);
+      this.set("Mode", false);
     });
   }
 
@@ -63,13 +52,18 @@ export default class extends Drawer {
     });
     applyPlatformStyle(pageItems);
     createSeparator().appendTo(pageItems);
-    if (config.SUPPORTS_FEEDBACK && device.platform === "windows") {
-      new DrawerAccountListItem(this._loginService).appendTo(pageItems);
-    }
     if (config.CONFERENCE_PAGE) {
       new DrawerPageListItem("conferencePage").appendTo(pageItems);
     }
     new DrawerPageListItem("aboutPage").appendTo(pageItems);
+    if (config.SUPPORTS_FEEDBACK && device.platform !== "iOS") {
+      if (device.platform === "Android") {
+        createSeparator().appendTo(pageItems);
+      }
+      let loginListItem = new DrawerLoginListItem("loginPage", this._loginService).appendTo(pageItems);
+      loginListItem.on("change:loggedIn", (widget, loggedIn) =>
+        this.find("#androidDrawerUserArea").set("loggedIn", loggedIn));
+    }
     return pageItems;
   }
 
@@ -77,7 +71,7 @@ export default class extends Drawer {
     let drawerList = new Composite({id: "drawerList", left: 0, right: 0, bottom: 0});
     drawerList.updateSelection = () => {
       drawerList.find()
-        .filter(child => child.get("page") instanceof tabris.Page && child.get("page").get("topLevel"))
+        .filter(child => child instanceof DrawerPageListItem || child instanceof DrawerLoginListItem)
         .forEach(pageItem => pageItem.updateSelection());
     };
     applyPlatformStyle(drawerList);
@@ -92,20 +86,6 @@ export default class extends Drawer {
     new DrawerPageListItem("tracksPage").appendTo(pageItems);
     new DrawerPageListItem("mapPage").appendTo(pageItems);
     return pageItems;
-  }
-
-  _createAccountList() {
-    let accountList = new Composite({
-      left: 0, top: ["#androidDrawerUserArea", 8], right: 0,
-      visible: false
-    });
-    new DrawerListItem("Logout", getImage.forDevicePlatform("logout"))
-      .on("tap", widget => {
-        widget.set("progress", true);
-        this._loginService.logout().then(() => widget.set("progress", false));
-      })
-      .appendTo(accountList);
-    return accountList;
   }
 
   _updateDisplayMode(device, orientation = tabris.device.get("orientation")) {

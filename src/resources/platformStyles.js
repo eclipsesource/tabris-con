@@ -196,15 +196,5 @@ export default {
     iOS: {
       visible: true
     }
-  },
-  ".drawerIconImageView": {
-    Android: {left: sizes.MARGIN_LARGE},
-    windows: {left: 1.5 * sizes.MARGIN}
-  },
-  ".drawerTitleTextView": {
-    windows: {
-      textColor: "white",
-      left: [".drawerIconImageView", sizes.MARGIN_XLARGE]
-    }
   }
 };

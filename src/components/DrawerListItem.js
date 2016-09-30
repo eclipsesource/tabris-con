@@ -1,8 +1,8 @@
 import addProgressTo from "../helpers/addProgressTo";
 import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import colors from "../resources/colors";
+import {select} from "../helpers/platform";
 import {Composite, ImageView, TextView} from "tabris";
 
 export default class extends Composite {
@@ -12,24 +12,23 @@ export default class extends Composite {
       highlightOnTouch: true,
       progress: false
     });
-
     addProgressTo(this);
-
-    let drawerIconImageView = new ImageView({
-      class: "drawerIconImageView", image: image,
-      centerY: 0
+    let icon = new ImageView({
+      class: "icon",
+      left: select({default: sizes.MARGIN_LARGE, windows: 1.5 * sizes.MARGIN}),
+      centerY: 0,
+      image
     }).appendTo(this);
-
-    applyPlatformStyle(drawerIconImageView);
-
-    let drawerTitleTextView = new TextView({
-      class: "drawerTitleTextView",
-      text: text,
+    new TextView({
+      class: "title",
+      left: select({
+        windows: [icon, sizes.MARGIN_XLARGE],
+        default: sizes.LEFT_CONTENT_MARGIN
+      }),
+      centerY: 0,
+      text,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
-      left: sizes.LEFT_CONTENT_MARGIN, centerY: 0,
-      textColor: colors.DRAWER_TEXT_COLOR
+      textColor: select({windows: "white", default: colors.DRAWER_TEXT_COLOR})
     }).appendTo(this);
-
-    applyPlatformStyle(drawerTitleTextView);
   }
 }
