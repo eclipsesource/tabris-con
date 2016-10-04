@@ -11,8 +11,8 @@ import DrawerListItem from "./DrawerListItem";
 const ACCOUNT_ICON = getImage.forDevicePlatform("account");
 
 export default class extends DrawerListItem {
-  constructor(id, loginService) {
-    super(texts.LOGIN_PAGE_TITLE, ACCOUNT_ICON);
+  constructor({id, loginService}) {
+    super({id, text: texts.LOGIN_DRAWER_ITEM, image: ACCOUNT_ICON});
     this._createLogoutView().appendTo(this);
 
     this.on("tap", () => {
