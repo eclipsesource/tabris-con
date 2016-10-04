@@ -4,11 +4,13 @@ import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
 import appConfig from "../configs/config";
 import Link from "../components/Link";
-import {ImageView, TextView, Composite} from "tabris";
+import {ImageView, TextView, Composite, ScrollView} from "tabris";
 import texts from "../resources/texts";
 import moment from "moment-timezone";
 
 var config = appConfig.CONFERENCE_PAGE;
+
+const SPACER_HEIGHT = 16;
 
 export default class extends Navigatable {
   constructor({viewDataProvider}) {
@@ -21,29 +23,45 @@ export default class extends Navigatable {
       },
       viewDataProvider
     });
+    let container = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
     new ImageView({
-      centerX: 0, top: "8%",
+      centerX: 0, top: 0,
       id: "logo",
       image: getImage.common("conference_logo")
-    }).appendTo(this);
+    }).appendTo(container);
     new TextView({
       id: "date",
       alignment: "center",
       font: fontToString({weight: "bold", size: 18}),
-      centerX: 0, top: ["prev()", sizes.MARGIN],
+      left: sizes.MARGIN, right: sizes.MARGIN, top: ["prev()", sizes.MARGIN],
       text: [day(config.START_DAY), day(config.END_DAY)].join(" - ")
-    }).appendTo(this);
+    }).appendTo(container);
     new TextView({
       id: "location",
       alignment: "center",
       font: fontToString({weight: "bold", size: 18}),
-      centerX: 0, top: "prev()",
+      left: sizes.MARGIN, right: sizes.MARGIN, top: "prev()",
       text: config.LOCATION
-    }).appendTo(this);
-    let linksArea = new Composite({id: "linksArea", top: "prev()", bottom: 0, left: 0, right: 0}).appendTo(this);
-    let linksContainer = new Composite({id: "linksContainer", centerX: 0, centerY: 0}).appendTo(linksArea);
+    }).appendTo(container);
+    let linksContainer = new Composite({
+      left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
+    }).appendTo(container);
     createSocialLinks(linksContainer, ["facebook", "twitter", "googleplus", "xing", "website"]);
+    new TextView({
+      id: "conferenceInfo",
+      left: sizes.MARGIN_XLARGE, right: sizes.MARGIN_XLARGE, top: ["prev()", sizes.MARGIN_XLARGE],
+      markupEnabled: true,
+      font: "14px sans-serif",
+      text: config.CONFERENCE_INFO || ""
+    }).appendTo(container);
+    if (config.CONFERENCE_INFO) {
+      createSpacer().appendTo(container);
+    }
   }
+}
+
+function createSpacer() {
+  return new Composite({left: 0, top: "prev()", right: 0, height: SPACER_HEIGHT});
 }
 
 function createSocialLinks(linksContainer, socialServices) {
