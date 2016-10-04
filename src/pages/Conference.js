@@ -42,7 +42,7 @@ export default class extends Navigatable {
     }).appendTo(this);
     let linksArea = new Composite({id: "linksArea", top: "prev()", bottom: 0, left: 0, right: 0}).appendTo(this);
     let linksContainer = new Composite({id: "linksContainer", centerX: 0, centerY: 0}).appendTo(linksArea);
-    createSocialLinks(linksContainer, ["twitter", "googleplus", "xing"]);
+    createSocialLinks(linksContainer, ["twitter", "googleplus", "xing", "website"]);
   }
 }
 
