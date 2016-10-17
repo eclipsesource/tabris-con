@@ -18,6 +18,9 @@ export default class {
   }
 
   get() {
+    if (this._resultPromise) {
+      return this._resultPromise;
+    }
     this._handleWindows();
 
     if (this._conferenceData) {
@@ -29,8 +32,7 @@ export default class {
     if (!(config.SERVICES && config.SERVICES.SESSIONS)) {
       return this._useBundledData();
     }
-
-    return this._newDataFetcher.fetch()
+    this._resultPromise = this._newDataFetcher.fetch()
       .then(rawData => {
         if (rawData) {
           let conferenceData = ConferenceDataFactory.createFromRawData(config, rawData);
@@ -46,8 +48,10 @@ export default class {
       })
       .then(() => {
         this._setConferenceData(persistedStorage.getConferenceData());
+        delete this._resultPromise;
         return this._conferenceData;
       });
+    return this._resultPromise;
   }
 
   _setConferenceData(data) {
