@@ -21,7 +21,6 @@ export default class {
     if (this._resultPromise) {
       return this._resultPromise;
     }
-    this._handleWindows();
 
     if (this._conferenceData) {
       return Promise.resolve(this._conferenceData);
@@ -84,14 +83,6 @@ export default class {
 
   invalidateCache() {
     this._setConferenceData(null);
-  }
-
-  _handleWindows() {
-    if (device.platform === "windows") {
-      if (!this._conferenceData) {
-        this._setConferenceData(this._bundledConferenceData);
-      }
-    }
   }
 
   _handleAppUpgrade() {
