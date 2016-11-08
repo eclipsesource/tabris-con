@@ -1,16 +1,20 @@
 {
   "title": "Tabris Con",
   "description": "An exemplary Tabris.js conference app.",
-  "main": "dist/app.js",
+  "main": "dist/main.js",
   "scripts": {
     "jshint": "jshint src test",
     "jscs": "jscs src test",
     "posttest": "npm run jshint && npm run jscs",
-    "test": "cp babel-ios.json .babelrc && mocha --require babel-core/register",
-    "build:ios": "cp babel-ios.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
-    "build:android": "cp babel-android.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
-    "build:win": "cp babel-win.json .babelrc && rm -rf dist/ && babel --compact false --out-dir dist/ src/",
-    "start": "hs -c-1"
+    "test": "BABEL_ENV=test mocha --compilers js:babel-core/register 'test/**/*.spec.js'",
+    "build:win": "BABEL_ENV=win npm run bundle",
+    "build:ios": "BABEL_ENV=ios npm run bundle",
+    "build:android": "BABEL_ENV=android npm run bundle",
+    "build:dev": "npm run bundle",
+    "bundle": "rm -rf dist/ && rollup src/main.js --output dist/bundle.js --format cjs && babel --compact false --out-file dist/main.js dist/bundle.js && rm dist/bundle.js",
+    "serve": "hs -c-1",
+    "start": "npm run build:dev && npm run serve",
+    "start:watch": "concurrently \"npm run start\" \"chokidar 'src/**/*.js' -c 'npm run build:dev'\""
   },
   "dependencies": {
     "lodash": "^4.0.1",
@@ -35,12 +39,15 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "chai-things": "^0.2.0",
+    "chokidar-cli": "^1.2.0",
+    "concurrently": "^3.1.0",
     "fetch-mock": "^4.1.0",
     "jscs": "^2.9.0",
     "jshint": "^2.9.1",
     "mocha": "^2.3.4",
     "mock-fs": "^3.6.0",
     "node-fetch": "^1.4.1",
+    "rollup": "^0.36.3",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
   }
