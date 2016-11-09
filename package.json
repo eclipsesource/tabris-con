@@ -1,6 +1,6 @@
 {
   "title": "Tabris Con",
-  "description": "An exemplary Tabris.js conference app.",
+  "description": "A template for conference apps built with Tabris.js",
   "main": "dist/main.js",
   "scripts": {
     "jshint": "jshint src test",
