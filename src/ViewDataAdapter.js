@@ -56,6 +56,7 @@ export default class {
         speaker => ({
           summary: this._createSpeakerSummary(speaker),
           image: speaker.image || "speaker_avatar",
+          twitter: speaker.twitter,
           bio: speaker.bio || ""
         })
       )

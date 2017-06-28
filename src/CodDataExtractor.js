@@ -54,6 +54,7 @@ export default class {
           name: speaker.fullname,
           bio: stripHtml(speaker.bio),
           company: speaker.organization,
+          twitter: speaker.twitter,
           image: speaker.picture
         }))
       }));

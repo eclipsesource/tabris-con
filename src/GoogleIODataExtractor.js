@@ -47,7 +47,8 @@ export default class {
         name: googleIOSpeaker.name,
         bio: googleIOSpeaker.bio || null,
         image: googleIOSpeaker.thumbnailUrl || null,
-        company: googleIOSpeaker.company || null
+        company: googleIOSpeaker.company || null,
+        twitter: googleIOSpeaker.twitterUrl ? (googleIOSpeaker.twitterUrl.match(/https?:\/\/twitter\.com\/([A-Za-z0-9_]{1,15})\/?/) ? null : RegExp.$1) : null
       }));
   }
 
