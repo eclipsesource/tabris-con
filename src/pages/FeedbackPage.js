@@ -8,7 +8,7 @@ import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(adaptedSession, feedbackService) {
-    super({title: texts.FEEDBACK_PAGE_TITLE, topLevel: false});
+    super({title: texts.FEEDBACK_PAGE_TITLE});
 
     let container = new Composite({
       centerX: 0, centerY: 0, width: sizes.PAGE_CONTAINER_WIDTH
@@ -35,11 +35,11 @@ export default class extends Page {
     addProgressTo(button);
 
     button.on("select", () => {
-      button.set("progress", true);
+      button.showProgress(true);
       feedbackService.createEvaluation(
-        adaptedSession.id, adaptedSession.nid, commentTextInput.get("text"), feedbackThumbs.get("feedback")
-      ).then(() => this.close())
-        .catch(() => button.set("progress", false));
+        adaptedSession.id, adaptedSession.nid, commentTextInput.text, feedbackThumbs.feedback
+      ).then(() => this.dispose())
+        .catch(() => button.showProgress(false));
     });
   }
 }

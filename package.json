@@ -10,18 +10,17 @@
     "build:win": "BABEL_ENV=win npm run bundle",
     "build:ios": "BABEL_ENV=ios npm run bundle",
     "build:android": "BABEL_ENV=android npm run bundle",
-    "build:dev": "npm run bundle",
+    "build": "npm run bundle",
+    "watch": "chokidar 'src/**/*.js' --initial -c 'npm run build && echo \"Build done\n\" '",
     "bundle": "rm -rf dist/ && rollup src/main.js --output dist/bundle.js --format cjs && babel --compact false --out-file dist/main.js dist/bundle.js && rm dist/bundle.js",
-    "serve": "hs -c-1",
-    "start": "npm run build:dev && npm run serve",
-    "start:watch": "concurrently \"npm run start\" \"chokidar 'src/**/*.js' -c 'npm run build:dev'\""
+    "start": "tabris serve"
   },
   "dependencies": {
     "lodash": "^4.0.1",
     "moment-timezone": "^0.5.0",
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
-    "tabris": "1.10.0",
+    "tabris": "^2.3.0",
     "tabris-js-node": "^0.1.0"
   },
   "devDependencies": {

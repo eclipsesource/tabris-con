@@ -2682,9 +2682,9 @@ tabris-js-node@^0.1.0:
     process "^0.10.1"
     timers-browserify "^1.4.0"
 
-tabris@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/tabris/-/tabris-1.10.0.tgz#019dc12a46be2ca7a3e3be438b1c6b97f432dcbc"
+tabris@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/tabris/-/tabris-2.3.0.tgz#43e20b83bc8600d1bc6bcbc015f95b2408e93d65"
 
 tape@^4.6.3:
   version "4.8.0"

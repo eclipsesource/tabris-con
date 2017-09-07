@@ -3,6 +3,7 @@ import ProfilePage from "../pages/ProfilePage";
 import getImage from "../helpers/getImage";
 import {Action} from "tabris";
 import texts from "../resources/texts";
+import {pageNavigation} from "../pages/navigation";
 
 export default class extends Action {
   constructor(loginService) {
@@ -15,41 +16,44 @@ export default class extends Action {
     this.on("select", () => {
       let self = this;
       let modeAction = {login: self._showLoginPage, loggedIn: self._showProfilePage};
-      modeAction[this.get("mode")].call(this);
+      modeAction[this.mode].call(this);
     });
-    this.on("change:mode", (widget, mode) => {
-      this.set("title", {login: texts.LOGIN_ACTION_TITLE, loggedIn: texts.PROFILE_ACTION_TITLE}[mode]);
-      let actionImage = getImage.forDevicePlatform("action_profile");
-      this.set("image", {login: null, loggedIn: actionImage}[mode]);
-    });
-    this.set("mode", this._loginService.isLoggedIn() ? "loggedIn" : "login");
-    let logoutHandler = () => this.set("mode", "login");
-    let loggedInHandler = () => this.set("mode", "loggedIn");
+    let logoutHandler = () => this.mode = "login";
+    let loggedInHandler = () => this.mode = "loggedIn";
     loginService
-      .on("logoutSuccess", logoutHandler)
-      .on("logoutError", loggedInHandler)
-      .on("loginSuccess", loggedInHandler);
+      .onLogoutSuccess(logoutHandler)
+      .onLogoutError(loggedInHandler)
+      .onLoginSuccess(loggedInHandler);
     this.on("dispose", () => {
-      loginService.off("logoutSuccess", logoutHandler);
-      loginService.off("logoutError", loggedInHandler);
-      loginService.off("loginSuccess", loggedInHandler);
+      loginService.offLogoutSuccess(logoutHandler);
+      loginService.offLogoutError(loggedInHandler);
+      loginService.offLoginSuccess(loggedInHandler);
     });
-    tabris.ui.on("change:activePage", (widget, page) => this._maybeShow(widget, page));
+    this.mode = this._loginService.isLoggedIn() ? "loggedIn" : "login";
+  }
+
+  set mode(mode) {
+    this._mode = mode;
+    this.title = {login: texts.LOGIN_ACTION_TITLE, loggedIn: texts.PROFILE_ACTION_TITLE}[mode];
+    let actionImage = getImage.forDevicePlatform("action_profile");
+    this.image = {login: null, loggedIn: actionImage}[mode];
+  }
+
+  get mode() {
+    return this._mode;
   }
 
   _showProfilePage() {
     new ProfilePage(this._loginService)
-      .open()
-      .set("data", this._loginService.getUserData());
+      .appendTo(pageNavigation)
+      .data = this._loginService.getUserData();
   }
 
   _showLoginPage() {
     return new LoginPage(this._loginService)
-      .open();
+      .on("loginSuccess", () => this.mode = "loggedIn")
+      .appendTo(pageNavigation);
   }
 
-  _maybeShow(widget, page) {
-    this.set("visible", page.get("topLevel"));
-  }
 }
 

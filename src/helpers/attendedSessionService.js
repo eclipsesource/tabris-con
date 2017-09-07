@@ -17,7 +17,7 @@ export function isAttending(sessionId) {
 function updateSchedule(sessionId, focus) {
   let schedule = tabris.ui.find("#schedule").first();
   if (focus) {
-    schedule.set("focus", sessionId);
+    schedule.focus = sessionId;
   }
   schedule.initializeItems();
 }

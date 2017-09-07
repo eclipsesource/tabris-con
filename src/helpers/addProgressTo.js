@@ -1,24 +1,24 @@
 import {ActivityIndicator} from "tabris";
 
 export default function(widget) {
-  widget.on("change:progress", (widget, progress) => {
-    widget.set("visible", !progress);
+  widget.showProgress = function(progress) {
+    widget.visible = !progress;
     if (progress) {
-      if (widget.get("bounds").width) {
-        widget.set("indicator", createLoadingIndicator(widget));
+      if (widget.bounds.width) {
+        widget.indicator = createLoadingIndicator(widget);
       } else {
-        widget.once("resize", () => widget.set("indicator", createLoadingIndicator(widget)));
+        widget.once("resize", () => widget.indicator = createLoadingIndicator(widget));
       }
     } else {
-      let indicator = widget.get("indicator");
+      let indicator = widget.indicator;
       if (indicator && !indicator.isDisposed()) {
         indicator.dispose();
       }
-      widget.set("indicator", null);
+      widget.indicator = null;
     }
-  });
+  };
 }
 
 function createLoadingIndicator(widget) {
-  return new ActivityIndicator({layoutData: widget.get("bounds")}).appendTo(widget.parent());
+  return new ActivityIndicator({layoutData: widget.bounds}).appendTo(widget.parent());
 }

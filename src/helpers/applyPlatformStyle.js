@@ -2,9 +2,9 @@ import platformStyles from "../resources/platformStyles";
 let FALLBACK_PLATFORM = "Android";
 
 export default function(widget) {
-  applyPlatformStyle(widget, "#" + widget.get("id"));
-  applyPlatformStyle(widget, "." + widget.get("class"));
-  applyPlatformStyle(widget, widget.type);
+  applyPlatformStyle(widget, "#" + widget.id);
+  applyPlatformStyle(widget, "." + widget.class);
+  applyPlatformStyle(widget, widget.constructor.name);
 }
 
 function applyPlatformStyle(widget, widgetIdentifier) {

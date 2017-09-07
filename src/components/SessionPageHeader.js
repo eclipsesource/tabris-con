@@ -4,7 +4,29 @@ import SessionPageHeaderTrackIndicator from "./SessionPageHeaderTrackIndicator";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import {Composite, ImageView, TextView} from "tabris";
 
+class AttendanceButton extends ImageView {
+
+  constructor(properties) {
+    super(Object.assign({
+      image: getImage.common("plus"),
+      highlightOnTouch: true
+    }, properties));
+    this.on("tap", () => this.trigger("select", {wasChecked: this.checked}));
+  }
+
+  set checked(checked) {
+    this._checked = checked;
+    this.image = checked ? getImage.common("check") : getImage.common("plus");
+  }
+
+  get checked() {
+    return this._checked;
+  }
+
+}
+
 export default class extends Composite {
+
   constructor() {
     super({
       left: 0, right: 0,
@@ -20,7 +42,7 @@ export default class extends Composite {
 
     applyPlatformStyle(navigationControls);
 
-    let trackIndicator = new SessionPageHeaderTrackIndicator().appendTo(this);
+    this._trackIndicator = new SessionPageHeaderTrackIndicator().appendTo(this);
 
     let backButton = new ImageView({
       id: "sessionPageNavigationControlsBackButton",
@@ -30,37 +52,58 @@ export default class extends Composite {
     }).on("tap", () => this.trigger("backButtonTap")).appendTo(navigationControls);
     applyPlatformStyle(backButton);
 
-    let attendanceButton = new ImageView({
+    this._attendanceButton = new AttendanceButton({
       id: "sessionPageNavigationControlsAttendanceButton",
-      right: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
-      image: getImage.common("plus"),
-      highlightOnTouch: true
-    }).on("tap", widget => this.trigger("attendanceButtonTap", this, widget.get("checked")))
-      .on("change:checked",
-        (widget, checked) =>
-          widget.set("image", checked ? getImage.common("check") : getImage.common("plus")))
+      right: 0, top: 0, width: sizes.SESSION_HEADER_ICON
+    }).on("select", ({wasChecked}) => this.trigger("attendanceButtonTap", {wasChecked, target: this}))
       .appendTo(navigationControls);
 
-    applyPlatformStyle(attendanceButton);
+    applyPlatformStyle(this._attendanceButton);
 
-    let titleTextView = new TextView({
+    this._titleTextView = new TextView({
       id: "sessionPageTitleTextView", right: sizes.MARGIN_LARGE
     }).appendTo(this);
 
-    applyPlatformStyle(titleTextView);
+    applyPlatformStyle(this._titleTextView);
 
-    let summaryTextView = new TextView({
+    this._summaryTextView = new TextView({
       id: "sessionPageSummaryTextView",
       right: sizes.MARGIN_LARGE, top: "prev()"
     }).appendTo(this);
 
-    applyPlatformStyle(summaryTextView);
-
-    this
-      .on("change:titleText", (widget, text) => titleTextView.set("text", text))
-      .on("change:summaryText", (widget, text) => summaryTextView.set("text", text))
-      .on("change:attending", (widget, attending) => attendanceButton.set("checked", attending))
-      .on("change:trackIndicatorColor", (widget, trackIndicatorColor) =>
-        trackIndicator.set("color", trackIndicatorColor));
+    applyPlatformStyle(this._summaryTextView);
   }
+
+  set titleText(titleText) {
+    this._titleTextView.text = titleText;
+  }
+
+  get titleText() {
+    return this._titleTextView.text;
+  }
+
+  set summaryText(summaryText) {
+    this._summaryTextView.text = summaryText;
+  }
+
+  get summaryText() {
+    return this._summaryTextView.text;
+  }
+
+  set attending(attending) {
+    this._attendanceButton.checked = attending;
+  }
+
+  get attending() {
+    return this._attendanceButton.checked;
+  }
+
+  set trackIndicatorColor(color) {
+    this._trackIndicator.color = color;
+  }
+
+  get trackIndicatorColor() {
+    return this._trackIndicator.color;
+  }
+
 }

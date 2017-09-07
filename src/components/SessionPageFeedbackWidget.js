@@ -9,6 +9,7 @@ import fontToString from "../helpers/fontToString";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import texts from "../resources/texts";
 import {Composite, TextView} from "tabris";
+import {pageNavigation} from "../pages/navigation";
 
 export default class extends Composite {
   constructor(session, viewDataProvider, loginService, feedbackService) {
@@ -25,8 +26,8 @@ export default class extends Composite {
     this._showState();
     // No need to refresh on login success, as we do that already on page appear.
     let refreshHandler = () => this.refresh();
-    loginService.on("logoutSuccess", refreshHandler);
-    this.on("dispose", () => loginService.off("logoutSuccess", refreshHandler));
+    loginService.onLogoutSuccess(refreshHandler);
+    this.on("dispose", () => loginService.offLogoutSuccess(refreshHandler));
     this.refresh = function() {
       this.children().dispose();
       this._showState();
@@ -35,7 +36,7 @@ export default class extends Composite {
 
   _showState() {
     if (this._loginService.isLoggedIn()) {
-      this.set("progress", true);
+      this.showProgress(true);
       this._handleFeedbackState();
     } else {
       this._createFeedbackButton()
@@ -68,7 +69,7 @@ export default class extends Composite {
           createErrorTextView(texts.FEEDBACK_SOMETHING_WENT_WRONG).appendTo(this);
         }
       })
-      .finally(() => this.set("progress", false));
+      .finally(() => this.showProgress(false));
   }
 
   _createFeedbackButton() {
@@ -81,7 +82,7 @@ export default class extends Composite {
   }
 
   _openFeedbackPage() {
-    return new FeedbackPage(this._session, this._feedbackService).open();
+    return new FeedbackPage(this._session, this._feedbackService).appendTo(pageNavigation);
   }
 }
 

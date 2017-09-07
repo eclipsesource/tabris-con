@@ -3,7 +3,7 @@ import LoadingIndicator from "../components/LoadingIndicator";
 import {WebView, Tab} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Tab {
+export default class Map extends Tab {
   constructor() {
     super({
       id: "map",
@@ -21,9 +21,9 @@ export default class extends Tab {
         left: 0, top: 0, right: 0, bottom: 0,
         visible: false,
         url: "html/map.html"
-      }).on("load", target => {
+      }).on("load", ({target}) => {
         target.siblings("#loadingIndicator").dispose();
-        target.set("visible", true);
+        target.visible = true;
       }),
       new LoadingIndicator()
     );

@@ -8,13 +8,14 @@ import _ from "lodash";
 import {Composite, TextView, ImageView} from "tabris";
 
 export default class extends Composite {
+
   constructor(configuration) {
     super(Object.assign({}, configuration, {class: "sessionItem"}));
     applyPlatformStyle(this);
     if (config.SESSIONS_HAVE_IMAGES) {
-      var imageView = createSessionImage().appendTo(this);
+      this._imageView = createSessionImage().appendTo(this);
     }
-    let trackIndicator = new Composite({
+    this._trackIndicator = new Composite({
       left: "prev()", top: sizes.MARGIN, bottom: sizes.MARGIN, width: 2, background: "red"
     }).appendTo(this);
     let textContainer = new Composite(_.extend({
@@ -22,30 +23,37 @@ export default class extends Composite {
       }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
     ).appendTo(this);
     applyPlatformStyle(textContainer);
-    let titleTextView = createSessionTitleTextView().appendTo(textContainer);
-    applyPlatformStyle(titleTextView);
-    let summaryTextView = new TextView({
-      left: 0, top: [titleTextView, sizes.MARGIN_XSMALL], right: 0,
+    this._titleTextView = createSessionTitleTextView().appendTo(textContainer);
+    applyPlatformStyle(this._titleTextView);
+    this._summaryLabel = new TextView({
+      left: 0, top: [this._titleTextView, sizes.MARGIN_XSMALL], right: 0,
       font: fontToString({size: sizes.FONT_MEDIUM}),
       maxLines: 2,
       markupEnabled: true,
       lineSpacing: sizes.LINE_SPACING,
       textColor: colors.DARK_SECONDARY_TEXT_COLOR
     }).appendTo(textContainer);
-    this.on("change:data", (widget, data) => {
-      if (config.SESSIONS_HAVE_IMAGES) {
-        let image = getImage.forDevicePlatform(
-          data.image,
-          sizes.SESSION_CELL_IMAGE_WIDTH,
-          sizes.SESSION_CELL_IMAGE_HEIGHT
-        );
-        imageView.set("image", image);
-      }
-      trackIndicator.set("background", config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial");
-      titleTextView.set("text", data.title);
-      summaryTextView.set("text", data.summary);
-    });
   }
+
+  set data(data) {
+    this._data = data;
+    if (config.SESSIONS_HAVE_IMAGES) {
+      let image = getImage.forDevicePlatform(
+        data.image,
+        sizes.SESSION_CELL_IMAGE_WIDTH,
+        sizes.SESSION_CELL_IMAGE_HEIGHT
+      );
+      this._imageView.image = image;
+    }
+    this._trackIndicator.background = config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial";
+    this._titleTextView.text = data.title;
+    this._summaryLabel.text = data.summary;
+  }
+
+  get data() {
+    return this._data;
+  }
+
 }
 
 function createSessionImage() {

@@ -12,9 +12,9 @@ export default class extends TextView {
         font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
       })
     );
-    if (device.platform === "Android" && this.get("text")) {
-      this.set("text", this.get("text").toUpperCase());
+    if (device.platform === "Android" && this.text) {
+      this.text = this.text.toUpperCase();
     }
-    this.on("tap", (widget) => this.trigger("select", widget));
+    this.on("tap", () => this.trigger("select"));
   }
 }

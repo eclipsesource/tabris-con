@@ -1,39 +1,40 @@
 import config from "../configs/config";
+import colors from "../resources/colors";
 import Schedule from "./Schedule";
 import Tracks from "./Tracks";
 import Map from "./Map";
 import Conference from "./Conference";
 import About from "./About";
 import {TabFolder, Page} from "tabris";
-import colors from "../resources/colors";
 
 const TABS = [Schedule, Tracks, Map, config.CONFERENCE_PAGE && Conference, About].filter(x => !!x);
 
 export default class MainPage extends Page {
 
   constructor({viewDataProvider, loginService, feedbackService}) {
-    super({id: "mainPage", topLevel: true});
+    super({id: "mainPage"});
     let tabFolder = new TabFolder({
       id: "navigation",
       left: 0, top: 0, right: 0, bottom: 0,
-      textColor: colors.TINT_COLOR,
+      background: "white",
+      textColor: colors.ACCENTED_TEXT_COLOR,
+      elevation: 8,
       tabBarLocation: "bottom"
     }).appendTo(this);
-    tabFolder.on("change:selection", (tabFolder, selection) => {
+    tabFolder.on("selectionChanged", ({value: selection}) => {
       selection.trigger("appear");
-      this.set("title", selection.get("title"));
+      this.title = selection.title;
     });
     TABS.forEach(Tab => new Tab({viewDataProvider, loginService, feedbackService}).appendTo(tabFolder));
-    this.set("selection", this.children("#tracks").first());
+    this.selection = this.children("#tracks").first();
     this.on("appear", () => this._triggerAppearOnSelectedTab());
-    this.set("title", tabFolder.get("selection").get("title"));
+    this.title = tabFolder.selection.title;
   }
 
   _triggerAppearOnSelectedTab() {
-    tabris.ui.find("#navigation")
-      .first()
+    tabris.ui.find("#navigation").first()
       .children()
-      .filter(tab => tab.parent().get("selection") === tab)
+      .filter(tab => tab.parent().selection === tab)
       .forEach(tab => tab.trigger("appear"));
   }
 

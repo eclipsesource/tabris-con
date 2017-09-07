@@ -11,7 +11,7 @@ var config = appConfig.CONFERENCE_PAGE;
 
 const SPACER_HEIGHT = 16;
 
-export default class extends Tab {
+export default class Conference extends Tab {
   constructor() {
     super({
       id: "conference",

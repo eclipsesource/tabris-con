@@ -1,7 +1,8 @@
 import colors from "../resources/colors";
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
-import {ui, Composite, TextView} from "tabris";
+import {pageNavigation} from "../pages/navigation";
+import {Composite, TextView} from "tabris";
 
 export default class InfoToast extends Composite {
   constructor() {
@@ -29,21 +30,29 @@ export default class InfoToast extends Composite {
       textColor: colors.ACTION_COLOR,
       font: fontToString({size: sizes.FONT_MEDIUM}),
       right: sizes.MARGIN_LARGE, centerY: 0, height: sizes.INFO_TOAST_HEIGHT
-    }).on("tap", () => this.trigger("actionTap", this))
+    }).on("tap", () => this.trigger("actionTap", {target: this}))
       .appendTo(this);
+  }
+
+  set toastType(type) {
+    this._toastType = type;
+  }
+
+  get toastType() {
+    return this._toastType;
   }
 
   static show(toastObject) {
     let toast = this._create();
-    let textView = toast.children("#infoToastTextView");
-    let actionTextView = toast.children("#infoToastActionTextView");
-    toast.set({toastType: toastObject.type});
-    textView.set("text", toastObject.messageText);
+    let textView = toast.children("#infoToastTextView").first();
+    let actionTextView = toast.children("#infoToastActionTextView").first();
+    toast.toastType = toastObject.type;
+    textView.text = toastObject.messageText;
     actionTextView.set({
       visible: !!toastObject.actionText,
       text: toastObject.actionText
     });
-    if (toast.get("transform").translationY > 0) {
+    if (toast.transform.translationY > 0) {
       toast.animate({transform: {translationY: 0}}, {duration: toast.POP_ANIMATION_DURATION, easing: "ease-out"});
     }
     if (toast._timeout) {
@@ -54,18 +63,18 @@ export default class InfoToast extends Composite {
   }
 
   static _create() {
-    let activePage = ui.get("activePage");
-    if (!activePage.children("#infoToast").length) {
-      return new InfoToast().appendTo(activePage);
+    let topPage = pageNavigation.pages().last();
+    if (!topPage.children("#infoToast").length) {
+      return new InfoToast().appendTo(topPage);
     } else {
-      return activePage.children("#infoToast").first();
+      return topPage.children("#infoToast").first();
     }
   }
 
   _hideInfoToast() {
     if (!this.isDisposed()) {
       this.animate({
-        transform: {translationY: this.get("height")}
+        transform: {translationY: this.height}
       }, {
         duration: this.POP_ANIMATION_DURATION,
         easing: "ease-out"

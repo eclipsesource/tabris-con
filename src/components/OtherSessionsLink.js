@@ -6,31 +6,44 @@ import sizes from "../resources/sizes";
 import SessionsPage from "../pages/SessionsPage";
 import {Composite} from "tabris";
 import texts from "../resources/texts";
+import {pageNavigation} from "../pages/navigation";
 
 export default class extends Composite {
   constructor(viewDataProvider, loginService, feedbackService) {
     super();
-    this.on("change:data", (widget, session) => {
-      let freeBlock = getSessionFreeBlock(session, config);
-      if (freeBlock) {
-        let date1 = new ConfigurationDate(config, freeBlock[0]);
-        let date2 = new ConfigurationDate(config, freeBlock[1]);
-        viewDataProvider.getOtherSessionsInTimeframe(date1, date2, session.id)
-          .then(otherSessions => {
-            if (otherSessions.length > 0) {
-              this._createOtherSessionsLink()
-                .on("tap", () => {
-                  let sessionsPage = new SessionsPage(viewDataProvider, loginService, feedbackService).open();
-                  let from = date1.format("LT");
-                  let to = date2.format("LT");
-                  sessionsPage.set("data", {title: from + " - " + to, items: otherSessions});
-                })
-                .appendTo(this);
-            }
-          });
-      }
-    });
+    this._viewDataProvider = viewDataProvider;
+    this._loginService = loginService;
+    this._feedbackService = feedbackService;
+  }
 
+  set data(session) {
+    this._data = session;
+    let freeBlock = getSessionFreeBlock(session, config);
+    if (freeBlock) {
+      let date1 = new ConfigurationDate(config, freeBlock[0]);
+      let date2 = new ConfigurationDate(config, freeBlock[1]);
+      this._viewDataProvider.getOtherSessionsInTimeframe(date1, date2, session.id)
+        .then(otherSessions => {
+          if (otherSessions.length > 0) {
+            this._createOtherSessionsLink()
+              .on("tap", () => {
+                let sessionsPage = new SessionsPage(
+                    this._viewDataProvider,
+                    this._loginService,
+                    this._feedbackService
+                ).appendTo(pageNavigation);
+                let from = date1.format("LT");
+                let to = date2.format("LT");
+                sessionsPage.data = {title: from + " - " + to, items: otherSessions};
+              })
+              .appendTo(this);
+          }
+        });
+    }
+  }
+
+  get data() {
+    return this._data;
   }
 
   _createOtherSessionsLink() {

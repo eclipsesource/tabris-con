@@ -16,6 +16,7 @@ export default {
     ".*": "schedule_icon_session"
   },
   COLOR_SCHEME: {
+    STATUS_BAR_BACKGROUND: "#39b2c0",
     TINT_COLOR: "#2d5a5f",
     ANDROID_ACTION_AREA_FOREGROUND_COLOR: "#ffffff",
     ANDROID_ACTION_AREA_BACKGROUND_COLOR: "#23d6ec",

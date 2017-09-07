@@ -10,9 +10,16 @@ export default class extends Action {
       title: texts.ATTENDANCE_ACTION_ADD_TITLE,
       placementPriority: "high"
     });
-    this.on("change:attending", (widget, attending) => {
-      this.set("image", attending ? getImage.common("check") : getImage.common("plus"));
-      this.set("title", attending ? texts.ATTENDANCE_ACTION_REMOVE_TITLE : texts.ATTENDANCE_ACTION_ADD_TITLE);
-    });
   }
+
+  set attending(attending) {
+    this._attending = attending;
+    this.image = attending ? getImage.common("check") : getImage.common("plus");
+    this.title = attending ? texts.ATTENDANCE_ACTION_REMOVE_TITLE : texts.ATTENDANCE_ACTION_ADD_TITLE;
+  }
+
+  get attending() {
+    return this._attending;
+  }
+
 }

@@ -9,113 +9,106 @@ import applyPlatformStyle from "../../helpers/applyPlatformStyle";
 import SessionPage from "../../pages/SessionPage";
 import addProgressTo from "../../helpers/addProgressTo";
 import config from "../../configs/config";
+import {pageNavigation} from "../../pages/navigation";
 import {Composite, ImageView, TextView} from "tabris";
 
 export function get({viewDataProvider, loginService, feedbackService}) {
   return {
-    itemHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
-    initializeCell: cell => {
-      let touchFeedbackConsumer = new Composite({
+    cellHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
+
+    createCell: () => {
+      let cell = new Composite({left: 0, top: 0, right: 0, bottom: 0});
+      cell.touchFeedbackConsumer = new Composite({
         left: 0, top: 0, right: 0, bottom: 0,
         background: "white"
       }).appendTo(cell);
-      let backgroundShade = new Composite({
+      cell.shade = new Composite({
         visible: false, background: colors.ACTION_COLOR,
         left: 0, top: 0, right: 0, bottom: 0
       }).appendTo(cell);
-
       let textContainer = new Composite({
         left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE, bottom: 0
       }).appendTo(cell);
-
-      let feedbackIndicator = new ImageView({
+      cell.feedbackIndicator = new ImageView({
         class: "feedbackIndicator",
         width: 24, height: 24,
-        right: sizes.MARGIN_LARGE,
-        progress: false
+        right: sizes.MARGIN_LARGE
       }).appendTo(cell);
-
-      addProgressTo(feedbackIndicator);
-
-      applyPlatformStyle(feedbackIndicator);
-
-      let startTimeTextView = new TextView({
+      addProgressTo(cell.feedbackIndicator);
+      applyPlatformStyle(cell.feedbackIndicator);
+      cell.startTimeLabel = new TextView({
         textColor: colors.DARK_SECONDARY_TEXT_COLOR,
         font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
         left: 0, top: sizes.MARGIN_LARGE
       }).appendTo(textContainer);
-
-      let concurrentSessionsTextView = new TextView({
+      cell.concurrentSessionsLabel = new TextView({
         textColor: colors.DARK_HINT_TEXT_COLOR,
         font: fontToString({style: "italic", size: sizes.FONT_MEDIUM}),
-        left: [startTimeTextView, sizes.MARGIN], top: sizes.MARGIN_LARGE + sizes.MARGIN_XSMALL, right: 0
+        left: [cell.startTimeLabel, sizes.MARGIN], top: sizes.MARGIN_LARGE + sizes.MARGIN_XSMALL, right: 0
       }).appendTo(textContainer);
-
-      let titleTextView = new TextView({
+      cell.titleLabel = new TextView({
         textColor: colors.ACCENTED_TEXT_COLOR,
         maxLines: 2,
         font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
         left: 0, centerY: 0, right: 0
       }).appendTo(textContainer);
-
-      let summaryTextView = new TextView({
+      cell.summaryLabel = new TextView({
         left: 0, top: ["prev()", sizes.MARGIN], right: 0,
         textColor: colors.DARK_SECONDARY_TEXT_COLOR,
         maxLines: 1,
         font: fontToString({size: sizes.FONT_MEDIUM})
       }).appendTo(textContainer);
-
-      let imageView = new ImageView({
+      cell.image = new ImageView({
         left: 0, right: textContainer, centerY: 0
       }).appendTo(cell);
-
-      cell.on("change:item", (widget, item) => {
-        touchFeedbackConsumer.set("visible", item.blockType === "block");
-        startTimeTextView.set("text", item.startTime);
-        concurrentSessionsTextView.set("text",
-          item.concurrentSessions ? `(${item.concurrentSessions} ${texts.CONCURRENT_SESSIONS})` : ""
-        );
-        titleTextView.set("text", item.title);
-        summaryTextView.set("text", item.blockType !== "free" ? item.summary : "");
-        imageView.set({
-          image: getImage.forDevicePlatform(item.image),
-          tintColor: item.image === "schedule_icon_plus" ? colors.ACTION_COLOR : "initial"
-        });
-        if (item.feedbackIndicatorState && item.feedbackIndicatorState !== "loading") {
-          feedbackIndicator.set("image",
-            getImage.forDevicePlatform("schedule_feedback_" + item.feedbackIndicatorState));
-        } else {
-          feedbackIndicator.set("image", null);
-        }
-        feedbackIndicator.set("progress", item.feedbackIndicatorState === "loading");
-        if (item.shouldPop) {
-          setTimeout(() => {
-            backgroundShade
-              .once("animationend", shade => shade.set("visible", false))
-              .set({visible: true, opacity: 1})
-              .animate({opacity: 0}, {duration: 1000, easing: "ease-out"});
-          }, 800);
-          item.shouldPop = false;
-        } else {
-          backgroundShade.set("visible", false);
-        }
-      });
+      return cell;
     },
-    select: (widget, item) => {
+
+    updateCell: (cell, item) => {
+      cell.touchFeedbackConsumer.visible = item.blockType === "block";
+      cell.highlightOnTouch = item.blockType !== "block";
+      cell.startTimeLabel.text = item.startTime;
+      cell.concurrentSessionsLabel.text =
+        item.concurrentSessions ? `(${item.concurrentSessions} ${texts.CONCURRENT_SESSIONS})` : "";
+      cell.titleLabel.text = item.title;
+      cell.summaryLabel.text = item.blockType !== "free" ? item.summary : "";
+      cell.image.set({
+        image: getImage.forDevicePlatform(item.image),
+        tintColor: item.image === "schedule_icon_plus" ? colors.ACTION_COLOR : "initial"
+      });
+      if (item.feedbackIndicatorState && item.feedbackIndicatorState !== "loading") {
+        cell.feedbackIndicator.image = getImage.forDevicePlatform("schedule_feedback_" + item.feedbackIndicatorState);
+      } else {
+        cell.feedbackIndicator.image = null;
+      }
+      cell.feedbackIndicator.showProgress(item.feedbackIndicatorState === "loading");
+      if (item.shouldPop) {
+        setTimeout(() => {
+          cell.shade
+            .set({visible: true, opacity: 1})
+            .animate({opacity: 0}, {duration: 1000, easing: "ease-out"})
+            .then(() => cell.shade.visible = false);
+        }, 800);
+        item.shouldPop = false;
+      } else {
+        cell.shade.visible = false;
+      }
+    },
+
+    select: (item) => {
       if (item.sessionId) {
-        let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).open();
+        let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).appendTo(pageNavigation);
         viewDataProvider["get" + (item.keynote ? "Keynote" : "Session")](item.sessionId)
-          .then(session => sessionPage.set("data", session));
-        tabris.ui.find("#schedule").set("lastSelectedSessionId", item.sessionId);
+          .then(session => sessionPage.data = session);
       } else if (item.blockType === "free") {
-        let page = new SessionsPage(viewDataProvider, loginService, feedbackService).open();
+        let page = new SessionsPage(viewDataProvider, loginService, feedbackService).appendTo(pageNavigation);
         let date1 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.startTimestamp);
         let date2 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.endTimestamp);
         viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
           .then(sessions => {
             let from = date1.format("LT");
             let to = date2.format("LT");
-            page.set("data", {title: from + " - " + to, items: sessions});
+            page.data = {title: from + " - " + to, items: sessions};
           });
       }
     }

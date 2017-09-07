@@ -12,7 +12,7 @@ export default class {
 
   createEvaluation(sessionId, sessionNid, comment, rating) {
     return this._codRemoteService.createEvaluation(sessionNid, comment, rating)
-      .then(() => tabris.ui.find("#schedule").set("evaluatedSessionId", sessionId));
+      .then(() => tabris.ui.find("#schedule").first().evaluatedSessionId = sessionId);
   }
 
   getSessionsIndicatorState(sessions, evaluations) {

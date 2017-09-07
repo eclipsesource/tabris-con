@@ -1,22 +1,8 @@
 import colors from "./colors";
 import sizes from "./sizes";
 import fontToString from "../helpers/fontToString";
-import config from "../configs/config";
 
 export default {
-  _UI: {
-    Android: {
-      background: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
-      textColor: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR
-    },
-    iOS: {textColor: colors.IOS_ACTION_AREA_FOREGROUND_COLOR},
-    windows: {
-      background: colors.WINDOWS_ACTION_AREA_BACKGROUND_COLOR,
-      textColor: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
-      win_toolbarTheme: config.WINDOWS_UI_TOOLBAR_THEME,
-      win_theme: config.WINDOWS_UI_THEME
-    }
-  },
   "#scheduleTabFolder": {
     Android: {
       background: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,

@@ -13,10 +13,11 @@ import OtherSessionsLink from "../components/OtherSessionsLink";
 import config from "../configs/config";
 import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
+import {pageNavigation} from "./navigation";
 
 export default class extends Page {
   constructor(viewDataProvider, loginService, feedbackService) {
-    super({topLevel: false, id: "sessionPage"});
+    super({id: "sessionPage"});
     this._viewDataProvider = viewDataProvider;
     this._loginService = loginService;
     this._feedbackService = feedbackService;
@@ -24,34 +25,29 @@ export default class extends Page {
 
     if (device.platform === "Android") {
       this
-        .on("appear", () => {
-          tabris.ui.set("toolbarVisible", false);
-        })
-        .on("disappear", () => {
-          tabris.ui.set("toolbarVisible", true);
-        });
+        .on("appear", () => pageNavigation.toolbarVisible = false)
+        .on("disappear", () => pageNavigation.toolbarVisible = true);
     }
 
-    let scrollView = new ScrollView({left: 0, right: 0, top: 0, bottom: 0}).appendTo(this);
+    this._scrollView = new ScrollView({left: 0, right: 0, top: 0, bottom: 0}).appendTo(this);
 
     let imageView = new ImageView({
       id: "sessionPageImageView",
       left: 0, top: 0, right: 0,
       background: colors.BACKGROUND_COLOR,
       scaleMode: "fill"
-    }).appendTo(scrollView);
+    }).appendTo(this._scrollView);
 
     let contentComposite = new Composite({
       left: 0, right: 0, top: "#sessionPageHeader",
       id: "contentComposite",
       background: "white"
-    }).appendTo(scrollView);
+    }).appendTo(this._scrollView);
 
-    let sessionPageHeader = new SessionPageHeader().appendTo(scrollView);
-
-    sessionPageHeader
-      .on("backButtonTap", () => this.close())
-      .on("attendanceButtonTap", (widget, wasChecked) => this._updateAttendance(widget, wasChecked));
+    this._sessionPageHeader = new SessionPageHeader()
+      .on("backButtonTap", () => this.dispose())
+      .on("attendanceButtonTap", ({target, wasChecked}) => this._updateAttendance(target, wasChecked))
+      .appendTo(this._scrollView);
 
     let descriptionTextView = new TextView({
       id: "sessionPageDescriptionTextView",
@@ -67,18 +63,20 @@ export default class extends Page {
       left: 0, top: "prev()", right: 0
     }).appendTo(contentComposite);
 
-    let otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService, feedbackService);
-
-    otherSessionsLink.set("top", "prev()").appendTo(contentComposite);
+    this.otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService, feedbackService);
+    this.otherSessionsLink.top = "prev()";
+    this.otherSessionsLink.appendTo(contentComposite);
 
     this._createSpacer().appendTo(contentComposite);
 
-    let loadingIndicator = new LoadingIndicator({shade: true}).appendTo(this);
+    this._loadingIndicator = new LoadingIndicator({shade: true}).appendTo(this);
 
     this
       .on("appear", () => {
         if (device.platform !== "Android") {
-          new AttendanceAction().on("select", widget => this._updateAttendance(widget, widget.get("attending")));
+          new AttendanceAction()
+            .on("select", ({target}) => this._updateAttendance(target, target.attending))
+            .appendTo(pageNavigation);
         }
       })
       .on("disappear", () => tabris.ui.find("#attendanceAction").dispose())
@@ -87,26 +85,33 @@ export default class extends Page {
         if (feedbackWidget) {
           feedbackWidget.refresh();
         }
-      })
-      .on("change:data", (widget, data) => {
-        this._setWidgetData(data);
-        otherSessionsLink.set("data", data);
-        scrollView.on("resize", this._layoutParallax);
-        this._layoutParallax(scrollView);
-        let attendanceControl = device.platform !== "Android" ? tabris.ui.find("#attendanceAction") : sessionPageHeader;
-        attendanceControl.set("attending", attendedSessionService.isAttending(data.id));
-        loadingIndicator.dispose();
       });
 
     if (device.platform === "Android") {
       let self = this;
-      scrollView.on("scroll", (widget, offset) => {
-        imageView.set("transform", {translationY: Math.max(0, offset.y * 0.4)});
-        sessionPageHeader.set("transform", {translationY: Math.max(0, offset.y - self._titleCompY)});
+      this._scrollView.on("scrollY", ({offset}) => {
+        imageView.transform = {translationY: Math.max(0, offset * 0.4)};
+        this._sessionPageHeader.transform = {translationY: Math.max(0, offset - self._titleCompY)};
       });
     }
 
-    scrollView.once("resize", () => this._layoutParallax(scrollView, {initialLayout: true}));
+    this._scrollView.once("resize", () => this._layoutParallax({initialLayout: true}));
+  }
+
+  set data(session) {
+    this._data = session;
+    this._setWidgetData(session);
+    this.otherSessionsLink.data = session;
+    this._scrollView.on("resize", () => this._layoutParallax());
+    this._layoutParallax();
+    let attendanceControl =
+      device.platform !== "Android" ? tabris.ui.find("#attendanceAction").first() : this._sessionPageHeader;
+    attendanceControl.attending = attendedSessionService.isAttending(session.id);
+    this._loadingIndicator.dispose();
+  }
+
+  get data() {
+    return this._data;
   }
 
   _createSpeakers(speakers) {
@@ -172,19 +177,17 @@ export default class extends Page {
   }
 
   _setWidgetData(data) {
-    let scrollView = this.find("ScrollView").first();
-    let sessionPageHeader = this.find("#sessionPageHeader").first();
     let descriptionTextView = this.find("#sessionPageDescriptionTextView").first();
     let imageView = this.find("#sessionPageImageView").first();
     let contentComposite = this.find("#contentComposite").first();
-    let scrollViewBounds = scrollView.get("bounds");
-    sessionPageHeader.set({
+    let scrollViewBounds = this._scrollView.bounds;
+    this._sessionPageHeader.set({
       titleText: data.title,
       summaryText: data.summary,
       trackIndicatorColor: config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial"
     });
-    descriptionTextView.set("text", data.description);
-    imageView.set("image", getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3));
+    descriptionTextView.text = data.description;
+    imageView.image = getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
     if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
       new SessionPageFeedbackWidget(data, this._viewDataProvider, this._loginService, this._feedbackService)
         .appendTo(contentComposite);
@@ -192,34 +195,34 @@ export default class extends Page {
     this._createSpeakers(data.speakers);
   }
 
-  _layoutParallax(scrollView, options) {
+  _layoutParallax(options) {
     let imageView = this.find("#sessionPageImageView").first();
     let pageHeader = this.find("#sessionPageHeader").first();
-    let showImageView = imageView.get("image") || options && options.initialLayout && config.SESSIONS_HAVE_IMAGES;
-    let imageHeight = showImageView ? scrollView.get("bounds").height / 3 : 0;
-    imageView.set("height", imageHeight);
+    let showImageView = imageView.image || options && options.initialLayout && config.SESSIONS_HAVE_IMAGES;
+    let imageHeight = showImageView ? this._scrollView.bounds.height / 3 : 0;
+    imageView.height = imageHeight;
     this._titleCompY = imageHeight;
-    pageHeader.set("top", this._titleCompY);
+    pageHeader.top = this._titleCompY;
   }
 
   _updateAttendance(widget, wasChecked) {
     let checked = !wasChecked;
-    let session = this.get("data");
+    let session = this.data;
     if (session) {
       if (checked) {
         attendedSessionService.addAttendedSessionId(session.id);
       } else {
         attendedSessionService.removeAttendedSessionId(session.id);
       }
-      widget.set("attending", checked);
+      widget.attending = checked;
       InfoToast
         .show({
           type: "myScheduleOperation",
           messageText: checked ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
           actionText: texts.INFO_TOAST_ACTION
         })
-        .on("actionTap", toast => {
-          if (!toast.isDisposed() && toast.get("toastType") === "myScheduleOperation") {
+        .on("actionTap", ({target}) => {
+          if (!target.isDisposed() && target.toastType === "myScheduleOperation") {
             this._openSchedule();
           }
         });
@@ -229,13 +232,12 @@ export default class extends Page {
   _openSchedule() {
     let navigation = tabris.ui.find("#navigation").first();
     let schedule = tabris.ui.find("#schedule").first();
-    // TODO: no reverse() will be needed for Tabris.js 2
-    tabris.ui.find("Page").toArray().reverse().forEach((page) => {
-      if (page.get("id") !== "mainPage") {
+    pageNavigation.pages().toArray().forEach((page) => {
+      if (page.id !== "mainPage") {
         page.dispose();
       }
     });
-    navigation.set("selection", schedule);
+    navigation.selection = schedule;
   }
 
   _createSpacer() {

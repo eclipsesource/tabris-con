@@ -121,6 +121,6 @@ let en = {
 export default isGerman() ? de : en;
 
 function isGerman() {
-  let lang = device.get("language");
+  let lang = device.language;
   return lang && lang.split("-")[0] === "de";
 }

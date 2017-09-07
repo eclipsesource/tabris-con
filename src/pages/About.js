@@ -4,11 +4,11 @@ import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import Link from "../components/Link";
-import {ImageView, TextView, Composite, ScrollView, Tab} from "tabris";
+import {ImageView, TextView, Composite, ScrollView, Tab, app} from "tabris";
 import IconNoticePage from "./IconNoticePage";
 import texts from "../resources/texts";
 
-export default class extends Tab {
+export default class About extends Tab {
   constructor() {
     super({
       id: "about",
@@ -27,7 +27,7 @@ export default class extends Tab {
     new TextView({
       id: "version",
       centerX: 0, top: ["#vendorAttribution", sizes.MARGIN],
-      text: "v" + tabris._client.get("tabris.App", "version")
+      text: "v" + app.version
     }).appendTo(container);
     createAttributionsList([
       {
@@ -45,7 +45,7 @@ export default class extends Tab {
     ]).appendTo(container);
     createProjectAttribution().appendTo(container);
     createTabrisJsAttribution().appendTo(container);
-    this.on("resize", function(widget, bounds) {
+    this.on("resize", (bounds) => {
       container.set({left: 0, top: 0, right: 0, height: calculateContainerHeight(bounds)});
     });
   }

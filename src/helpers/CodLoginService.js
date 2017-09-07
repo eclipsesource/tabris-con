@@ -1,14 +1,82 @@
 import {logError} from "../errors";
 
 export default class LoginService {
+
   constructor(codRemoteService) {
+    this._logoutSuccessHandlers = [];
+    this._logoutErrorHandlers = [];
+    this._loginErrorHandlers = [];
+    this._loginSuccessHandlers = [];
     this._codRemoteService = codRemoteService;
     this._codRemoteService.setLoginService(this);
-    this.on("logoutSuccess", () => {
+    this.onLogoutSuccess(() => {
       resetUserData();
       reloadScheduleItems();
     });
-    this.on("loginError", () => resetUserData());
+    this.onLoginError(() => resetUserData());
+  }
+
+  onLogoutSuccess(handler) {
+    this._logoutSuccessHandlers.push(handler);
+    return this;
+  }
+
+  onLogoutError(handler) {
+    this._logoutErrorHandlers.push(handler);
+    return this;
+  }
+
+  onLoginError(handler) {
+    this._loginErrorHandlers.push(handler);
+    return this;
+  }
+
+  onLoginSuccess(handler) {
+    this._loginSuccessHandlers.push(handler);
+    return this;
+  }
+
+  offLogoutSuccess(handler) {
+    this._removeFromArray(this._logoutSuccessHandlers, handler);
+    return this;
+  }
+
+  offLogoutError(handler) {
+    this._removeFromArray(this._logoutErrorHandlers, handler);
+    return this;
+  }
+
+  offLoginError(handler) {
+    this._removeFromArray(this._loginErrorHandlers, handler);
+    return this;
+  }
+
+  offLoginSuccess(handler) {
+    this._removeFromArray(this._loginSuccessHandlers, handler);
+    return this;
+  }
+
+  _removeFromArray(array, element) {
+    let index = array.indexOf(element);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  }
+
+  triggerLogoutSuccess() {
+    this._logoutSuccessHandlers.forEach(handler => handler());
+  }
+
+  triggerLogoutError() {
+    this._logoutErrorHandlers.forEach(handler => handler());
+  }
+
+  triggerLoginError() {
+    this._loginErrorHandlers.forEach(handler => handler());
+  }
+
+  triggerLoginSuccess() {
+    this._loginSuccessHandlers.forEach(handler => handler());
   }
 
   login(username, password) {
@@ -19,10 +87,10 @@ export default class LoginService {
         reloadScheduleItems();
         return Promise.resolve();
       })
-      .then(() => this.trigger("loginSuccess"))
+      .then(() => this.triggerLoginSuccess())
       .catch(e => {
         resetUserData();
-        this.trigger("loginError");
+        this.triggerLoginError();
         logError(e);
         return Promise.reject(e);
       });
@@ -30,16 +98,16 @@ export default class LoginService {
 
   logout() {
     return this._codRemoteService.logout()
-      .then(() => this.trigger("logoutSuccess"))
+      .then(() => this.triggerLogoutSuccess())
       .catch(e => {
-        this.trigger("logoutError");
+        this.triggerLogoutError();
         logError(e);
         return Promise.reject(e);
       });
   }
 
   destroySession() {
-    this.trigger("logoutSuccess");
+    this.triggerLogoutSuccess();
   }
 
   isLoggedIn() {
@@ -54,8 +122,6 @@ export default class LoginService {
     };
   }
 }
-
-Object.assign(LoginService.prototype, tabris.Events);
 
 function persistUserData(response) {
   localStorage.setItem("username", response.user.name);

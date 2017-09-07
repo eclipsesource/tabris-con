@@ -6,7 +6,7 @@ import texts from "../resources/texts";
 
 export default class extends Page {
   constructor() {
-    super({topLevel: false});
+    super();
 
     let scrollView = new ScrollView({
       left: 0, top: 0, right: 0, bottom: 0

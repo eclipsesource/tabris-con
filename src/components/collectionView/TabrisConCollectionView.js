@@ -1,44 +1,94 @@
 import {CollectionView} from "tabris";
-import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import collectionViewItemConfiguration from "./collectionViewItemConfiguration";
+import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import config from "../../configs/config";
 
 export default class extends CollectionView {
-  constructor(configuration, viewDataProvider, loginService, feedbackService) {
-    super(
-      Object.assign({}, configuration, {
-        left: 0, top: 0, right: 0, bottom: 0,
-        cellType: item => item.type,
-        itemHeight: (item, type) => getItemType(type, viewDataProvider, loginService, feedbackService).itemHeight,
-        initializeCell: (cell, type) => getItemType(type, viewDataProvider, loginService, feedbackService)
-          .initializeCell(cell)
-      })
-    );
-    this.on("select", (widget, item) => {
+
+  constructor(configuration) {
+    super(configuration);
+    this.set({
+      cellType: index => this.items[index].type,
+      cellHeight: (item, type) => this._getItemType(type).cellHeight,
+      createCell: (type) => this._getItemType(type).createCell(type),
+      updateCell: this._updateCell
+    });
+    this.on("select", ({index}) => {
+      let item = this.items[index];
       if (item) {
-        getItemType(item.type, viewDataProvider, loginService, feedbackService).select(widget, item);
+        this._getItemType(item.type).select(item);
       }
     });
-    let refreshCallback = collectionView => {
-      collectionView.set("refreshIndicator", true);
-      viewDataUpdateService.updateData(viewDataProvider)
-        .then(() => collectionView.set("refreshIndicator", false));
-    };
-    let handleUpdatableChange = (collectionView, updatable) => {
-      if (!(config.SERVICES && config.SERVICES.SESSIONS)) {
-        return;
-      }
-      collectionView.set("refreshEnabled", updatable);
-      if (updatable) {
-        return collectionView.on("refresh", refreshCallback);
-      }
-      collectionView.off("refresh", refreshCallback);
-    };
-    this.on("change:updatable", handleUpdatableChange);
-    handleUpdatableChange(this, this.get("updatable"));
   }
-}
 
-function getItemType(type, viewDataProvider, loginService, feedbackService) {
-  return collectionViewItemConfiguration[type + "Item"].get({viewDataProvider, loginService, feedbackService});
+  _updateCell(cell, index) {
+    if (this._getItemType(this.items[index].type).updateCell) {
+      this._getItemType(this.items[index].type).updateCell(cell, this.items[index]);
+    }
+  }
+
+  set viewDataProvider(viewDataProvider) {
+    this._viewDataProvider = viewDataProvider;
+  }
+
+  get viewDataProvider() {
+    return this._viewDataProvider;
+  }
+
+  set loginService(loginService) {
+    this._loginService = loginService;
+  }
+
+  get loginService() {
+    return this._loginService;
+  }
+
+  set feedbackService(feedbackService) {
+    this._feedbackService = feedbackService;
+  }
+
+  get feedbackService() {
+    return this._feedbackService;
+  }
+
+  set updatable(updatable) {
+    this._updatable = updatable;
+    if (!(config.SERVICES && config.SERVICES.SESSIONS)) {
+      return;
+    }
+    this.refreshEnabled = this._updatable;
+    if (this._updatable) {
+      this.on("refresh", this._onRefresh);
+    } else {
+      this.off("refresh", this._onRefresh);
+    }
+  }
+
+  get updatable() {
+    return this._updatable;
+  }
+
+  set items(items) {
+    this._items = items;
+    this.itemCount = this._items.length;
+  }
+
+  get items() {
+    return this._items;
+  }
+
+  _onRefresh() {
+    this.refreshIndicator = true;
+    viewDataUpdateService.updateData(this._viewDataProvider)
+      .then(() => this.refreshIndicator = false);
+  }
+
+  _getItemType(type) {
+    return collectionViewItemConfiguration[type + "Item"].get({
+      viewDataProvider: this.viewDataProvider,
+      loginService: this.loginService,
+      feedbackService: this.feedbackService
+    });
+  }
+
 }

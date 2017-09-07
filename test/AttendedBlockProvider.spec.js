@@ -4,22 +4,23 @@ import "./tabrisMock";
 import * as persistedStorage from "../src/persistedStorage";
 import sinon from "sinon";
 import AttendedBlockProvider from "../src/AttendedBlockProvider";
-import conferenceDataProvider from "../src/ConferenceDataProvider";
 import chaiThings from "chai-things";
 
 let expect = chai.expect;
 chai.use(chaiThings);
 
 describe("attendedBlockProvider", () => {
-  let attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);
+
+  let conferenceDataProvider, attendedBlockProvider;
 
   beforeEach(() => {
     global.window = sinon.stub();
     global.localStorage = sinon.stub();
     global.localStorage.getItem = sinon.stub();
     global.localStorage.setItem = sinon.spy();
-    conferenceDataProvider.get = sinon.stub();
     global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSIONS).returns("[\"id\"]");
+    conferenceDataProvider = {get: sinon.stub()};
+    attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);
   });
 
   it("provides blocks referenced in localStorage", function() {

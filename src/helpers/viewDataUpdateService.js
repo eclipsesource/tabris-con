@@ -3,7 +3,7 @@ export function updateData(viewDataProvider) {
   let schedule = tabris.ui.find("#schedule").first();
   let tracks = tabris.ui.find("#tracks").first();
   if (schedule) {
-    schedule.set("indicatorsInitialized", false);
+    schedule.indicatorsInitialized = false;
   }
   return Promise.all([
     schedule.initializeItems(),

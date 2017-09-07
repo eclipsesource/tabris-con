@@ -7,6 +7,7 @@ import texts from "./resources/texts";
 import ConfigurationDate from "./ConfigurationDate";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
 import {addAttendedSessionId} from "./helpers/attendedSessionService";
+import {app} from "tabris";
 
 export default class {
   constructor(bundledConferenceData) {
@@ -86,7 +87,7 @@ export default class {
   }
 
   _handleAppUpgrade() {
-    let currentVersion = tabris._client.get("tabris.App", "version");
+    let currentVersion = app.version;
     let appVersion = localStorage.getItem("appVersion");
     if (currentVersion !== appVersion && device.platform !== "windows") { // TODO: also handle on Windows when client supports app version
       persistedStorage.removeConferenceData();

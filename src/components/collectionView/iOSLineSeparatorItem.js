@@ -5,16 +5,17 @@ import {Composite} from "tabris";
 
 export function get() {
   return {
-    itemHeight: sizes.CELL_TYPE_SMALL_SEPARATOR_HEIGHT,
-    initializeCell: cell => {
+    cellHeight: sizes.CELL_TYPE_SMALL_SEPARATOR_HEIGHT,
+    createCell: () => {
+      let cell = new Composite({left: 0, top: 0, right: 0, bottom: 0});
       let separator = new Composite({
         class: "iOSLineSeparator",
         left: sizes.MARGIN_XLARGE, top: 0, right: 0, bottom: 0,
         background: colors.LINE_SEPARATOR_COLOR
       }).appendTo(cell);
       applyPlatformStyle(separator);
+      return cell;
     },
-    select: () => {
-    }
+    select: () => {}
   };
 }
