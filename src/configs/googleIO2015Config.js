@@ -41,7 +41,6 @@ export default {
       windows: "#25c6da"
     },
     LINE_SEPARATOR_COLOR: "#d9d9d9",
-    MAP_BACKGROUND_COLOR: "#cdcbcc",
     LINK_COLOR: "#48a8f4",
     KEYNOTE_TITLE_COLOR: "#FFC107",
     ANDROID_BUTTON_DISABLED_BACKGROUND: "#aba1d5",

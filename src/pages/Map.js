@@ -1,5 +1,4 @@
 import getImage from "../helpers/getImage";
-import colors from "../resources/colors";
 import Navigatable from "./Navigatable";
 import LoadingIndicator from "../components/LoadingIndicator";
 import {WebView} from "tabris";
@@ -16,22 +15,22 @@ export default class extends Navigatable {
       },
       viewDataProvider
     });
-    new LoadingIndicator().appendTo(this);
-    this.once("appear", () => createWebViewMapContainer(this).on("load", showWebView));
+    // TODO: map is not shown on Android without this workaround
+    this.once("appear", () => this._createUI());
   }
-}
 
-function showWebView(webView) {
-  webView.set("visible", true);
-  webView.parent().set("background", colors.MAP_BACKGROUND_COLOR);
-  webView.parent().find("#loadingIndicator").dispose();
-}
+  _createUI() {
+    this.append(
+      new WebView({
+        left: 0, top: 0, right: 0, bottom: 0,
+        visible: false,
+        url: "html/map.html"
+      }).on("load", target => {
+        target.siblings("#loadingIndicator").dispose();
+        target.set("visible", true);
+      }),
+      new LoadingIndicator()
+    );
+  }
 
-function createWebViewMapContainer(map) {
-  return new WebView({
-    left: 0, top: 0, right: 0, bottom: 0,
-    visible: false,
-    background: "#cdcbcc",
-    url: "html/map.html"
-  }).appendTo(map);
 }

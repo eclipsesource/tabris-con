@@ -1,21 +1,18 @@
 <html>
   <head>
+    <meta name='viewport' content='minimum-scale=0; initial-scale=0'/>
     <style>
       body {
         background-color: white;
       }
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
     </style>
-    <script type='text/javascript' src='../lib/jquery-2.2.0.min.js'></script>
-    <script type='text/javascript' src='../lib/jquery.panzoom.min.js'></script>
   </head>
   <body>
     <img src='../images/floorplan.png' />
-    <script>
-      $(document).ready(
-        function(){
-          $("img").panzoom("fit": $("#fit"));
-        }
-      );
-    </script>
   </body>
 </html>
