@@ -1,4 +1,5 @@
 import config from "../configs/config";
+import ConfigurationDate from "../ConfigurationDate";
 
 export default class {
   constructor(codRemoteService) {
@@ -29,6 +30,7 @@ export default class {
 
   validFeedbackWindow(session) {
     let currentDate = new Date();
-    return currentDate > new Date(session.endTimestamp) && currentDate < new Date(config.FEEDBACK_DEADLINE);
+    return currentDate > new Date(session.endTimestamp) &&
+      currentDate <= new ConfigurationDate(config, config.FEEDBACK_DEADLINE).toJSDate();
   }
 }
