@@ -60,7 +60,10 @@ export default class extends Drawer {
       if (device.platform === "Android") {
         createSeparator().appendTo(pageItems);
       }
-      let loginListItem = new DrawerLoginListItem("loginPage", this._loginService).appendTo(pageItems);
+      let loginListItem = new DrawerLoginListItem({
+        id: "loginPage",
+        loginService: this._loginService
+      }).appendTo(pageItems);
       loginListItem.on("change:loggedIn", (widget, loggedIn) =>
         this.find("#androidDrawerUserArea").set("loggedIn", loggedIn));
     }
