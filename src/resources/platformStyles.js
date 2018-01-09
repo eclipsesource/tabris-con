@@ -48,14 +48,6 @@ export default {
     iOS: {background: "white"},
     windows: {background: "white"}
   },
-  "#drawerList": {
-    Android: {top: ["#androidDrawerUserArea", sizes.MARGIN]},
-    windows: {top: 0}
-  },
-  "#drawerSecondaryPageItems": {
-    windows: {bottom: 0},
-    Android: {top: "prev()"}
-  },
   "#pageHeader": {
     Android: {background: colors.BACKGROUND_COLOR},
     iOS: {background: "white"},

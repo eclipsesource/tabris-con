@@ -1,24 +1,20 @@
 import getImage from "../helpers/getImage";
-import Navigatable from "./Navigatable";
 import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import Link from "../components/Link";
-import {ImageView, TextView, Composite, ScrollView} from "tabris";
+import {ImageView, TextView, Composite, ScrollView, Tab} from "tabris";
 import IconNoticePage from "./IconNoticePage";
 import texts from "../resources/texts";
 
-export default class extends Navigatable {
-  constructor({viewDataProvider}) {
+export default class extends Tab {
+  constructor() {
     super({
-      configuration: {
-        id: "about",
-        title: texts.ABOUT_PAGE_TITLE,
-        image: getImage.forDevicePlatform("about_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
-        left: 0, top: 0, right: 0, bottom: 0
-      },
-      viewDataProvider
+      id: "about",
+      title: texts.ABOUT_PAGE_TITLE,
+      image: getImage.forDevicePlatform("about"),
+      selectedImage: getImage.forDevicePlatform("about_selected")
     });
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
     let container = new Composite({id: "container"}).appendTo(scrollView);

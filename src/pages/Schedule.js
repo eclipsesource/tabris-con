@@ -4,7 +4,6 @@ import LoadingIndicator from "../components/LoadingIndicator";
 import getImage from "../helpers/getImage";
 import {select} from "../helpers/platform";
 import {logError} from "../errors";
-import Navigatable from "./Navigatable";
 import {TabFolder, Tab, TextView, Composite} from "tabris";
 import _ from "lodash";
 import texts from "../resources/texts";
@@ -12,20 +11,19 @@ import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import moment from "moment-timezone";
 
-export default class extends Navigatable {
+export default class extends Tab {
   constructor({viewDataProvider, loginService, feedbackService}) {
     super({
-      configuration: {
-        id: "schedule",
-        title: texts.MY_SCHEDULE_PAGE_TITLE,
-        image: getImage.forDevicePlatform("schedule_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
-        left: 0, top: 0, right: 0, bottom: 0
-      },
-      viewDataProvider
+      id: "schedule",
+      title: texts.MY_SCHEDULE_PAGE_TITLE,
+      textColor: colors.TINT_COLOR,
+      image: getImage.forDevicePlatform("schedule"),
+      selectedImage: getImage.forDevicePlatform("schedule_selected")
     });
 
     this._loginService = loginService;
     this._feedbackService = feedbackService;
+    this._viewDataProvider = viewDataProvider;
 
     let loadingIndicator = new LoadingIndicator().appendTo(this);
 
@@ -58,7 +56,7 @@ export default class extends Navigatable {
           default: null
         }),
         left: select({
-          android: sizes.LEFT_CONTENT_MARGIN,
+          android: sizes.MARGIN_LARGE,
           windows: sizes.MARGIN + sizes.MARGIN_SMALL,
           ios: null
         }),
@@ -89,6 +87,12 @@ export default class extends Navigatable {
 
     this.on("change:focus", (widget, focus) => this.set("shouldFocusSessionWithId", focus));
 
+    this.once("appear", () => {
+      if (!this.get("data")) {
+        this.initializeItems();
+      }
+    });
+
     this.on("appear", () => {
       if (this.get("initializingItems")) {
         this.once("change:initializingItems", maybeFocusItem);
@@ -111,7 +115,7 @@ export default class extends Navigatable {
   initializeItems() {
     if (!this.get("initializingItems")) {
       this.set("initializingItems", true);
-      return this.getViewDataProvider().getBlocks()
+      return this._viewDataProvider.getBlocks()
         .then(data => {
           this.set("data", data);
           this._initializeIndicators();
@@ -171,7 +175,7 @@ export default class extends Navigatable {
 
   _updateAllFeedbackIndicators() {
     this._updateEvaluatedSessionIndicator();
-    this.getViewDataProvider().getSessionIdIndicatorStates()
+    this._viewDataProvider.getSessionIdIndicatorStates()
       .then(idStates => {
         if (this.get("focusing")) {
           this.once("change:focusing", () => this._applyIdStates(idStates));
@@ -194,7 +198,7 @@ export default class extends Navigatable {
         id: blockObject.day,
         items: blockObject.blocks,
         updatable: true
-      }, this.getViewDataProvider(), this._loginService, this._feedbackService).appendTo(tab);
+      }, this._viewDataProvider, this._loginService, this._feedbackService).appendTo(tab);
       collectionView.animate({opacity: 1}, {duration: 250});
     });
   }

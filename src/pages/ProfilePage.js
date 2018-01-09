@@ -6,7 +6,7 @@ import texts from "../resources/texts";
 
 export default class extends Page {
   constructor(loginService) {
-    super({id: "iOSProfilePage", title: texts.PROFILE_PAGE_TITLE, topLevel: false});
+    super({id: "profilePage", title: texts.PROFILE_PAGE_TITLE, topLevel: false});
     let container = new Composite({
       width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
     }).appendTo(this);

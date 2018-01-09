@@ -1,10 +1,9 @@
 import getImage from "../helpers/getImage";
-import Navigatable from "./Navigatable";
 import fontToString from "../helpers/fontToString";
 import sizes from "../resources/sizes";
 import appConfig from "../configs/config";
 import Link from "../components/Link";
-import {ImageView, TextView, Composite, ScrollView} from "tabris";
+import {ImageView, TextView, Composite, ScrollView, Tab} from "tabris";
 import texts from "../resources/texts";
 import moment from "moment-timezone";
 
@@ -12,16 +11,13 @@ var config = appConfig.CONFERENCE_PAGE;
 
 const SPACER_HEIGHT = 16;
 
-export default class extends Navigatable {
-  constructor({viewDataProvider}) {
+export default class extends Tab {
+  constructor() {
     super({
-      configuration: {
-        id: "conference",
-        title: texts.CONFERENCE_PAGE_TITLE,
-        image: getImage.forDevicePlatform("conference_selected"), // TODO: selected image initially shown as part of workaround for tabris-ios#841
-        left: 0, top: 0, right: 0, bottom: 0
-      },
-      viewDataProvider
+      id: "conference",
+      title: texts.CONFERENCE_PAGE_TITLE,
+      image: getImage.forDevicePlatform("conference"),
+      selectedImage: getImage.forDevicePlatform("conference_selected")
     });
     let container = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
     new ImageView({

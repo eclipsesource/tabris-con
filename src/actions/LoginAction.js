@@ -1,5 +1,5 @@
 import LoginPage from "../pages/LoginPage";
-import IOSProfilePage from "../pages/IOSProfilePage";
+import ProfilePage from "../pages/ProfilePage";
 import getImage from "../helpers/getImage";
 import {Action} from "tabris";
 import texts from "../resources/texts";
@@ -38,7 +38,7 @@ export default class extends Action {
   }
 
   _showProfilePage() {
-    new IOSProfilePage(this._loginService)
+    new ProfilePage(this._loginService)
       .open()
       .set("data", this._loginService.getUserData());
   }

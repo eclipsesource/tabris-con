@@ -219,13 +219,23 @@ export default class extends Page {
           actionText: texts.INFO_TOAST_ACTION
         })
         .on("actionTap", toast => {
-          if (!toast.isDisposed()) {
-            if (toast.get("toastType") === "myScheduleOperation") {
-              tabris.ui.find("#schedule").last().open();
-            }
+          if (!toast.isDisposed() && toast.get("toastType") === "myScheduleOperation") {
+            this._openSchedule();
           }
         });
     }
+  }
+
+  _openSchedule() {
+    let navigation = tabris.ui.find("#navigation").first();
+    let schedule = tabris.ui.find("#schedule").first();
+    // TODO: no reverse() will be needed for Tabris.js 2
+    tabris.ui.find("Page").toArray().reverse().forEach((page) => {
+      if (page.get("id") !== "mainPage") {
+        page.dispose();
+      }
+    });
+    navigation.set("selection", schedule);
   }
 
   _createSpacer() {

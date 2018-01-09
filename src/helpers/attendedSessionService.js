@@ -2,22 +2,22 @@ import * as persistedStorage from "../persistedStorage";
 
 export function addAttendedSessionId(sessionId, {focus = true} = {}) {
   persistedStorage.addAttendedSessionId(sessionId);
-  updateScheduleNavigatable(sessionId, focus);
+  updateSchedule(sessionId, focus);
 }
 
 export function removeAttendedSessionId(sessionId) {
   persistedStorage.removeAttendedSessionId(sessionId);
-  updateScheduleNavigatable();
+  updateSchedule();
 }
 
 export function isAttending(sessionId) {
   return persistedStorage.getAttendedSessions().indexOf(sessionId) > -1;
 }
 
-function updateScheduleNavigatable(sessionId, focus) {
-  let scheduleNavigatable = tabris.ui.find("#schedule").first();
+function updateSchedule(sessionId, focus) {
+  let schedule = tabris.ui.find("#schedule").first();
   if (focus) {
-    scheduleNavigatable.set("focus", sessionId);
+    schedule.set("focus", sessionId);
   }
-  scheduleNavigatable.initializeItems();
+  schedule.initializeItems();
 }

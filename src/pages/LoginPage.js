@@ -9,18 +9,7 @@ import config from "../configs/config";
 
 export default class extends Page {
   constructor(loginService) {
-    super({topLevel: false, id: "loginPage", class: "navigatable"});
-
-    let lastActiveNavigatable;
-
-    this.on("appear", () => {
-      if (tabris.device.get("platform") === "iOS") {
-        return;
-      }
-      let navigatables = tabris.ui.find(".navigatable");
-      lastActiveNavigatable = navigatables.last();
-      navigatables.set("active", false);
-    });
+    super({topLevel: false, id: "loginPage"});
 
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
 
@@ -84,7 +73,6 @@ export default class extends Page {
       loginService
         .off("loginSuccess", loginSuccessHandler)
         .off("loginError", loginErrorHandler);
-      lastActiveNavigatable.activate();
     });
   }
 
