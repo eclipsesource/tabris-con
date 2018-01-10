@@ -3,15 +3,14 @@ import colors from "../resources/colors";
 import sizes from "../resources/sizes";
 import config from "../configs/config";
 import getImage from "../helpers/getImage";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import {select} from "../helpers/platform";
 import _ from "lodash";
 import {Composite, TextView, ImageView} from "tabris";
 
 export default class extends Composite {
 
   constructor(configuration) {
-    super(Object.assign({}, configuration, {class: "sessionItem"}));
-    applyPlatformStyle(this);
+    super(configuration);
     if (config.SESSIONS_HAVE_IMAGES) {
       this._imageView = createSessionImage().appendTo(this);
     }
@@ -22,9 +21,7 @@ export default class extends Composite {
         left: ["prev()", sizes.MARGIN_LARGE * 0.8], right: sizes.MARGIN_SMALL
       }, config.SESSIONS_HAVE_IMAGES ? {top: sizes.MARGIN} : {centerY: 0})
     ).appendTo(this);
-    applyPlatformStyle(textContainer);
     this._titleTextView = createSessionTitleTextView().appendTo(textContainer);
-    applyPlatformStyle(this._titleTextView);
     this._summaryLabel = new TextView({
       left: 0, top: [this._titleTextView, sizes.MARGIN_XSMALL], right: 0,
       font: fontToString({size: sizes.FONT_MEDIUM}),
@@ -66,8 +63,15 @@ function createSessionImage() {
 
 function createSessionTitleTextView() {
   return new TextView({
-    id: "sessionTitleTextView",
     left: 0, top: 0, right: 0,
-    maxLines: 1
+    maxLines: 1,
+    font: select({
+      ios: fontToString({weight: "normal", size: sizes.FONT_LARGE}),
+      default: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
+    }),
+    textColor: select({
+      ios: colors.DARK_PRIMARY_TEXT_COLOR,
+      default: colors.ACCENTED_TEXT_COLOR
+    })
   });
 }

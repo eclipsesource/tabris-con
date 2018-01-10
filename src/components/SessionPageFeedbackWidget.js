@@ -6,23 +6,19 @@ import addProgressTo from "../helpers/addProgressTo";
 import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import fontToString from "../helpers/fontToString";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import texts from "../resources/texts";
 import {Composite, TextView} from "tabris";
 import {pageNavigation} from "../pages/navigation";
 
 export default class extends Composite {
-  constructor(session, viewDataProvider, loginService, feedbackService) {
-    super({
-      id: "sessionPageFeedbackWidget",
-      top: sizes.MARGIN, right: sizes.MARGIN, height: 36
-    });
+  constructor(properties) {
+    let {session, viewDataProvider, loginService, feedbackService} = properties;
+    super(Object.assign({id: "sessionPageFeedbackWidget"}, properties));
     this._session = session;
     this._viewDataProvider = viewDataProvider;
     this._loginService = loginService;
     this._feedbackService = feedbackService;
     addProgressTo(this);
-    applyPlatformStyle(this);
     this._showState();
     // No need to refresh on login success, as we do that already on page appear.
     let refreshHandler = () => this.refresh();
@@ -77,7 +73,6 @@ export default class extends Composite {
       left: 0, centerY: 0,
       text: texts.SESSION_PAGE_FEEDBACK_BUTTON
     }).appendTo(this);
-    applyPlatformStyle(feedbackButton);
     return feedbackButton;
   }
 
@@ -102,7 +97,6 @@ function createInfoTextView(text, color) {
     font: fontToString({style: "italic", size: sizes.FONT_MEDIUM}),
     text: text
   });
-  applyPlatformStyle(infoTextView);
   return infoTextView;
 }
 

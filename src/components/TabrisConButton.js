@@ -1,7 +1,7 @@
 import sizes from "../resources/sizes";
 import colors from "../resources/colors";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import fontToString from "../helpers/fontToString";
+import {select} from "../helpers/platform";
 import {Button} from "tabris";
 
 export default class extends Button {
@@ -9,14 +9,14 @@ export default class extends Button {
   constructor(configuration) {
     super(
       Object.assign({}, configuration, {
-        class: "button",
-        font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
+        font: fontToString({size: sizes.FONT_LARGE, weight: "bold"}),
+        textColor: select({ios: colors.ACCENTED_TEXT_COLOR, default: "white"}),
+        background: select({ios: "transparent", default: colors.BACKGROUND_COLOR})
       })
     );
     if (device.platform === "Android" && this.text) {
       this.text = this.text.toUpperCase();
     }
-    applyPlatformStyle(this);
     this._updateAndroidBackground(this.enabled);
   }
 

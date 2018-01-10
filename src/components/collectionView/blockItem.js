@@ -5,7 +5,7 @@ import texts from "../../resources/texts";
 import getImage from "../../helpers/getImage";
 import SessionsPage from "../../pages/SessionsPage";
 import TimezonedDate from "../../TimezonedDate";
-import applyPlatformStyle from "../../helpers/applyPlatformStyle";
+import {select} from "../../helpers/platform";
 import SessionPage from "../../pages/SessionPage";
 import addProgressTo from "../../helpers/addProgressTo";
 import config from "../../configs/config";
@@ -30,12 +30,13 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE, bottom: 0
       }).appendTo(cell);
       cell.feedbackIndicator = new ImageView({
-        class: "feedbackIndicator",
-        width: 24, height: 24,
+        width: 24, height: 24, top: select({
+          ios: sizes.MARGIN + sizes.MARGIN_SMALL,
+          default: sizes.MARGIN_LARGE
+        }),
         right: sizes.MARGIN_LARGE
       }).appendTo(cell);
       addProgressTo(cell.feedbackIndicator);
-      applyPlatformStyle(cell.feedbackIndicator);
       cell.startTimeLabel = new TextView({
         textColor: colors.DARK_SECONDARY_TEXT_COLOR,
         font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),

@@ -1,5 +1,4 @@
 import CollectionView from "../components/collectionView/TabrisConCollectionView";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import LoadingIndicator from "../components/LoadingIndicator";
 import getImage from "../helpers/getImage";
 import {select} from "../helpers/platform";
@@ -125,12 +124,21 @@ export default class ScheduleScreen extends Tab {
     }).appendTo(lastUpdatedBox);
     let tabFolder = new TabFolder({
       id: "scheduleTabFolder",
-      layoutData: {left: 0, top: lastUpdatedBox, right: 0, bottom: 0},
+      left: 0, top: lastUpdatedBox, right: 0, bottom: 0,
       elevation: device.platform === "Android" ? 4 : 0,
       tabBarLocation: data.length <= 1 ? "hidden" : "top",
+      textColor: select({
+        ios: colors.IOS_ACTION_AREA_FOREGROUND_COLOR,
+        android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+        windows: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
+        default: "initial"
+      }),
+      background: select({
+        android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+        default: "initial"
+      }),
       paging: true
     }).appendTo(this);
-    applyPlatformStyle(tabFolder);
     this._createTabs(tabFolder, data);
   }
 

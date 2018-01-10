@@ -1,12 +1,10 @@
 import sizes from "../resources/sizes";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import {Composite} from "tabris";
 
 export default class extends Composite {
 
-  constructor() {
-    super({class: "sessionPageHeaderTrackIndicator"});
-    applyPlatformStyle(this);
+  constructor(properties) {
+    super(properties);
 
     if (device.platform !== "iOS") {
       this.square = new Composite({

@@ -12,7 +12,9 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         left: 0, top: 0, right: 0, bottom: 0,
         highlightOnTouch: true
       });
-      cell.session = new SessionItem({height: getCellHeight()}).appendTo(cell);
+      cell.session = new SessionItem({
+        left: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE, top: 0, height: getCellHeight()
+      }).appendTo(cell);
       return cell;
     },
     updateCell: (cell, item) => cell.session.data = item,

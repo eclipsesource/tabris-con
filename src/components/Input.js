@@ -1,10 +1,11 @@
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import {TextInput} from "tabris";
+import colors from "../resources/colors";
+import {select} from "../helpers/platform";
 
 export default class extends TextInput {
   constructor(configuration) {
-    super(Object.assign({}, configuration, {class: "input"}));
-    applyPlatformStyle(this);
-    applyPlatformStyle(this);
+    super(Object.assign({}, configuration, {
+      background: select({ios: "initial", default: colors.BACKGROUND_COLOR})
+    }));
   }
 }

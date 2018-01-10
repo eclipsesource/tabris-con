@@ -1,7 +1,9 @@
 import sizes from "../resources/sizes";
+import colors from "../resources/colors";
 import getImage from "../helpers/getImage";
+import {select} from "../helpers/platform";
 import SessionPageHeaderTrackIndicator from "./SessionPageHeaderTrackIndicator";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import fontToString from "../helpers/fontToString";
 import {Composite, ImageView, TextView} from "tabris";
 
 class AttendanceButton extends ImageView {
@@ -27,51 +29,79 @@ class AttendanceButton extends ImageView {
 
 export default class extends Composite {
 
-  constructor() {
-    super({
-      left: 0, right: 0,
-      id: "sessionPageHeader"
-    });
-
-    applyPlatformStyle(this);
+  constructor(properties) {
+    super(Object.assign({
+      id: "sessionPageHeader",
+      background: select({android: colors.BACKGROUND_COLOR, default: "white"})
+    }, properties));
 
     let navigationControls = new Composite({
       id: "sessionPageNavigationControls",
-      left: 0, top: 0, right: 0
+      left: 0, top: 0, right: 0, height: select({android: sizes.SESSION_HEADER_ICON, default: 0})
     }).appendTo(this);
 
-    applyPlatformStyle(navigationControls);
+    this._trackIndicator = new SessionPageHeaderTrackIndicator({
+      left: select({ios: sizes.MARGIN_LARGE, default: 0}),
+      right: select({ios: null, default: "#sessionPageTitleTextView"}),
+      bottom: select({ios: sizes.MARGIN, default: null}),
+      width: select({ios: 2, default: null}),
+      top: sizes.SESSION_PAGE_TRACK_INDICATOR_TOP
+    }).appendTo(this);
 
-    this._trackIndicator = new SessionPageHeaderTrackIndicator().appendTo(this);
-
-    let backButton = new ImageView({
-      id: "sessionPageNavigationControlsBackButton",
+    new ImageView({
       left: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
       image: getImage.forDevicePlatform("back_arrow"),
-      highlightOnTouch: true
+      highlightOnTouch: true,
+      height: select({
+        android: sizes.SESSION_HEADER_ICON,
+        default: 0
+      })
     }).on("tap", () => this.trigger("backButtonTap")).appendTo(navigationControls);
-    applyPlatformStyle(backButton);
 
     this._attendanceButton = new AttendanceButton({
-      id: "sessionPageNavigationControlsAttendanceButton",
-      right: 0, top: 0, width: sizes.SESSION_HEADER_ICON
+      right: 0, top: 0, width: sizes.SESSION_HEADER_ICON,
+      height: select({
+        android: sizes.SESSION_HEADER_ICON,
+        default: 0
+      })
     }).on("select", ({wasChecked}) => this.trigger("attendanceButtonTap", {wasChecked, target: this}))
       .appendTo(navigationControls);
 
-    applyPlatformStyle(this._attendanceButton);
-
     this._titleTextView = new TextView({
-      id: "sessionPageTitleTextView", right: sizes.MARGIN_LARGE
+      id: "sessionPageTitleTextView",
+      right: sizes.MARGIN_LARGE,
+      left: select({
+        ios: sizes.MARGIN_XLARGE,
+        default: sizes.LEFT_CONTENT_MARGIN
+      }),
+      top: select({
+        android: [navigationControls, sizes.MARGIN],
+        default: [navigationControls, sizes.MARGIN_LARGE]
+      }),
+      font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
+      textColor: select({
+        android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+        default: colors.DARK_PRIMARY_TEXT_COLOR
+      })
     }).appendTo(this);
-
-    applyPlatformStyle(this._titleTextView);
 
     this._summaryTextView = new TextView({
-      id: "sessionPageSummaryTextView",
-      right: sizes.MARGIN_LARGE, top: "prev()"
+      right: sizes.MARGIN_LARGE, top: "prev()",
+      left: select({
+        ios: sizes.MARGIN_XLARGE,
+        default: sizes.LEFT_CONTENT_MARGIN
+      }),
+      bottom: sizes.MARGIN_LARGE,
+      font: select({
+        android: fontToString({size: sizes.FONT_LARGE}),
+        default: fontToString({size: sizes.FONT_MEDIUM})
+      }),
+      textColor: select({
+        android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+        default: colors.DARK_SECONDARY_TEXT_COLOR
+      })
     }).appendTo(this);
 
-    applyPlatformStyle(this._summaryTextView);
   }
 
   set titleText(titleText) {

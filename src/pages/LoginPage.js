@@ -1,10 +1,11 @@
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
+import {select} from "../helpers/platform";
 import Input from "../components/Input";
 import ProgressButton from "../components/ProgressButton";
 import {Page, ScrollView, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
+import colors from "../resources/colors";
 import config from "../configs/config";
 
 export default class extends Page {
@@ -14,20 +15,20 @@ export default class extends Page {
     let scrollView = new ScrollView({left: 0, top: 0, right: 0, bottom: 0}).appendTo(this);
 
     let header = new Composite({
-      id: "pageHeader",
-      left: 0, top: 0, right: 0, height: sizes.PROFILE_AREA_TOP_OFFSET
+      left: 0, top: 0, right: 0, height: sizes.PROFILE_AREA_TOP_OFFSET,
+      background: select({android: colors.BACKGROUND_COLOR, default: "white"})
     }).appendTo(scrollView);
 
-    applyPlatformStyle(header);
-
-    let loginTextView = new TextView({
-      id: "loginTextView",
+    new TextView({
       text: `${texts.LOGIN_TO} ${config.CONFERENCE_NAME}`,
-      font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-      left: sizes.MARGIN_LARGE, bottom: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE
+      left: sizes.MARGIN_LARGE, bottom: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE,
+      textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: "white"}),
+      alignment: select({ios: "center", default: "left"}),
+      font: select({
+        ios: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE}),
+        default: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
+      })
     }).appendTo(header);
-
-    applyPlatformStyle(loginTextView);
 
     let inputContainer = new Composite({
       id: "inputContainer",
@@ -48,12 +49,17 @@ export default class extends Page {
       message: "password"
     }).on("textChanged", () => this._updateLoginButtonState()).appendTo(inputContainer);
 
-    let button = new ProgressButton({id: "loginButton", text: texts.LOGIN_BUTTON, enabled: false})
-      .on("select", () => {
-        button.showProgress(true);
-        loginService.login(usernameInput.text, passwordInput.text);
-      })
-      .appendTo(inputContainer);
+    let button = new ProgressButton({
+      id: "loginButton",
+      top: ["prev()", sizes.MARGIN],
+      right: select({android: 0, default: null}),
+      centerX: select({ios: 0, default: null}),
+      font: select({ios: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE}), default: null}),
+      text: texts.LOGIN_BUTTON, enabled: false
+    }).on("select", () => {
+      button.showProgress(true);
+      loginService.login(usernameInput.text, passwordInput.text);
+    }).appendTo(inputContainer);
 
     let loginAction = tabris.ui.find("#loginAction").first();
 

@@ -3,9 +3,9 @@ import LoadingIndicator from "../components/LoadingIndicator";
 import InfoToast from "../components/InfoToast";
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
+import {select} from "../helpers/platform";
 import SessionPageHeader from "../components/SessionPageHeader";
 import getImage from "../helpers/getImage";
-import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import * as attendedSessionService from "../helpers/attendedSessionService";
 import AttendanceAction from "../actions/AttendanceAction";
 import SessionPageFeedbackWidget from "../components/SessionPageFeedbackWidget";
@@ -44,19 +44,23 @@ export default class extends Page {
       background: "white"
     }).appendTo(this._scrollView);
 
-    this._sessionPageHeader = new SessionPageHeader()
+    this._sessionPageHeader = new SessionPageHeader({left: 0, right: 0})
       .on("backButtonTap", () => this.dispose())
       .on("attendanceButtonTap", ({target, wasChecked}) => this._updateAttendance(target, wasChecked))
       .appendTo(this._scrollView);
 
-    let descriptionTextView = new TextView({
-      id: "sessionPageDescriptionTextView",
+    new TextView({
+      id: "descriptionLabel",
       right: sizes.MARGIN_LARGE,
+      top: select({
+        ios: ["#sessionPageFeedbackWidget", sizes.MARGIN],
+        default: ["#sessionPageFeedbackWidget", sizes.MARGIN_LARGE]
+      }),
+      left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
+      textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
       markupEnabled: true,
       lineSpacing: sizes.LINE_SPACING
     }).appendTo(contentComposite);
-
-    applyPlatformStyle(descriptionTextView);
 
     new Composite({
       id: "speakersComposite",
@@ -120,14 +124,13 @@ export default class extends Page {
     if (speakers.length < 1) {
       return;
     }
-    let speakersTextView = new TextView({
-      id: "sessionPageSpeakersTextView",
+    new TextView({
+      left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
       right: sizes.MARGIN_LARGE, top: ["prev()", sizes.MARGIN_LARGE * 2],
       text: texts.SESSION_PAGE_SPEAKERS,
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
       textColor: colors.ACCENTED_TEXT_COLOR
     }).appendTo(speakersComposite);
-    applyPlatformStyle(speakersTextView);
     speakers.forEach(speaker => this._createSpeaker(speaker).appendTo(speakersComposite));
   }
 
@@ -144,22 +147,20 @@ export default class extends Page {
       scaleMode: "fit",
       image: getImage.common(this._getSpeakerImage(speaker), sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
     }).appendTo(speakerContainer);
-    let speakerSummary = new TextView({
-      id: "sessionPageSpeakerSummary",
+    new TextView({
       left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE,
       text: speaker.summary,
       lineSpacing: sizes.LINE_SPACING,
+      textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
-    applyPlatformStyle(speakerSummary);
-    let speakerBio = new TextView({
-      id: "sessionPageSpeakerBio",
+    new TextView({
       left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
       text: speaker.bio,
       lineSpacing: sizes.LINE_SPACING,
+      textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
       font: fontToString({size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
-    applyPlatformStyle(speakerBio);
     return speakerContainer;
   }
 
@@ -177,7 +178,7 @@ export default class extends Page {
   }
 
   _setWidgetData(data) {
-    let descriptionTextView = this.find("#sessionPageDescriptionTextView").first();
+    let descriptionLabel = this.find("#descriptionLabel").first();
     let imageView = this.find("#sessionPageImageView").first();
     let contentComposite = this.find("#contentComposite").first();
     let scrollViewBounds = this._scrollView.bounds;
@@ -186,10 +187,19 @@ export default class extends Page {
       summaryText: data.summary,
       trackIndicatorColor: config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial"
     });
-    descriptionTextView.text = data.description;
+    descriptionLabel.text = data.description;
     imageView.image = getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
     if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
-      new SessionPageFeedbackWidget(data, this._viewDataProvider, this._loginService, this._feedbackService)
+      new SessionPageFeedbackWidget({
+        left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
+        top: sizes.MARGIN,
+        right: sizes.MARGIN,
+        height: 36,
+        session: data,
+        viewDataProvider: this._viewDataProvider,
+        loginService: this._loginService,
+        feedbackService: this._feedbackService
+      })
         .appendTo(contentComposite);
     }
     this._createSpeakers(data.speakers);
