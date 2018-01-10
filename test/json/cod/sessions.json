@@ -12,12 +12,14 @@
   "speakers": [
     {
       "name": "Olivier Prouvost",
+      "twitter": "OPCoach_Eclipse",
       "bio": "I have been working with Eclipse since 2005 and I created my own company in 2009.  I provide Eclipse training and consulting in France and all over Europe, in french, english and spanish. I am also committer on the E4 tools and platform.ui project\nOn my web site you can get all information about these activities (http://www.opcoach.com)\n",
       "company": "OPCoach",
       "image": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-590_1.jpg?itok=uscIqdMU"
     },
     {
       "name": "Wayne Beaton",
+      "twitter": "waynebeaton",
       "bio": "",
       "image": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-235_1.jpg?itok=zxr43V9u",
       "company": "The Eclipse Foundation"
@@ -36,6 +38,7 @@
   "endTimestamp": "2015-11-05T14:45:00.000Z",
   "speakers": [{
     "name": "Mike Milinkovich",
+    "twitter": "",
     "bio": "",
     "company": "Eclipse Foundation",
     "image": "https://www.eclipsecon.org/europe2015/sites/default/files/styles/medium/public/profile_pictures/picture-583_1.jpg?itok=M3C8BZhn"

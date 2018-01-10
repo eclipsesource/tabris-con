@@ -4,6 +4,7 @@ import InfoToast from "../components/InfoToast";
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import SessionPageHeader from "../components/SessionPageHeader";
+import Link from "../components/Link";
 import getImage from "../helpers/getImage";
 import applyPlatformStyle from "../helpers/applyPlatformStyle";
 import * as attendedSessionService from "../helpers/attendedSessionService";
@@ -152,6 +153,20 @@ export default class extends Page {
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
     applyPlatformStyle(speakerSummary);
+    if (speaker.twitter.length) {
+      new ImageView({
+        left: sizes.LEFT_CONTENT_MARGIN,
+        top: speakerSummary,
+        height: sizes.FONT_SMALL * 1.5,
+        image: getImage.common("twitter", sizes.FONT_SMALL * 1.5, sizes.FONT_SMALL * 1.5)
+      }).appendTo(speakerContainer);
+      new Link({
+        left: ["prev()", sizes.MARGIN_SMALL], top: speakerSummary,
+        font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
+        text: `@${speaker.twitter}`,
+        url: `https://twitter.com/${speaker.twitter}`
+      }).appendTo(speakerContainer);
+    }
     let speakerBio = new TextView({
       id: "sessionPageSpeakerBio",
       left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
