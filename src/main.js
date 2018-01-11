@@ -1,5 +1,3 @@
-/*jshint nonew: false*/
-import "tabris-js-node";
 import "promise.prototype.finally";
 import config from "./configs/config";
 import moment from "moment-timezone";

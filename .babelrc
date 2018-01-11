@@ -1,47 +1,5 @@
 {
-  "env": {
-    "android": {
-      "plugins": [
-        "transform-es2015-shorthand-properties",
-        "transform-es2015-parameters"
-      ]
-    },
-    "ios": {
-      "plugins": [
-        "transform-es2015-arrow-functions",
-        "transform-es2015-block-scoping",
-        "transform-es2015-classes",
-        "transform-es2015-shorthand-properties",
-        "transform-es2015-template-literals",
-        "transform-es2015-parameters"
-      ]
-    },
-    "win": {
-      "plugins": [
-        "transform-es2015-modules-commonjs",
-        "transform-es2015-parameters",
-        "transform-es2015-classes",
-        "transform-es2015-destructuring"
-      ]
-    },
-    "test": {
-      "plugins": [
-        "transform-es2015-modules-commonjs",
-        "transform-es2015-destructuring",
-        "transform-es2015-parameters",
-        "transform-es2015-spread"
-      ],
-      "sourceMaps": "both"
-    },
-    "development": {
-      "plugins": [
-        "transform-es2015-arrow-functions",
-        "transform-es2015-block-scoping",
-        "transform-es2015-classes",
-        "transform-es2015-shorthand-properties",
-        "transform-es2015-template-literals",
-        "transform-es2015-parameters"
-      ]
-    }
-  }
+  "presets": [
+    "es2015"
+  ]
 }

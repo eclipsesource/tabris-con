@@ -1,3 +1,7 @@
+import keynote from "../../json/googleIO/keynote_v2.json";
+import blocks from "../../json/googleIO/blocks_v4.json";
+import sessionData from "../../json/googleIO/session_data_v1.70.json";
+
 export default {
   DATA_TYPE: "googleIO",
   CONFERENCE_NAME: "Google I/O 2015",
@@ -42,9 +46,5 @@ export default {
   },
   WINDOWS_UI_TOOLBAR_THEME: "light",
   WINDOWS_UI_THEME: "light",
-  BUNDLED_CONFERENCE_DATA: {
-    keynote: "../json/googleIO/keynote_v2.json",
-    blocks: "../json/googleIO/blocks_v4.json",
-    sessionData: "../json/googleIO/session_data_v1.70.json"
-  }
+  BUNDLED_CONFERENCE_DATA: { keynote, blocks, sessionData }
 };

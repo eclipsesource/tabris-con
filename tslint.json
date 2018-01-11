@@ -1,0 +1,63 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "variable-name": {
+      "options": "allow-leading-underscore"
+    },
+    "ordered-imports": [
+      false
+    ],
+    "object-literal-sort-keys": false,
+    "quotemark": [
+      true,
+      "double"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
+    "await-promise": true,
+    "indent": false,
+    "forin": false,
+    "interface-name": [
+      false
+    ],
+    "one-line": false,
+    "arrow-parens": false,
+    "only-arrow-functions": [
+      true,
+      "allow-declarations",
+      "allow-named-functions"
+    ],
+    "prefer-const": false,
+    "no-invalid-this": true,
+    "no-unbound-method": true,
+    "no-namespace": false,
+    "match-default-export-name": true,
+    "max-line-length": [
+      true,
+      120
+    ],
+    "max-classes-per-file": false,
+    "whitespace": [
+      true,
+      "check-module"
+    ],
+    "no-unused-variable": [
+      true,
+      {
+        "ignore-pattern": "jsxProperties|tsProperties"
+      }
+    ],
+    "no-conditional-assignment": false,
+    "typedef": [
+      true,
+      "member-variable-declaration",
+      "parameter",
+      "property-declaration"
+    ]
+  }
+}

@@ -1,4 +1,3 @@
-/*jshint expr: true*/
 import chai from "chai";
 import "promise.prototype.finally";
 import sinon from "sinon";

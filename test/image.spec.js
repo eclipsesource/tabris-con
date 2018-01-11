@@ -1,4 +1,3 @@
-/*jshint expr: true*/
 import sinon from "sinon";
 import fs from "fs";
 import mockfs from "mock-fs";

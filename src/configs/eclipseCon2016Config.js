@@ -1,3 +1,5 @@
+import scheduledSessions from "../../json/cod/scheduled_sessions.json";
+
 export default {
   DATA_TYPE: "cod",
   CONFERENCE_NAME: "EclipseCon NA 2016",
@@ -91,7 +93,5 @@ export default {
   },
   WINDOWS_UI_TOOLBAR_THEME: "light",
   WINDOWS_UI_THEME: "light",
-  BUNDLED_CONFERENCE_DATA: {
-    scheduledSessions: "../json/cod/scheduled_sessions.json"
-  }
+  BUNDLED_CONFERENCE_DATA: { scheduledSessions }
 };
