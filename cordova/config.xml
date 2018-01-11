@@ -9,7 +9,6 @@
     </author>
     <access origin="*" />
     <plugin name="cordova-plugin-dialogs" />
-    <plugin name="cordova-plugin-inappbrowser" />
     <plugin name="cordova-plugin-network-information" />
 
     <hook type="before_build" src="scripts/update-versions.js" />
