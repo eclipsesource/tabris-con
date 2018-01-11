@@ -6,8 +6,6 @@ let vendorConfiguration = {
   PROJECT_URL: "https://github.com/eclipsesource/tabris-con"
 };
 
-const CONFIGURATION = Object.freeze(
+export default Object.freeze(
   Object.assign({}, vendorConfiguration, conferenceConfiguration)
 );
-
-export default CONFIGURATION;
