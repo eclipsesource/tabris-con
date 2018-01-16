@@ -6,7 +6,7 @@ import addProgressTo from "../helpers/addProgressTo";
 import {Page, Composite, TextView, TextInput} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Page {
+export default class FeedbackPage extends Page {
   constructor(adaptedSession, feedbackService) {
     super({title: texts.FEEDBACK_PAGE_TITLE});
 

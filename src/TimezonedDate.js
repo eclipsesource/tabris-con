@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 
-export default class {
+export default class TimezonedDate {
   constructor(timezone, date, format) {
     let args = [];
     args.push(date);

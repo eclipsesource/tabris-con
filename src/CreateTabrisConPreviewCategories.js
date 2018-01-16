@@ -2,7 +2,7 @@ import _ from "lodash";
 import CreateTabrisConCategories from "./FilterTabrisConCategories";
 import texts from "./resources/texts";
 
-export default class {
+export default class CreateTabrisConPreviewCategories {
   static fromSessionsAndKeynotes(tabrisConSessions, tabrisConKeynotes) {
     return [
       {

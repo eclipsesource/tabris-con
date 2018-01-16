@@ -3,7 +3,7 @@ import colors from "../resources/colors";
 import fontToString from "../helpers/fontToString";
 import {TextView} from "tabris";
 
-export default class extends TextView {
+export default class FeedbackButton extends TextView {
   constructor(configuration) {
     super(
       Object.assign({}, configuration, {

@@ -5,7 +5,7 @@ import isFeedbackTime from "./isFeedbackTime";
 import timeoutFetch from "./timeoutFetch";
 import texts from "./resources/texts";
 
-export default class {
+export default class CodRemoteService {
   constructor(services) {
     this._services = services;
   }

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export default class {
+export default class FilterTabrisConCategories {
   static fromSessions(tabrisConSessions, options) {
     return _(tabrisConSessions)
       .groupBy(session => session.categoryId)

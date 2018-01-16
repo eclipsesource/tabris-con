@@ -2,7 +2,7 @@ import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import {Composite, TextView} from "tabris";
 
-export default class extends Composite {
+export default class SessionTitle extends Composite {
   constructor(configuration) {
     super(
       Object.assign({}, configuration, {

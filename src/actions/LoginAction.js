@@ -5,7 +5,7 @@ import {Action} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "../pages/navigation";
 
-export default class extends Action {
+export default class LoginAction extends Action {
   constructor(loginService) {
     super({
       id: "loginAction",

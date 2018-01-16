@@ -9,7 +9,7 @@ import getSessionsInTimeframe from "./getSessionsInTimeframe";
 import {addAttendedSessionId} from "./helpers/attendedSessionService";
 import {app} from "tabris";
 
-export default class {
+export default class ConferenceDataProvider {
   constructor(bundledConferenceData) {
     this._bundledConferenceData = bundledConferenceData;
   }

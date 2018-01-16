@@ -4,7 +4,7 @@ import fontToString from "../helpers/fontToString";
 import {select} from "../helpers/platform";
 import {Button} from "tabris";
 
-export default class extends Button {
+export default class TabrisConButton extends Button {
 
   constructor(configuration) {
     super(

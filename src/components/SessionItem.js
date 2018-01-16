@@ -7,7 +7,7 @@ import {select} from "../helpers/platform";
 import _ from "lodash";
 import {Composite, TextView, ImageView} from "tabris";
 
-export default class extends Composite {
+export default class SessionItem extends Composite {
 
   constructor(configuration) {
     super(configuration);

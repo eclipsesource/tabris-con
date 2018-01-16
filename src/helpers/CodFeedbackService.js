@@ -1,7 +1,7 @@
 import config from "../configs/config";
 import ConfigurationDate from "../ConfigurationDate";
 
-export default class {
+export default class CodFeedbackService {
   constructor(codRemoteService) {
     this._codRemoteService = codRemoteService;
   }

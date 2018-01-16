@@ -4,7 +4,7 @@ import ProgressButton from "../components/ProgressButton";
 import {Page, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Page {
+export default class ProfilePage extends Page {
 
   constructor(loginService) {
     super({id: "profilePage", title: texts.PROFILE_PAGE_TITLE});

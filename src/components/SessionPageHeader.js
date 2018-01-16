@@ -27,7 +27,7 @@ class AttendanceButton extends ImageView {
 
 }
 
-export default class extends Composite {
+export default class SessionPageHeader extends Composite {
 
   constructor(properties) {
     super(Object.assign({

@@ -4,7 +4,7 @@ import Link from "../components/Link";
 import {Page, ScrollView, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Page {
+export default class IconNoticePage extends Page {
   constructor() {
     super();
 

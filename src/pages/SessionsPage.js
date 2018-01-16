@@ -3,7 +3,7 @@ import CollectionView from "../components/collectionView/TabrisConCollectionView
 import {Page} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Page {
+export default class SessionsPage extends Page {
 
   constructor(viewDataProvider, loginService, feedbackService) {
     super({

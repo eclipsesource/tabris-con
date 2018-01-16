@@ -4,7 +4,7 @@ import _ from "lodash";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
 import {logError} from "./errors";
 
-export default class {
+export default class ViewDataProvider {
   constructor({
     config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter, remoteService, loginService, feedbackService
   }) {

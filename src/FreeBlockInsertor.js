@@ -2,7 +2,7 @@ import _ from "lodash";
 import ConfigurationDate from "./ConfigurationDate";
 import texts from "./resources/texts";
 
-export default class {
+export default class FreeBlockInsertor {
   constructor(config) {
     this._config = config;
   }

@@ -2,7 +2,7 @@ import _ from "lodash";
 import TimezonedDate from "./TimezonedDate";
 import FreeBlockInsertor from "./FreeBlockInsertor";
 
-export default class {
+export default class ViewDataAdapter {
   constructor(config, loginService, feedbackService) {
     this._config = config;
     this._loginService = loginService;

@@ -10,7 +10,7 @@ import texts from "../resources/texts";
 import {Composite, TextView} from "tabris";
 import {pageNavigation} from "../pages/navigation";
 
-export default class extends Composite {
+export default class SessionPageFeedbackWidget extends Composite {
   constructor(properties) {
     let {session, viewDataProvider, loginService, feedbackService} = properties;
     super(Object.assign({id: "sessionPageFeedbackWidget"}, properties));

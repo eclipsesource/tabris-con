@@ -3,7 +3,7 @@ import collectionViewItemConfiguration from "./collectionViewItemConfiguration";
 import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import config from "../../configs/config";
 
-export default class extends CollectionView {
+export default class TabrisConCollectionView extends CollectionView {
 
   constructor(configuration) {
     super(configuration);

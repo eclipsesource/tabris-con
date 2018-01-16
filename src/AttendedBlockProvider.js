@@ -1,6 +1,6 @@
 import * as persistedStorage from "./persistedStorage";
 
-export default class {
+export default class AttendedBlockProvider {
   constructor(conferenceDataProvider) {
     this._conferenceDataProvider = conferenceDataProvider;
   }

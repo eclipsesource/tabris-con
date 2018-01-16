@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export default class {
+export default class GoogleIODataExtractor {
   constructor(conferenceData) {
     this._conferenceData = conferenceData;
   }

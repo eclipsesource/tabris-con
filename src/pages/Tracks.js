@@ -4,7 +4,7 @@ import getImage from "../helpers/getImage";
 import texts from "../resources/texts";
 import {Tab} from "tabris";
 
-export default class TracksScreen extends Tab {
+export default class Tracks extends Tab {
 
   constructor({viewDataProvider, loginService, feedbackService}) {
     super({

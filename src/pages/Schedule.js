@@ -10,7 +10,7 @@ import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import moment from "moment-timezone";
 
-export default class ScheduleScreen extends Tab {
+export default class Schedule extends Tab {
 
   constructor({viewDataProvider, loginService, feedbackService}) {
     super({

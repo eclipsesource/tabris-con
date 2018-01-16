@@ -1,7 +1,7 @@
 import sizes from "../resources/sizes";
 import {Composite} from "tabris";
 
-export default class extends Composite {
+export default class SessionPageHeaderTrackIndicator extends Composite {
 
   constructor(properties) {
     super(properties);

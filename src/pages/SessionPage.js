@@ -15,7 +15,7 @@ import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "./navigation";
 
-export default class extends Page {
+export default class SessionPage extends Page {
   constructor(viewDataProvider, loginService, feedbackService) {
     super({id: "sessionPage"});
     this._viewDataProvider = viewDataProvider;

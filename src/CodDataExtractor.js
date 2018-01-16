@@ -5,7 +5,7 @@ import TimezonedDate from "./TimezonedDate";
 
 _.mixin({squash});
 
-export default class {
+export default class CodDataExtractor {
   constructor(conferenceData, config) {
     this._config = config;
     this._timezone = this._config.CONFERENCE_TIMEZONE;

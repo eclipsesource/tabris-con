@@ -1,6 +1,6 @@
 import {Composite, ActivityIndicator} from "tabris";
 
-export default class extends Composite {
+export default class LoadingIndicator extends Composite {
   constructor(options) {
     super({
       left: 0, top: 0, right: 0, bottom: 0,

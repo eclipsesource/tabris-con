@@ -8,7 +8,7 @@ import texts from "../resources/texts";
 import colors from "../resources/colors";
 import config from "../configs/config";
 
-export default class extends Page {
+export default class LoginPage extends Page {
   constructor(loginService) {
     super({id: "loginPage"});
 

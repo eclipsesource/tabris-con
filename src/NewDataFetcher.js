@@ -9,7 +9,7 @@ let formatDataMappers = {
   cod: json => json ? {scheduledSessions: json} : null
 };
 
-export default class {
+export default class NewDataFetcher {
   constructor(config) {
     this._dataType = config.DATA_TYPE;
     this._sessionsService = config.SERVICES.SESSIONS;

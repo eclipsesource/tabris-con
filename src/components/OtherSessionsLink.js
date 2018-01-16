@@ -8,7 +8,7 @@ import {Composite} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "../pages/navigation";
 
-export default class extends Composite {
+export default class OtherSessionsLink extends Composite {
   constructor(viewDataProvider, loginService, feedbackService) {
     super();
     this._viewDataProvider = viewDataProvider;

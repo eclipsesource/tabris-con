@@ -2,7 +2,7 @@ import getImage from "../helpers/getImage";
 import {Action} from "tabris";
 import texts from "../resources/texts";
 
-export default class extends Action {
+export default class AttendanceAction extends Action {
   constructor() {
     super({
       id: "attendanceAction",
