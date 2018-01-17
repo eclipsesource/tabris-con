@@ -1,4 +1,4 @@
-import { Composite, ImageView, ImageViewProperties, CompositeProperties } from "tabris";
+import { Composite, ImageView, ImageViewProperties, CompositeProperties, EventObject } from "tabris";
 import { bind } from "tabris-decorators";
 import SessionPageHeaderTrackIndicator from "./SessionPageHeaderTrackIndicator";
 import fontToString from "../helpers/fontToString";
@@ -48,7 +48,7 @@ export default class SessionPageHeader extends Composite {
                 android: sizes.SESSION_HEADER_ICON,
                 default: 0
               })}
-              onSelect={() => this.trigger("attendanceButtonTap")} />
+              onSelect={() => this.trigger("attendanceButtonTap", new EventObject())} />
         </composite>
         <textView
             id="sessionPageTitleTextView"

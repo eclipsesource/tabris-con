@@ -240,17 +240,12 @@ export default class SessionPage extends Page {
         attendedSessionService.removeAttendedSessionId(session.id);
       }
       target.attending = attending;
-      InfoToast
-        .show({
-          type: "myScheduleOperation",
-          messageText: attending ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
-          actionText: texts.INFO_TOAST_ACTION
-        })
-        .on("actionTap", ({target}) => {
-          if (!target.isDisposed() && target.toastType === "myScheduleOperation") {
-            this._openSchedule();
-          }
-        });
+      InfoToast.show({
+        messageText: attending ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
+        actionText: texts.INFO_TOAST_ACTION
+      }).on("actionTap", ({target}) => {
+        this._openSchedule();
+      });
     }
   }
 
