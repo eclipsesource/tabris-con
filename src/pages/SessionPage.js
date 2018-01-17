@@ -5,6 +5,7 @@ import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import {select} from "../helpers/platform";
 import SessionPageHeader from "../components/SessionPageHeader";
+import Link from "../components/Link";
 import getImage from "../helpers/getImage";
 import * as attendedSessionService from "../helpers/attendedSessionService";
 import AttendanceAction from "../actions/AttendanceAction";
@@ -154,6 +155,20 @@ export default class SessionPage extends Page {
       textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
       font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
     }).appendTo(speakerContainer);
+    if (speaker.twitter.length) {
+      new ImageView({
+        left: sizes.LEFT_CONTENT_MARGIN,
+        top: "prev()",
+        height: sizes.FONT_SMALL * 1.5,
+        image: getImage.common("twitter", sizes.FONT_SMALL * 1.5, sizes.FONT_SMALL * 1.5)
+      }).appendTo(speakerContainer);
+      new Link({
+        left: ["prev()", sizes.MARGIN_SMALL], top: "prev()",
+        font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
+        text: `@${speaker.twitter}`,
+        url: `https://twitter.com/${speaker.twitter}`
+      }).appendTo(speakerContainer);
+    }
     new TextView({
       left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
       text: speaker.bio,
