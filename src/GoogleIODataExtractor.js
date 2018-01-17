@@ -47,6 +47,7 @@ export default class GoogleIODataExtractor {
         name: googleIOSpeaker.name,
         bio: googleIOSpeaker.bio || null,
         image: googleIOSpeaker.thumbnailUrl || null,
+        twitter: GoogleIODataExtractor._getTwitterHandle(googleIOSpeaker),
         company: googleIOSpeaker.company || null
       }));
   }
@@ -59,6 +60,13 @@ export default class GoogleIODataExtractor {
   _getTagName(tag) {
     let tagObject = _.find(this._conferenceData.sessionData.tags, tagObject => tagObject.tag === tag);
     return tagObject && tagObject.name || null;
+  }
+
+  static _getTwitterHandle(speaker) {
+    if(speaker.twitterUrl && speaker.twitterUrl.match(/https?:\/\/twitter\.com\/([A-Za-z0-9_]{1,15})\/?/)) {
+      return RegExp.$1;
+    }
+    return null;
   }
 
 }
