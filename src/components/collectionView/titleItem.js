@@ -15,7 +15,9 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         left: 0, top: 0, right: 0, bottom: 0,
         highlightOnTouch: true
       });
-      cell.title = new SessionTitle().appendTo(cell);
+      cell.title = new SessionTitle({
+        left: 0, top: 0, right: "#moreTextView", height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT
+      }).appendTo(cell);
       new TextView({
         id: "moreTextView",
         alignment: "right",
