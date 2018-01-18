@@ -47,7 +47,7 @@ export default class SessionPage extends Page {
 
     this._sessionPageHeader = new SessionPageHeader({left: 0, right: 0})
       .on("backButtonTap", () => this.dispose())
-      .on("attendanceButtonTap", ({target, wasChecked}) => this._updateAttendance(target, wasChecked))
+      .on("attendanceButtonTap", ({target}) => this._updateAttendance(target))
       .appendTo(this._scrollView);
 
     new TextView({
@@ -80,7 +80,7 @@ export default class SessionPage extends Page {
       .on("appear", () => {
         if (device.platform !== "Android") {
           new AttendanceAction()
-            .on("select", ({target}) => this._updateAttendance(target, target.attending))
+            .on("select", ({target}) => this._updateAttendance(target))
             .appendTo(pageNavigation);
         }
       })
@@ -230,20 +230,20 @@ export default class SessionPage extends Page {
     pageHeader.top = this._titleCompY;
   }
 
-  _updateAttendance(widget, wasChecked) {
-    let checked = !wasChecked;
+  _updateAttendance(target) {
+    let attending = !target.attending;
     let session = this.data;
     if (session) {
-      if (checked) {
+      if (attending) {
         attendedSessionService.addAttendedSessionId(session.id);
       } else {
         attendedSessionService.removeAttendedSessionId(session.id);
       }
-      widget.attending = checked;
+      target.attending = attending;
       InfoToast
         .show({
           type: "myScheduleOperation",
-          messageText: checked ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
+          messageText: attending ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
           actionText: texts.INFO_TOAST_ACTION
         })
         .on("actionTap", ({target}) => {
