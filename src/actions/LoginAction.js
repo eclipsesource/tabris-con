@@ -50,7 +50,7 @@ export default class LoginAction extends Action {
   }
 
   _showLoginPage() {
-    return new LoginPage(this._loginService)
+    return new LoginPage({loginService: this._loginService})
       .on("loginSuccess", () => this.mode = "loggedIn")
       .appendTo(pageNavigation);
   }

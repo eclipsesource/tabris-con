@@ -54,7 +54,7 @@ export default class FeedbackThumbs extends Composite {
       <Thumb
         id="thumbDown"
         left={["prev()", sizes.MARGIN_LARGE]} top={0} width={sizes.FEEDBACK_THUMB_SIZE}
-        image={getImage.forDevicePlatform("feedback_thumb_up")}
+        image={getImage.forDevicePlatform("feedback_thumb_down")}
         onSelect={() => this.feedback = "-1"} />
     );
   }
