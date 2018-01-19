@@ -1,5 +1,5 @@
 import { TabFolder, Tab, TextView, app, device } from "tabris";
-import { findFirst, property } from "tabris-decorators";
+import { property } from "tabris-decorators";
 import * as moment from "moment-timezone";
 import * as _ from "lodash";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
@@ -25,7 +25,6 @@ export default class Schedule extends Tab {
 
   public jsxProperties: JSX.TabProperties;
 
-  @findFirst("#lastUpdated") public lastUpdatedView: TextView;
   @property public focusing: boolean = false;
   @property public initializingItems: boolean = false;
 
@@ -54,7 +53,8 @@ export default class Schedule extends Tab {
     }
     this._data = data;
     let lastUpdated = localStorage.getItem("lastUpdated");
-    this.lastUpdatedView.text = `${texts.LAST_UPDATED} ${moment(lastUpdated).format("ll LT")}`;
+    let lastUpdatedLabel = this.find("#lastUpdated").first() as TextView;
+    lastUpdatedLabel.text = `${texts.LAST_UPDATED} ${moment(lastUpdated).format("ll LT")}`;
     data.forEach((blockObject: any) => {
       let collectionView = this.find("#" + blockObject.day).first() as TabrisConCollectionView;
       collectionView.items = blockObject.blocks;
@@ -89,54 +89,50 @@ export default class Schedule extends Tab {
 
   private createUI(data: any) {
     this.append(
-      <composite
-        class="last-updated-box"
-        left={0} top={0} right={0} height={32}
-        background={select({
-          android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
-          default: "initial"
-        })}>
-        <textView
-          id="lastUpdated"
-          font={select({
-            android: fontToString({ style: "italic", weight: "bold", size: sizes.FONT_MEDIUM }),
-            default: fontToString({ style: "italic", size: sizes.FONT_SMALL, family: "sans-serif" })
-          })}
-          opacity={select({ android: 0.6, default: 1 })}
-          textColor={select({
-            android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
-            default: colors.DARK_SECONDARY_TEXT_COLOR
-          })}
-          centerX={select({
-            ios: 0,
-            default: null
-          })}
-          left={select({
-            android: sizes.MARGIN_LARGE,
-            windows: sizes.MARGIN + sizes.MARGIN_SMALL,
-            ios: null
-          })}
-          top={select({
-            android: 0,
-            default: sizes.MARGIN + sizes.MARGIN_SMALL
-          })} />
+      <widgetCollection>
+        <composite
+            class="last-updated-box"
+            left={0} top={0} right={0} height={32}
+            background={select({
+              android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+              default: "initial"
+            })}>
+          <textView
+              id="lastUpdated"
+              font={select({
+                android: fontToString({ style: "italic", weight: "bold", size: sizes.FONT_MEDIUM }),
+                default: fontToString({ style: "italic", size: sizes.FONT_SMALL, family: "sans-serif" })
+              })}
+              opacity={select({ android: 0.6, default: 1 })}
+              textColor={select({
+                android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+                default: colors.DARK_SECONDARY_TEXT_COLOR
+              })}
+              centerX={select({ ios: 0, default: null })}
+              left={select({
+                android: sizes.MARGIN_LARGE,
+                windows: sizes.MARGIN + sizes.MARGIN_SMALL,
+                ios: null
+              })}
+              top={select({ android: 0, default: sizes.MARGIN + sizes.MARGIN_SMALL })} />
+        </composite>
         <tabFolder
-          id="scheduleTabFolder"
-          left={0} top=".last-updated-box" right={0} bottom={0}
-          elevation={device.platform === "Android" ? 4 : 0}
-          tabBarLocation={data.length <= 1 ? "hidden" : "top"}
-          textColor={select({
-            ios: colors.IOS_ACTION_AREA_FOREGROUND_COLOR,
-            android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
-            windows: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
-            default: "initial"
-          })}
-          background={select({
-            android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
-            default: "initial"
-          })}
-          paging={true} />
-      </composite>
+            id="scheduleTabFolder"
+            left={0} top=".last-updated-box" right={0} bottom={0}
+            elevation={device.platform === "Android" ? 4 : 0}
+            tabBarLocation={data.length <= 1 ? "hidden" : "top"}
+            textColor={select({
+              ios: colors.IOS_ACTION_AREA_FOREGROUND_COLOR,
+              android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
+              windows: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
+              default: "initial"
+            })}
+            background={select({
+              android: colors.ANDROID_ACTION_AREA_BACKGROUND_COLOR,
+              default: "initial"
+            })}
+            paging={true} />
+      </widgetCollection>
     );
     let tabFolder = this.find("#scheduleTabFolder").first() as TabFolder;
     this.createTabs(tabFolder, data);
@@ -149,7 +145,7 @@ export default class Schedule extends Tab {
       }
     });
     this.on("appear", () => {
-      if (!this.initializingItems) {
+      if (this.initializingItems) {
         this.once("initializingItemsChanged", () => this.maybeFocusItem());
       } else {
         this.maybeFocusItem();
@@ -172,8 +168,7 @@ export default class Schedule extends Tab {
       try {
         this.data = await this.viewDataProvider.getBlocks();
         this.initializeIndicators();
-      }
-      catch (ex) {
+      } catch (ex) {
         logError(ex);
       }
       let scheduleDayList = this.find(".scheduleDayList").first() as TabrisConCollectionView;
