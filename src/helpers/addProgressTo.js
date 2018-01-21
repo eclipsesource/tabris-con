@@ -1,5 +1,6 @@
 import {ActivityIndicator} from "tabris";
 
+// TODO: remove, obsoleted by "Progress"
 export default function(widget) {
   widget.showProgress = function(progress) {
     widget.visible = !progress;
