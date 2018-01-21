@@ -54,7 +54,7 @@ export default class LoginPage extends Page {
       top: ["prev()", sizes.MARGIN],
       right: select({android: 0, default: null}),
       centerX: select({ios: 0, default: null}),
-      font: select({ios: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE}), default: null}),
+      font: fontToString({weight: "bold", size: select({ios: sizes.FONT_XXXLARGE, default: sizes.FONT_LARGE})}),
       text: texts.LOGIN_BUTTON, enabled: false
     }).on("select", () => {
       button.showProgress(true);
