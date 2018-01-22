@@ -1,6 +1,5 @@
-import LoadingIndicator from "../components/LoadingIndicator";
 import CollectionView from "../components/collectionView/TabrisConCollectionView";
-import {Page} from "tabris";
+import {Page, ActivityIndicator} from "tabris";
 import texts from "../resources/texts";
 
 export default class SessionsPage extends Page {
@@ -11,7 +10,7 @@ export default class SessionsPage extends Page {
       title: texts.SESSIONS_PAGE_TITLE_LOADING
     });
 
-    this._loadingIndicator = new LoadingIndicator().appendTo(this);
+    this._activityIndicator = new ActivityIndicator({centerX: 0, centerY: 0}).appendTo(this);
 
     this._list = new CollectionView({
       id: "sessionsCollectionView",
@@ -25,7 +24,7 @@ export default class SessionsPage extends Page {
     this.title = data.title;
     this._list.items = data.items;
     this._list.animate({opacity: 1}, {duration: 250});
-    this._loadingIndicator.dispose();
+    this._activityIndicator.dispose();
   }
 
   get data() {

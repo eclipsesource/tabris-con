@@ -1,5 +1,4 @@
 import colors from "../resources/colors";
-import LoadingIndicator from "../components/LoadingIndicator";
 import InfoToast from "../components/InfoToast";
 import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
@@ -12,7 +11,7 @@ import AttendanceAction from "../actions/AttendanceAction";
 import SessionPageFeedbackWidget from "../components/SessionPageFeedbackWidget";
 import OtherSessionsLink from "../components/OtherSessionsLink";
 import config from "../configs/config";
-import {Page, ScrollView, ImageView, Composite, TextView} from "tabris";
+import {Page, ScrollView, ImageView, Composite, TextView, ActivityIndicator} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "./navigation";
 
@@ -30,7 +29,7 @@ export default class SessionPage extends Page {
         .on("disappear", () => pageNavigation.toolbarVisible = true);
     }
 
-    this._scrollView = new ScrollView({left: 0, right: 0, top: 0, bottom: 0}).appendTo(this);
+    this._scrollView = new ScrollView({left: 0, right: 0, top: 0, bottom: 0, visible: false}).appendTo(this);
 
     let imageView = new ImageView({
       id: "sessionPageImageView",
@@ -74,7 +73,7 @@ export default class SessionPage extends Page {
 
     this._createSpacer().appendTo(contentComposite);
 
-    this._loadingIndicator = new LoadingIndicator({shade: true}).appendTo(this);
+    this._loadingIndicator = new ActivityIndicator({centerX: 0, centerY: 0}).appendTo(this);
 
     this
       .on("appear", () => {
@@ -112,6 +111,7 @@ export default class SessionPage extends Page {
     let attendanceControl =
       device.platform !== "Android" ? tabris.ui.find("#attendanceAction").first() : this._sessionPageHeader;
     attendanceControl.attending = attendedSessionService.isAttending(session.id);
+    this._scrollView.visible = true;
     this._loadingIndicator.dispose();
   }
 

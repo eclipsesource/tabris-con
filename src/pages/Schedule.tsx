@@ -1,9 +1,8 @@
-import { TabFolder, Tab, TextView, app, device } from "tabris";
-import { property } from "tabris-decorators";
+import { TabFolder, Tab, TextView, app, device, ActivityIndicator, TabProperties } from "tabris";
+import { property, getById } from "tabris-decorators";
 import * as moment from "moment-timezone";
 import * as _ from "lodash";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
-import LoadingIndicator from "../components/LoadingIndicator";
 import ViewDataProvider from "../ViewDataProvider";
 import CodFeedbackService from "../helpers/CodFeedbackService";
 import LoginService from "../helpers/CodLoginService";
@@ -15,7 +14,7 @@ import sizes from "../resources/sizes";
 import { select } from "../helpers/platform";
 import { logError } from "../errors";
 
-interface ServiceArgs {
+interface ScheduleProperties {
   loginService: LoginService;
   feedbackService: CodFeedbackService;
   viewDataProvider: ViewDataProvider;
@@ -23,32 +22,41 @@ interface ServiceArgs {
 
 export default class Schedule extends Tab {
 
-  public jsxProperties: JSX.TabProperties;
+  public jsxProperties: JSX.TabProperties & ScheduleProperties;
+  public tsProperties: TabProperties & ScheduleProperties;
 
+  @property public loginService: LoginService;
+  @property public feedbackService: CodFeedbackService;
+  @property public viewDataProvider: ViewDataProvider;
   @property public focusing: boolean = false;
   @property public initializingItems: boolean = false;
-
-  private loginService: LoginService;
-  private feedbackService: CodFeedbackService;
-  private viewDataProvider: ViewDataProvider;
-  private loadingIndicator: LoadingIndicator;
-
-  private _data: any = null;
-  private _focus: string = null;
-
+  @getById private activityIndicator: ActivityIndicator;
   private shouldFocusSessionWithId: string = null;
   private indicatorsInitialized: boolean = false;
   private evaluatedSessionId: string = null;
+  private _data: any = null;
+  private _focus: string = null;
 
-  constructor(services: ServiceArgs) {
+  constructor(properties: ScheduleProperties) {
     super();
-    this.initialize(services);
+    this.set({
+      id: "schedule",
+      title: texts.MY_SCHEDULE_PAGE_TITLE,
+      image: getImage.forDevicePlatform("schedule"),
+      selectedImage: getImage.forDevicePlatform("schedule_selected"),
+      ...properties
+    });
+    this.append(
+      <activityIndicator
+          id="activityIndicator"
+          centerX={0} centerY={0} />
+    );
     this.registerEventHandlers();
   }
 
   set data(data: any) {
     if (this._data === null) {
-      this.loadingIndicator.dispose();
+      this.activityIndicator.dispose();
       this.createUI(data);
     }
     this._data = data;
@@ -72,19 +80,6 @@ export default class Schedule extends Tab {
 
   get focus() {
     return this._focus;
-  }
-
-  private initialize({ viewDataProvider, loginService, feedbackService }: ServiceArgs) {
-    this.set({
-      id: "schedule",
-      title: texts.MY_SCHEDULE_PAGE_TITLE,
-      image: getImage.forDevicePlatform("schedule"),
-      selectedImage: getImage.forDevicePlatform("schedule_selected")
-    });
-    this.loginService = loginService;
-    this.feedbackService = feedbackService;
-    this.viewDataProvider = viewDataProvider;
-    this.loadingIndicator = new LoadingIndicator().appendTo(this);
   }
 
   private createUI(data: any) {
@@ -173,7 +168,6 @@ export default class Schedule extends Tab {
       }
       let scheduleDayList = this.find(".scheduleDayList").first() as TabrisConCollectionView;
       scheduleDayList.refreshIndicator = false;
-      this.loadingIndicator.dispose();
       this.initializingItems = false;
     }
   }
