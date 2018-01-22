@@ -228,22 +228,23 @@ export default class Schedule extends Tab {
   }
 
   private createTabs(tabFolder: TabFolder, data: any) {
-    data.forEach((blockObject: any) => {
-      let tab = (
-        <tab title={blockObject.day} background="white" />
+    data.forEach((blockObject: any, index: number) => {
+      tabFolder.append(
+        <tab title={blockObject.day} background="white">
+          <TabrisConCollectionView
+              left={0} top={0} right={0} bottom={0} opacity={index === 0 ? 0 : 1}
+              id={blockObject.day}
+              class="scheduleDayList"
+              items={blockObject.blocks}
+              updatable={true}
+              viewDataProvider={this.viewDataProvider}
+              loginService={this.loginService}
+              feedbackService={this.feedbackService} />
+        </tab>
       );
-      tab.appendTo(tabFolder);
-      let collectionView = new TabrisConCollectionView({
-        left: 0, top: 0, right: 0, bottom: 0, opacity: 0,
-        id: blockObject.day,
-        class: "scheduleDayList",
-        items: blockObject.blocks,
-        updatable: true,
-        viewDataProvider: this.viewDataProvider,
-        loginService: this.loginService,
-        feedbackService: this.feedbackService
-      }).appendTo(tab);
-      collectionView.animate({ opacity: 1 }, { duration: 250 });
+      if (index === 0) {
+        tabFolder.find(`#${blockObject.day}`).animate({ opacity: 1 }, { duration: 250 });
+      }
     });
   }
 
