@@ -1,4 +1,4 @@
-import { Composite, ImageView, ImageViewProperties } from "tabris";
+import { Composite, ImageView, ImageViewProperties, CompositeProperties } from "tabris";
 import { property } from "tabris-decorators";
 import getImage from "../helpers/getImage";
 import sizes from "../resources/sizes";
@@ -43,8 +43,8 @@ export default class FeedbackThumbs extends Composite {
 
   @property public feedback: string = "0";
 
-  constructor() {
-    super({top: ["prev()", sizes.MARGIN_LARGE], centerX: 0}); // TODO: set layout externally
+  constructor(properties: CompositeProperties) {
+    super(properties);
     this.append(
       <Thumb
         id="thumbUp"

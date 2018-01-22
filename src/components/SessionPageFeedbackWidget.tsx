@@ -80,7 +80,11 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   }
 
   private openFeedbackPage() {
-    return new FeedbackPage(this.session, this.feedbackService).appendTo(pageNavigation);
+    pageNavigation.append(
+      <FeedbackPage
+          session={this.session}
+          feedbackService={this.feedbackService} />
+    );
   }
 
   private showFeedbackButton() {
