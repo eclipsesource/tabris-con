@@ -21,21 +21,10 @@ export default class MainPage extends Page {
       elevation: 8,
       tabBarLocation: "bottom"
     }).appendTo(this);
-    tabFolder.on("selectionChanged", ({value: selection}) => {
-      selection.trigger("appear");
-      this.title = selection.title;
-    });
+    tabFolder.on("selectionChanged", ({value: selection}) => this.title = selection.title);
     TABS.forEach(Tab => new Tab({viewDataProvider, loginService, feedbackService}).appendTo(tabFolder));
     this.selection = this.children("#tracks").first();
-    this.on("appear", () => this._triggerAppearOnSelectedTab());
     this.title = tabFolder.selection.title;
-  }
-
-  _triggerAppearOnSelectedTab() {
-    tabris.ui.find("#navigation").first()
-      .children()
-      .filter(tab => tab.parent().selection === tab)
-      .forEach(tab => tab.trigger("appear"));
   }
 
 }
