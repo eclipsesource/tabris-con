@@ -10,11 +10,7 @@ A template for conference apps built with [Tabris.js](http://tabrisjs.com).
 ## Running the app
 Fork the repository and build the app on [tabrisjs.com](http://tabrisjs.com) in _Debug_ mode. Install the app on your device.
 
-Before you serve the app for the first time, you need to install `yarn` globally:
-
-```js
-npm install -g yarn
-```
+Before you serve the app for the first time, you need to [install Yarn](https://yarnpkg.com/en/docs/install).
 
 Then run:
 
