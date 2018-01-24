@@ -18,7 +18,7 @@
     "moment-timezone": "^0.5.14",
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
-    "tabris": "^2.3.0"
+    "tabris": "2.4.0-dev.20180124"
   },
   "devDependencies": {
     "@types/moment-timezone": "^0.5.3",
