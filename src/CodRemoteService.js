@@ -1,6 +1,6 @@
+import {AlertDialog} from 'tabris';
 import sanitizeHtml from "sanitize-html";
 import _ from "lodash";
-import * as alertDialog from "./components/alert";
 import isFeedbackTime from "./isFeedbackTime";
 import timeoutFetch from "./timeoutFetch";
 import texts from "./resources/texts";
@@ -164,6 +164,10 @@ function log(error) {
 }
 
 function alert(error) {
-  alertDialog.show(error.message || error, texts.DIALOG_ERROR, texts.DIALOG_OK);
+  new AlertDialog({
+    title: texts.DIALOG_ERROR,
+    message: error.message || error,
+    buttons: {ok: texts.DIALOG_OK}
+  }).open();
   return Promise.reject(error);
 }
