@@ -1,6 +1,5 @@
 import fontToString from "../helpers/fontToString";
 import { select } from "../helpers/platform";
-import Input from "../components/Input";
 import ProgressButton from "../components/ProgressButton";
 import { Page, PageProperties, TextInput } from "tabris";
 import texts from "../resources/texts";
@@ -40,14 +39,16 @@ export default class LoginPage extends Page {
         </composite>
         <composite
             width={280} centerX={0} top="prev() 16">
-          <Input
+          <textInput
               id="userInput"
               left={0} right={0}
+              borderColor={select({android: colors.BACKGROUND_COLOR, default: "initial"})}
               message="eclipse.org e-mail address"
               onTextChanged={() => this.validateInput()}/>
-          <Input
+          <textInput
               id="passwordInput"
               left={0} top="prev() 8" right={0}
+              borderColor={select({android: colors.BACKGROUND_COLOR, default: "initial"})}
               type="password"
               message="password"
               onTextChanged={() => this.validateInput()}/>
