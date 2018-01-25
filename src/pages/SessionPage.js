@@ -148,16 +148,20 @@ export default class SessionPage extends Page {
       font: fontToString({weight: "bold", size: 14})
     }).appendTo(speakerContainer);
     if (speaker.twitter.length) {
-      new ImageView({
-        left: 72, top: "prev()", height: TWITTER_ICON_SIZE,
-        image: getImage.common("twitter", TWITTER_ICON_SIZE, TWITTER_ICON_SIZE)
-      }).appendTo(speakerContainer);
-      new Link({
-        left: "prev() 4", top: "prev()",
-        font: fontToString({weight: "bold", size: 12}),
-        text: `@${speaker.twitter}`,
-        url: `https://twitter.com/${speaker.twitter}`
-      }).appendTo(speakerContainer);
+      speakerContainer.append(
+        new Composite({left: 0, top: "#summary 4"}).append(
+          new ImageView({
+            left: 72, top: 0, height: TWITTER_ICON_SIZE,
+            image: getImage.common("twitter", TWITTER_ICON_SIZE, TWITTER_ICON_SIZE)
+          }),
+          new Link({
+            left: "prev() 4", centerY: 0,
+            font: fontToString({weight: "bold", size: 12}),
+            text: `@${speaker.twitter}`,
+            url: `https://twitter.com/${speaker.twitter}`
+          })
+        )
+      )
     }
     new TextView({
       left: 72, top: "prev() 8", right: 16,
