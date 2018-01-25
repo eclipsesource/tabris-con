@@ -1,6 +1,5 @@
 import { Composite, ImageView, ImageViewProperties, CompositeProperties, EventObject } from "tabris";
 import { bind } from "tabris-decorators";
-import SessionPageHeaderTrackIndicator from "./SessionPageHeaderTrackIndicator";
 import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
@@ -12,10 +11,10 @@ export default class SessionPageHeader extends Composite {
     onAttendanceButtonTap?: () => void
   };
 
-  @bind("#sessionPageTitleTextView.text") public titleText: string;
-  @bind("#summaryTextView.text") public summaryText: string;
+  @bind("#titleLabel.text") public titleText: string;
+  @bind("#summaryLabel.text") public summaryText: string;
   @bind("#attendanceButton.checked") public attending: boolean;
-  @bind("#trackIndicator.color") public trackIndicatorColor: string;
+  @bind("#trackIndicator.background") public trackIndicatorColor: string;
 
   constructor(properties: CompositeProperties) {
     super(Object.assign({
@@ -29,7 +28,7 @@ export default class SessionPageHeader extends Composite {
     this.append(
       <widgetCollection>
         <composite
-            id="sessionPageNavigationControls"
+            id="navigation"
             left={0} top={0} right={0} height={select({ android: ICON_SIZE, default: 0 })}>
           <imageView
               left={0} top={0} width={ICON_SIZE}
@@ -44,17 +43,17 @@ export default class SessionPageHeader extends Composite {
               onSelect={() => this.trigger("attendanceButtonTap", new EventObject())} />
         </composite>
         <textView
-            id="sessionPageTitleTextView"
+            id="titleLabel"
             right={16}
             left={select({ ios: 32, default: 72 })}
-            top={select({ android: "#sessionPageNavigationControls 8", default: "#sessionPageNavigationControls 16" })}
+            top={select({ android: "#navigation 8", default: "#navigation 16" })}
             font={fontToString({ weight: "bold", size: 18 })}
             textColor={select({
               android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
               default: colors.DARK_PRIMARY_TEXT_COLOR
             })} />
         <textView
-            id="summaryTextView"
+            id="summaryLabel"
             right={16} top="prev()"
             left={select({ ios: 32, default: 72 })}
             bottom={16}
@@ -63,13 +62,9 @@ export default class SessionPageHeader extends Composite {
               android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
               default: colors.DARK_SECONDARY_TEXT_COLOR
             })} />
-        <SessionPageHeaderTrackIndicator
+        <composite
             id="trackIndicator"
-            left={select({ ios: 16, default: 0 })}
-            right={select({ ios: null, default: "#sessionPageTitleTextView" })}
-            bottom={select({ ios: 8, default: null })}
-            width={select({ ios: 2, default: null })}
-            top={select({ android: "#sessionPageNavigationControls 10", ios: 8, windows: 20 })} />
+            {...TRACK_INDICATOR_LAYOUT} />
       </widgetCollection>
     );
   }
@@ -106,4 +101,11 @@ class AttendanceButton extends ImageView {
 const ICON_SIZE = select({
   default: 56,
   windows: 48
+});
+
+const TRACK_INDICATOR_LAYOUT = select({
+  ios: {left: 16, top: 8, bottom: 8, width: 2},
+  windows: {top: 20, width: 18, height: 18},
+  default: {top: "#navigation 10", width: 18, height: 18},
+  extend: {left: 27}
 });
