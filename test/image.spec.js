@@ -1,14 +1,14 @@
 import sinon from "sinon";
 import fs from "fs";
 import mockfs from "mock-fs";
-import sizes from "../src/resources/sizes";
 import getImage from "../src/helpers/getImage";
 import _ from "lodash";
 
 let expect = require("chai").expect;
 
-let IMAGES_PATH = "../images";
-let PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
+const IMAGES_PATH = "../images";
+const PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
+const SUPPORTED_DEVICE_PIXEL_RATIOS = [1, 1.5, 2, 3];
 
 describe("image", () => {
 
@@ -20,7 +20,7 @@ describe("image", () => {
 
       before(() => {
         let mockObject = {};
-        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
+        SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
           PLATFORMS_WITH_ICONSETS.forEach(platform => {
             mockObject[getMockedPath(platform, devicePixelRatio)] = new Buffer([]);
           });
@@ -40,7 +40,7 @@ describe("image", () => {
       });
 
       describe("returns scaled image for supported devicePixelRatio", () => {
-        sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
+        SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
           PLATFORMS_WITH_ICONSETS.forEach(platform => {
             it("returns scaled image for devicePixelRatio " + devicePixelRatio, () => {
               device.platform = platform;
@@ -134,7 +134,7 @@ describe("image", () => {
 function assertletiantsExist(platform) {
   return imageName => {
     it(imageName + " has letiants for all supported densities for " + (platform || "both platforms"), () => {
-      sizes.SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(density => {
+      SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(density => {
         let filePath = [__dirname, IMAGES_PATH];
         if (platform) {
           filePath.push(platform);

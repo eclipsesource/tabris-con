@@ -1,5 +1,4 @@
 import fontToString from "../helpers/fontToString";
-import sizes from "../resources/sizes";
 import FeedbackThumbs from "../components/FeedbackThumbs";
 import { Page, TextInput, PageProperties } from "tabris";
 import texts from "../resources/texts";
@@ -27,21 +26,21 @@ export default class FeedbackPage extends Page {
     super();
     this.append(
       <composite
-          centerX={0} centerY={0} width={sizes.PAGE_CONTAINER_WIDTH}>
+          centerX={0} centerY={0} width={280}>
         <textView
             alignment="center"
             text={texts.FEEDBACK_PAGE_MESSAGE}
-            font={fontToString({size: sizes.FONT_XXLARGE})} />
+            font={fontToString({size: 22})} />
         <FeedbackThumbs
             id="feedbackThumbs"
-            top={["prev()", sizes.MARGIN_LARGE]} centerX={0} />
+            top="prev() 16" centerX={0} />
         <textInput
             id="commentInput"
-            left={0} right={0} top={["prev()", sizes.MARGIN_LARGE]}
+            left={0} right={0} top="prev() 16"
             message={texts.FEEDBACK_PAGE_COMMENT} />
         <ProgressButton
             id="evaluateButton"
-            right={0} top={["prev()", sizes.MARGIN]}
+            right={0} top="prev() 8"
             text={texts.FEEDBACK_PAGE_SUBMIT_BUTTON}
             onSelect={() => this.evaluate()} />
       </composite>

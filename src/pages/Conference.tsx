@@ -5,7 +5,6 @@ import Link from "../components/Link";
 import fontToString from "../helpers/fontToString";
 import appConfig from "../configs/config";
 import getImage from "../helpers/getImage";
-import sizes from "../resources/sizes";
 import texts from "../resources/texts";
 
 export default class Conference extends Tab {
@@ -39,24 +38,24 @@ export default class Conference extends Tab {
           image={getImage.common("conference_logo")} />
         <textView
           id="date"
+          left={8} right={8} top="prev() 8"
           alignment="center"
-          font={fontToString({ weight: "bold", size: sizes.FONT_XLARGE })}
-          left={sizes.MARGIN} right={sizes.MARGIN} top={["prev()", sizes.MARGIN]}
+          font={fontToString({ weight: "bold", size: 18 })}
           text={[this.day(this.config.START_DAY), this.day(this.config.END_DAY)].join(" - ")} />
         <textView
           id="location"
           alignment="center"
-          font={fontToString({ weight: "bold", size: sizes.FONT_XLARGE })}
-          left={sizes.MARGIN} right={sizes.MARGIN} top="prev()"
+          font={fontToString({ weight: "bold", size: 18 })}
+          left={8} right={8} top="prev()"
           text={this.config.LOCATION} />
         <composite
           id="linksContainer"
-          left={0} top={["prev()", sizes.MARGIN_LARGE]} right={0} />
+          left={0} top="prev() 16" right={0} />
         <textView
           id="conferenceInfo"
-          left={sizes.MARGIN_XLARGE} right={sizes.MARGIN_XLARGE} top={["prev()", sizes.MARGIN_XLARGE]}
+          left={32} right={32} top="prev() 32"
           markupEnabled={true}
-          font={fontToString({ size: sizes.FONT_MEDIUM, family: "sans-serif" })}
+          font={fontToString({ size: 14, family: "sans-serif" })}
           text={this.config.CONFERENCE_INFO || ""} />
       </scrollView>
     );
@@ -83,21 +82,21 @@ export default class Conference extends Tab {
   private createSocialLink({ service, title, url, tag }: any) {
     let container = (
       <composite
-        width={272} top={["prev()", sizes.MARGIN_LARGE]} centerX={0}>
+        width={272} top="prev() 16" centerX={0}>
         <imageView
           left={0} width={24} height={24} centerY={0}
           image={getImage.common(service)} />
         <Link
-          font={fontToString({ size: sizes.FONT_XLARGE })}
-          left={["prev()", sizes.MARGIN]} centerY={0}
+          left="prev() 8" centerY={0}
+          font={fontToString({ size: 18 })}
           url={url} text={title} />
       </composite>
     );
     if (tag) {
       container.append(
         <textView
-          font={fontToString({ size: sizes.FONT_XLARGE })}
-          left={["prev()", sizes.MARGIN]} centerY={0}
+          left="prev() 8" centerY={0}
+          font={fontToString({ size: 18 })}
           text={"(" + tag + ")"} />
       );
     }

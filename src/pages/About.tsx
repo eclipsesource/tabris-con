@@ -1,6 +1,5 @@
 import getImage from "../helpers/getImage";
 import fontToString from "../helpers/fontToString";
-import sizes from "../resources/sizes";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import Link from "../components/Link";
@@ -41,28 +40,26 @@ export default class About extends Tab {
               centerX={0} top="8%"
               image={getImage.common("conference_logo")} />
           <composite
-              left={0} top={["prev()", sizes.MARGIN_LARGE]} right={0} >
+              left={0} top="prev() 16" right={0} >
             <textView
                 centerX={0} top={0}
-                font={fontToString({weight: "bold", size: sizes.FONT_LARGE})}
+                font={fontToString({weight: "bold", size: 16})}
                 alignment="center"
                 text={config.CONFERENCE_NAME + texts.ABOUT_PAGE_BROUGHT_TO_YOU_BY} />
             <Link
                 centerX={0} top="prev()"
-                font={fontToString({weight: "bold", size: sizes.FONT_LARGE})}
+                font={fontToString({weight: "bold", size: 16})}
                 text={config.VENDOR}
                 url={config.VENDOR_WEBSITE} />
           </composite>
           <textView
-              centerX={0} top={["prev()", sizes.MARGIN]}
+              centerX={0} top="prev() 8"
               text={"v" + app.version} />
           <composite
               id="externalAttributionsList"
-              left={sizes.MARGIN_LARGE} bottom={sizes.MARGIN} right={sizes.MARGIN_LARGE} />
+              left={16} bottom={8} right={16} />
           <composite
-              left={sizes.MARGIN_LARGE}
-              bottom={["#externalAttributionsList", sizes.MARGIN_LARGE]}
-              right={sizes.MARGIN_LARGE} >
+              left={16} bottom="#externalAttributionsList 16" right={16} >
             <textView
                 left={0} top={0} right={0}
                 alignment="center"
@@ -120,27 +117,27 @@ export default class About extends Tab {
 
   private calculateContainerHeight() {
     let {height} = this.bounds;
-    return height < sizes.ABOUT_CONTENT_MIN_HEIGHT ? sizes.ABOUT_CONTENT_MIN_HEIGHT : height;
+    return height < 450 ? 450 : height;
   }
 
   private createAttributionRow(attribution: ExternalAttribution) {
     return (
       <composite
-          left={0} top="prev()" right={0} height={sizes.ATTRIBUTION_LIST_ROW_HEIGHT}>
+          left={0} top="prev()" right={0} height={24}>
         <textView
             left={0} centerY={0}
             textColor={colors.DARK_SECONDARY_TEXT_COLOR}
-            font={fontToString({size: sizes.FONT_SMALL})}
+            font={fontToString({size: 12})}
             text={attribution.subject + texts.ABOUT_PAGE_ATTRIBUTION_BY} />
         <Link
             left="prev()" centerY={0} text={attribution.author.name} url={attribution.author.url}
-            font={fontToString({size: sizes.FONT_SMALL})} />
+            font={fontToString({size: 12})} />
         <Link
             right={0} centerY={0}
             text={attribution.information.label}
             page={attribution.information.page}
             url={attribution.information.url}
-            font={fontToString({size: sizes.FONT_SMALL})} />
+            font={fontToString({size: 12})} />
       </composite>
     );
   }

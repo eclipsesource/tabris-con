@@ -1,7 +1,6 @@
 import { Composite, CompositeProperties } from "tabris";
 import { bind } from "tabris-decorators";
 import fontToString from "../helpers/fontToString";
-import sizes from "../resources/sizes";
 
 export default class SessionTitle extends Composite {
 
@@ -15,9 +14,9 @@ export default class SessionTitle extends Composite {
     this.append(
       <textView
         id="titleTextView"
-        left={sizes.MARGIN_LARGE} centerY={0} right={sizes.MARGIN_LARGE}
+        left={16} centerY={0} right={16}
         maxLines={1}
-        font={fontToString({ weight: "bold", size: sizes.FONT_XLARGE })} />
+        font={fontToString({ weight: "bold", size: 18 })} />
     );
     this.set(properties);
   }

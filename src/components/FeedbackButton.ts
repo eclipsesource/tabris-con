@@ -1,7 +1,6 @@
 import { TextView, TextViewProperties, device } from "tabris";
 import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
-import sizes from "../resources/sizes";
 
 export default class FeedbackButton extends TextView {
 
@@ -12,7 +11,7 @@ export default class FeedbackButton extends TextView {
       Object.assign({
         textColor: colors.ACTION_COLOR,
         highlightOnTouch: true,
-        font: fontToString({ size: sizes.FONT_LARGE, weight: "bold" })
+        font: fontToString({ size: 16, weight: "bold" })
       }, configuration)
     );
     if (device.platform === "Android" && this.text) {

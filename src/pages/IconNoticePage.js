@@ -1,4 +1,3 @@
-import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import Link from "../components/Link";
 import {Page, ScrollView, Composite, TextView} from "tabris";
@@ -13,36 +12,38 @@ export default class IconNoticePage extends Page {
     }).appendTo(this);
 
     let container = new Composite({
-      left: sizes.MARGIN_LARGE, top: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE
+      left: 16, top: 16, right: 16
     }).appendTo(scrollView);
 
     let title = new TextView({
+      id: "title",
       left: 0, top: 0, right: 0,
-      font: fontToString({size: sizes.FONT_XXLARGE, weight: "bold"}),
+      font: fontToString({size: 22, weight: "bold"}),
       text: texts.NOTICE_PAGE_TITLE
     }).appendTo(container);
 
     new TextView({
-      left: 0, top: [title, sizes.MARGIN_LARGE], right: 0,
+      left: 0, top: "#title 16", right: 0,
       text: texts.NOTICE_PAGE_NOTICE
     }).appendTo(container);
 
     let tabrisConLink = new Link({
+      id: "tabrisConLink",
+      left: 0, top: "prev() 8", right: 0,
       alignment: "center",
       text: "https://github.com/eclipsesource/tabris-con",
-      url: "https://github.com/eclipsesource/tabris-con",
-      left: 0, top: ["prev()", sizes.MARGIN], right: 0
+      url: "https://github.com/eclipsesource/tabris-con"
     }).appendTo(container);
 
     new TextView({
-      left: 0, top: [tabrisConLink, sizes.MARGIN],
+      left: 0, top: "#tabrisConLink 8",
       text: texts.NOTICE_PAGE_LICENSING_DETAILS
     }).appendTo(container);
 
     new Link({
+      left: "prev()", top: "#tabrisConLink 8",
       text: "Icons8",
-      url: "https://icons8.com/",
-      left: "prev()", top: [tabrisConLink, sizes.MARGIN]
+      url: "https://icons8.com/"
     }).appendTo(container);
   }
 }

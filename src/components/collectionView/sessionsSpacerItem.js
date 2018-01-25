@@ -1,9 +1,9 @@
 import {Composite} from "tabris";
-import sizes from "../../resources/sizes";
+import {select} from '../../helpers/platform';
 
 export function get() {
   return {
-    cellHeight: sizes.CELL_TYPE_SESSIONS_SPACER_HEIGHT,
+    cellHeight: select({ android: 8, windows: 8, ios: 0 }),
     createCell: () => new Composite({
       left: 0, top: 0, right: 0, bottom: 0,
       background: "white"

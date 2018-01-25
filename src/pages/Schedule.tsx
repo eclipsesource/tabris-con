@@ -10,7 +10,6 @@ import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
 import texts from "../resources/texts";
-import sizes from "../resources/sizes";
 import { select } from "../helpers/platform";
 import { logError } from "../errors";
 
@@ -94,22 +93,18 @@ export default class Schedule extends Tab {
             })}>
           <textView
               id="lastUpdated"
+              left={select({ android: 16, windows: 12, ios: null })}
+              top={select({ android: 0, default: 12 })}
+              centerX={select({ ios: 0, default: null })}
               font={select({
-                android: fontToString({ style: "italic", weight: "bold", size: sizes.FONT_MEDIUM }),
-                default: fontToString({ style: "italic", size: sizes.FONT_SMALL, family: "sans-serif" })
+                android: fontToString({ style: "italic", weight: "bold", size: 14 }),
+                default: fontToString({ style: "italic", size: 12, family: "sans-serif" })
               })}
               opacity={select({ android: 0.6, default: 1 })}
               textColor={select({
                 android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
                 default: colors.DARK_SECONDARY_TEXT_COLOR
-              })}
-              centerX={select({ ios: 0, default: null })}
-              left={select({
-                android: sizes.MARGIN_LARGE,
-                windows: sizes.MARGIN + sizes.MARGIN_SMALL,
-                ios: null
-              })}
-              top={select({ android: 0, default: sizes.MARGIN + sizes.MARGIN_SMALL })} />
+              })} />
         </composite>
         <tabFolder
             id="scheduleTabFolder"

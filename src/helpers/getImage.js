@@ -1,5 +1,5 @@
-import sizes from "../resources/sizes";
-let FALLBACK_PLATFORM = "Android";
+const FALLBACK_PLATFORM = "Android";
+const SUPPORTED_DEVICE_PIXEL_RATIOS = [1, 1.5, 2, 3];
 
 export default {
   forDevicePlatform: (image, width, height) => getImage(image, width, height, device.platform),
@@ -10,7 +10,7 @@ function getImage(image, width, height, platform) {
   if (!image) {
     return "";
   }
-  let closestSupportedRatio = closest(sizes.SUPPORTED_DEVICE_PIXEL_RATIOS, window.devicePixelRatio);
+  let closestSupportedRatio = closest(SUPPORTED_DEVICE_PIXEL_RATIOS, window.devicePixelRatio);
   let imageObject = {src: getImageSource(image, closestSupportedRatio, platform)};
   if (width && height) {
     imageObject.width = width;

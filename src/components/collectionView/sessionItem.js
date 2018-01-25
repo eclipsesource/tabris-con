@@ -1,20 +1,19 @@
 import {Composite} from "tabris";
-import sizes from "../../resources/sizes";
+import config from "../../configs/config";
+import {select} from "../../helpers/platform";
 import SessionPage from "../../pages/SessionPage";
 import SessionItem from "../SessionItem";
 import {pageNavigation} from "../../pages/navigation";
 
 export function get({viewDataProvider, loginService, feedbackService}) {
   return {
-    cellHeight: getCellHeight(),
+    cellHeight: config.SESSIONS_HAVE_IMAGES ? 98 : select({ios: 56, default: 72}),
     createCell: () => {
       let cell = new Composite({
         left: 0, top: 0, right: 0, bottom: 0,
         highlightOnTouch: true
       });
-      cell.session = new SessionItem({
-        left: sizes.MARGIN_LARGE, right: sizes.MARGIN_LARGE, top: 0, height: getCellHeight()
-      }).appendTo(cell);
+      cell.session = new SessionItem({ left: 16, right: 16, top: 0, bottom: 0 }).appendTo(cell);
       return cell;
     },
     updateCell: (cell, item) => cell.session.data = item,
@@ -25,8 +24,4 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         .catch(e => console.error(e));
     }
   };
-}
-
-function getCellHeight() {
-  return sizes.SESSION_CELL_HEIGHT;
 }

@@ -1,4 +1,3 @@
-import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import ProgressButton from "../components/ProgressButton";
 import {Page, Composite, TextView} from "tabris";
@@ -9,23 +8,23 @@ export default class ProfilePage extends Page {
   constructor(loginService) {
     super({id: "profilePage", title: texts.PROFILE_PAGE_TITLE});
     let container = new Composite({
-      width: sizes.PAGE_CONTAINER_WIDTH, centerX: 0, top: sizes.PROFILE_AREA_TOP_OFFSET
+      width: 280, centerX: 0, top: 160
     }).appendTo(this);
 
     this._fullNameLabel = new TextView({
       left: 0, top: "prev()", right: 0,
-      font: fontToString({size: sizes.FONT_LARGE, weight: "bold"})
+      font: fontToString({size: 16, weight: "bold"})
     }).appendTo(container);
 
     this._mailLabel = new TextView({
-      left: 0, top: ["prev()", sizes.MARGIN_SMALL], right: 0,
-      font: fontToString({size: sizes.FONT_LARGE})
+      left: 0, top: "prev() 4", right: 0,
+      font: fontToString({size: 16})
     }).appendTo(container);
 
     new ProgressButton({
       id: "logoutButton", text: texts.LOGOUT_BUTTON,
-      top: ["prev()", sizes.MARGIN], centerX: 0,
-      font: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE})
+      top: "prev() 8", centerX: 0,
+      font: fontToString({weight: "bold", size: 24})
     }).on("select", ({target}) => {
       target.showProgress(true);
       loginService.logout();

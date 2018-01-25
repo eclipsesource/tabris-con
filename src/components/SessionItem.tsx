@@ -4,7 +4,6 @@ import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
 import config from "../configs/config";
-import sizes from "../resources/sizes";
 import { select } from "../helpers/platform";
 
 export default class SessionItem extends Composite {
@@ -26,11 +25,7 @@ export default class SessionItem extends Composite {
   set data(data: any) {
     this._data = data;
     if (config.SESSIONS_HAVE_IMAGES) {
-      let image = getImage.forDevicePlatform(
-        data.image,
-        sizes.SESSION_CELL_IMAGE_WIDTH,
-        sizes.SESSION_CELL_IMAGE_HEIGHT
-      );
+      let image = getImage.forDevicePlatform(data.image, ICON_WIDTH, ICON_HEIGHT);
       (this.find("#imageView").first() as ImageView).image = image;
     }
     this.trackIndicator.background = config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial";
@@ -47,26 +42,26 @@ export default class SessionItem extends Composite {
       this.append(
         <imageView
           id="imageView"
-          centerY={0} width={sizes.SESSION_CELL_IMAGE_WIDTH} height={sizes.SESSION_CELL_IMAGE_HEIGHT}
+          centerY={0} width={ICON_WIDTH} height={ICON_HEIGHT}
           scaleMode="fill" />
       );
     }
     this.append(
       <composite
           id="trackIndicator"
-          left="prev()" top={sizes.MARGIN} bottom={sizes.MARGIN} width={2}
+          left="prev()" top={8} bottom={8} width={2}
           background="red" />,
       <composite
-          left={["prev()", sizes.MARGIN_LARGE * 0.8]} right={sizes.MARGIN_SMALL}
-          top={config.SESSIONS_HAVE_IMAGES ? sizes.MARGIN : null}
+          left="prev() 14" right={4}
+          top={config.SESSIONS_HAVE_IMAGES ? 8 : null}
           centerY={config.SESSIONS_HAVE_IMAGES ? null : 0} >
         <textView
             id="titleLabel"
             left={0} top={0} right={0}
             maxLines={1}
             font={select({
-              ios: fontToString({ weight: "normal", size: sizes.FONT_LARGE }),
-              default: fontToString({ weight: "bold", size: sizes.FONT_MEDIUM })
+              ios: fontToString({ weight: "normal", size: 16 }),
+              default: fontToString({ weight: "bold", size: 14 })
             })}
             textColor={select({
               ios: colors.DARK_PRIMARY_TEXT_COLOR,
@@ -74,14 +69,17 @@ export default class SessionItem extends Composite {
             })} />
         <textView
             id="summaryLabel"
-            left={0} top={["#titleLabel", sizes.MARGIN_XSMALL]} right={0}
-            font={fontToString({ size: sizes.FONT_MEDIUM })}
+            left={0} top="#titleLabel 2" right={0}
+            font={fontToString({ size: 14 })}
             maxLines={2}
             markupEnabled={true}
-            lineSpacing={sizes.LINE_SPACING}
+            lineSpacing={1.2}
             textColor={colors.DARK_SECONDARY_TEXT_COLOR} />
       </composite>
     );
   }
 
 }
+
+const ICON_HEIGHT = 84;
+const ICON_WIDTH = 112;

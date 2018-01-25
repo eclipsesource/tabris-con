@@ -7,7 +7,6 @@ import SessionsPage from "../pages/SessionsPage";
 import Link from "./Link";
 import getSessionFreeBlock from "../getSessionFreeBlock";
 import config from "../configs/config";
-import sizes from "../resources/sizes";
 import texts from "../resources/texts";
 import { pageNavigation } from "../pages/navigation";
 
@@ -63,9 +62,7 @@ export default class OtherSessionsLink extends Composite {
   private createOtherSessionsLink() {
     return (
       <Link
-        left={sizes.LEFT_CONTENT_MARGIN}
-        top={["#speakersComposite", sizes.MARGIN_LARGE]}
-        height={sizes.SESSION_PAGE_OTHER_SESSIONS_LINK_HEIGHT}
+        left={72} top="#speakersComposite 16" height={16}
         text={texts.SESSION_PAGE_OTHER_SESSIONS_LINK} />
     );
   }

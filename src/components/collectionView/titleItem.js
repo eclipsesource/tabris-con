@@ -1,4 +1,3 @@
-import sizes from "../../resources/sizes";
 import fontToString from "../../helpers/fontToString";
 import colors from "../../resources/colors";
 import SessionsPage from "../../pages/SessionsPage";
@@ -9,21 +8,21 @@ import {pageNavigation} from "../../pages/navigation";
 
 export function get({viewDataProvider, loginService, feedbackService}) {
   return {
-    cellHeight: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT,
+    cellHeight: 48,
     createCell: () => {
       let cell = new Composite({
         left: 0, top: 0, right: 0, bottom: 0,
         highlightOnTouch: true
       });
       cell.title = new SessionTitle({
-        left: 0, top: 0, right: "#moreTextView", height: sizes.SESSION_CATEGORY_TITLE_CELL_HEIGHT
+        left: 0, top: 0, right: "#moreTextView", height: 48
       }).appendTo(cell);
       new TextView({
         id: "moreTextView",
         alignment: "right",
-        width: 50, right: sizes.MARGIN_LARGE, centerY: 0,
+        width: 50, right: 16, centerY: 0,
         textColor: colors.ACCENTED_TEXT_COLOR,
-        font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
+        font: fontToString({weight: "bold", size: 14}),
         text: texts.TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON
       }).appendTo(cell.title);
       return cell;

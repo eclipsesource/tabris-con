@@ -1,7 +1,6 @@
 import { Button, ButtonProperties, device } from "tabris";
 import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
-import sizes from "../resources/sizes";
 import { select } from "../helpers/platform";
 
 export default class TabrisConButton extends Button {
@@ -12,7 +11,7 @@ export default class TabrisConButton extends Button {
 
   constructor(configuration: ButtonProperties) {
     super({
-      font: fontToString({ size: sizes.FONT_LARGE, weight: "bold" }),
+      font: fontToString({ size: 16, weight: "bold" }),
       textColor: select({ ios: colors.ACCENTED_TEXT_COLOR, default: "white" }),
       background: select({ ios: "transparent", default: colors.BACKGROUND_COLOR }),
       ...configuration

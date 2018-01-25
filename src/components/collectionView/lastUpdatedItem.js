@@ -1,4 +1,3 @@
-import sizes from "../../resources/sizes";
 import {Composite, TextView} from "tabris";
 import moment from "moment-timezone";
 import texts from "../../resources/texts";
@@ -7,13 +6,11 @@ import colors from "../../resources/colors";
 
 export function get() {
   return {
-    cellHeight: sizes.LAST_UPDATED_ITEM_CELL_HEIGHT,
+    cellHeight: select({ android: 48, default: 32 }),
     createCell: () => {
       let cell = new Composite({left: 0, top: 0, right: 0, bottom: 0});
       cell.time = new TextView({
-        left: sizes.MARGIN_LARGE,
-        centerY: select({android: 0, default: null}),
-        bottom: select({android: null, default: 0}),
+        left: 16, centerY: select({android: 0, default: null}), bottom: select({android: null, default: 0}),
         font: "italic 12px sans-serif",
         textColor: colors.DARK_SECONDARY_TEXT_COLOR
       }).appendTo(cell);

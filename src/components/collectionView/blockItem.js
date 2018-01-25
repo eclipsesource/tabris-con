@@ -1,4 +1,3 @@
-import sizes from "../../resources/sizes";
 import fontToString from "../../helpers/fontToString";
 import colors from "../../resources/colors";
 import texts from "../../resources/texts";
@@ -14,7 +13,7 @@ import {Composite, ImageView, TextView} from "tabris";
 
 export function get({viewDataProvider, loginService, feedbackService}) {
   return {
-    cellHeight: sizes.SCHEDULE_PAGE_ITEM_HEIGHT,
+    cellHeight: 128,
 
     createCell: () => {
       let cell = new Composite({left: 0, top: 0, right: 0, bottom: 0});
@@ -27,37 +26,34 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         left: 0, top: 0, right: 0, bottom: 0
       }).appendTo(cell);
       let textContainer = new Composite({
-        left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE, bottom: 0
+        left: 72, top: 0, right: 16, bottom: 0
       }).appendTo(cell);
       cell.feedbackIndicator = new ImageView({
-        width: 24, height: 24, top: select({
-          ios: sizes.MARGIN + sizes.MARGIN_SMALL,
-          default: sizes.MARGIN_LARGE
-        }),
-        right: sizes.MARGIN_LARGE
+        width: 24, height: 24, top: select({ ios: 12, default: 16 }), right: 16
       }).appendTo(cell);
       addProgressTo(cell.feedbackIndicator);
       cell.startTimeLabel = new TextView({
+        id: "startTimeLabel",
+        left: 0, top: 16,
         textColor: colors.DARK_SECONDARY_TEXT_COLOR,
-        font: fontToString({weight: "bold", size: sizes.FONT_XLARGE}),
-        left: 0, top: sizes.MARGIN_LARGE
+        font: fontToString({weight: "bold", size: 18})
       }).appendTo(textContainer);
       cell.concurrentSessionsLabel = new TextView({
+        left: "#startTimeLabel 8", top: 18, right: 0,
         textColor: colors.DARK_HINT_TEXT_COLOR,
-        font: fontToString({style: "italic", size: sizes.FONT_MEDIUM}),
-        left: [cell.startTimeLabel, sizes.MARGIN], top: sizes.MARGIN_LARGE + sizes.MARGIN_XSMALL, right: 0
+        font: fontToString({style: "italic", size: 14})
       }).appendTo(textContainer);
       cell.titleLabel = new TextView({
         textColor: colors.ACCENTED_TEXT_COLOR,
         maxLines: 2,
-        font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
+        font: fontToString({weight: "bold", size: 14}),
         left: 0, centerY: 0, right: 0
       }).appendTo(textContainer);
       cell.summaryLabel = new TextView({
-        left: 0, top: ["prev()", sizes.MARGIN], right: 0,
+        left: 0, top: "prev() 8", right: 0,
         textColor: colors.DARK_SECONDARY_TEXT_COLOR,
         maxLines: 1,
-        font: fontToString({size: sizes.FONT_MEDIUM})
+        font: fontToString({size: 14})
       }).appendTo(textContainer);
       cell.image = new ImageView({
         left: 0, right: textContainer, centerY: 0

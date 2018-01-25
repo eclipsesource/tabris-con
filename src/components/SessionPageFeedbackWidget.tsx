@@ -8,7 +8,6 @@ import FeedbackPage from "../pages/FeedbackPage";
 import LoginPage from "../pages/LoginPage";
 import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
-import sizes from "../resources/sizes";
 import texts from "../resources/texts";
 import { pageNavigation } from "../pages/navigation";
 import { property } from "tabris-decorators";
@@ -98,9 +97,9 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   private showError(text: string) {
     this.append(
       <textView
-          left={0} centerY={0} right={sizes.MARGIN}
+          left={0} centerY={0} right={8}
           maxLines={2}
-          font={fontToString({ style: "italic", size: sizes.FONT_MEDIUM })}
+          font={fontToString({ style: "italic", size: 14 })}
           textColor={colors.ERROR_COLOR}
           text={text} />
     );
@@ -109,9 +108,9 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   private showNotice(text: string) {
     this.append(
       <textView
-          left={0} centerY={0} right={sizes.MARGIN}
+          left={0} centerY={0} right={8}
           maxLines={2}
-          font={fontToString({ style: "italic", size: sizes.FONT_MEDIUM })}
+          font={fontToString({ style: "italic", size: 14 })}
           textColor={colors.ACTION_COLOR}
           text={text} />
     );

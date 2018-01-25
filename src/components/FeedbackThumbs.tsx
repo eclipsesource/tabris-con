@@ -1,7 +1,6 @@
 import { Composite, ImageView, ImageViewProperties, CompositeProperties } from "tabris";
 import { property } from "tabris-decorators";
 import getImage from "../helpers/getImage";
-import sizes from "../resources/sizes";
 
 class Thumb extends ImageView {
 
@@ -48,15 +47,17 @@ export default class FeedbackThumbs extends Composite {
     this.append(
       <Thumb
         id="thumbUp"
-        left={0} top={0} width={sizes.FEEDBACK_THUMB_SIZE}
+        left={0} top={0} width={THUMB_SIZE}
         image={getImage.forDevicePlatform("feedback_thumb_up")}
         onSelect={() => this.feedback = "+1"} />,
       <Thumb
         id="thumbDown"
-        left={["prev()", sizes.MARGIN_LARGE]} top={0} width={sizes.FEEDBACK_THUMB_SIZE}
+        left="prev() 16" top={0} width={THUMB_SIZE}
         image={getImage.forDevicePlatform("feedback_thumb_down")}
         onSelect={() => this.feedback = "-1"} />
     );
   }
 
 }
+
+const THUMB_SIZE = 36;

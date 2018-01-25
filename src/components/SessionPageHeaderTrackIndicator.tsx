@@ -1,12 +1,8 @@
 import { Composite, device, CompositeProperties } from "tabris";
-import { getById } from "tabris-decorators";
-import sizes from "../resources/sizes";
 
 export default class SessionPageHeaderTrackIndicator extends Composite {
 
   public jsxProperties: JSX.CompositeProperties;
-
-  @getById private square: Composite;
 
   private _color: string = null;
 
@@ -16,16 +12,14 @@ export default class SessionPageHeaderTrackIndicator extends Composite {
       this.append(
         <composite
           id="square"
-          centerX={0} top={sizes.MARGIN_XXSMALL}
-          width={sizes.TRACK_SQUARE_SIZE}
-          height={sizes.TRACK_SQUARE_SIZE} />
+          centerX={0} top={1} width={18} height={18} />
       );
     }
   }
 
   set color(color: string) {
     this._color = color;
-    let coloredWidget = device.platform === "iOS" ? this : this.square;
+    let coloredWidget = device.platform === "iOS" ? this : this.find("#square").first();
     coloredWidget.background = color;
   }
 

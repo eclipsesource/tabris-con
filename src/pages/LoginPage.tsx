@@ -1,4 +1,3 @@
-import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import { select } from "../helpers/platform";
 import Input from "../components/Input";
@@ -30,17 +29,17 @@ export default class LoginPage extends Page {
       <scrollView
           left={0} top={0} right={0} bottom={0}>
         <composite
-            left={0} top={0} right={0} height={sizes.PROFILE_AREA_TOP_OFFSET}
+            left={0} top={0} right={0} height={160}
             background={select({android: colors.BACKGROUND_COLOR, default: "white"})}>
           <textView
               text={`${texts.LOGIN_TO} ${config.CONFERENCE_NAME}`}
-              left={sizes.MARGIN_LARGE} bottom={sizes.MARGIN_LARGE} right={sizes.MARGIN_LARGE}
+              left={16} bottom={16} right={16}
               textColor={select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: "white"})}
               alignment={select({ios: "center", default: "left"})}
               font={TITLE_FONT} />
         </composite>
         <composite
-            width={sizes.PAGE_CONTAINER_WIDTH} centerX={0} top={["prev()", sizes.MARGIN_LARGE]}>
+            width={280} centerX={0} top="prev() 16">
           <Input
               id="userInput"
               left={0} right={0}
@@ -48,15 +47,13 @@ export default class LoginPage extends Page {
               onTextChanged={() => this.validateInput()}/>
           <Input
               id="passwordInput"
-              left={0} top={["prev()", sizes.MARGIN]} right={0}
+              left={0} top="prev() 8" right={0}
               type="password"
               message="password"
               onTextChanged={() => this.validateInput()}/>
           <ProgressButton
               id="loginButton"
-              top={["prev()", sizes.MARGIN]}
-              right={select({android: 0, default: null})}
-              centerX={select({ios: 0, default: null})}
+              top="prev() 8" right={select({android: 0, default: null})} centerX={select({ios: 0, default: null})}
               font={BUTTON_FONT}
               text={texts.LOGIN_BUTTON}
               enabled={false}
@@ -93,13 +90,10 @@ export default class LoginPage extends Page {
 }
 
 const TITLE_FONT = select({
-  ios: fontToString({weight: "bold", size: sizes.FONT_XXXLARGE}),
-  default: fontToString({weight: "bold", size: sizes.FONT_XLARGE})
+  ios: fontToString({weight: "bold", size: 24}),
+  default: fontToString({weight: "bold", size: 18})
 });
 
 const BUTTON_FONT = fontToString({
-  weight: "bold", size: select({
-    ios: sizes.FONT_XXXLARGE,
-    default: sizes.FONT_LARGE
-  })
+  weight: "bold", size: select({ ios: 24, default: 16 })
 });

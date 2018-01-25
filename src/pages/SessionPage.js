@@ -1,6 +1,5 @@
 import colors from "../resources/colors";
 import InfoToast from "../components/InfoToast";
-import sizes from "../resources/sizes";
 import fontToString from "../helpers/fontToString";
 import {select} from "../helpers/platform";
 import SessionPageHeader from "../components/SessionPageHeader";
@@ -51,15 +50,12 @@ export default class SessionPage extends Page {
 
     new TextView({
       id: "descriptionLabel",
-      right: sizes.MARGIN_LARGE,
-      top: select({
-        ios: ["#sessionPageFeedbackWidget", sizes.MARGIN],
-        default: ["#sessionPageFeedbackWidget", sizes.MARGIN_LARGE]
-      }),
-      left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
+      right: 16,
+      top: select({ ios: "#sessionPageFeedbackWidget 8", default: "#sessionPageFeedbackWidget 16" }),
+      left: select({ ios: 16, default: 72 }),
       textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
       markupEnabled: true,
-      lineSpacing: sizes.LINE_SPACING
+      lineSpacing: 1.2
     }).appendTo(contentComposite);
 
     new Composite({
@@ -71,7 +67,7 @@ export default class SessionPage extends Page {
     this.otherSessionsLink.top = "prev()";
     this.otherSessionsLink.appendTo(contentComposite);
 
-    this._createSpacer().appendTo(contentComposite);
+    new Composite({left: 0, top: "prev()", right: 0, height: 16}).appendTo(contentComposite);
 
     this._loadingIndicator = new ActivityIndicator({centerX: 0, centerY: 0}).appendTo(this);
 
@@ -126,55 +122,49 @@ export default class SessionPage extends Page {
       return;
     }
     new TextView({
-      left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
-      right: sizes.MARGIN_LARGE, top: ["prev()", sizes.MARGIN_LARGE * 2],
+      left: select({ios: 16, default: 72}),
+      right: 16, top: "prev() 32",
       text: texts.SESSION_PAGE_SPEAKERS,
-      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM}),
+      font: fontToString({weight: "bold", size: 14}),
       textColor: colors.ACCENTED_TEXT_COLOR
     }).appendTo(speakersComposite);
     speakers.forEach(speaker => this._createSpeaker(speaker).appendTo(speakersComposite));
   }
 
   _createSpeaker(speaker) {
-    let speakerContainer = new Composite({
-      left: 0, top: ["prev()", sizes.MARGIN_LARGE], right: 0
-    });
+    let speakerContainer = new Composite({left: 0, top: "prev() 16", right: 0 });
     new ImageView({
-      left: sizes.MARGIN_LARGE,
-      top: sizes.MARGIN_SMALL,
-      width: sizes.SESSION_SPEAKER_IMAGE,
-      height: sizes.SESSION_SPEAKER_IMAGE,
-      cornerRadius: sizes.SESSION_SPEAKER_IMAGE / 2,
+      left: 16, top: 4, width: SPEAKER_IMAGE_SIZE, height: SPEAKER_IMAGE_SIZE,
+      cornerRadius: 19,
       scaleMode: "fit",
-      image: getImage.common(this._getSpeakerImage(speaker), sizes.SESSION_SPEAKER_IMAGE, sizes.SESSION_SPEAKER_IMAGE)
+      image: getImage.common(this._getSpeakerImage(speaker), SPEAKER_IMAGE_SIZE, SPEAKER_IMAGE_SIZE)
     }).appendTo(speakerContainer);
     new TextView({
-      left: sizes.LEFT_CONTENT_MARGIN, top: 0, right: sizes.MARGIN_LARGE,
+      id: "summary",
+      left: 72, top: 0, right: 16,
       text: speaker.summary,
-      lineSpacing: sizes.LINE_SPACING,
+      lineSpacing: 1.2,
       textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
-      font: fontToString({weight: "bold", size: sizes.FONT_MEDIUM})
+      font: fontToString({weight: "bold", size: 14})
     }).appendTo(speakerContainer);
     if (speaker.twitter.length) {
       new ImageView({
-        left: sizes.LEFT_CONTENT_MARGIN,
-        top: "prev()",
-        height: sizes.FONT_SMALL * 1.5,
-        image: getImage.common("twitter", sizes.FONT_SMALL * 1.5, sizes.FONT_SMALL * 1.5)
+        left: 72, top: "prev()", height: TWITTER_ICON_SIZE,
+        image: getImage.common("twitter", TWITTER_ICON_SIZE, TWITTER_ICON_SIZE)
       }).appendTo(speakerContainer);
       new Link({
-        left: ["prev()", sizes.MARGIN_SMALL], top: "prev()",
-        font: fontToString({weight: "bold", size: sizes.FONT_SMALL}),
+        left: "prev() 4", top: "prev()",
+        font: fontToString({weight: "bold", size: 12}),
         text: `@${speaker.twitter}`,
         url: `https://twitter.com/${speaker.twitter}`
       }).appendTo(speakerContainer);
     }
     new TextView({
-      left: sizes.LEFT_CONTENT_MARGIN, top: "prev()", right: sizes.MARGIN_LARGE,
+      left: 72, top: "prev() 8", right: 16,
       text: speaker.bio,
-      lineSpacing: sizes.LINE_SPACING,
+      lineSpacing: 1.2,
       textColor: select({ios: colors.DARK_PRIMARY_TEXT_COLOR, default: colors.DARK_SECONDARY_TEXT_COLOR}),
-      font: fontToString({size: sizes.FONT_MEDIUM})
+      font: fontToString({size: 14})
     }).appendTo(speakerContainer);
     return speakerContainer;
   }
@@ -206,10 +196,7 @@ export default class SessionPage extends Page {
     imageView.image = getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
     if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
       new SessionPageFeedbackWidget({
-        left: select({ios: sizes.MARGIN_LARGE, default: sizes.LEFT_CONTENT_MARGIN}),
-        top: sizes.MARGIN,
-        right: sizes.MARGIN,
-        height: 36,
+        left: select({ios: 16, default: 72}), top: 8, right: 8, height: 36,
         session: data,
         viewDataProvider: this._viewDataProvider,
         loginService: this._loginService,
@@ -260,10 +247,7 @@ export default class SessionPage extends Page {
     navigation.selection = schedule;
   }
 
-  _createSpacer() {
-    return new Composite({
-      left: 0, top: "prev()", right: 0, height: sizes.SESSION_PAGE_SPACER_HEIGHT
-    });
-  }
-
 }
+
+const SPEAKER_IMAGE_SIZE = 38;
+const TWITTER_ICON_SIZE = 18;

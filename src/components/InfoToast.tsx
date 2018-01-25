@@ -1,7 +1,6 @@
 import { Composite, CompositeProperties, ui, EventObject } from "tabris";
 import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
-import sizes from "../resources/sizes";
 import { bind } from "tabris-decorators";
 
 const POP_ANIMATION_DURATION: number = 500;
@@ -35,28 +34,28 @@ export default class InfoToast extends Composite {
       <widgetCollection>
         <textView
             id="label"
-            left={sizes.MARGIN_LARGE} right={["#actionLabel", sizes.MARGIN]} centerY={0}
+            left={16} right="#actionLabel 8" centerY={0}
             textColor={colors.LIGHT_PRIMARY_TEXT_COLOR}
-            font={fontToString({ size: sizes.FONT_MEDIUM })}
+            font={fontToString({ size: 14 })}
             markupEnabled={true} />,
         <textView
             id="actionLabel"
-            right={sizes.MARGIN_LARGE} centerY={0} height={sizes.INFO_TOAST_HEIGHT}
+            right={16} centerY={0} height={HEIGHT}
             highlightOnTouch={true}
             textColor={colors.ACTION_COLOR}
             visible={!!properties.actionText}
-            font={fontToString({ size: sizes.FONT_MEDIUM })}
+            font={fontToString({ size: 14 })}
             onTap={() => this.triggerActionTap()} />
       </widgetCollection>
     );
     this.set({
       class: "infoToast",
-      height: sizes.INFO_TOAST_HEIGHT,
+      height: HEIGHT,
       background: colors.INFO_TOAST_BACKGROUND_COLOR,
       ...properties
     });
     if (ui.contentView.find(".infoToast").toArray().every(toast => toast.isDisposed())) {
-      this.transform = { translationY: sizes.INFO_TOAST_HEIGHT };
+      this.transform = { translationY: HEIGHT };
       this.animateVisibility(true);
     }
     setTimeout(() => this.animateVisibility(false), POP_HIDE_DELAY);
@@ -69,7 +68,7 @@ export default class InfoToast extends Composite {
 
   private async animateVisibility(show: boolean) {
     await this.animate({
-      transform: { translationY: show ? 0 : sizes.INFO_TOAST_HEIGHT }
+      transform: { translationY: show ? 0 : HEIGHT }
     }, {
       duration: POP_ANIMATION_DURATION,
       easing: "ease-out"
@@ -80,3 +79,5 @@ export default class InfoToast extends Composite {
   }
 
 }
+
+const HEIGHT = 48;
