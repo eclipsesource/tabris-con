@@ -3,7 +3,6 @@ import * as _ from "lodash";
 import ViewDataProvider from "../ViewDataProvider";
 import CodFeedbackService from "../helpers/CodFeedbackService";
 import LoginService from "../helpers/CodLoginService";
-import FeedbackButton from "./FeedbackButton";
 import FeedbackPage from "../pages/FeedbackPage";
 import LoginPage from "../pages/LoginPage";
 import fontToString from "../helpers/fontToString";
@@ -12,6 +11,7 @@ import texts from "../resources/texts";
 import { pageNavigation } from "../pages/navigation";
 import { property } from "tabris-decorators";
 import Progress from "./Progress";
+import { select } from "../helpers/platform";
 
 interface SessionPageFeedbackWidgetProperties {
   session: any;
@@ -44,7 +44,7 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   private async render() {
     if (!this.loginService.isLoggedIn()) {
       return this.showFeedbackButton()
-        .on({select: () => this.openLoginPage()});
+        .on({tap: () => this.openLoginPage()});
     }
     this.showProgress(true);
     try {
@@ -54,7 +54,7 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
         this.showNotice(texts.FEEDBACK_SUBMITTED_MESSAGE);
       } else {
         this.showFeedbackButton()
-          .on({select: () => this.openFeedbackPage()});
+          .on({tap: () => this.openFeedbackPage()});
       }
     } catch(e) { this.showError(this.messageForError(e)); }
     this.showProgress(false);
@@ -88,9 +88,12 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
 
   private showFeedbackButton() {
     return (
-      <FeedbackButton
+      <textView
           left={0} centerY={0}
-          text={texts.SESSION_PAGE_FEEDBACK_BUTTON} />
+          text={FEEDBACK_BUTTON_TEXT}
+          textColor={colors.ACTION_COLOR}
+          highlightOnTouch={true}
+          font={fontToString({ size: 16, weight: "bold" })} />
     ).appendTo(this);
   }
 
@@ -117,3 +120,8 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   }
 
 }
+
+const FEEDBACK_BUTTON_TEXT = select({
+  android: texts.SESSION_PAGE_FEEDBACK_BUTTON.toUpperCase(),
+  default: texts.SESSION_PAGE_FEEDBACK_BUTTON
+});
