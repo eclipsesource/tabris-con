@@ -2814,15 +2814,15 @@ supports-color@^4.0.0, supports-color@^4.2.1, supports-color@^4.4.0:
   dependencies:
     has-flag "^2.0.0"
 
-tabris-decorators@^0.1.0-test9:
-  version "0.1.0-test9"
-  resolved "https://registry.yarnpkg.com/tabris-decorators/-/tabris-decorators-0.1.0-test9.tgz#b02313421d8bbaf9e03ab7c343c6a62c0e560cd4"
+tabris-decorators@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/tabris-decorators/-/tabris-decorators-0.1.0.tgz#056410f0949c1631d93af00de8a49600e708228d"
   dependencies:
     reflect-metadata "^0.1.10"
 
-tabris@2.4.0-dev.20180124:
-  version "2.4.0-dev.20180124"
-  resolved "https://registry.yarnpkg.com/tabris/-/tabris-2.4.0-dev.20180124.tgz#9092405a7561d0a5eefa968b6574799d563d22ae"
+tabris@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/tabris/-/tabris-2.4.1.tgz#d799d19c11b2d8add3fa98eb2022eae618bd9765"
 
 tapable@^0.2.7:
   version "0.2.8"
