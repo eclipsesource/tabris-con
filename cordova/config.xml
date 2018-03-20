@@ -9,6 +9,7 @@
     </author>
     <access origin="*" />
     <plugin name="cordova-plugin-network-information" />
+    <preference name="EnableDeveloperConsole" value="$IS_DEBUG" />
 
     <hook type="before_build" src="scripts/update-versions.js" />
     <platform name="ios">
