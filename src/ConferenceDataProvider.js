@@ -60,7 +60,7 @@ export default class ConferenceDataProvider {
   }
 
   _preselectSingleBlockSessions(data) {
-    if (data) {
+    if (data && config.FREE_BLOCKS) {
       config.FREE_BLOCKS.forEach(block => {
         let date1 = new ConfigurationDate(config, block[0]);
         let date2 = new ConfigurationDate(config, block[1]);

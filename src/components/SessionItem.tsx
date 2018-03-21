@@ -5,6 +5,7 @@ import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import { select } from "../helpers/platform";
+import { If } from "../helpers/jsxHelper";
 
 export default class SessionItem extends Composite {
 
@@ -38,44 +39,44 @@ export default class SessionItem extends Composite {
   }
 
   private createUI() {
-    if (config.SESSIONS_HAVE_IMAGES) {
-      this.append(
-        <imageView
-          id="imageView"
-          centerY={0} width={ICON_WIDTH} height={ICON_HEIGHT}
-          scaleMode="fill" />
-      );
-    }
     this.append(
-      <composite
-          id="trackIndicator"
-          left="prev()" top={8} bottom={8} width={2}
-          background="red" />,
-      <composite
-          left="prev() 14" right={4}
-          top={config.SESSIONS_HAVE_IMAGES ? 8 : null}
-          centerY={config.SESSIONS_HAVE_IMAGES ? null : 0} >
-        <textView
-            id="titleLabel"
-            left={0} top={0} right={0}
-            maxLines={1}
-            font={select({
-              ios: fontToString({ weight: "normal", size: 16 }),
-              default: fontToString({ weight: "bold", size: 14 })
-            })}
-            textColor={select({
-              ios: colors.DARK_PRIMARY_TEXT_COLOR,
-              default: colors.ACCENTED_TEXT_COLOR
-            })} />
-        <textView
-            id="summaryLabel"
-            left={0} top="#titleLabel 2" right={0}
-            font={fontToString({ size: 14 })}
-            maxLines={2}
-            markupEnabled={true}
-            lineSpacing={1.2}
-            textColor={colors.DARK_SECONDARY_TEXT_COLOR} />
-      </composite>
+      <widgetCollection>
+        <If isTruthy={config.SESSIONS_HAVE_IMAGES}>
+          <imageView
+            id="imageView"
+            centerY={0} width={ICON_WIDTH} height={ICON_HEIGHT}
+            scaleMode="fill" />
+        </If>
+        <composite
+            id="trackIndicator"
+            left="prev()" top={8} bottom={8} width={2}
+            background="red" />,
+        <composite
+            left="prev() 14" right={4}
+            top={config.SESSIONS_HAVE_IMAGES ? 8 : null}
+            centerY={config.SESSIONS_HAVE_IMAGES ? null : 0} >
+          <textView
+              id="titleLabel"
+              left={0} top={0} right={0}
+              maxLines={1}
+              font={select({
+                ios: fontToString({ weight: "normal", size: 16 }),
+                default: fontToString({ weight: "bold", size: 14 })
+              })}
+              textColor={select({
+                ios: colors.DARK_PRIMARY_TEXT_COLOR,
+                default: colors.ACCENTED_TEXT_COLOR
+              })} />
+          <textView
+              id="summaryLabel"
+              left={0} top="#titleLabel 2" right={0}
+              font={fontToString({ size: 14 })}
+              maxLines={2}
+              markupEnabled={true}
+              lineSpacing={1.2}
+              textColor={colors.DARK_SECONDARY_TEXT_COLOR} />
+        </composite>
+      </widgetCollection>
     );
   }
 

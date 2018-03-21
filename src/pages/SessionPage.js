@@ -118,7 +118,7 @@ export default class SessionPage extends Page {
   _createSpeakers(speakers) {
     let speakersComposite = this.find("#speakersComposite").first();
     speakersComposite.children().dispose();
-    if (speakers.length < 1) {
+    if (!speakers || speakers.length < 1) {
       return;
     }
     new TextView({
