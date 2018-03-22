@@ -10,15 +10,19 @@ export default function Progress<BC extends WidgetConstructor>(BaseClass: BC) {
     private progressIndicator: ActivityIndicator;
 
     public async showProgress(progress: boolean) {
-      this.progressIndicator = this.progressIndicator || (
-        <activityIndicator
-            id="progressIndicator" layoutData={await this.getBounds(this)}/>
-      );
       this.visible = !progress;
       if (progress) {
-        this.parent().append(this.progressIndicator);
+        if (!this.progressIndicator || this.progressIndicator.isDisposed()) {
+          this.parent().append(
+            this.progressIndicator = (
+              <activityIndicator />
+            )
+          );
+        }
+        this.progressIndicator.layoutData = await this.getBounds(this.progressIndicator);
       } else {
-        this.progressIndicator.detach();
+        if (this.progressIndicator) { this.progressIndicator.dispose(); }
+        this.progressIndicator = null;
       }
     }
 
