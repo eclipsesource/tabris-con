@@ -56,6 +56,7 @@ export default class TabrisConCollectionView extends CollectionView {
 
   set items(items: any[]) {
     this._items = items;
+    this._items.forEach(item => item.collectionView = this);
     this.load(this._items.length);
   }
 

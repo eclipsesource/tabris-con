@@ -22,8 +22,10 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         background: "white"
       }).appendTo(cell);
       cell.shade = new Composite({
-        visible: false, background: colors.ACTION_COLOR,
-        left: 0, top: 0, right: 0, bottom: 0
+        left: 0, top: 0, right: 0, bottom: 0,
+        opacity: 0,
+        visible: false,
+        background: colors.ACTION_COLOR
       }).appendTo(cell);
       let textContainer = new Composite({
         left: 72, top: 0, right: 16, bottom: 0
@@ -58,10 +60,27 @@ export function get({viewDataProvider, loginService, feedbackService}) {
       cell.image = new ImageView({
         left: 0, right: textContainer, centerY: 0
       }).appendTo(cell);
+      cell.highlight = () => {
+        cell.shade.visible = true;
+        cell.shade.opacity = 1;
+        return cell.shade.animate({opacity: 0}, {duration: 1000, easing: "ease-out"});
+      };
+      cell.abortHighlight = () => cell.shade.visible = false;
+      cell.updateFeedbackIndicator = (state) => {
+        if (state && state !== "loading") {
+          cell.feedbackIndicator.image = getImage.forDevicePlatform("schedule_feedback_" + state);
+        } else {
+          cell.feedbackIndicator.image = null;
+        }
+        cell.feedbackIndicator.showProgress(state === "loading");
+      };
       return cell;
     },
 
     updateCell: (cell, item) => {
+      item.cell = cell;
+      if (cell.item !== item) { cell.abortHighlight() }
+      cell.updateFeedbackIndicator(item.feedbackIndicatorState);
       cell.touchFeedbackConsumer.visible = item.blockType === "block";
       cell.highlightOnTouch = item.blockType !== "block";
       cell.startTimeLabel.text = item.startTime;
@@ -73,23 +92,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         image: getImage.forDevicePlatform(item.image),
         tintColor: item.image === "schedule_icon_plus" ? colors.ACTION_COLOR : "initial"
       });
-      if (item.feedbackIndicatorState && item.feedbackIndicatorState !== "loading") {
-        cell.feedbackIndicator.image = getImage.forDevicePlatform("schedule_feedback_" + item.feedbackIndicatorState);
-      } else {
-        cell.feedbackIndicator.image = null;
-      }
-      cell.feedbackIndicator.showProgress(item.feedbackIndicatorState === "loading");
-      if (item.shouldPop) {
-        setTimeout(() => {
-          cell.shade
-            .set({visible: true, opacity: 1})
-            .animate({opacity: 0}, {duration: 1000, easing: "ease-out"})
-            .then(() => cell.shade.visible = false);
-        }, 800);
-        item.shouldPop = false;
-      } else {
-        cell.shade.visible = false;
-      }
+      cell.item = item;
     },
 
     select: (item) => {

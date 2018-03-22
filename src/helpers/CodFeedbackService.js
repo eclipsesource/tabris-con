@@ -12,7 +12,7 @@ export default class CodFeedbackService {
 
   createEvaluation({id, nid}, comment, rating) {
     return this._codRemoteService.createEvaluation(nid, comment, rating)
-      .then(() => tabris.ui.find("#schedule").first().evaluatedSessionId = id);
+      .then(() => tabris.ui.find("#schedule").first().updateFeedbackIndicator(id, "sent"));
   }
 
   getSessionsIndicatorState(sessions, evaluations) {

@@ -235,6 +235,9 @@ export default class SessionPage extends Page {
         messageText: attending ? texts.INFO_TOAST_SESSION_ADDED : texts.INFO_TOAST_SESSION_REMOVED,
         actionText: texts.INFO_TOAST_ACTION
       }).on("actionTap", ({target}) => {
+        if (attending) {
+          tabris.ui.find("#schedule").first().highlightId = session.id;
+        }
         this._openSchedule();
       });
     }

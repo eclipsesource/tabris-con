@@ -66,7 +66,7 @@ export default class ConferenceDataProvider {
         let date2 = new ConfigurationDate(config, block[1]);
         let sessions = getSessionsInTimeframe(data, date1.toJSON(), date2.toJSON());
         if (sessions.length === 1 && !persistedStorage.getSingleSessionsPreselected()) {
-          addAttendedSessionId(sessions[0].id, {focus: false});
+          addAttendedSessionId(sessions[0].id);
         }
         if (sessions.length > 0) {
           sessions.forEach(session => session.concurrentSessions = sessions.length - 1);
