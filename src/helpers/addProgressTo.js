@@ -5,15 +5,17 @@ export default function(widget) {
   widget.showProgress = function(progress) {
     widget.visible = !progress;
     if (progress) {
+      if (!widget.indicator || widget.indicator.isDisposed()) {
+        widget.indicator = new ActivityIndicator().appendTo(widget.parent());
+      }
       if (widget.bounds.width) {
-        widget.indicator = createLoadingIndicator(widget);
+        widget.indicator.layoutData = widget.bounds;
       } else {
-        widget.once("resize", () => widget.indicator = createLoadingIndicator(widget));
+        widget.once("resize", () => widget.indicator.layoutData = widget.bounds);
       }
     } else {
-      let indicator = widget.indicator;
-      if (indicator && !indicator.isDisposed()) {
-        indicator.dispose();
+      if (widget.indicator) {
+        widget.indicator.dispose();
       }
       widget.indicator = null;
     }
