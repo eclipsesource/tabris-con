@@ -34,7 +34,7 @@
     ],
     "prefer-const": false,
     "no-invalid-this": true,
-    "no-unbound-method": true,
+    "no-unbound-method": false,
     "no-namespace": false,
     "match-default-export-name": true,
     "max-line-length": [
