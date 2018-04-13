@@ -19,7 +19,7 @@ export default function Progress<BC extends WidgetConstructor>(BaseClass: BC) {
             )
           );
         }
-        this.progressIndicator.layoutData = await this.getBounds(this.progressIndicator);
+        this.progressIndicator.layoutData = await this.getBounds(this);
       } else {
         if (this.progressIndicator) { this.progressIndicator.dispose(); }
         this.progressIndicator = null;
