@@ -1,7 +1,7 @@
 import "promise.prototype.finally";
 import config from "./configs/config";
 import moment from "moment-timezone";
-import LoginAction from "./actions/LoginAction";
+import ProfileAction from "./actions/ProfileAction";
 import MainPage from "./pages/MainPage";
 import * as RemoteServiceFactory from "./RemoteServiceFactory";
 import * as FeedbackServiceFactory from "./helpers/FeedbackServiceFactory";
@@ -41,10 +41,10 @@ function startApp() {
 
   new MainPage({viewDataProvider, loginService, feedbackService})
     .on("appear", () => {
-      if (config.SUPPORTS_FEEDBACK) {
-        new LoginAction(loginService).appendTo(pageNavigation);
+      if (config.SUPPORTS_FEEDBACK && loginService.isLoggedIn()) {
+        new ProfileAction(loginService).appendTo(pageNavigation);
       }
     })
-    .on("disappear", () => pageNavigation.find("#loginAction").dispose())
+    .on("disappear", () => pageNavigation.find("#profileAction").dispose())
     .appendTo(pageNavigation);
 }

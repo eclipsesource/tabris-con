@@ -65,15 +65,19 @@ export default class ViewDataProvider {
   }
 
   getSessionIdIndicatorStates() {
-    if (!this._config.SUPPORTS_FEEDBACK || !this._loginService.isLoggedIn()) {
+    if (!this._config.SUPPORTS_FEEDBACK) {
       return Promise.resolve([]);
     }
-    return Promise.all([this._attendedBlockProvider.getBlocks(), this._remoteService.evaluations()])
+    return Promise.all([this._attendedBlockProvider.getBlocks(), this._getEvaluations()])
       .then(values => this._feedbackService.getSessionsIndicatorState(values[0], values[1]))
       .catch(e => {
         logError(e);
         return [];
       });
+  }
+
+  _getEvaluations() {
+    return this._loginService.isLoggedIn() ? this._remoteService.evaluations() : [];
   }
 
   getSessionsInTimeframe(timestamp1, timestamp2) {
