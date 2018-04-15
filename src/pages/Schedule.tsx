@@ -119,8 +119,8 @@ export default class Schedule extends Tab {
       if (this.data === null) {
         this.initializeItems();
       }
+      this.on("appear", () => this.updateFeedbackIndicators());
     });
-    this.on("appear", () => this.updateFeedbackIndicators());
     app.on("resume", () => this.updateFeedbackIndicators());
   }
 
@@ -156,6 +156,7 @@ export default class Schedule extends Tab {
       let scheduleDayList = this.find(".scheduleDayList").first() as TabrisConCollectionView;
       scheduleDayList.refreshIndicator = false;
       this.initializingItems = false;
+      this.updateFeedbackIndicators();
     }
   }
 
