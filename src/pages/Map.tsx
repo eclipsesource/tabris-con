@@ -1,13 +1,10 @@
-import { Tab, ActivityIndicator, WebView } from "tabris";
+import { Tab } from "tabris";
 import getImage from "../helpers/getImage";
 import texts from "../resources/texts";
-import { getById } from "tabris-decorators";
 
 export default class Map extends Tab {
 
   public jsxProperties: JSX.TabProperties;
-  @getById private activityIndicator: ActivityIndicator;
-  @getById private mapView: WebView;
 
   constructor() {
     super({
@@ -18,22 +15,12 @@ export default class Map extends Tab {
     });
     this.append(
       <widgetCollection>
-        <webView
-            id="mapView"
+        <imageView
             left={0} top={0} right={0} bottom={0}
-            visible={false}
-            url="html/map.html"
-            onLoad={() => this.showMap()} />
-        <activityIndicator
-            id="activityIndicator"
-            centerX={0} centerY={0}/>
+            image="images/floorplan.png"
+            zoomEnabled={true} />
       </widgetCollection>
     );
-  }
-
-  private showMap() {
-    this.activityIndicator.dispose();
-    this.mapView.visible = true;
   }
 
 }
