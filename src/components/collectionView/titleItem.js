@@ -15,16 +15,15 @@ export function get({viewDataProvider, loginService, feedbackService}) {
         highlightOnTouch: true
       });
       cell.title = new SessionTitle({
-        left: 0, top: 0, right: "#moreTextView", height: 48
+        left: 0, top: 0, right: "next()", height: 48
       }).appendTo(cell);
       new TextView({
-        id: "moreTextView",
         alignment: "right",
-        width: 50, right: 16, centerY: 0,
+        right: 16, centerY: 0,
         textColor: colors.ACCENTED_TEXT_COLOR,
         font: fontToString({weight: "bold", size: 14}),
         text: texts.TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON
-      }).appendTo(cell.title);
+      }).appendTo(cell);
       return cell;
     },
     updateCell: (cell, item) => cell.title.text = item.title,
