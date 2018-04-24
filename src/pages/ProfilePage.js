@@ -23,8 +23,7 @@ export default class ProfilePage extends Page {
 
     new ProgressButton({
       id: "logoutButton", text: texts.LOGOUT_BUTTON,
-      top: "prev() 8", centerX: 0,
-      font: fontToString({weight: "bold", size: 24})
+      top: "prev() 8", centerX: 0
     }).on("select", ({target}) => {
       target.showProgress(true);
       loginService.logout();
