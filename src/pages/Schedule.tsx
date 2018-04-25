@@ -67,6 +67,10 @@ export default class Schedule extends Tab {
     return this._data;
   }
 
+  public showIndicatorSent(sessionId: string) {
+    this.updateSessionProperty(sessionId, "feedbackIndicatorState", "sent");
+  }
+
   private createUI(data: any) {
     this.append(
       <widgetCollection>
