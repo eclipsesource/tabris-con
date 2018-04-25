@@ -1,5 +1,5 @@
 import { Composite, ScrollView, Tab } from "tabris";
-import { getById } from "tabris-decorators";
+import { getById, component } from "tabris-decorators";
 import * as moment from "moment-timezone";
 import Link from "../components/Link";
 import fontToString from "../helpers/fontToString";
@@ -7,7 +7,7 @@ import appConfig from "../configs/config";
 import getImage from "../helpers/getImage";
 import texts from "../resources/texts";
 
-export default class Conference extends Tab {
+@component export default class Conference extends Tab {
 
   public jsxProperties: JSX.TabProperties;
 

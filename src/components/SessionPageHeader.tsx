@@ -1,11 +1,11 @@
 import { Composite, ImageView, ImageViewProperties, CompositeProperties, EventObject } from "tabris";
-import { bind } from "tabris-decorators";
+import { bind, component } from "tabris-decorators";
 import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
 import { select } from "../helpers/platform";
 
-export default class SessionPageHeader extends Composite {
+@component export default class SessionPageHeader extends Composite {
 
   public jsxProperties: JSX.CompositeProperties & {
     onAttendanceButtonTap?: () => void

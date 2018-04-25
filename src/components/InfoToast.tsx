@@ -1,7 +1,7 @@
 import { Composite, CompositeProperties, ui, EventObject } from "tabris";
 import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
-import { bind } from "tabris-decorators";
+import { bind, component } from "tabris-decorators";
 
 const POP_ANIMATION_DURATION: number = 500;
 const POP_HIDE_DELAY: number = 5000;
@@ -11,7 +11,7 @@ interface InfoToastProperties {
   actionText: string;
 }
 
-export default class InfoToast extends Composite {
+@component export default class InfoToast extends Composite {
 
   public static show(properties: InfoToastProperties) {
     return new InfoToast({

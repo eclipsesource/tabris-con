@@ -1,5 +1,5 @@
 import { Composite, TextView, ImageView, CompositeProperties } from "tabris";
-import { getById } from "tabris-decorators";
+import { getById, component } from "tabris-decorators";
 import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
@@ -7,7 +7,7 @@ import config from "../configs/config";
 import { select } from "../helpers/platform";
 import { If } from "../helpers/jsxHelper";
 
-export default class SessionItem extends Composite {
+@component export default class SessionItem extends Composite {
 
   public jsxProperties: JSX.CompositeProperties;
 
@@ -27,7 +27,7 @@ export default class SessionItem extends Composite {
     this._data = data;
     if (config.SESSIONS_HAVE_IMAGES) {
       let image = getImage.forDevicePlatform(data.image, ICON_WIDTH, ICON_HEIGHT);
-      (this.find("#imageView").first() as ImageView).image = image;
+      (this._find("#imageView").first() as ImageView).image = image;
     }
     this.trackIndicator.background = config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial";
     this.titleLabel.text = data.title;

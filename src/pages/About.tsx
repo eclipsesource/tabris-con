@@ -6,7 +6,7 @@ import Link from "../components/Link";
 import { Composite, Tab, app, Page, TabProperties } from "tabris";
 import IconNoticePage from "./IconNoticePage";
 import texts from "../resources/texts";
-import { getById } from "tabris-decorators";
+import { getById, component } from "tabris-decorators";
 
 const EXTERNAL_ATTRIBUTIONS = [
   {
@@ -23,7 +23,7 @@ const EXTERNAL_ATTRIBUTIONS = [
   }
 ];
 
-export default class About extends Tab {
+@component export default class About extends Tab {
 
   @getById private externalAttributionsList: Composite;
   @getById private container: Composite;

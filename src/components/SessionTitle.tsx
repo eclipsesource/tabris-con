@@ -1,8 +1,8 @@
 import { Composite, CompositeProperties } from "tabris";
-import { bind } from "tabris-decorators";
+import { bind, component } from "tabris-decorators";
 import fontToString from "../helpers/fontToString";
 
-export default class SessionTitle extends Composite {
+@component export default class SessionTitle extends Composite {
 
   public jsxProperties: JSX.CompositeProperties;
 

@@ -1,12 +1,12 @@
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
 import texts from "../resources/texts";
 import { Page, ActivityIndicator } from "tabris";
-import { getById } from "tabris-decorators";
+import { getById, component } from "tabris-decorators";
 import ViewDataProvider from "../ViewDataProvider";
 import LoginService from "../helpers/CodLoginService";
 import CodFeedbackService from "../helpers/CodFeedbackService";
 
-export default class SessionsPage extends Page {
+@component export default class SessionsPage extends Page {
 
   private _data: any;
   @getById private activityIndicator: ActivityIndicator;
@@ -34,7 +34,7 @@ export default class SessionsPage extends Page {
   set data(data: any) {
     this._data = data;
     this.title = data.title;
-    let list = this.find("#sessionsList").first(TabrisConCollectionView);
+    let list = this._find("#sessionsList").first(TabrisConCollectionView);
     list.items = data.items;
     list.animate({opacity: 1}, {duration: 250});
     this.activityIndicator.dispose();

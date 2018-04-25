@@ -2,7 +2,7 @@ import fontToString from "../helpers/fontToString";
 import FeedbackThumbs from "../components/FeedbackThumbs";
 import { Page, TextInput, PageProperties } from "tabris";
 import texts from "../resources/texts";
-import { property, getById } from "tabris-decorators";
+import { property, getById, component } from "tabris-decorators";
 import ProgressButton from "../components/ProgressButton";
 import { logError } from "../errors";
 
@@ -11,7 +11,7 @@ interface FeedbackPageProperties {
   session: any;
 }
 
-export default class FeedbackPage extends Page {
+@component export default class FeedbackPage extends Page {
 
   public jsxProperties: JSX.PageProperties & FeedbackPageProperties;
   public tsProperties: PageProperties & FeedbackPageProperties;

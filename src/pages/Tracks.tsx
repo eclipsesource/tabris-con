@@ -1,5 +1,5 @@
 import { Tab, TabProperties, ActivityIndicator } from "tabris";
-import { getById, property } from "tabris-decorators";
+import { getById, property, component } from "tabris-decorators";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
 import ViewDataProvider from "../ViewDataProvider";
 import CodFeedbackService from "../helpers/CodFeedbackService";
@@ -14,7 +14,7 @@ interface TracksProperties {
   viewDataProvider: ViewDataProvider;
 }
 
-export default class Tracks extends Tab {
+@component export default class Tracks extends Tab {
 
   public jsxProperties: JSX.TabProperties & TracksProperties;
   public tsProperties: TabProperties & TracksProperties;

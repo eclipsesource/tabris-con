@@ -1,8 +1,7 @@
 import colors from "../resources/colors";
 import { Composite, CompositeProperties, Page, app, Font } from "tabris";
 import { pageNavigation } from "../pages/navigation";
-import { bind } from "tabris-decorators";
-import property from "tabris-decorators/dist/property";
+import { bind, property, component } from "tabris-decorators";
 
 interface LinkProperties {
   text?: string;
@@ -12,7 +11,7 @@ interface LinkProperties {
   page?: typeof Page;
 }
 
-export default class Link extends Composite {
+@component export default class Link extends Composite {
 
   public jsxProperties: JSX.CompositeProperties & LinkProperties;
 

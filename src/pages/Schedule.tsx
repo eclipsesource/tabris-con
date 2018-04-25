@@ -1,5 +1,5 @@
 import { TabFolder, Tab, TextView, app, device, ActivityIndicator, TabProperties } from "tabris";
-import { property, getById } from "tabris-decorators";
+import { property, getById, component } from "tabris-decorators";
 import * as moment from "moment-timezone";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
 import ViewDataProvider from "../ViewDataProvider";
@@ -18,7 +18,7 @@ interface ScheduleProperties {
   viewDataProvider: ViewDataProvider;
 }
 
-export default class Schedule extends Tab {
+@component export default class Schedule extends Tab {
 
   public jsxProperties: JSX.TabProperties & ScheduleProperties;
   public tsProperties: TabProperties & ScheduleProperties;
@@ -55,10 +55,10 @@ export default class Schedule extends Tab {
     }
     this._data = data;
     let lastUpdated = localStorage.getItem("lastUpdated");
-    let lastUpdatedLabel = this.find("#lastUpdated").first() as TextView;
+    let lastUpdatedLabel = this._find("#lastUpdated").first() as TextView;
     lastUpdatedLabel.text = `${texts.LAST_UPDATED} ${moment(lastUpdated).format("ll LT")}`;
     data.forEach((blockObject: any) => {
-      let collectionView = this.find("#" + blockObject.day).first() as TabrisConCollectionView;
+      let collectionView = this._find("#" + blockObject.day).first() as TabrisConCollectionView;
       collectionView.items = blockObject.blocks;
     });
   }
@@ -114,7 +114,7 @@ export default class Schedule extends Tab {
             paging={true} />
       </widgetCollection>
     );
-    let tabFolder = this.find("#scheduleTabFolder").first() as TabFolder;
+    let tabFolder = this._find("#scheduleTabFolder").first() as TabFolder;
     this.createTabs(tabFolder, data);
   }
 
@@ -134,7 +134,7 @@ export default class Schedule extends Tab {
       this.highlightId = null;
       if (session) {
         let tab = session.collectionView.parent();
-        this.find("#scheduleTabFolder").set({selection: tab});
+        this._find("#scheduleTabFolder").set({selection: tab});
         let index = session.collectionView.items.indexOf(session);
         // iOS needs some time for the UI to be updated. reveal() has no effect if
         // called before the TabFolder completely shows the CollectionView.
@@ -157,7 +157,7 @@ export default class Schedule extends Tab {
       } catch (ex) {
         logError(ex);
       }
-      let scheduleDayList = this.find(".scheduleDayList").first() as TabrisConCollectionView;
+      let scheduleDayList = this._find(".scheduleDayList").first() as TabrisConCollectionView;
       scheduleDayList.refreshIndicator = false;
       this.initializingItems = false;
       this.updateFeedbackIndicators();

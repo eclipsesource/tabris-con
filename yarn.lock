@@ -2814,9 +2814,9 @@ supports-color@^4.0.0, supports-color@^4.2.1, supports-color@^4.4.0:
   dependencies:
     has-flag "^2.0.0"
 
-tabris-decorators@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/tabris-decorators/-/tabris-decorators-0.1.0.tgz#056410f0949c1631d93af00de8a49600e708228d"
+tabris-decorators@^1.0.0-test2:
+  version "1.0.0-test2"
+  resolved "https://registry.yarnpkg.com/tabris-decorators/-/tabris-decorators-1.0.0-test2.tgz#b79d15f36d120b8dca294ff36ee5a654121d0871"
   dependencies:
     reflect-metadata "^0.1.10"
 
@@ -2957,9 +2957,9 @@ type-detect@^4.0.0, type-detect@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.5.tgz#d70e5bc81db6de2a381bcaca0c6e0cbdc7635de2"
 
-typescript:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
+typescript@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
 uglify-js@^2.8.29:
   version "2.8.29"

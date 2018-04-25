@@ -6,13 +6,13 @@ import texts from "../resources/texts";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import LoginService from "../helpers/CodLoginService";
-import { property, getById } from "tabris-decorators";
+import { component, property, getById } from "tabris-decorators";
 
 interface LoginPageProperties {
   loginService: LoginService;
 }
 
-export default class LoginPage extends Page {
+@component export default class LoginPage extends Page {
 
   public jsxProperties: JSX.PageProperties & LoginPageProperties & { onLoginSuccess?: () => void };
   public tsProperties: PageProperties & LoginPageProperties;
