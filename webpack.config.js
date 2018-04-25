@@ -10,6 +10,22 @@ module.exports = {
   },
   resolve: { extensions: [".ts", ".tsx", ".js"] },
   module: {
-    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }]
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['env', {
+                targets: { safari: 9 }
+              }]
+            ]
+          }
+        }
+      }
+    ]
   }
 };

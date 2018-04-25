@@ -29,11 +29,11 @@ export default class TabrisConButton extends Button {
   }
 
   set text(text: string) {
-    super.text = device.platform === "Android" ? text.toUpperCase() : text;
+    this.text = device.platform === "Android" ? text.toUpperCase() : text;
   }
 
   get text() {
-    return super.text;
+    return this.text;
   }
 
   private updateAndroidBackground(enabled: boolean) {
