@@ -36,8 +36,8 @@ interface ScheduleProperties {
     this.set({
       id: "schedule",
       title: texts.MY_SCHEDULE_PAGE_TITLE,
-      image: getImage.forDevicePlatform("schedule"),
-      selectedImage: getImage.forDevicePlatform("schedule_selected"),
+      image: getImage("schedule"),
+      selectedImage: getImage("schedule_selected"),
       ...properties
     });
     this.append(

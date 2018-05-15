@@ -10,8 +10,8 @@ export default class Map extends Tab {
     super({
       id: "map",
       title: texts.MAP_PAGE_TITLE,
-      image: getImage.forDevicePlatform("map"),
-      selectedImage: getImage.forDevicePlatform("map_selected")
+      image: getImage("map"),
+      selectedImage: getImage("map_selected")
     });
     this.append(
       <widgetCollection>

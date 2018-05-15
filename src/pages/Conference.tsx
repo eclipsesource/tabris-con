@@ -21,8 +21,8 @@ import texts from "../resources/texts";
     super({
       id: "conference",
       title: texts.CONFERENCE_PAGE_TITLE,
-      image: getImage.forDevicePlatform("conference"),
-      selectedImage: getImage.forDevicePlatform("conference_selected")
+      image: getImage("conference"),
+      selectedImage: getImage("conference_selected")
     });
     this.createUI();
   }
@@ -35,7 +35,7 @@ import texts from "../resources/texts";
         <imageView
           centerX={0} top={0}
           id="logo"
-          image={getImage.common("conference_logo")} />
+          image={getImage("conference_logo")} />
         <textView
           id="date"
           left={8} right={8} top="prev() 8"
@@ -85,7 +85,7 @@ import texts from "../resources/texts";
         width={272} top="prev() 16" centerX={0}>
         <imageView
           left={0} width={24} height={24} centerY={0}
-          image={getImage.common(service)} />
+          image={getImage(service)} />
         <Link
           left="prev() 8" centerY={0}
           font={fontToString({ size: 18 })}

@@ -2,20 +2,14 @@ import {device} from "tabris";
 
 let de = {
   ABOUT_PAGE_TITLE: "Über diese App",
-  ABOUT_PAGE_IOS_ICONS_ATTRIBUTION_SUBJECT: "iOS Icons",
-  ABOUT_PAGE_ANDROID_ICONS_ATTRIBUTION_SUBJECT: "Android Icons",
+  ABOUT_PAGE_ICONS_ATTRIBUTION_SUBJECT: "Icons",
   ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK: "LIZENZ",
-  ABOUT_PAGE_ATTRIBUTION_NOTICE_LINK: "HINWEIS",
   ABOUT_PAGE_ATTRIBUTION_BY: " von ",
   ABOUT_PAGE_BROUGHT_TO_YOU_BY: " \nwurde entwickelt von",
   ABOUT_PAGE_BUILT_WITH: "Erstellt mit ",
   ABOUT_PAGE_OPEN_SOURCE: "Diese App ist Open Source.",
   ABOUT_PAGE_VIEW_IT_ON: "Code anzeigen auf ",
   CONFERENCE_PAGE_TITLE: "Konferenz",
-  NOTICE_PAGE_TITLE: "Benutzung von Icons8 iOS Icons",
-  NOTICE_PAGE_NOTICE:
-    "Icons8 Icons können nur für Projekte abgeleitet von dem tabris-con Open Source-Projekt verwendet werden:",
-  NOTICE_PAGE_LICENSING_DETAILS: "Für Lizenzierungsdetails kontaktieren Sie ",
   MAP_PAGE_TITLE: "Lageplan",
   TRACKS_PAGE_TITLE: "Tracks",
   TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON: "MEHR",
@@ -61,20 +55,14 @@ let de = {
 
 let en = {
   ABOUT_PAGE_TITLE: "About",
-  ABOUT_PAGE_IOS_ICONS_ATTRIBUTION_SUBJECT: "iOS icons",
-  ABOUT_PAGE_ANDROID_ICONS_ATTRIBUTION_SUBJECT: "Android icons",
+  ABOUT_PAGE_ICONS_ATTRIBUTION_SUBJECT: "Icons",
   ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK: "LICENSE",
-  ABOUT_PAGE_ATTRIBUTION_NOTICE_LINK: "NOTICE",
   ABOUT_PAGE_ATTRIBUTION_BY: " by ",
   ABOUT_PAGE_BROUGHT_TO_YOU_BY: " app\nis brought to you by",
   ABOUT_PAGE_BUILT_WITH: "Built with ",
   ABOUT_PAGE_OPEN_SOURCE: "This app is open source.",
   ABOUT_PAGE_VIEW_IT_ON: "View it on ",
   CONFERENCE_PAGE_TITLE: "Conference",
-  NOTICE_PAGE_TITLE: "Usage of Icon8 iOS icons",
-  NOTICE_PAGE_NOTICE:
-    "Icon8 icons may only be used for projects derived from the tabris-con open-source project:",
-  NOTICE_PAGE_LICENSING_DETAILS: "For licensing details, contact ",
   MAP_PAGE_TITLE: "Map",
   TRACKS_PAGE_TITLE: "Tracks",
   TITLE_COLLECTION_VIEW_ITEM_MORE_BUTTON: "MORE",

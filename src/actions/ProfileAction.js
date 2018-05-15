@@ -11,7 +11,7 @@ export default class ProfileAction extends Action {
       id: "profileAction",
       title: texts.PROFILE_ACTION_TITLE,
       placementPriority: "high",
-      image: getImage.forDevicePlatform("action_profile")
+      image: getImage("action_profile")
     });
     this._loginService = loginService;
     this.on("select", () => this._showProfilePage());

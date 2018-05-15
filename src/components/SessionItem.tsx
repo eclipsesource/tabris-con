@@ -26,7 +26,7 @@ import { If } from "../helpers/jsxHelper";
   set data(data: any) {
     this._data = data;
     if (config.SESSIONS_HAVE_IMAGES) {
-      let image = getImage.forDevicePlatform(data.image, ICON_WIDTH, ICON_HEIGHT);
+      let image = getImage(data.image, ICON_WIDTH, ICON_HEIGHT);
       (this._find("#imageView").first() as ImageView).image = image;
     }
     this.trackIndicator.background = config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial";

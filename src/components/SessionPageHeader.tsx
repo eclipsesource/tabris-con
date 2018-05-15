@@ -32,7 +32,7 @@ import { select } from "../helpers/platform";
             left={0} top={0} right={0} height={select({ android: ICON_SIZE, default: 0 })}>
           <imageView
               left={0} top={0} width={ICON_SIZE}
-              image={getImage.forDevicePlatform("back_arrow")}
+              image={getImage("back_arrow")}
               highlightOnTouch={true}
               height={select({ android: ICON_SIZE, default: 0 })}
               onTap={() => this.trigger("backButtonTap")} />
@@ -81,7 +81,7 @@ class AttendanceButton extends ImageView {
 
   constructor(properties: ImageViewProperties) {
     super(Object.assign({
-      image: getImage.common("plus"),
+      image: getImage("plus"),
       highlightOnTouch: true
     }, properties));
     this.on("tap", () => this.trigger("select"));
@@ -89,7 +89,7 @@ class AttendanceButton extends ImageView {
 
   set checked(checked: boolean) {
     this._checked = checked;
-    this.image = checked ? getImage.common("check") : getImage.common("plus");
+    this.image = checked ? getImage("check") : getImage("plus");
   }
 
   get checked() {

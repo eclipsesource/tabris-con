@@ -68,7 +68,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
       cell.abortHighlight = () => cell.shade.visible = false;
       cell.updateFeedbackIndicator = (state) => {
         if (state && state !== "loading") {
-          cell.feedbackIndicator.image = getImage.forDevicePlatform("schedule_feedback_" + state);
+          cell.feedbackIndicator.image = getImage("schedule_feedback_" + state);
         } else {
           cell.feedbackIndicator.image = null;
         }
@@ -89,7 +89,7 @@ export function get({viewDataProvider, loginService, feedbackService}) {
       cell.titleLabel.text = item.title;
       cell.summaryLabel.text = item.blockType !== "free" ? item.summary : "";
       cell.image.set({
-        image: getImage.forDevicePlatform(item.image),
+        image: getImage(item.image),
         tintColor: item.image === "schedule_icon_plus" ? colors.ACTION_COLOR : "initial"
       });
       cell.item = item;

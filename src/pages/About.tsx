@@ -4,24 +4,17 @@ import colors from "../resources/colors";
 import config from "../configs/config";
 import Link from "../components/Link";
 import { Composite, Tab, app, Page, TabProperties } from "tabris";
-import IconNoticePage from "./IconNoticePage";
 import texts from "../resources/texts";
 import { getById, component } from "tabris-decorators";
 
-const EXTERNAL_ATTRIBUTIONS = [
-  {
-    subject: texts.ABOUT_PAGE_IOS_ICONS_ATTRIBUTION_SUBJECT,
-    author: {name: "Icons8", url: "https://icons8.com/"},
-    information: {label: texts.ABOUT_PAGE_ATTRIBUTION_NOTICE_LINK, page: IconNoticePage}
-  }, {
-    subject: texts.ABOUT_PAGE_ANDROID_ICONS_ATTRIBUTION_SUBJECT,
-    author: {name: "Material Design Icons", url: "https://materialdesignicons.com/"},
-    information: {
-      label: texts.ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK,
-      url: "https://github.com/Templarian/MaterialDesign/blob/master/license.txt"
-    }
+const EXTERNAL_ATTRIBUTIONS = [{
+  subject: texts.ABOUT_PAGE_ICONS_ATTRIBUTION_SUBJECT,
+  author: {name: "Material Design Icons", url: "https://materialdesignicons.com/"},
+  information: {
+    label: texts.ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK,
+    url: "https://github.com/Templarian/MaterialDesign/blob/master/license.txt"
   }
-];
+}];
 
 @component export default class About extends Tab {
 
@@ -38,7 +31,7 @@ const EXTERNAL_ATTRIBUTIONS = [
             left={0} top={0} right={0} >
           <imageView
               centerX={0} top="8%"
-              image={getImage.common("conference_logo")} />
+              image={getImage("conference_logo")} />
           <composite
               left={0} top="prev() 16" right={0} >
             <textView
@@ -82,7 +75,7 @@ const EXTERNAL_ATTRIBUTIONS = [
                 centerX={0} top={0} height={0}>
               <imageView
                   left={0} top={0} width={48} height={48}
-                  image={getImage.common("tabrisjs_logo")} />
+                  image={getImage("tabrisjs_logo")} />
               <textView
                   left="prev()" centerY={0}
                   textColor={colors.DARK_SECONDARY_TEXT_COLOR}
@@ -98,8 +91,8 @@ const EXTERNAL_ATTRIBUTIONS = [
     this.set({
       id: "about",
       title: texts.ABOUT_PAGE_TITLE,
-      image: getImage.forDevicePlatform("about"),
-      selectedImage: getImage.forDevicePlatform("about_selected"),
+      image: getImage("about"),
+      selectedImage: getImage("about_selected"),
       ...properties
     });
     this.createExternalAttributions();
@@ -108,6 +101,7 @@ const EXTERNAL_ATTRIBUTIONS = [
 
   private createExternalAttributions() {
     EXTERNAL_ATTRIBUTIONS.forEach((attribution) => {
+      this.createAttributionListSeparator().appendTo(this.externalAttributionsList);
       this.createAttributionRow(attribution).appendTo(this.externalAttributionsList);
       if (EXTERNAL_ATTRIBUTIONS.indexOf(attribution) !== EXTERNAL_ATTRIBUTIONS.length - 1) {
         this.createAttributionListSeparator().appendTo(this.externalAttributionsList);

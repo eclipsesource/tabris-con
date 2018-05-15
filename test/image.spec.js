@@ -7,7 +7,6 @@ import _ from "lodash";
 let expect = require("chai").expect;
 
 const IMAGES_PATH = "../images";
-const PLATFORMS_WITH_ICONSETS = ["iOS", "Android"];
 const SUPPORTED_DEVICE_PIXEL_RATIOS = [1, 1.5, 2, 3];
 
 describe("image", () => {
@@ -16,94 +15,68 @@ describe("image", () => {
 
   describe("getImage", () => {
 
-    describe("forDevicePlatform", () => {
-
-      before(() => {
-        let mockObject = {};
-        SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
-          PLATFORMS_WITH_ICONSETS.forEach(platform => {
-            mockObject[getMockedPath(platform, devicePixelRatio)] = new Buffer([]);
-          });
-        });
-
-        mockfs(mockObject);
-      });
-
-      beforeEach(() => global.device = sinon.stub());
-
-      after(() => mockfs.restore());
-
-      it("returns empty string for undefined images", () => {
-        let image = getImage.forDevicePlatform(undefined);
-
-        expect(image).to.equal("");
-      });
-
-      describe("returns scaled image for supported devicePixelRatio", () => {
-        SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
-          PLATFORMS_WITH_ICONSETS.forEach(platform => {
-            it("returns scaled image for devicePixelRatio " + devicePixelRatio, () => {
-              device.platform = platform;
-              window.devicePixelRatio = devicePixelRatio;
-
-              let image = getImage.forDevicePlatform("foobar");
-
-              expect(image).to.deep.equal({
-                src: ["images", platform, "foobar@" + devicePixelRatio + "x.png"].join("/"),
-                scale: devicePixelRatio
-              });
-            });
-          });
-        });
-      });
-
-      describe("returns scaled image for unsupported devicePixelRatio with closest supported scale", () => {
-        beforeEach(() => device.platform = "Android");
-
-        it("returns image with scale 3 for devicePixelRatio 4", () => {
-          window.devicePixelRatio = 4;
-
-          let image = getImage.forDevicePlatform("foobar");
-
-          expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
-        });
-
-        it("returns image with scale 3 for devicePixelRatio 2.6", () => {
-          window.devicePixelRatio = 2.6;
-
-          let image = getImage.forDevicePlatform("foobar");
-
-          expect(image).to.deep.equal({src: "images/Android/foobar@3x.png", scale: 3});
-        });
-
-        it("returns image with scale 2 for devicePixelRatio 2.46", () => {
-          window.devicePixelRatio = 2.46;
-
-          let image = getImage.forDevicePlatform("foobar");
-
-          expect(image).to.deep.equal({src: "images/Android/foobar@2x.png", scale: 2});
-        });
-
-        it("returns image with explicit image size", () => {
-          window.devicePixelRatio = 3;
-
-          let remoteImage = getImage.forDevicePlatform("http://location", 200, 300);
-
-          expect(remoteImage).to.deep.equal({src: "http://location", width: 200, height: 300});
-        });
-
-      });
-
+    before(() => {
+      let mockObject = {};
+      SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio =>
+        mockObject[getMockedPath(devicePixelRatio)] = new Buffer([])
+      );
+      mockfs(mockObject);
     });
 
-    describe("common", () => {
+    after(() => mockfs.restore());
 
-      it("returns non-platform specific images", () => {
+    it("returns empty string for undefined images", () => {
+      let image = getImage(undefined);
+
+      expect(image).to.equal("");
+    });
+
+    describe("returns scaled image for supported devicePixelRatio", () => {
+      SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(devicePixelRatio => {
+        it("returns scaled image for devicePixelRatio " + devicePixelRatio, () => {
+          window.devicePixelRatio = devicePixelRatio;
+
+          let image = getImage("foobar");
+
+          expect(image).to.deep.equal({
+            src: ["images", "foobar@" + devicePixelRatio + "x.png"].join("/"),
+            scale: devicePixelRatio
+          });
+        });
+      });
+    });
+
+    describe("returns scaled image for unsupported devicePixelRatio with closest supported scale", () => {
+      it("returns image with scale 3 for devicePixelRatio 4", () => {
+        window.devicePixelRatio = 4;
+
+        let image = getImage("foobar");
+
+        expect(image).to.deep.equal({src: "images/foobar@3x.png", scale: 3});
+      });
+
+      it("returns image with scale 3 for devicePixelRatio 2.6", () => {
+        window.devicePixelRatio = 2.6;
+
+        let image = getImage("foobar");
+
+        expect(image).to.deep.equal({src: "images/foobar@3x.png", scale: 3});
+      });
+
+      it("returns image with scale 2 for devicePixelRatio 2.46", () => {
         window.devicePixelRatio = 2.46;
 
-        let image = getImage.common("foobar");
+        let image = getImage("foobar");
 
         expect(image).to.deep.equal({src: "images/foobar@2x.png", scale: 2});
+      });
+
+      it("returns image with explicit image size", () => {
+        window.devicePixelRatio = 3;
+
+        let remoteImage = getImage("http://location", 200, 300);
+
+        expect(remoteImage).to.deep.equal({src: "http://location", width: 200, height: 300});
       });
 
     });
@@ -111,41 +84,24 @@ describe("image", () => {
   });
 
   describe("resource", () => {
-    let iOSImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "iOS"].join("/")))
+    let imageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
       .map(extractFilenames)
       .compact()
       .value();
-    let androidImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH, "Android"].join("/")))
-      .map(extractFilenames)
-      .compact()
-      .value();
-    let commonImageNames = _(fs.readdirSync([__dirname, IMAGES_PATH].join("/")))
-      .map(extractFilenames)
-      .filter(filename => ["iOS", "Android", "windows"].indexOf(filename) < 0)
-      .compact()
-      .value();
-    _.uniq(iOSImageNames).forEach(assertletiantsExist("iOS"));
-    _.uniq(androidImageNames).forEach(assertletiantsExist("Android"));
-    _.uniq(commonImageNames).forEach(assertletiantsExist());
+    _.uniq(imageNames).forEach(assertVariantsExist);
   });
 
 });
 
-function assertletiantsExist(platform) {
-  return imageName => {
-    it(imageName + " has letiants for all supported densities for " + (platform || "both platforms"), () => {
-      SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(density => {
-        let filePath = [__dirname, IMAGES_PATH];
-        if (platform) {
-          filePath.push(platform);
-        }
-        filePath.push(imageName + "@" + density + "x.png");
-        let fileExists = fs.statSync(filePath.join("/")).isFile();
+function assertVariantsExist(imageName) {
+  it(imageName + " has variants for all supported densities", () => {
+    SUPPORTED_DEVICE_PIXEL_RATIOS.forEach(density => {
+      let filePath = `${__dirname}/${IMAGES_PATH}/${imageName}@${density}x.png`;
+      let fileExists = fs.statSync(filePath).isFile();
 
-        expect(fileExists).to.be.true;
-      });
+      expect(fileExists).to.be.true;
     });
-  };
+  });
 }
 
 function extractFilenames(el) {
@@ -156,11 +112,10 @@ function extractFilenames(el) {
   }
 }
 
-function getMockedPath(platform, devicePixelRatio) {
+function getMockedPath(devicePixelRatio) {
   return [
     __dirname,
     "../../images",
-    platform,
     "foobar@" + devicePixelRatio + "x.png"
   ];
 }

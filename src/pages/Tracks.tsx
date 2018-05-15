@@ -32,8 +32,8 @@ interface TracksProperties {
     this.set({
       id: "tracks",
       title: texts.TRACKS_PAGE_TITLE,
-      image: getImage.forDevicePlatform("tracks"),
-      selectedImage: getImage.forDevicePlatform("tracks_selected"),
+      image: getImage("tracks"),
+      selectedImage: getImage("tracks_selected"),
       ...properties
     });
     this.append(

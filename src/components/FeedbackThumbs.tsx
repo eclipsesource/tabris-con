@@ -20,7 +20,7 @@ class Thumb extends ImageView {
   set selection(selection: boolean) {
     this._selection = selection;
     let selectedPart = selection ? "_selected" : "";
-    this.image = getImage.forDevicePlatform("feedback_thumb_" + this.id.toLowerCase()
+    this.image = getImage("feedback_thumb_" + this.id.toLowerCase()
       .replace("thumb", "") + selectedPart);
   }
 
@@ -48,12 +48,12 @@ export default class FeedbackThumbs extends Composite {
       <Thumb
         id="thumbUp"
         left={0} top={0} width={THUMB_SIZE}
-        image={getImage.forDevicePlatform("feedback_thumb_up")}
+        image={getImage("feedback_thumb_up")}
         onSelect={() => this.feedback = "+1"} />,
       <Thumb
         id="thumbDown"
         left="prev() 16" top={0} width={THUMB_SIZE}
-        image={getImage.forDevicePlatform("feedback_thumb_down")}
+        image={getImage("feedback_thumb_down")}
         onSelect={() => this.feedback = "-1"} />
     );
   }

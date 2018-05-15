@@ -137,7 +137,7 @@ export default class SessionPage extends Page {
       left: 16, top: 4, width: SPEAKER_IMAGE_SIZE, height: SPEAKER_IMAGE_SIZE,
       cornerRadius: 19,
       scaleMode: "fit",
-      image: getImage.common(this._getSpeakerImage(speaker), SPEAKER_IMAGE_SIZE, SPEAKER_IMAGE_SIZE)
+      image: getImage(this._getSpeakerImage(speaker), SPEAKER_IMAGE_SIZE, SPEAKER_IMAGE_SIZE)
     }).appendTo(speakerContainer);
     new TextView({
       id: "summary",
@@ -152,7 +152,7 @@ export default class SessionPage extends Page {
         new Composite({left: 0, top: "#summary 4"}).append(
           new ImageView({
             left: 72, top: 0, height: TWITTER_ICON_SIZE,
-            image: getImage.common("twitter", TWITTER_ICON_SIZE, TWITTER_ICON_SIZE)
+            image: getImage("twitter", TWITTER_ICON_SIZE, TWITTER_ICON_SIZE)
           }),
           new Link({
             left: "prev() 4", centerY: 0,
@@ -197,7 +197,7 @@ export default class SessionPage extends Page {
       trackIndicatorColor: config.TRACK_COLOR && config.TRACK_COLOR[data.categoryName] || "initial"
     });
     descriptionLabel.text = data.description;
-    imageView.image = getImage.common(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
+    imageView.image = getImage(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
     if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
       new SessionPageFeedbackWidget({
         left: select({ios: 16, default: 72}), top: 8, right: 8, height: 36,

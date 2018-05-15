@@ -6,7 +6,7 @@ export default class AttendanceAction extends Action {
   constructor() {
     super({
       id: "attendanceAction",
-      image: getImage.common("plus"),
+      image: getImage("plus"),
       title: texts.ATTENDANCE_ACTION_ADD_TITLE,
       placementPriority: "high"
     });
@@ -14,7 +14,7 @@ export default class AttendanceAction extends Action {
 
   set attending(attending) {
     this._attending = attending;
-    this.image = attending ? getImage.common("check") : getImage.common("plus");
+    this.image = attending ? getImage("check") : getImage("plus");
     this.title = attending ? texts.ATTENDANCE_ACTION_REMOVE_TITLE : texts.ATTENDANCE_ACTION_ADD_TITLE;
   }
 
