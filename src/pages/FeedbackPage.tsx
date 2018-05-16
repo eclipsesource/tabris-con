@@ -41,7 +41,7 @@ interface FeedbackPageProperties {
         <ProgressButton
             id="evaluateButton"
             right={0} top="prev() 8"
-            text={texts.FEEDBACK_PAGE_SUBMIT_BUTTON}
+            title={texts.FEEDBACK_PAGE_SUBMIT_BUTTON}
             onSelect={() => this.evaluate()} />
       </composite>
     );

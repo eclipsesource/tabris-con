@@ -5,7 +5,7 @@ import { select } from "../helpers/platform";
 
 export default class TabrisConButton extends Button {
 
-  public jsxProperties: JSX.ButtonProperties;
+  public jsxProperties: JSX.ButtonProperties & {title: string};
 
   private _enabled: boolean = true;
 
@@ -28,11 +28,11 @@ export default class TabrisConButton extends Button {
     return this._enabled;
   }
 
-  set text(text: string) {
+  set title(text: string) {
     this.text = device.platform === "Android" ? text.toUpperCase() : text;
   }
 
-  get text() {
+  get title() {
     return this.text;
   }
 

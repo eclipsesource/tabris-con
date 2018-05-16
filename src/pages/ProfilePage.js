@@ -22,7 +22,7 @@ export default class ProfilePage extends Page {
     }).appendTo(container);
 
     new ProgressButton({
-      id: "logoutButton", text: texts.LOGOUT_BUTTON,
+      id: "logoutButton", title: texts.LOGOUT_BUTTON,
       top: "prev() 8", centerX: 0
     }).on("select", ({target}) => {
       target.showProgress(true);

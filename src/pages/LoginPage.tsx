@@ -56,7 +56,7 @@ interface LoginPageProperties {
               id="loginButton"
               top="prev() 8" right={select({android: 0, default: null})} centerX={select({ios: 0, default: null})}
               font={BUTTON_FONT}
-              text={texts.LOGIN_BUTTON}
+              title={texts.LOGIN_BUTTON}
               enabled={false}
               onSelect={() => this.login()} />
         </composite>
