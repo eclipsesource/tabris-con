@@ -83,7 +83,7 @@ interface ScheduleProperties {
             })}>
           <textView
               id="lastUpdated"
-              left={select({ android: 16, windows: 12, ios: null })}
+              left={select({ android: 16, ios: null })}
               top={select({ android: 0, default: 12 })}
               centerX={select({ ios: 0, default: null })}
               font={select({
@@ -104,7 +104,6 @@ interface ScheduleProperties {
             textColor={select({
               ios: colors.IOS_ACTION_AREA_FOREGROUND_COLOR,
               android: colors.ANDROID_ACTION_AREA_FOREGROUND_COLOR,
-              windows: colors.WINDOWS_ACTION_AREA_FOREGROUND_COLOR,
               default: "initial"
             })}
             background={select({

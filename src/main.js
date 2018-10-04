@@ -30,7 +30,7 @@ function getMomentLocale(deviceLanguage) {
     return supportedLanguageSubTags.indexOf(primaryLanguageSubTag) > -1 ?
       device.language : FALLBACK_MOMENT_LOCALE;
   }
-  return FALLBACK_MOMENT_LOCALE; // TODO: Windows client doesn't provide a locale.
+  return FALLBACK_MOMENT_LOCALE;
 }
 
 function startApp() {

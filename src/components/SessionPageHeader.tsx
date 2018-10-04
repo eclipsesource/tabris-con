@@ -29,17 +29,17 @@ import { select } from "../helpers/platform";
       <widgetCollection>
         <composite
             id="navigation"
-            left={0} top={0} right={0} height={select({ android: ICON_SIZE, default: 0 })}>
+            left={0} top={0} right={0} height={select({ android: 56, default: 0 })}>
           <imageView
-              left={0} top={0} width={ICON_SIZE}
+              left={0} top={0} width={56}
               image={getImage("back_arrow")}
               highlightOnTouch={true}
-              height={select({ android: ICON_SIZE, default: 0 })}
+              height={select({ android: 56, default: 0 })}
               onTap={() => this.trigger("backButtonTap")} />
           <AttendanceButton
               id="attendanceButton"
-              right={0} top={0} width={ICON_SIZE}
-              height={select({ android: ICON_SIZE, default: 0 })}
+              right={0} top={0} width={56}
+              height={select({ android: 56, default: 0 })}
               onSelect={() => this.trigger("attendanceButtonTap", new EventObject())} />
         </composite>
         <textView
@@ -98,14 +98,8 @@ class AttendanceButton extends ImageView {
 
 }
 
-const ICON_SIZE = select({
-  default: 56,
-  windows: 48
-});
-
 const TRACK_INDICATOR_LAYOUT = select({
   ios: {left: 16, top: 8, bottom: 8, width: 2},
-  windows: {top: 20, width: 18, height: 18},
   default: {top: "#navigation 10", width: 18, height: 18},
   extend: {left: 27}
 });

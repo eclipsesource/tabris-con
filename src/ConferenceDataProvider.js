@@ -89,7 +89,7 @@ export default class ConferenceDataProvider {
   _handleAppUpgrade() {
     let currentVersion = app.version;
     let appVersion = localStorage.getItem("appVersion");
-    if (currentVersion !== appVersion && device.platform !== "windows") { // TODO: also handle on Windows when client supports app version
+    if (currentVersion !== appVersion) {
       persistedStorage.removeConferenceData();
     }
     localStorage.setItem("appVersion", currentVersion);
