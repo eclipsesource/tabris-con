@@ -84,6 +84,14 @@ if [[ "$android" == true || "$ios" == false ]]; then
 fi
 
 if [[ "$ios" == true || "$android" == false ]]; then
+    export_svg 20 ios/icons/icon-20.png
+    export_svg 48 ios/icons/icon-24@2x.png
+    export_svg 55 ios/icons/icon-27.5@2x.png
+    export_svg 88 ios/icons/icon-44@2x.png
+    export_svg 167 ios/icons/icon-83.5@2x.png
+    export_svg 172 ios/icons/icon-86@2x.png
+    export_svg 196 ios/icons/icon-98@2x.png
+    export_svg 1024 ios/icons/icon-1024.png
     export_svg 40 ios/icons/icon-40.png
     export_svg 80 ios/icons/icon-40@2x.png
     export_svg 50 ios/icons/icon-50.png
