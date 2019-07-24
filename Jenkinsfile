@@ -31,7 +31,7 @@ node('xcode10 && tabris2') {
             sh 'echo ${MATCH_PASSWORD}'
             sh 'echo ${ANKA_VM_PASSWORD}'
             sh 'security unlock-keychain -p ${ANKA_VM_PASSWORD} login.keychain'
-            sh 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 FASTLANE_DISABLE_COLORS=true fastlane ios match'
+            sh 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 FASTLANE_DISABLE_COLORS=true fastlane prepareProvisioning'
             sh 'security set-key-partition-list -S apple-tool:,apple: -s -k ${ANKA_VM_PASSWORD} login.keychain'
         }
     }
