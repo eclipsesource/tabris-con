@@ -8,7 +8,7 @@ module.exports = function(context) {
   var version = root.attrib["version"];
   var timestamp = createTimestamp();
   root.attrib["android-versionCode"] = timestamp;
-  root.attrib["ios-CFBundleVersion"] = version + "+" + timestamp;
+  root.attrib["ios-CFBundleVersion"] = timestamp;
   cfg.write();
 };
 
