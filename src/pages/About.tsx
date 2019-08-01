@@ -12,7 +12,7 @@ const EXTERNAL_ATTRIBUTIONS = [{
   author: {name: "Material Design Icons", url: "https://materialdesignicons.com/"},
   information: {
     label: texts.ABOUT_PAGE_ATTRIBUTION_LICENSE_LINK,
-    url: "https://github.com/Templarian/MaterialDesign/blob/master/license.txt"
+    url: "https://github.com/Templarian/MaterialDesign/blob/master/LICENSE"
   }
 }];
 
