@@ -1,5 +1,5 @@
 import fontToString from "../helpers/fontToString";
-import FeedbackThumbs from "../components/FeedbackThumbs";
+import FeedbackSelector from "../components/FeedbackSelector";
 import { Page, TextInput, PageProperties } from "tabris";
 import texts from "../resources/texts";
 import { property, getById, component } from "tabris-decorators";
@@ -20,7 +20,7 @@ interface FeedbackPageProperties {
   @property private session: any;
   @getById private evaluateButton: ProgressButton;
   @getById private commentInput: TextInput;
-  @getById private feedbackThumbs: FeedbackThumbs;
+  @getById private feedbackThumbs: FeedbackSelector;
 
   constructor(properties: PageProperties & FeedbackPageProperties) {
     super();
@@ -30,8 +30,9 @@ interface FeedbackPageProperties {
         <textView
             alignment="center"
             text={texts.FEEDBACK_PAGE_MESSAGE}
-            font={fontToString({size: 22})} />
-        <FeedbackThumbs
+            font={fontToString({size: 22})}
+            left={0} top={0} right={0} />
+        <FeedbackSelector
             id="feedbackThumbs"
             top="prev() 16" centerX={0} />
         <textInput
