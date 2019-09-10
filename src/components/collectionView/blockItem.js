@@ -10,8 +10,10 @@ import addProgressTo from "../../helpers/addProgressTo";
 import config from "../../configs/config";
 import {pageNavigation} from "../../pages/navigation";
 import {Composite, ImageView, TextView} from "tabris";
+import { resolve } from "tabris-decorators";
+import ViewDataProvider from "../../ViewDataProvider";
 
-export function get({viewDataProvider, loginService, feedbackService}) {
+export function get() {
   return {
     cellHeight: 128,
 
@@ -97,14 +99,14 @@ export function get({viewDataProvider, loginService, feedbackService}) {
 
     select: (item) => {
       if (item.sessionId) {
-        let sessionPage = new SessionPage(viewDataProvider, loginService, feedbackService).appendTo(pageNavigation);
-        viewDataProvider["get" + (item.keynote ? "Keynote" : "Session")](item.sessionId)
+        let sessionPage = new SessionPage().appendTo(pageNavigation);
+        resolve(ViewDataProvider)["get" + (item.keynote ? "Keynote" : "Session")](item.sessionId)
           .then(session => sessionPage.data = session);
       } else if (item.blockType === "free") {
-        let page = new SessionsPage(viewDataProvider, loginService, feedbackService).appendTo(pageNavigation);
+        let page = new SessionsPage().appendTo(pageNavigation);
         let date1 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.startTimestamp);
         let date2 = new TimezonedDate(config.CONFERENCE_TIMEZONE, item.endTimestamp);
-        viewDataProvider.getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
+        resolve(ViewDataProvider).getSessionsInTimeframe(date1.toJSON(), date2.toJSON())
           .then(sessions => {
             let from = date1.format("LT");
             let to = date2.format("LT");

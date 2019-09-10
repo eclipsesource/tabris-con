@@ -5,8 +5,10 @@ import SessionTitle from "../../components/SessionTitle";
 import {Composite, TextView} from "tabris";
 import texts from "../../resources/texts";
 import {pageNavigation} from "../../pages/navigation";
+import { resolve } from "tabris-decorators";
+import ViewDataProvider from "../../ViewDataProvider";
 
-export function get({viewDataProvider, loginService, feedbackService}) {
+export function get() {
   return {
     cellHeight: 48,
     createCell: () => {
@@ -28,8 +30,8 @@ export function get({viewDataProvider, loginService, feedbackService}) {
     },
     updateCell: (cell, item) => cell.title.text = item.title,
     select: (item) => {
-      let page = new SessionsPage(viewDataProvider, loginService, feedbackService).appendTo(pageNavigation);
-      viewDataProvider.getCategory(item.id)
+      let page = new SessionsPage().appendTo(pageNavigation);
+      resolve(ViewDataProvider).getCategory(item.id)
         .then(category => page.data = {title: item.title, items: category});
     }
   };

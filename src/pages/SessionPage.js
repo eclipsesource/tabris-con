@@ -13,13 +13,12 @@ import config from "../configs/config";
 import {Page, ScrollView, ImageView, Composite, TextView, ActivityIndicator} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "./navigation";
+import { resolve } from "tabris-decorators";
+import CodFeedbackService from "../helpers/CodFeedbackService";
 
 export default class SessionPage extends Page {
-  constructor(viewDataProvider, loginService, feedbackService) {
+  constructor() {
     super({id: "sessionPage"});
-    this._viewDataProvider = viewDataProvider;
-    this._loginService = loginService;
-    this._feedbackService = feedbackService;
     this._titleCompY = 0;
 
     if (device.platform === "Android") {
@@ -63,7 +62,7 @@ export default class SessionPage extends Page {
       left: 0, top: "prev()", right: 0
     }).appendTo(contentComposite);
 
-    this.otherSessionsLink = new OtherSessionsLink(viewDataProvider, loginService, feedbackService);
+    this.otherSessionsLink = new OtherSessionsLink();
     this.otherSessionsLink.top = "prev()";
     this.otherSessionsLink.appendTo(contentComposite);
 
@@ -198,13 +197,10 @@ export default class SessionPage extends Page {
     });
     descriptionLabel.text = data.description;
     imageView.image = getImage(data.image, scrollViewBounds.width, scrollViewBounds.height / 3);
-    if (this._feedbackService && this._feedbackService.canGiveFeedbackForSession(data)) {
+    if (resolve(CodFeedbackService).canGiveFeedbackForSession(data)) {
       new SessionPageFeedbackWidget({
         left: select({ios: 16, default: 72}), top: 8, right: 8, height: 36,
-        session: data,
-        viewDataProvider: this._viewDataProvider,
-        loginService: this._loginService,
-        feedbackService: this._feedbackService
+        session: data
       })
         .appendTo(contentComposite);
     }

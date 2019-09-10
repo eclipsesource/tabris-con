@@ -1,9 +1,11 @@
 import config from "../configs/config";
 import ConfigurationDate from "../ConfigurationDate";
+import { shared, resolve } from "tabris-decorators";
+import CodRemoteService from "../CodRemoteService";
 
-export default class CodFeedbackService {
-  constructor(codRemoteService) {
-    this._codRemoteService = codRemoteService;
+@shared export default class CodFeedbackService {
+  constructor() {
+    this._codRemoteService = resolve(CodRemoteService);
   }
 
   canGiveFeedbackForSession(session) {

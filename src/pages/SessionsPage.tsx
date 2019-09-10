@@ -2,16 +2,13 @@ import TabrisConCollectionView from "../components/collectionView/TabrisConColle
 import texts from "../resources/texts";
 import { Page, ActivityIndicator } from "tabris";
 import { getById, component } from "tabris-decorators";
-import ViewDataProvider from "../ViewDataProvider";
-import LoginService from "../helpers/CodLoginService";
-import CodFeedbackService from "../helpers/CodFeedbackService";
 
 @component export default class SessionsPage extends Page {
 
   private _data: any;
   @getById private activityIndicator: ActivityIndicator;
 
-  constructor(viewDataProvider: ViewDataProvider, loginService: LoginService, feedbackService: CodFeedbackService) {
+  constructor() {
     super({
       id: "sessionsPage",
       title: texts.SESSIONS_PAGE_TITLE_LOADING
@@ -23,10 +20,7 @@ import CodFeedbackService from "../helpers/CodFeedbackService";
             centerX={0} centerY={0} />
         <TabrisConCollectionView
             id="sessionsList"
-            left={0} top={0} right={0} bottom={0} opacity={0}
-            viewDataProvider={viewDataProvider}
-            loginService={loginService}
-            feedbackService={feedbackService} />
+            left={0} top={0} right={0} bottom={0} opacity={0} />
       </widgetCollection>
     );
   }

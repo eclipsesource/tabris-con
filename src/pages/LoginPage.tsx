@@ -6,23 +6,18 @@ import texts from "../resources/texts";
 import colors from "../resources/colors";
 import config from "../configs/config";
 import LoginService from "../helpers/CodLoginService";
-import { component, property, getById } from "tabris-decorators";
-
-interface LoginPageProperties {
-  loginService: LoginService;
-}
+import { component, getById, resolve } from "tabris-decorators";
 
 @component export default class LoginPage extends Page {
 
-  public jsxProperties: JSX.PageProperties & LoginPageProperties & { onLoginSuccess?: () => void };
-  public tsProperties: PageProperties & LoginPageProperties;
+  public jsxProperties: JSX.PageProperties & { onLoginSuccess?: () => void };
+  public tsProperties: PageProperties;
 
   @getById private userInput: TextInput;
   @getById private passwordInput: TextInput;
   @getById private loginButton: ProgressButton;
-  @property private loginService: LoginService;
 
-  constructor(properties: PageProperties & LoginPageProperties) {
+  constructor(properties: PageProperties) {
     super();
     this.append(
       <scrollView
@@ -67,7 +62,7 @@ interface LoginPageProperties {
 
   private login() {
     this.loginButton.showProgress(true);
-    this.loginService
+    resolve(LoginService)
       .onLoginSuccess(this.onLoginSuccess)
       .onLoginError(this.onLoginError)
       .login(this.userInput.text, this.passwordInput.text);
@@ -75,13 +70,13 @@ interface LoginPageProperties {
 
   private onLoginSuccess = () => {
     this.trigger("loginSuccess");
-    this.loginService.offLoginSuccess(this.onLoginSuccess);
+    resolve(LoginService).offLoginSuccess(this.onLoginSuccess);
     this.dispose();
   }
 
   private onLoginError = () => {
     this.loginButton.showProgress(false);
-    this.loginService.offLoginError(this.onLoginError);
+    resolve(LoginService).offLoginError(this.onLoginError);
   }
 
   private validateInput() {

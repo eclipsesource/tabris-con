@@ -6,6 +6,7 @@ let vendorConfiguration = {
   PROJECT_URL: "https://github.com/eclipsesource/tabris-con"
 };
 
+// TODO: make config injectable
 export default Object.freeze(
   Object.assign({}, vendorConfiguration, conferenceConfiguration)
 );

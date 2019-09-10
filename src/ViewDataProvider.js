@@ -1,19 +1,26 @@
 /*globals Promise:true*/
 
 import _ from "lodash";
+import {shared} from "tabris-decorators";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
 import {logError} from "./errors";
+import AttendedBlockProvider from "./AttendedBlockProvider";
+import {resolve} from "tabris-decorators";
+import CodRemoteService from "./CodRemoteService";
+import CodLoginService from "./helpers/CodLoginService";
+import ViewDataAdapter from "./ViewDataAdapter";
+import CodFeedbackService from "./helpers/CodFeedbackService";
+import ConferenceDataProvider from "./ConferenceDataProvider";
+import conferenceConfig from "./configs/config";
 
-export default class ViewDataProvider {
-  constructor({
-    config, conferenceDataProvider, attendedBlockProvider, viewDataAdapter, remoteService, loginService, feedbackService
-  }) {
-    this._conferenceDataProvider = conferenceDataProvider;
-    this._attendedBlockProvider = attendedBlockProvider;
-    this._viewDataAdapter = viewDataAdapter;
-    this._remoteService = remoteService;
-    this._loginService = loginService;
-    this._feedbackService = feedbackService;
+@shared export default class ViewDataProvider {
+  constructor(config = conferenceConfig) {
+    this._conferenceDataProvider = resolve(ConferenceDataProvider);
+    this._attendedBlockProvider = resolve(AttendedBlockProvider);
+    this._viewDataAdapter = resolve(ViewDataAdapter);
+    this._remoteService = resolve(CodRemoteService);
+    this._loginService = resolve(CodLoginService);
+    this._feedbackService = resolve(CodFeedbackService);
     this._config = config;
   }
 

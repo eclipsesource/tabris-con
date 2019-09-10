@@ -5,6 +5,8 @@ import * as persistedStorage from "../src/persistedStorage";
 import sinon from "sinon";
 import AttendedBlockProvider from "../src/AttendedBlockProvider";
 import chaiThings from "chai-things";
+import {injector} from "tabris-decorators";
+import ConferenceDataProvider from "../src/ConferenceDataProvider";
 
 let expect = chai.expect;
 chai.use(chaiThings);
@@ -14,13 +16,14 @@ describe("attendedBlockProvider", () => {
   let conferenceDataProvider, attendedBlockProvider;
 
   beforeEach(() => {
+    injector.addHandler(ConferenceDataProvider, () => conferenceDataProvider);
     global.window = sinon.stub();
     global.localStorage = sinon.stub();
     global.localStorage.getItem = sinon.stub();
     global.localStorage.setItem = sinon.spy();
     global.localStorage.getItem.withArgs(persistedStorage.ATTENDED_SESSIONS).returns("[\"id\"]");
     conferenceDataProvider = {get: sinon.stub()};
-    attendedBlockProvider = new AttendedBlockProvider(conferenceDataProvider);
+    attendedBlockProvider = new AttendedBlockProvider();
   });
 
   it("provides blocks referenced in localStorage", function() {

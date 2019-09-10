@@ -6,16 +6,18 @@ import * as ConferenceDataFactory from "./ConferenceDataFactory";
 import texts from "./resources/texts";
 import ConfigurationDate from "./ConfigurationDate";
 import getSessionsInTimeframe from "./getSessionsInTimeframe";
+import BundledConferenceData from "./BundledConferenceData";
 import {addAttendedSessionId} from "./helpers/attendedSessionService";
+import {shared, resolve} from "tabris-decorators";
 import {app} from "tabris";
+import NewDataFetcher from "./NewDataFetcher";
 
-export default class ConferenceDataProvider {
-  constructor(bundledConferenceData) {
-    this._bundledConferenceData = bundledConferenceData;
-  }
-
-  setNewDataFetcher(newDataFetcher) {
-    this._newDataFetcher = newDataFetcher;
+@shared export default class ConferenceDataProvider {
+  constructor() {
+    this._bundledConferenceData = BundledConferenceData.create(config);
+    if (config.SERVICES && config.SERVICES.SESSIONS) {
+      this._newDataFetcher = resolve(NewDataFetcher);
+    }
   }
 
   get() {

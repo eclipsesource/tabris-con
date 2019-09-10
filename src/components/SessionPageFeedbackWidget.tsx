@@ -1,7 +1,6 @@
 import { Composite, CompositeProperties } from "tabris";
 import * as _ from "lodash";
 import ViewDataProvider from "../ViewDataProvider";
-import CodFeedbackService from "../helpers/CodFeedbackService";
 import LoginService from "../helpers/CodLoginService";
 import FeedbackPage from "../pages/FeedbackPage";
 import LoginPage from "../pages/LoginPage";
@@ -9,15 +8,12 @@ import fontToString from "../helpers/fontToString";
 import colors from "../resources/colors";
 import texts from "../resources/texts";
 import { pageNavigation } from "../pages/navigation";
-import { property } from "tabris-decorators";
+import { property, resolve } from "tabris-decorators";
 import Progress from "./Progress";
 import { select } from "../helpers/platform";
 
 interface SessionPageFeedbackWidgetProperties {
   session: any;
-  viewDataProvider: ViewDataProvider;
-  loginService: LoginService;
-  feedbackService: CodFeedbackService;
 }
 
 export default class SessionPageFeedbackWidget extends Progress(Composite) {
@@ -26,9 +22,6 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   public tsProperties: CompositeProperties & SessionPageFeedbackWidgetProperties;
 
   @property public session: any;
-  @property public viewDataProvider: ViewDataProvider;
-  @property public loginService: LoginService;
-  @property public feedbackService: CodFeedbackService;
 
   constructor(properties: CompositeProperties & SessionPageFeedbackWidgetProperties) {
     super();
@@ -42,13 +35,13 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   }
 
   private async render() {
-    if (!this.loginService.isLoggedIn()) {
+    if (!resolve(LoginService).isLoggedIn()) {
       return this.showFeedbackButton()
         .on({tap: () => this.openLoginPage()});
     }
     this.showProgress(true);
     try {
-      let evaluations = await this.viewDataProvider.getRemoteService().evaluations();
+      let evaluations = await resolve(ViewDataProvider).getRemoteService().evaluations();
       let alreadyEvaluated = !!_.find(evaluations, { nid: this.session.nid });
       if (alreadyEvaluated) {
         this.showNotice(texts.FEEDBACK_SUBMITTED_MESSAGE);
@@ -73,7 +66,6 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   private openLoginPage() {
     pageNavigation.append(
       <LoginPage
-          loginService={this.loginService}
           onLoginSuccess={() => this.openFeedbackPage()} />
     );
   }
@@ -81,8 +73,7 @@ export default class SessionPageFeedbackWidget extends Progress(Composite) {
   private openFeedbackPage() {
     pageNavigation.append(
       <FeedbackPage
-          session={this.session}
-          feedbackService={this.feedbackService} />
+          session={this.session} />
     );
   }
 

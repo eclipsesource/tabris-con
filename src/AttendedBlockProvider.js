@@ -1,8 +1,10 @@
 import * as persistedStorage from "./persistedStorage";
+import ConferenceDataProvider from "./ConferenceDataProvider";
+import {resolve, shared} from "tabris-decorators";
 
-export default class AttendedBlockProvider {
-  constructor(conferenceDataProvider) {
-    this._conferenceDataProvider = conferenceDataProvider;
+@shared export default class AttendedBlockProvider {
+  constructor() {
+    this._conferenceDataProvider = resolve(ConferenceDataProvider);
   }
 
   getBlocks() {

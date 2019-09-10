@@ -2,12 +2,12 @@ import fontToString from "../helpers/fontToString";
 import FeedbackSelector from "../components/FeedbackSelector";
 import { Page, TextInput, PageProperties } from "tabris";
 import texts from "../resources/texts";
-import { property, getById, component } from "tabris-decorators";
+import { property, getById, component, resolve } from "tabris-decorators";
 import ProgressButton from "../components/ProgressButton";
 import { logError } from "../errors";
+import CodFeedbackService from "../helpers/CodFeedbackService";
 
 interface FeedbackPageProperties {
-  feedbackService: any;
   session: any;
 }
 
@@ -16,7 +16,6 @@ interface FeedbackPageProperties {
   public jsxProperties: JSX.PageProperties & FeedbackPageProperties;
   public tsProperties: PageProperties & FeedbackPageProperties;
 
-  @property private feedbackService: any;
   @property private session: any;
   @getById private evaluateButton: ProgressButton;
   @getById private commentInput: TextInput;
@@ -52,7 +51,7 @@ interface FeedbackPageProperties {
   private async evaluate() {
     this.evaluateButton.showProgress(true);
     try {
-      await this.feedbackService.createEvaluation(
+      await resolve(CodFeedbackService).createEvaluation(
         this.session,
         this.commentInput.text,
         this.feedbackThumbs.feedback

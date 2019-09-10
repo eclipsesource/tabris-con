@@ -1,33 +1,19 @@
 import { Tab, TabProperties, ActivityIndicator } from "tabris";
-import { getById, property, component } from "tabris-decorators";
+import { getById, component, resolve } from "tabris-decorators";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
-import ViewDataProvider from "../ViewDataProvider";
-import CodFeedbackService from "../helpers/CodFeedbackService";
-import LoginService from "../helpers/CodLoginService";
 import getImage from "../helpers/getImage";
 import texts from "../resources/texts";
 import { logError } from "../errors";
-
-interface TracksProperties {
-  loginService: LoginService;
-  feedbackService: CodFeedbackService;
-  viewDataProvider: ViewDataProvider;
-}
+import ViewDataProvider from "../ViewDataProvider";
 
 @component export default class Tracks extends Tab {
 
-  public jsxProperties: JSX.TabProperties & TracksProperties;
-  public tsProperties: TabProperties & TracksProperties;
-
   @getById private readonly tracksList: TabrisConCollectionView;
   @getById private readonly activityIndicator: ActivityIndicator;
-  @property private readonly viewDataProvider: any;
-  @property private readonly loginService: any;
-  @property private readonly feedbackService: any;
 
   private _data: any = null;
 
-  constructor(properties: TabProperties & TracksProperties) {
+  constructor(properties: TabProperties) {
     super();
     this.set({
       id: "tracks",
@@ -41,10 +27,7 @@ interface TracksProperties {
         <TabrisConCollectionView
             id="tracksList"
             left={0} top={0} right={0} bottom={0} opacity={0}
-            updatable={true}
-            viewDataProvider={this.viewDataProvider}
-            loginService={this.loginService}
-            feedbackService={this.feedbackService} />
+            updatable={true} />
         <activityIndicator
             id="activityIndicator"
             centerX={0} centerY={0} />
@@ -76,7 +59,7 @@ interface TracksProperties {
 
   private async initializeItems() {
     try {
-      this.data = await this.viewDataProvider.getPreviewCategories();
+      this.data = await resolve(ViewDataProvider).getPreviewCategories();
     } catch (ex) {
       logError(ex);
     }

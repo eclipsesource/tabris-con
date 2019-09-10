@@ -3,13 +3,11 @@ import config from "./configs/config";
 import moment from "moment-timezone";
 import ProfileAction from "./actions/ProfileAction";
 import MainPage from "./pages/MainPage";
-import * as RemoteServiceFactory from "./RemoteServiceFactory";
-import * as FeedbackServiceFactory from "./helpers/FeedbackServiceFactory";
-import * as LoginServiceFactory from "./helpers/LoginServiceFactory";
-import * as ViewDataProviderFactory from "./ViewDataProviderFactory";
 import {device} from "tabris";
 import {pageNavigation} from "./pages/navigation";
 import * as ui from "./helpers/ui";
+import { resolve } from "tabris-decorators";
+import LoginService from "./helpers/CodLoginService";
 
 const FALLBACK_MOMENT_LOCALE = "en-US";
 
@@ -34,15 +32,10 @@ function getMomentLocale(deviceLanguage) {
 }
 
 function startApp() {
-  let remoteService = RemoteServiceFactory.create();
-  let feedbackService = FeedbackServiceFactory.create(remoteService);
-  let loginService = LoginServiceFactory.create(remoteService);
-  let viewDataProvider = ViewDataProviderFactory.create(config, remoteService, loginService, feedbackService);
-
-  new MainPage({viewDataProvider, loginService, feedbackService})
+  new MainPage()
     .on("appear", () => {
-      if (config.SUPPORTS_FEEDBACK && loginService.isLoggedIn()) {
-        new ProfileAction(loginService).appendTo(pageNavigation);
+      if (config.SUPPORTS_FEEDBACK && resolve(LoginService).isLoggedIn()) {
+        new ProfileAction().appendTo(pageNavigation);
       }
     })
     .on("disappear", () => pageNavigation.find("#profileAction").dispose())

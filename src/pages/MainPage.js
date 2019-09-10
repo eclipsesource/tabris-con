@@ -1,3 +1,4 @@
+import {create} from "tabris-decorators";
 import config from "../configs/config";
 import colors from "../resources/colors";
 import Schedule from "./Schedule";
@@ -11,7 +12,7 @@ const TABS = [Schedule, Tracks, Map, config.CONFERENCE_PAGE && Conference, About
 
 export default class MainPage extends Page {
 
-  constructor({viewDataProvider, loginService, feedbackService}) {
+  constructor() {
     super({id: "mainPage"});
     let tabFolder = new TabFolder({
       id: "navigation",
@@ -22,7 +23,7 @@ export default class MainPage extends Page {
       tabBarLocation: "bottom"
     }).appendTo(this);
     tabFolder.on("selectionChanged", ({value: selection}) => this.title = selection.title);
-    TABS.forEach(Tab => new Tab({viewDataProvider, loginService, feedbackService}).appendTo(tabFolder));
+    TABS.forEach(Tab => create(Tab).appendTo(tabFolder));
     this.selection = this.children("#tracks").first();
     this.title = tabFolder.selection.title;
   }

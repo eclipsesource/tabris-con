@@ -2,14 +2,9 @@ import { CollectionView, CollectionViewProperties, Widget } from "tabris";
 import collectionViewItemConfiguration from "./collectionViewItemConfiguration";
 import * as viewDataUpdateService from "../../helpers/viewDataUpdateService";
 import config from "../../configs/config";
-import { property } from "tabris-decorators";
 import { logError } from "../../errors";
-import ViewDataProvider from "../../ViewDataProvider";
 
 interface TabrisConCollectionViewProperties {
-  viewDataProvider: ViewDataProvider;
-  loginService: any;
-  feedbackService: any;
   updatable?: boolean;
   items?: any[];
 }
@@ -19,9 +14,6 @@ export default class TabrisConCollectionView extends CollectionView {
   public jsxProperties: JSX.CollectionViewProperties & TabrisConCollectionViewProperties;
   public tsProperties: CollectionViewProperties & TabrisConCollectionViewProperties;
 
-  @property public viewDataProvider: ViewDataProvider;
-  @property public loginService: any;
-  @property public feedbackService: any;
   private _updatable: boolean;
   private _items: any[];
 
@@ -76,7 +68,7 @@ export default class TabrisConCollectionView extends CollectionView {
   private onRefresh = async () => {
     this.refreshIndicator = true;
     try {
-      await viewDataUpdateService.updateData(this.viewDataProvider);
+      await viewDataUpdateService.updateData();
     } catch(e) { logError(e); }
     this.refreshIndicator = false;
   }
@@ -88,11 +80,7 @@ export default class TabrisConCollectionView extends CollectionView {
   }
 
   private getItemType(type: string) {
-    return collectionViewItemConfiguration[type + "Item"].get({
-      viewDataProvider: this.viewDataProvider,
-      loginService: this.loginService,
-      feedbackService: this.feedbackService
-    });
+    return collectionViewItemConfiguration[type + "Item"].get();
   }
 
 }

@@ -2,10 +2,12 @@ import fontToString from "../helpers/fontToString";
 import ProgressButton from "../components/ProgressButton";
 import {Page, Composite, TextView} from "tabris";
 import texts from "../resources/texts";
+import { resolve } from "tabris-decorators";
+import LoginService from "../helpers/CodLoginService";
 
 export default class ProfilePage extends Page {
 
-  constructor(loginService) {
+  constructor() {
     super({id: "profilePage", title: texts.PROFILE_PAGE_TITLE});
     let container = new Composite({
       width: 280, centerX: 0, top: 160
@@ -26,18 +28,18 @@ export default class ProfilePage extends Page {
       top: "prev() 8", centerX: 0
     }).on("select", ({target}) => {
       target.showProgress(true);
-      loginService.logout();
+      resolve(LoginService).logout();
     }).appendTo(container);
 
     let logoutSuccessHandler = () => this.dispose();
     let logoutErrorHandler = () => this.find("#logoutButton").first().showProgress(false);
 
-    loginService
+    resolve(LoginService)
       .onLogoutSuccess(logoutSuccessHandler)
       .onLogoutError(logoutErrorHandler);
 
     this.on("dispose", () => {
-      loginService
+      resolve(LoginService)
         .offLogoutSuccess(logoutSuccessHandler)
         .offLogoutError(logoutErrorHandler);
     });

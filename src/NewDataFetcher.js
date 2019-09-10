@@ -2,6 +2,8 @@ import timeoutFetch from "./timeoutFetch";
 import maybeSet from "./helpers/maybeSet";
 import ConfigurationDate from "./ConfigurationDate";
 import {CouldNotFetchDataError} from "./errors";
+import conferenceConfig from "./configs/config"
+import {shared} from "tabris-decorators";
 
 let SUPPORTED_SERVICES = ["cod", "tabrisCon"];
 
@@ -9,8 +11,8 @@ let formatDataMappers = {
   cod: json => json ? {scheduledSessions: json} : null
 };
 
-export default class NewDataFetcher {
-  constructor(config) {
+@shared export default class NewDataFetcher {
+  constructor(config = conferenceConfig) {
     this._dataType = config.DATA_TYPE;
     this._sessionsService = config.SERVICES.SESSIONS;
     this._serviceNotImplemented = SUPPORTED_SERVICES.indexOf(config.DATA_TYPE) < 0;

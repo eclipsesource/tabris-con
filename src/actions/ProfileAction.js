@@ -4,23 +4,24 @@ import getImage from "../helpers/getImage";
 import {Action} from "tabris";
 import texts from "../resources/texts";
 import {pageNavigation} from "../pages/navigation";
+import { resolve } from "tabris-decorators";
+import LoginService from "../helpers/CodLoginService";
 
 export default class ProfileAction extends Action {
-  constructor(loginService) {
+  constructor() {
     super({
       id: "profileAction",
       title: texts.PROFILE_ACTION_TITLE,
       placementPriority: "high",
       image: getImage("action_profile")
     });
-    this._loginService = loginService;
     this.on("select", () => this._showProfilePage());
   }
 
   _showProfilePage() {
-    new ProfilePage(this._loginService)
+    new ProfilePage()
       .appendTo(pageNavigation)
-      .data = this._loginService.getUserData();
+      .data = resolve(LoginService).getUserData();
   }
 
 }

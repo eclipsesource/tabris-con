@@ -4,9 +4,12 @@ import _ from "lodash";
 import isFeedbackTime from "./isFeedbackTime";
 import timeoutFetch from "./timeoutFetch";
 import texts from "./resources/texts";
+import config from "./configs/config";
+import {shared} from "tabris-decorators";
 
-export default class CodRemoteService {
-  constructor(services) {
+@shared export default class CodRemoteService {
+
+  constructor(services = config.SERVICES) {
     this._services = services;
   }
 

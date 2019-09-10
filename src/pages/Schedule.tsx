@@ -1,10 +1,8 @@
 import { TabFolder, Tab, TextView, app, device, ActivityIndicator, TabProperties } from "tabris";
-import { property, getById, component } from "tabris-decorators";
+import { property, getById, component, resolve as resolveInjectable } from "tabris-decorators";
 import moment from "moment-timezone";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
 import ViewDataProvider from "../ViewDataProvider";
-import CodFeedbackService from "../helpers/CodFeedbackService";
-import LoginService from "../helpers/CodLoginService";
 import fontToString from "../helpers/fontToString";
 import getImage from "../helpers/getImage";
 import colors from "../resources/colors";
@@ -12,26 +10,14 @@ import texts from "../resources/texts";
 import { select } from "../helpers/platform";
 import { logError } from "../errors";
 
-interface ScheduleProperties {
-  loginService: LoginService;
-  feedbackService: CodFeedbackService;
-  viewDataProvider: ViewDataProvider;
-}
-
 @component export default class Schedule extends Tab {
 
-  public jsxProperties: JSX.TabProperties & ScheduleProperties;
-  public tsProperties: TabProperties & ScheduleProperties;
-
-  @property public loginService: LoginService;
-  @property public feedbackService: CodFeedbackService;
-  @property public viewDataProvider: ViewDataProvider;
   @property public initializingItems: boolean = false;
   @getById private activityIndicator: ActivityIndicator;
   private highlightId: any;
   private _data: any = null;
 
-  constructor(properties: ScheduleProperties) {
+  constructor(properties: TabProperties) {
     super();
     this.set({
       id: "schedule",
@@ -152,7 +138,7 @@ interface ScheduleProperties {
     if (!this.initializingItems) {
       this.initializingItems = true;
       try {
-        this.data = await this.viewDataProvider.getBlocks();
+        this.data = await resolveInjectable(ViewDataProvider).getBlocks();
       } catch (ex) {
         logError(ex);
       }
@@ -166,7 +152,7 @@ interface ScheduleProperties {
   private async updateFeedbackIndicators() {
     try {
       let highlightPromise = this.highlightSession();
-      let indicatorStatesPromise = this.viewDataProvider.getSessionIdIndicatorStates();
+      let indicatorStatesPromise = resolveInjectable(ViewDataProvider).getSessionIdIndicatorStates();
       await highlightPromise;
       let indicatorStates = await indicatorStatesPromise;
       indicatorStates.forEach(({id, state}: any) => this.updateSessionProperty(id, "feedbackIndicatorState", state));
@@ -198,10 +184,7 @@ interface ScheduleProperties {
               id={blockObject.day}
               class="scheduleDayList"
               items={blockObject.blocks}
-              updatable={true}
-              viewDataProvider={this.viewDataProvider}
-              loginService={this.loginService}
-              feedbackService={this.feedbackService} />
+              updatable={true} />
         </tab>
       );
       if (index === 0) {

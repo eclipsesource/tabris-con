@@ -1,13 +1,15 @@
 import {logError} from "../errors";
+import { resolve, shared } from "tabris-decorators";
+import CodRemoteService from "../CodRemoteService";
 
-export default class LoginService {
+@shared export default class LoginService {
 
-  constructor(codRemoteService) {
+  constructor() {
     this._logoutSuccessHandlers = [];
     this._logoutErrorHandlers = [];
     this._loginErrorHandlers = [];
     this._loginSuccessHandlers = [];
-    this._codRemoteService = codRemoteService;
+    this._codRemoteService = resolve(CodRemoteService);
     this._codRemoteService.setLoginService(this);
     this.onLogoutSuccess(() => {
       resetUserData();

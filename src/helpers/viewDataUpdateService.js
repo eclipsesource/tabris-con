@@ -1,5 +1,8 @@
-export function updateData(viewDataProvider) {
-  viewDataProvider.invalidateCache();
+import { resolve } from "tabris-decorators";
+import ViewDataProvider from "../ViewDataProvider";
+
+export function updateData() {
+  resolve(ViewDataProvider).invalidateCache();
   let schedule = tabris.ui.find("#schedule").first();
   let tracks = tabris.ui.find("#tracks").first();
   if (schedule) {

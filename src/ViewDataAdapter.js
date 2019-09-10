@@ -1,12 +1,17 @@
 import _ from "lodash";
 import TimezonedDate from "./TimezonedDate";
 import FreeBlockInsertor from "./FreeBlockInsertor";
+import LoginService from "./helpers/CodLoginService";
+import CodFeedbackService from "./helpers/CodFeedbackService";
+import conferenceConfig from "./configs/config"
+import {shared, resolve} from "tabris-decorators";
 
-export default class ViewDataAdapter {
-  constructor(config, loginService, feedbackService) {
+@shared export default class ViewDataAdapter {
+
+  constructor(config = conferenceConfig) {
     this._config = config;
-    this._loginService = loginService;
-    this._feedbackService = feedbackService;
+    this._loginService = resolve(LoginService);
+    this._feedbackService = resolve(CodFeedbackService);
     this._timezone = this._config.CONFERENCE_TIMEZONE;
   }
 

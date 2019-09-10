@@ -1,3 +1,4 @@
+import "./tabrisMock";
 import chai from "chai";
 import sinonChai from "sinon-chai";
 import fetchMock from "fetch-mock";
