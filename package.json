@@ -5,8 +5,10 @@
   "main": "dist",
   "scripts": {
     "test": "ts-mocha -p ./test/tsconfig.json ./test/**/*.spec.js",
+    "test:file": "ts-mocha -p ./test/tsconfig.json",
     "posttest": "npm run lint",
     "lint": "tslint --project . 'src/**/*.ts' 'src/**/*.tsx'",
+    "lint:file": "tslint --project .",
     "pre-build": "npm run clean",
     "build": "npm run pre-build && webpack",
     "clean": "rm -rf dist/",
