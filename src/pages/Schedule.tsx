@@ -1,6 +1,6 @@
 import { TabFolder, Tab, TextView, app, device, ActivityIndicator, TabProperties } from "tabris";
 import { property, getById, component } from "tabris-decorators";
-import * as moment from "moment-timezone";
+import moment from "moment-timezone";
 import TabrisConCollectionView from "../components/collectionView/TabrisConCollectionView";
 import ViewDataProvider from "../ViewDataProvider";
 import CodFeedbackService from "../helpers/CodFeedbackService";
