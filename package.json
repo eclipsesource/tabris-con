@@ -13,7 +13,7 @@
     "build": "npm run pre-build && webpack",
     "clean": "rm -rf dist/",
     "watch": "webpack -w",
-    "start": "tabris serve"
+    "start": "tabris serve -w"
   },
   "dependencies": {
     "lodash": "^4.17.4",
