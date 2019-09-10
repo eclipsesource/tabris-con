@@ -20,7 +20,7 @@
     "moment-timezone": "^0.5.14",
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
-    "tabris": "^2.4.1"
+    "tabris": "^2.8.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.92",
@@ -34,7 +34,7 @@
     "node-fetch": "^1.4.1",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
-    "tabris-decorators": "^1.0.0-test2",
+    "tabris-decorators": "^2.8.0",
     "ts-loader": "^3.2.0",
     "ts-mocha": "^6.0.0",
     "tslint": "^5.9.1",
