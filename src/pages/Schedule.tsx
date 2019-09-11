@@ -177,20 +177,30 @@ import { logError } from "../errors";
 
   private createTabs(tabFolder: TabFolder, data: any) {
     data.forEach((blockObject: any, index: number) => {
-      tabFolder.append(
+      let tab: Tab = (
         <tab title={blockObject.day} background="white">
-          <TabrisConCollectionView
-              left={0} top={0} right={0} bottom={0} opacity={index === 0 ? 0 : 1}
-              id={blockObject.day}
-              class="scheduleDayList"
-              items={blockObject.blocks}
-              updatable={true} />
-        </tab>
+            <TabrisConCollectionView
+                left={0} top={0} right={0} bottom={0} opacity={index === 0 ? 0 : 1}
+                id={blockObject.day}
+                class="scheduleDayList"
+                items={blockObject.blocks}
+                updatable={true} />
+          </tab>
       );
+      tab.appendTo(tabFolder);
       if (index === 0) {
         tabFolder.find(`#${blockObject.day}`).animate({ opacity: 1 }, { duration: 250 });
+      }
+      if (sameDay(new Date(), new Date(blockObject.blocks[0].startTimestamp))) {
+        tabFolder.selection = tab;
       }
     });
   }
 
+}
+
+function sameDay(date1: Date, date2: Date) {
+  return date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate();
 }
