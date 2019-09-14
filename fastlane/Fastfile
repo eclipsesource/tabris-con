@@ -1,6 +1,6 @@
 platform :ios do
   desc "Build the Tabris.js Conference App"
-  lane :match do
+  lane :prepareProvisioning do
     match(type: "development", git_url: "git@github.com:eclipsesource/match-certificates.git")
   end
   lane :tabrisBuildDebug do

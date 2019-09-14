@@ -1,4 +1,4 @@
-node('mac-tabris-2.3.0') {
+node('xcode10 && tabris2') {
     stage('info') {
         sh 'npm -version'
         sh 'node -v'
@@ -31,7 +31,7 @@ node('mac-tabris-2.3.0') {
             sh 'echo ${MATCH_PASSWORD}'
             sh 'echo ${ANKA_VM_PASSWORD}'
             sh 'security unlock-keychain -p ${ANKA_VM_PASSWORD} login.keychain'
-            sh 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 FASTLANE_DISABLE_COLORS=true fastlane ios match'
+            sh 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 FASTLANE_DISABLE_COLORS=true fastlane prepareProvisioning'
             sh 'security set-key-partition-list -S apple-tool:,apple: -s -k ${ANKA_VM_PASSWORD} login.keychain'
         }
     }
