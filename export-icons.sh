@@ -52,7 +52,7 @@ function export_svg {
   echo -e "Exporting \033[1;34m$svg\033[0m -> [w: ${size%.*}, h: ${size%.*}] \033[1;34m$png\033[0m"
   if [[ $dry_run != true ]]; then
       mkdir -p "$(dirname "$png")"
-      inkscape -z -e $png -h $size -w $size $svg
+      inkscape --batch-process $svg --export-filename=$png --export-type="png" --export-height=$size --export-width=$size
   fi
 }
 
