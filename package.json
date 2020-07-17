@@ -16,7 +16,7 @@
     "start": "tabris serve -w"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "moment-timezone": "^0.5.14",
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
