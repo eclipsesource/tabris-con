@@ -19,7 +19,7 @@
     "lodash": "^4.17.4",
     "moment-timezone": "^0.5.14",
     "promise.prototype.finally": "^1.0.1",
-    "sanitize-html": "^1.11.3",
+    "sanitize-html": "^2.3.2",
     "tabris": "^2.8.1"
   },
   "devDependencies": {
