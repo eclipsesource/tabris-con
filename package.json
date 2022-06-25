@@ -31,7 +31,7 @@
     "fetch-mock": "^4.1.0",
     "mocha": "^2.3.4",
     "mock-fs": "^4.4.1",
-    "node-fetch": "^1.4.1",
+    "node-fetch": "^2.6.7",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "tabris-decorators": "^2.8.0",
