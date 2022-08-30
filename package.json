@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "moment-timezone": "^0.5.14",
+    "moment-timezone": "^0.5.35",
     "promise.prototype.finally": "^1.0.1",
     "sanitize-html": "^1.11.3",
     "tabris": "^2.8.1"
