@@ -35,10 +35,10 @@
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "tabris-decorators": "^2.8.0",
-    "ts-loader": "^3.2.0",
+    "ts-loader": "^9.4.2",
     "ts-mocha": "^6.0.0",
     "tslint": "^5.9.1",
     "typescript": "^2.8.3",
-    "webpack": "^3.10.0"
+    "webpack": "^5.75.0"
   }
 }
